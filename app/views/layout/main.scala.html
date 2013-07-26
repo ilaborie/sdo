@@ -2,18 +2,21 @@
 <!DOCTYPE html>
 
 <html>
-    @* Script *@
     <head>
         <title>@title</title>
+
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("style/main.css")">
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("ico/favicon.png")">
+
         @* Fonts *@
         <link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
         <link href='http://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'>
     </head>
     @* Body *@
     <body>
+        <div class="container well well-small">
         @content
+        </div>
 
         @scripts
     </body>

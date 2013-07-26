@@ -8,4 +8,4 @@ resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/release
 addSbtPlugin("play" % "sbt-plugin" % "2.1.2")
 
 // Magic auto refresh plugin
-addSbtPlugin("com.jamesward" %% "play-auto-refresh" % "0.0.4")
+// addSbtPlugin("com.jamesward" %% "play-auto-refresh" % "0.0.4")
