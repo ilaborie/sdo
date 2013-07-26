@@ -1,7 +1,7 @@
 @(ligue: model.orga.Ligue)
 
-@layout.main(s"Ligue ${ligue.shortName}", navbar=navbar.ligue(ligue)) {
-    <div class="container">
+@layout.main(s"Ligue ${ligue.shortName}", navbar = navbar.ligue(ligue)) {
+    <div class="container well well-small">
         <h1>@ligue.name</h1>
         <p>@ligue.info</p>
         <ul>

@@ -1,9 +1,29 @@
 @(ligue: model.orga.Ligue, comite: model.orga.Comite)
+@import model.orga.Club
 
 @layout.main(s"Comite ${comite.shortName}", navbar = navbar.comite(ligue, comite)) {
-    <div class="container">
-        <h1>@comite.name</h1>
-        <p>@comite.info</p>
 
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span2 well well-small">
+                <ul class="nav nav-list">
+                    <li class="nav-header">@Messages("menu.classements")</li>
+                    <li><a href="#">@Messages("menu.classements.men")</a></li>
+                    <li><a href="#">@Messages("menu.classements.women")</a></li>
+                    <li><a href="#">@Messages("menu.classements.junior")</a></li>
+                    <li><a href="#">@Messages("menu.classements.double")</a></li>
+                    <li><a href="#">@Messages("menu.classements.team")</a></li>
+                    <li class="nav-header">@Messages("menu.club")</li>
+                    @for(club <- Club.findByComite(comite)) {
+                        <li><a href="#">@club.name</a></li>
+                    }
+                </ul>
+            </div>
+            <div class="span10 well well-small">
+                    <!--Body content-->
+                <h1>@comite.name</h1>
+                <p>@comite.info</p>
+            </div>
+        </div>
     </div>
 }
