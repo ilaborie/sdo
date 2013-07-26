@@ -1,2 +1,13 @@
 # Ligues
 title.ligues=Ligues
+
+# Ligue
+
+# Comite
+menu.classements=Classements
+menu.classements.team=Équipes
+menu.classements.men=Masculins
+menu.classements.women=Féminines
+menu.classements.junior=Juniors
+menu.classements.double=Doubles
+menu.club=Clubs
