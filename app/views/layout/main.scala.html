@@ -1,4 +1,4 @@
-@(title: String, scripts: Html = script())(content: Html)
+@(title: String, navbar:Html= Html(""), scripts: Html = script())(content: Html)
 <!DOCTYPE html>
 
 <html>
@@ -14,6 +14,8 @@
     </head>
     @* Body *@
     <body>
+        @navbar
+
         <div class="container well well-small">
         @content
         </div>

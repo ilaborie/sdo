@@ -1,0 +1,7 @@
+@(ligue: model.orga.Ligue)
+
+@brand = {<a class="brand" href="#">@ligue.name</a>}
+
+@default(brand = brand) {
+    <li><a href="@routes.Application.ligues()">@Messages("title.ligues")</a></li>
+}
