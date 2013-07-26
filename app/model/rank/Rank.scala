@@ -7,9 +7,7 @@ case class SeasonRanking(season: Season, teamRanks: Seq[TeamRank]) {
 
   def getPosition(teamRank: TeamRank): Int = {
     // FIXME Cache data
-    def betterThan(other: TeamRank): Boolean = (other.points > teamRank.points) || (
-      (other.points == teamRank.points) && (other.diff > teamRank.diff))
-    1 + teamRanks.count(betterThan)
+    1 + teamRanks.count(_.betterThan(teamRank))
   }
 }
 
@@ -36,5 +34,8 @@ case class TeamRank(team: Team, win: Int, loose: Int, draw: Int, fail: Int = 0, 
   val days: Int = win + loose + draw + fail
   val points: Int = 3 * win + draw
   val diff: Int = plus - minus
+
+  def betterThan(other: TeamRank): Boolean = (this.points > other.points) || (
+    (this.points == other.points) && (this.diff > other.diff))
 
 }
