@@ -1,0 +1,34 @@
+@import "bootstrap/variables";
+
+table.table.rank {
+  thead th {
+    background-color: @gray;
+    color: @grayLighter;
+    font-weight: bold;
+  }
+  tbody tr td:first-child {
+    font-weight: bold;
+  }
+  tbody tr td:nth-child(2) {
+    text-align: left;
+  }
+  td:nth-child(n+3) {
+    font-family: "Ubuntu Mono", monaco, monospace;
+  }
+
+  td.pos {
+    color: @green;
+  }
+  td.neg {
+    color: @red;
+  }
+
+  // Qualification
+  //  tbody tr:nth-child(7) {
+  //    th, td {
+  //      border-width: 2px;
+  //      border-top-color: blue !important;
+  //    }
+  //
+  //  }
+}

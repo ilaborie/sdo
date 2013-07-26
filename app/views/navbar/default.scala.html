@@ -3,14 +3,22 @@
 <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
             @brand
-            <ul class="nav">
+            <div class="nav-collapse collapse">
+                <ul class="nav">
                 @content
-            </ul>
-            <ul class="nav pull-right">
-                <li><a href="/contacts.html"><i class="glyphicons envelope"></i> Contacts</a></li>
-                <li><a href="/calendar.html"><i class="glyphicons calendar"></i> Calendrier</a></li>
-            </ul>
+                </ul>
+                <ul class="nav pull-right">
+                    <li><a href="/contacts.html"><i class="glyphicons envelope"></i> Contacts</a></li>
+                    <li><a href="/calendar.html"><i class="glyphicons calendar"></i> Calendrier</a></li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>
