@@ -1,6 +1,6 @@
 @(ligues: Seq[model.orga.Ligue])
 
-@layout.main(Messages("title.ligues")) {
+@layout.main(Messages("title.ligues"), navbar= navbar.ligues(ligues)) {
     <h1>@Messages("title.ligues")</h1>
     <ul>
     @for(ligue <- ligues) {

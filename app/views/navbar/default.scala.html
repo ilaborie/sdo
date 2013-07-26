@@ -1,0 +1,15 @@
+@(brand: Html = Html(""))(content: Html)
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            @brand
+            <ul class="nav">
+                <li><a href="/calendar.html"><i class="icon-calendar"></i> Calendrier</a></li>
+                <li><a href="/contacts.html"><i class="icon-envelope"></i> Contacts</a></li>
+                @content
+            </ul>
+        </div>
+    </div>
+</div>
+

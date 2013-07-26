@@ -1,0 +1,8 @@
+@(ligue: model.orga.Ligue, comite: model.orga.Comite)
+
+@brand = {<a class="brand" href="#">@comite.name</a>}
+
+@default(brand = brand) {
+    <li><a href="@routes.Application.ligues()">@Messages("title.ligues")</a></li>
+    <li><a href="@routes.Application.ligue(ligue.shortName)">@ligue.fullName</a></li>
+}

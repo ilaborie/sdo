@@ -12,7 +12,13 @@ object Application extends Controller {
    * Index page
    * @return the index page
    */
-  def index = Action {
+  def index = ligues
+
+  /**
+   * Ligues Pages
+   * @return ligues page
+   */
+  def ligues = Action {
     Ok(views.html.ligues(Ligue.all))
   }
 

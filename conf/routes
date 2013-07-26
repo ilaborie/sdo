@@ -4,6 +4,7 @@
 
 # Home page
 GET        /                                                     controllers.Application.index
+GET        /ligues                                               controllers.Application.ligues
 
 # Ligue
 GET        /ligue/:shortName                                     controllers.Application.ligue(shortName)
