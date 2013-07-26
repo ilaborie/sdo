@@ -1,23 +1,22 @@
 // Main Style
 
-// Import Bootstrap
+// Imports
 @import "bootstrap/bootstrap.less";
-
-// Margin (reponsive)
-body {
-  margin-top: 60px;
-}
-
-// Import Boostrap responsive
 @import "bootstrap/responsive.less";
-
-// Import Icons
 @import "glyphicons/glyphicons-boostrap.less";
 
 // Base
 body {
   background-image: url("../images/dartboard-1.jpg");
   font-family: 'Ubuntu', sans-serif;
+
+  margin-top: 60px;
+}
+
+@media (max-width: 979px) {
+  body {
+    margin-top: 0;
+  }
 }
 
 // Default
