@@ -7,8 +7,14 @@ package model.orga
  */
 case class Ligue(name: String, shortName: String, comites: Set[Comite], info: Option[String]) {
   lazy val fullName = s"[$shortName] $name"
+
+  override def toString = fullName
 }
 
 object Ligue {
   val SudOuest = Ligue("Sud Ouest", "SDO", Set(Comite.Toulouse, Comite.ToulouseNord), None)
+
+  val all: Seq[Ligue] = List(SudOuest)
+
+  def findByShortName(shortName: String): Option[Ligue] = all.find(_.shortName == shortName)
 }

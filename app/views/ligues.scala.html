@@ -1,0 +1,10 @@
+@(ligues: Seq[model.orga.Ligue])
+
+@layout.main(Messages("title.ligues")) {
+    <h1>@Messages("title.ligues")</h1>
+    <ul>
+    @for(ligue <- ligues) {
+        <li><a href="@routes.Application.ligue(ligue.shortName)">@ligue.name</a></li>
+    }
+    </ul>
+}

@@ -7,6 +7,8 @@ package model.orga
  */
 case class Comite(name: String, shortName: String, info: Option[String]) {
   lazy val fullName = s"[$shortName] $name"
+
+  override def toString = fullName
 }
 
 object Comite {

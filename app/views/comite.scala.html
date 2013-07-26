@@ -1,0 +1,9 @@
+@(ligue: model.orga.Ligue, comite: model.orga.Comite)
+
+@layout.main(s"Comite ${comite.shortName}") {
+    <div class="container">
+        <h1>@comite.name</h1>
+        <p>@comite.info</p>
+
+    </div>
+}

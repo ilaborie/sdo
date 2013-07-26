@@ -3,7 +3,14 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index
+GET        /                                                     controllers.Application.index
+
+# Ligue
+GET        /ligue/:shortName                                     controllers.Application.ligue(shortName)
+
+
+# Comite
+GET        /ligue/:ligueShortName/comite/:comiteShortName        controllers.Application.comite(ligueShortName, comiteShortName)
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET        /assets/*file                                         controllers.Assets.at(path="/public", file)

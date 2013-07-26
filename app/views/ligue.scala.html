@@ -1,12 +1,12 @@
 @(ligue: model.orga.Ligue)
 
-@layout.main("Test") {
+@layout.main(s"Ligue ${ligue.shortName}") {
     <div class="container">
-        <h1>@ligue.fullName</h1>
+        <h1>@ligue.name</h1>
         <p>@ligue.info</p>
         <ul>
         @for(comite <- ligue.comites) {
-            <li>@comite.fullName</li>
+            <li><a href="@routes.Application.comite(ligue.shortName, comite.shortName)">@comite.name</a></li>
         }
         </ul>
     </div>
