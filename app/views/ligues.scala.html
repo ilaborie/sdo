@@ -1,10 +1,12 @@
 @(ligues: Seq[model.orga.Ligue])
 
-@layout.main(Messages("title.ligues"), navbar= navbar.ligues(ligues)) {
-    <h1>@Messages("title.ligues")</h1>
-    <ul>
-    @for(ligue <- ligues) {
-        <li><a href="@routes.Application.ligue(ligue.shortName)">@ligue.name</a></li>
-    }
-    </ul>
+@layout.main(Messages("title.ligues"), navbar = navbar.ligues(ligues)) {
+    <div class="container well well-small">
+        <h1>@Messages("title.ligues")</h1>
+        <ul>
+        @for(ligue <- ligues) {
+            <li><a href="@routes.Application.ligue(ligue.shortName)">@ligue.name</a></li>
+        }
+        </ul>
+    </div>
 }

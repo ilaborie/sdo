@@ -1,9 +1,18 @@
 @(ligue: model.orga.Ligue, comite: model.orga.Comite)
 
 @layout.main(s"Comite ${comite.shortName}", navbar = navbar.comite(ligue, comite)) {
-    <div class="container">
-        <h1>@comite.name</h1>
-        <p>@comite.info</p>
 
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span2 well well-small">
+                    <!--Sidebar content-->
+                Menu
+            </div>
+            <div class="span10 well well-small">
+                    <!--Body content-->
+                <h1>@comite.name</h1>
+                <p>@comite.info</p>
+            </div>
+        </div>
     </div>
 }
