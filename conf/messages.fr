@@ -4,10 +4,32 @@ title.ligues=Ligues
 # Ligue
 
 # Comite
-menu.classements=Classements
-menu.classements.team=Équipes
-menu.classements.men=Masculins
-menu.classements.women=Féminines
-menu.classements.junior=Juniors
-menu.classements.double=Doubles
+menu.rank=Classements
+menu.rank.team=Équipes
+menu.rank.men=Masculins
+menu.rank.women=Féminines
+menu.rank.junior=Juniors
+menu.rank.double=Doubles
 menu.club=Clubs
+
+# Team Rank
+rank.team.caption=Classement {0}
+rank.team=Équipes
+rank.team.point=Pts.
+rank.team.point.title=Points
+rank.team.day=J.
+rank.team.day.title=Journées
+rank.team.win=G.
+rank.team.win.title=Gagnées
+rank.team.loose=P.
+rank.team.loose.title=Perdues
+rank.team.draw=N.
+rank.team.draw.title=Nulles
+rank.team.fail=F.
+rank.team.fail.title=Forfaits
+rank.team.match.win=Pts. +
+rank.team.match.win.title=Matchs gagnés
+rank.team.match.loose=Pts. -
+rank.team.match.loose.title=Matchs perdus
+rank.team.diff=Diff.
+rank.team.diff.title=Différence
