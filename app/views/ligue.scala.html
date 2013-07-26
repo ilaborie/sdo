@@ -1,0 +1,13 @@
+@(ligue: model.orga.Ligue)
+
+@layout.main("Test") {
+    <div class="container">
+        <h1>@ligue.fullName</h1>
+        <p>@ligue.info</p>
+        <ul>
+        @for(comite <- ligue.comites) {
+            <li>@comite.fullName</li>
+        }
+        </ul>
+    </div>
+}
