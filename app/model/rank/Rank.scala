@@ -32,7 +32,7 @@ object SeasonRanking {
 
 case class TeamRank(team: Team, win: Int, loose: Int, draw: Int, fail: Int = 0, plus: Int, minus: Int) {
   val days: Int = win + loose + draw + fail
-  val points: Int = 3 * win + draw
+  val points: Int = 3 * win + 2 * draw + loose
   val diff: Int = plus - minus
 
   def betterThan(other: TeamRank): Boolean = (this.points > other.points) || (
