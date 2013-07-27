@@ -45,7 +45,7 @@ object Data {
     val ligueFile = s"data/s$currentSeason/$ligue/ligue.yml"
     logger.info(s"Read ligue information in $ligueFile")
     val info = Yaml.load(ligueFile).asInstanceOf[JavaMap[String, AnyRef]].toMap
-    logger.info(s"Read $info")
+    logger.trace(s"Read $info")
 
     val name = info("name").asInstanceOf[String]
     val shortName = info("shortname").asInstanceOf[String]
@@ -56,6 +56,7 @@ object Data {
     Ligue(name, shortName, comites, infomation)
   }
 
+
   /**
    * Read a comite
    * @param ligue the ligue prefix
@@ -64,14 +65,70 @@ object Data {
    */
   def readComite(ligue: String, comite: String): Comite = {
     val comiteFile = s"data/s$currentSeason/$ligue/$comite/comite.yml"
-    logger.info(s"Read ligue information in $comiteFile")
+    logger.info(s"Read comite information in $comiteFile")
     val info = Yaml.load(comiteFile).asInstanceOf[JavaMap[String, AnyRef]].toMap
-    logger.info(s"Read $info")
+    logger.trace(s"Read $info")
 
     val name = info("name").asInstanceOf[String]
     val shortName = info("shortname").asInstanceOf[String]
+    val clubList = info("clubs").asInstanceOf[JavaList[String]].toList
+    val clubs = for (club <- clubList) yield readClub(ligue, comite, club)
     val infomation = readInfo(s"data/s$currentSeason/$ligue/$comite/info.html")
-    Comite(name, shortName, infomation)
+    Comite(name, shortName, clubs, infomation)
+  }
+
+  /**
+   * Read Club
+   * @param ligue the ligue
+   * @param comite the comite
+   * @param club the club
+   * @return a Club
+   */
+  def readClub(ligue: String, comite: String, club: String): Club = {
+    val clubFile = s"data/s$currentSeason/$ligue/$comite/$club/club.yml"
+    logger.info(s"Read club information in $clubFile")
+    val info = Yaml.load(clubFile).asInstanceOf[JavaMap[String, AnyRef]].toMap
+    logger.trace(s"Read $info")
+
+    val name = info("name").asInstanceOf[String]
+    val shortName = info("shortname").asInstanceOf[String]
+    val teamList = info("teams").asInstanceOf[JavaList[String]].toList
+    val teams = for (team <- teamList) yield readTeam(ligue, comite, club, team)
+    val infomation = readInfo(s"data/s$currentSeason/$ligue/$comite/info.html")
+    Club(name, shortName, teams, infomation)
+  }
+
+  /**
+   * Read team
+   * @param ligue ligue
+   * @param comite comite
+   * @param club club
+   * @param team team
+   * @return the team
+   */
+  def readTeam(ligue: String, comite: String, club: String, team: String): Team = {
+    val teamFile = s"data/s$currentSeason/$ligue/$comite/$club/$team.yml"
+    logger.info(s"Read team information in $teamFile")
+    val info = Yaml.load(teamFile).asInstanceOf[JavaMap[String, AnyRef]].toMap
+    logger.trace(s"Read $info")
+
+    val name = info("name").asInstanceOf[String]
+    val playerList = info("players").asInstanceOf[JavaList[JavaMap[String, String]]].toList
+    val players = for (player <- playerList) yield createLicensedPlayer(player.toMap)
+    Team(name, players)
+  }
+
+  /**
+   * Create LicensedPlayer
+   * @param data data
+   * @return player
+   */
+  def createLicensedPlayer(data: Map[String, String]): LicensedPlayer = {
+    val license = data.getOrElse("license", "???")
+    val name = data.getOrElse("name", "???")
+    val surname = data.get("surname")
+
+    LicensedPlayer(license, name, surname)
   }
 
 
