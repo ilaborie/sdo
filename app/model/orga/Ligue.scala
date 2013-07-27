@@ -1,5 +1,6 @@
 package model.orga
 
+
 /**
  * User: igorlaborie
  * Date: 21/07/13
@@ -13,9 +14,8 @@ case class Ligue(name: String, shortName: String, comites: Seq[Comite], info: Op
 
 object Ligue {
 
-  val all: Seq[Ligue] = List(
-    Ligue("Sud Ouest", "SDO", List(Comite.Toulouse, Comite.ToulouseNord), None)
-  )
-
   def findByShortName(shortName: String): Option[Ligue] = all.find(_.shortName == shortName)
+
+  lazy val all: Seq[Ligue] = Data.readLigues()
+
 }

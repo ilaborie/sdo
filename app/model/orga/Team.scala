@@ -24,4 +24,8 @@ object Team {
   val DCMAG = Team("DC MAG", Club.DCMAG, Nil)
 
   val all = List(Satanas, Diabolo, DDD, X1, Wood, FT, ONeill, DCMAG)
+
+  def findByName(name: String): Option[Team] = {
+    ???
+  }
 }
