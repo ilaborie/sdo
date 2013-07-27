@@ -25,10 +25,7 @@
     @for(teamRank <- ranking.ordered) {
         <tr>
             <td>@ranking.getPosition(teamRank)</td>
-            <td>
-                <span class="hidden-phone">@teamRank.team.club.name -</span>
-                @teamRank.team.name
-            </td>
+            <td>@teamRank.team.name</td>
             <td>@teamRank.points</td>
             <td class="hidden-phone">@teamRank.days</td>
             <td>@teamRank.win</td>
