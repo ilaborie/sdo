@@ -5,9 +5,12 @@ $(function () {
 });
 
 var openInBody = function (event) {
+    $(".nav-list li").removeClass("active");
     var url = $(this).attr("href");
-    $("#bodyComite").load(url);
-
+    var $this = $(this);
+    $("#bodyComite").load(url, function() {
+        $this.parent().addClass("active");
+    });
     event.preventDefault();
     return false;
 };
