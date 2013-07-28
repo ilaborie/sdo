@@ -1,5 +1,4 @@
-@(ligue: model.orga.Ligue, comite: model.orga.Comite, ranking: model.rank.SeasonTeamRanking)
-
+@(ligue: model.orga.Ligue, comite: model.orga.Comite, ranking: model.rank.SeasonTeamRanking, championship: model.team.Championship)
 
 <table class="table table-striped table-bordered rank">
     <caption>@Messages("rank.team.comite.caption", comite.name, ranking.season)</caption>
@@ -40,3 +39,18 @@
     }
     </tbody>
 </table>
+<hr>
+@for(day <- championship.days) {
+    <table class="table table-bordered journee">
+        <caption>@Messages("championship.day.caption", day.day, championship.season)</caption>
+        @for(m <- day.matches) {
+            <tr>
+                <td>@m.team1.name</td>
+                <td> - </td>
+                <td> - </td>
+                <td>@m.team2.name</td>
+            </tr>
+        }
+    </table>
+}
+
