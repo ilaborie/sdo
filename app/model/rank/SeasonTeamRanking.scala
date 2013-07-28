@@ -1,6 +1,7 @@
 package model.rank
 
 import model.orga._
+import play.api.cache.Cache
 
 /**
  * Season team ranking

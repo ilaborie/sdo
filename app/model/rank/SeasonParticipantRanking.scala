@@ -1,7 +1,7 @@
 package model.rank
 
 import model.orga._
-import model.tournament._
+import model.team._
 
 
 /**
@@ -12,7 +12,7 @@ import model.tournament._
 sealed abstract class SeasonParticipantRanking[T <: Participant](season: Season,
                                                                  tournaments: List[Tournament],
                                                                  ranks: Seq[ParticipantRank[T]]) {
-  // FIXME require tournament mapping OK
+  // FIXME require team mapping OK
   lazy val ordered: Seq[ParticipantRank[T]] = ranks.sortBy(getPosition)
 
   def getPosition(rank: ParticipantRank[T]): Int = {
@@ -69,7 +69,7 @@ case class ParticipantRank[T <: Participant](participant: T, results: Map[Tourna
     for ((tournament, result) <- results) yield tournament.getPoint(result)
   }.sum
 
-  def betterSubLevel(rank: ParticipantRank[T]): Boolean = ???
+  def betterSubLevel(rank: ParticipantRank[T]): Boolean = ??? // FIXME implements
 
   def betterThan(other: ParticipantRank[T]): Boolean = (this.points > other.points) || (
     (this.points == other.points) && betterSubLevel(other))

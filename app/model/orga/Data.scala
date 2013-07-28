@@ -9,7 +9,7 @@ import play.Play
 import com.google.common.io.{ByteStreams, CharStreams}
 import com.google.common.base.Charsets
 import java.text.SimpleDateFormat
-import model.tournament._
+import model.team._
 
 /**
  * Data helpers
