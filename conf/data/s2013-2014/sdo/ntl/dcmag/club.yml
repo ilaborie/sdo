@@ -1,5 +1,7 @@
 shortname: DCMAG
 name: Darts Club Mérignac Arlac Gironde
+opens:
+- "06-09-2013"
 teams:
 - dcmag
 

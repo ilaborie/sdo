@@ -1,5 +1,7 @@
 shortname: X1
 name: Double As
+opens:
+- "05-09-2013"
 teams:
 - x1
 

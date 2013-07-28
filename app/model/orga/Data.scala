@@ -1,23 +1,28 @@
 package model.orga
 
 import play.libs.Yaml
-import java.util.{List => JavaList}
-import java.util.{Map => JavaMap}
+import java.util.{List => JavaList, Map => JavaMap, Calendar}
 
 import scala.collection.JavaConversions._
 import play.api.Logger
 import play.Play
 import com.google.common.io.{ByteStreams, CharStreams}
 import com.google.common.base.Charsets
+import java.text.SimpleDateFormat
+import model.tournament._
 
 /**
- * User: igorlaborie
- * Date: 27/07/13
- * Time: 17:51
+ * Data helpers
  */
 object Data {
   private val logger = Logger("data")
+  private val dateFormater = new SimpleDateFormat("dd-MM-yyyy")
 
+  private def readDate(date: String): Calendar = {
+    val cal = Calendar.getInstance()
+    cal.setTime(dateFormater.parse(date))
+    cal
+  }
 
   val seasons: List[Season] = List("2013-2014")
   val currentSeason: Season = seasons.last
@@ -51,9 +56,13 @@ object Data {
     val shortName = info("shortname").asInstanceOf[String]
     val comitesList = info("comites").asInstanceOf[JavaList[String]].toList
     val comites = for (comite <- comitesList) yield readComite(ligue, comite)
-    val infomation = readInfo(s"data/s$currentSeason/$ligue/info.html")
+    val openList = info("opens").asInstanceOf[JavaList[String]].toList
+    val opens = for (open <- openList) yield OpenLigue(readDate(open))
+    val coupe = CoupeLigue(readDate(info("coupe").asInstanceOf[String]))
+    val master = MasterLigue(readDate(info("master").asInstanceOf[String]))
+    val information = readInfo(s"data/s$currentSeason/$ligue/info.html")
 
-    Ligue(name, shortName, comites, infomation)
+    Ligue(name, shortName, comites, opens, coupe, master, information)
   }
 
 
@@ -73,8 +82,10 @@ object Data {
     val shortName = info("shortname").asInstanceOf[String]
     val clubList = info("clubs").asInstanceOf[JavaList[String]].toList
     val clubs = for (club <- clubList) yield readClub(ligue, comite, club)
-    val infomation = readInfo(s"data/s$currentSeason/$ligue/$comite/info.html")
-    Comite(name, shortName, clubs, infomation)
+    val coupe = CoupeComite(readDate(info("coupe").asInstanceOf[String]))
+    val information = readInfo(s"data/s$currentSeason/$ligue/$comite/info.html")
+
+    Comite(name, shortName, clubs, coupe, information)
   }
 
   /**
@@ -92,10 +103,13 @@ object Data {
 
     val name = info("name").asInstanceOf[String]
     val shortName = info("shortname").asInstanceOf[String]
+    val openList = info("opens").asInstanceOf[JavaList[String]].toList
+    val opens = for (open <- openList) yield OpenClub(readDate(open))
     val teamList = info("teams").asInstanceOf[JavaList[String]].toList
     val teams = for (team <- teamList) yield readTeam(ligue, comite, club, team)
-    val infomation = readInfo(s"data/s$currentSeason/$ligue/$comite/$club/info.html")
-    Club(name, shortName, teams, infomation)
+    val information = readInfo(s"data/s$currentSeason/$ligue/$comite/$club/info.html")
+
+    Club(name, shortName, opens, teams, information)
   }
 
   /**
