@@ -26,7 +26,7 @@ rank.comite.open.title=Open Comité {0}
 rank.comite.coupe=CC
 rank.comite.coupe.title=Coupe Comité
 rank.comite.rank=Com.
-rank.comite.rank.title=Classement Comité {0}
+rank.comite.rank.title=Classement {0}
 rank.ligue.coupe=CL
 rank.ligue.coupe.title=Coupe Ligue
 rank.ligue.open=OL
@@ -40,23 +40,23 @@ rank.ligue.comite.rank.title=Classsement {0}
 
 # Single Rank
 rank.single.ligue.caption=Classement {0} - Simple {1}
-rank.single.comite.caption=Classement Comité {0} - Simple {1}
+rank.single.comite.caption=Classement {0} - Simple {1}
 
 # Feminine Rank
 rank.feminine.ligue.caption=Classement {0} - Feminine {1}
-rank.feminine.comite.caption=Classement Comité {0} - Feminine {1}
+rank.feminine.comite.caption=Classement {0} - Feminine {1}
 
 # Junior Rank
 rank.junior.ligue.caption=Classement {0} - Junior {1}
-rank.junior.comite.caption=Classement Comité {0} - Junior {1}
+rank.junior.comite.caption=Classement {0} - Junior {1}
 
 # Double Rank
 rank.double.ligue.caption=Classement {0} - Doublettes {1}
-rank.double.comite.caption=Classement Comité {0} - Doublettes {1}
+rank.double.comite.caption=Classement {0} - Doublettes {1}
 
 # Team Rank
 rank.team.ligue.caption=Classement {0} - Équipes {1}
-rank.team.comite.caption=Classement Comité {0} - Équipes {1}
+rank.team.comite.caption=Classement {0} - Équipes {1}
 
 rank.team=Équipes
 rank.team.day=J.
