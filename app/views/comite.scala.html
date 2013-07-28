@@ -9,7 +9,7 @@
 
     <div class="container-fluid">
         <div class="row-fluid">
-            <div class="span2 well well-small">
+            <div class="span3 well well-small">
                 <ul class="nav nav-list">
                     <li class="nav-header">@Messages("menu.rank")</li>
                     <li><a href="#">@Messages("menu.rank.men")</a></li>
@@ -20,15 +20,22 @@
                     <li class="nav-header">@Messages("menu.club")</li>
                     @for(club <- comite.clubs) {
                         <li>
-                            <a href="/ligues/@ligue.shortName/comites/@comite.shortName/clubs/@club.shortName">
+                            <a href="@routes.Application.club(ligue.shortName, comite.shortName, club.shortName)">
                             @club.name
                             </a>
                         </li>
                     }
                 </ul>
             </div>
-            <div class="span10">
-                <div id="bodyComite"></div>
+            <div class="span9">
+                <div id="bodyComite">
+                    <div class="well well-small">
+                        <h1>@comite.name</h1>
+                        @if(comite.info.isDefined) {
+                            <p>@Html(comite.info.get)</p>
+                        }
+                    </div>
+                </div>
             </div>
         </div>
     </div>
