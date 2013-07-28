@@ -28,9 +28,8 @@ object Application extends Controller {
    * @return the ligue page
    */
   def ligue(shortName: String) = Action {
-    val find = Ligue.findByShortName(shortName)
-    find match {
-      case Some(_) => Ok(views.html.ligue(find.get))
+    Ligue.findByShortName(shortName) match {
+      case Some(ligue) => Ok(views.html.ligue(ligue))
       case _ => BadRequest(s"Ligue non connue: $shortName")
     }
   }
@@ -42,19 +41,26 @@ object Application extends Controller {
    * @return the comite page
    */
   def comite(ligueShortName: String, comiteShortName: String) = Action {
-    val findLigue = Ligue.findByShortName(ligueShortName)
-    findLigue match {
-      case Some(_) => {
-        val ligue = findLigue.get
-        val findComite = ligue.comites.find(_.shortName == comiteShortName)
-        findComite match {
-          case Some(_) => Ok(views.html.comite(ligue, findComite.get))
-          case _ => BadRequest(s"Comite non connue: $comiteShortName dans la ligue $ligue")
-        }
+    Ligue.findByShortName(ligueShortName) match {
+      case Some(ligue) => ligue.comites.find(_.shortName == comiteShortName) match {
+        case Some(comite) => Ok(views.html.comite(ligue, comite))
+        case _ => BadRequest(s"Comite non connue: $comiteShortName dans la ligue $ligue")
       }
       case _ => BadRequest(s"Ligue non connue: $ligueShortName")
     }
   }
 
+  def club(ligueShortName: String, comiteShortName: String, clubShortName: String) = Action {
+    Ligue.findByShortName(ligueShortName) match {
+      case Some(ligue) => ligue.comites.find(_.shortName == comiteShortName) match {
+        case Some(comite) => comite.findClubByShortName(clubShortName) match {
+          case Some(club) => Ok(views.html.club(ligue, comite, club))
+          case _ => BadRequest(s"Club non connue: $clubShortName dans le comité $comite")
+        }
+        case _ => BadRequest(s"Comite non connue: $comiteShortName dans la ligue $ligue")
+      }
 
+      case _ => BadRequest(s"Ligue non connue: $ligueShortName")
+    }
+  }
 }

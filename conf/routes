@@ -3,18 +3,21 @@
 # ~~~~
 
 # Home page
-GET        /                                                          controllers.Application.index
-GET        /ligues                                                    controllers.Application.ligues
+GET        /                                                controllers.Application.index
+GET        /ligues                                          controllers.Application.ligues
 
 # Ligue
-GET        /ligues/:shortName                                          controllers.Application.ligue(shortName)
+GET        /ligues/:ligue                                   controllers.Application.ligue(ligue)
 
 
 # Comite
-GET        /ligues/:ligueShortName/comites/:comiteShortName             controllers.Application.comite(ligueShortName, comiteShortName)
+GET        /ligues/:ligue/comites/:comite                   controllers.Application.comite(ligue,comite )
+
+# Club
+GET        /ligues/:ligue/comites/:comite/clubs/:club        controllers.Application.club(ligue, comite, club)
 
 # Rank
-GET        /ligues/:ligueShortName/comites/:comiteShortName/team        controllers.Classements.team(ligueShortName, comiteShortName)
+GET        /ligues/:ligue/comites/:comite/team              controllers.Classements.team(ligue, comite)
 
 # Map static resources from the /public folder to the /assets URL path
-GET        /assets/*file                                              controllers.Assets.at(path="/public", file)
+GET        /assets/*file                                    controllers.Assets.at(path="/public", file)

@@ -1,10 +1,13 @@
 $(function () {
-    // rank team
-    $("#teamsRank").click(showTeamsRank);
+    // Menu Link
+    $(".nav-list a").click(openInBody);
 
 });
 
-var showTeamsRank = function () {
-    var url = window.location.pathname + "/team";
+var openInBody = function (event) {
+    var url = $(this).attr("href");
     $("#bodyComite").load(url);
+
+    event.preventDefault();
+    return false;
 };
