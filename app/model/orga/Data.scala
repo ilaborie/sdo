@@ -94,7 +94,7 @@ object Data {
     val shortName = info("shortname").asInstanceOf[String]
     val teamList = info("teams").asInstanceOf[JavaList[String]].toList
     val teams = for (team <- teamList) yield readTeam(ligue, comite, club, team)
-    val infomation = readInfo(s"data/s$currentSeason/$ligue/$comite/info.html")
+    val infomation = readInfo(s"data/s$currentSeason/$ligue/$comite/$club/info.html")
     Club(name, shortName, teams, infomation)
   }
 
@@ -125,10 +125,13 @@ object Data {
    */
   def createLicensedPlayer(data: Map[String, String]): LicensedPlayer = {
     val license = data.getOrElse("license", "???")
-    val name = data.getOrElse("name", "???")
-    val surname = data.get("surname")
+    val firstName = data.getOrElse("firstname", "???")
+    val lastName = data.getOrElse("lastname", "???")
+    val surname = if (data.contains("surename")) data.get("surname") else data.get("commonname")
+    val isFeminine = data.contains("feminine")
+    val isJunior = data.contains("junior")
 
-    LicensedPlayer(license, name, surname)
+    LicensedPlayer(license, s"$firstName $lastName", surname, feminine = isFeminine, junior = isJunior)
   }
 
 
@@ -137,15 +140,13 @@ object Data {
    * @param infoFile info file
    * @return the info
    */
-  def readInfo(infoFile: String): Option[Info] =
-    try {
-      val stream = Play.application.resourceAsStream(infoFile)
-
+  def readInfo(infoFile: String): Option[Info] = {
+    val stream = Play.application.resourceAsStream(infoFile)
+    if (stream != null) {
       val supplier = ByteStreams.newInputStreamSupplier(ByteStreams.toByteArray(stream))
       val input = CharStreams.newReaderSupplier(supplier, Charsets.UTF_8)
       val info = CharStreams.toString(input)
       Some(info)
-    } catch {
-      case _: Throwable => None
-    }
+    } else None
+  }
 }

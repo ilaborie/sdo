@@ -1,8 +1,7 @@
 @(ligue: model.orga.Ligue, comite: model.orga.Comite)
-@import model.orga.Club
 
     @comiteScript = {
-        @layout.script()
+    @layout.script()
         <script src="@routes.Assets.at("scripts/comite.js")"></script>
     }
 
@@ -17,10 +16,14 @@
                     <li><a href="#">@Messages("menu.rank.women")</a></li>
                     <li><a href="#">@Messages("menu.rank.junior")</a></li>
                     <li><a href="#">@Messages("menu.rank.double")</a></li>
-                    <li><a id="teamsRank" href="#">@Messages("menu.rank.team")</a></li>
+                    <li><a href="/ligues/@ligue.shortName/comites/@comite.shortName/team">@Messages("menu.rank.team")</a></li>
                     <li class="nav-header">@Messages("menu.club")</li>
                     @for(club <- comite.clubs) {
-                        <li><a href="#">@club.name</a></li>
+                        <li>
+                            <a href="/ligues/@ligue.shortName/comites/@comite.shortName/clubs/@club.shortName">
+                            @club.name
+                            </a>
+                        </li>
                     }
                 </ul>
             </div>
