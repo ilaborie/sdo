@@ -14,11 +14,41 @@ menu.rank.junior=Juniors
 menu.rank.double=Doubles
 menu.club=Clubs
 
+# Rank
+rank.point=Pts.
+rank.point.title=Points
+rank.name=Nom
+rank.club=Club
+
+# Tournament
+rank.comite.open=OC {0}
+rank.comite.open.title=Open Comité {0}
+rank.comite.coupe=CC
+rank.comite.coupe.title=Coupe Comité
+rank.comite.rank=Com.
+rank.comite.rank.title=Classement Comité {0}
+rank.ligue.coupe=CL
+rank.ligue.coupe.title=Coupe Ligue
+rank.ligue.open=OL
+rank.ligue.open.title=Open Ligue
+rank.ligue.master=Mast.
+rank.ligue.master.title=Master
+
+# Single Rank
+rank.single.caption=Classement Simple {0}
+
+# Feminine Rank
+rank.feminine.caption=Classement Feminine {0}
+
+# Junior Rank
+rank.junior.caption=Classement Junior {0}
+
+# Double Rank
+rank.double.caption=Classement Doublettes {0}
+
 # Team Rank
-rank.team.caption=Classement {0}
+rank.team.caption=Classement Équipes {0}
 rank.team=Équipes
-rank.team.point=Pts.
-rank.team.point.title=Points
 rank.team.day=J.
 rank.team.day.title=Journées
 rank.team.win=G.
@@ -35,3 +65,5 @@ rank.team.match.loose=Pts. -
 rank.team.match.loose.title=Matchs perdus
 rank.team.diff=Diff.
 rank.team.diff.title=Différence
+
+

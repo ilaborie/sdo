@@ -12,11 +12,31 @@
             <div class="span3 well well-small">
                 <ul class="nav nav-list">
                     <li class="nav-header">@Messages("menu.rank")</li>
-                    <li><a href="#">@Messages("menu.rank.men")</a></li>
-                    <li><a href="#">@Messages("menu.rank.women")</a></li>
-                    <li><a href="#">@Messages("menu.rank.junior")</a></li>
-                    <li><a href="#">@Messages("menu.rank.double")</a></li>
-                    <li><a href="/ligues/@ligue.shortName/comites/@comite.shortName/team">@Messages("menu.rank.team")</a></li>
+                    <li>
+                        <a href="@routes.Classements.comiteSingle(ligue.shortName, comite.shortName)">
+                        @Messages("menu.rank.men")
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@routes.Classements.comiteFeminine(ligue.shortName, comite.shortName)">
+                        @Messages("menu.rank.women")
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@routes.Classements.comiteJunior(ligue.shortName, comite.shortName)">
+                        @Messages("menu.rank.junior")
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@routes.Classements.comiteDoublette(ligue.shortName, comite.shortName)">
+                        @Messages("menu.rank.double")
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@routes.Classements.comiteTeam(ligue.shortName, comite.shortName)">
+                        @Messages("menu.rank.team")
+                        </a>
+                    </li>
                     <li class="nav-header">@Messages("menu.club")</li>
                     @for(club <- comite.clubs) {
                         <li>

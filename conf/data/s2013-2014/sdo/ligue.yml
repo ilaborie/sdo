@@ -1,6 +1,11 @@
 # Ligue Sud Ouest
 shortname: SDO
 name: Ligue Sud Ouest
+coupe: "21-01-2014"
+master: "21-04-2014"
+opens:
+- "21-10-2013"
+- "21-03-2013"
 comites:
 - tls
 - ntl

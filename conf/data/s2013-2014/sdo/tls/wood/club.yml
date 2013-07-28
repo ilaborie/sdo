@@ -1,5 +1,7 @@
 shortname: Wood
 name: Woodpecker
+opens:
+- "01-09-2013"
 teams:
 - wood
 

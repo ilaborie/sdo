@@ -1,6 +1,6 @@
 package model.tournament
 
-import model.orga.{Doublette, Player, Team}
+import model.orga._
 
 /**
  * User: igorlaborie

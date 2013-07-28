@@ -1,23 +1,18 @@
-# Routes
-# This file defines all application routes (Higher priority routes first)
-# ~~~~
-
 # Home page
-GET        /                                                controllers.Application.index
-GET        /ligues                                          controllers.Application.ligues
+GET        /                                                 controllers.Application.index
+GET        /ligues                                           controllers.Application.ligues
 
-# Ligue
-GET        /ligues/:ligue                                   controllers.Application.ligue(ligue)
-
-
-# Comite
-GET        /ligues/:ligue/comites/:comite                   controllers.Application.comite(ligue,comite )
-
-# Club
+# Ligue, Comite, Club
+GET        /ligues/:ligue                                    controllers.Application.ligue(ligue)
+GET        /ligues/:ligue/comites/:comite                    controllers.Application.comite(ligue,comite )
 GET        /ligues/:ligue/comites/:comite/clubs/:club        controllers.Application.club(ligue, comite, club)
 
-# Rank
-GET        /ligues/:ligue/comites/:comite/team              controllers.Classements.team(ligue, comite)
+# Comite Rank
+GET        /ligues/:ligue/comites/:comite/single             controllers.Classements.comiteSingle(ligue, comite)
+GET        /ligues/:ligue/comites/:comite/feminine           controllers.Classements.comiteFeminine(ligue, comite)
+GET        /ligues/:ligue/comites/:comite/junior             controllers.Classements.comiteJunior(ligue, comite)
+GET        /ligues/:ligue/comites/:comite/double             controllers.Classements.comiteDoublette(ligue, comite)
+GET        /ligues/:ligue/comites/:comite/team               controllers.Classements.comiteTeam(ligue, comite)
 
 # Map static resources from the /public folder to the /assets URL path
-GET        /assets/*file                                    controllers.Assets.at(path="/public", file)
+GET        /assets/*file                                     controllers.Assets.at(path="/public", file)

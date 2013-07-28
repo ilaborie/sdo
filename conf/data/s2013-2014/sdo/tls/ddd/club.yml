@@ -1,5 +1,7 @@
 shortname: DDD
 name: Dubliners Darts Drinkers
+opens:
+- "01-09-2013"
 teams:
 - ddd
 
