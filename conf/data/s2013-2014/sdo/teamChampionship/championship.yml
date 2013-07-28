@@ -1,0 +1,25 @@
+# Team Championship
+-
+  day: 1
+  matches:
+    -
+      team1: X1
+      team2: DDD
+    -
+      team1: Coch
+      team2: Rocco
+-
+  day: 2
+  matches:
+    -
+      team1: Coch
+      team2: DDD
+    -
+      team1: X1
+      team2: Rocco
+-
+  day: 8
+  matches:
+    -
+      team1: X1
+      team2: FT

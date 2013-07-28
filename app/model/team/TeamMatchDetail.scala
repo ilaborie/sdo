@@ -36,6 +36,7 @@ case class TeamMatchDetail(team: Team,
         if (p1 == replace) Doublette(replaceBy, p2)
         else if (p2 == replace) Doublette(p1, replaceBy)
         else participant
+      case _ => participant
     }
   }
 
@@ -138,7 +139,7 @@ case class Match(player1: Player,
   require((legs._3.isEmpty && (legs._1.winner == legs._2.winner)) ||
     (legs._3.isDefined && (legs._1.winner != legs._2.winner)))
 
-  val winner = if (legs._1.winner == legs._2.winner) legs._1.winner else legs._3.get
+  val winner = if (legs._1.winner == legs._2.winner) legs._1.winner else legs._3.get.winner
 
   val legsAsList = if (legs._3.isDefined) List(legs._1, legs._2, legs._3.get) else List(legs._1, legs._2)
 }

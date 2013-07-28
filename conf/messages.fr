@@ -75,3 +75,6 @@ rank.team.match.loose=Pts. -
 rank.team.match.loose.title=Matchs perdus
 rank.team.diff=Diff.
 rank.team.diff.title=Différence
+
+# Championsihp
+championship.day.caption=Journée n° {0}
