@@ -1,0 +1,22 @@
+# Équipe ONeill
+name: O'Neill
+players:
+-
+  firstname: Christophe
+  lastname: Buffo
+-
+  firstname: Liam
+  lastname: Joffe
+  junior: true
+-
+  firstname: Lucy
+  lastname: Perrier
+-
+  firstname: James
+  lastname: Pounaud
+-
+  firstname: Jean Marie
+  lastname: Quero
+-
+  firstname: Francis
+  lastname: Quero

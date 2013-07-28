@@ -10,6 +10,7 @@ players:
   lastname: Laborie
   surname: Ishur
   capitain: true
+  admin: true
 -
   firstname: Jean Christophe
   lastname: Sirot

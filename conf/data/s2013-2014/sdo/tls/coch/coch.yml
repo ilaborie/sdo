@@ -1,0 +1,21 @@
+# Équipe Coch
+name: Coch
+players:
+-
+  firstname: Christian
+  lastname: Delage
+  commonname: doudou
+-
+  firstname: Patrice
+  lastname: Cyrus
+  commonname: Tiss
+-
+  firstname: Serge
+  lastname: Marignac
+-
+  firstname: Christian
+  lastname: Contin
+-
+  firstname: Milie
+  lastname: Cabrol
+  feminine: true

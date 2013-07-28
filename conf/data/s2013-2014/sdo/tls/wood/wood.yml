@@ -1,0 +1,27 @@
+# Équipe Wood
+name: Wood
+players:
+-
+  firstname: Pascal
+  lastname: Le Pietec
+  commonname: Papy
+-
+  firstname: Antoine
+  lastname: Le Pietec
+-
+  firstname: Charlotte
+  lastname: Le Pietec
+  feminine: true
+-
+  firstname: Pierre
+  lastname: Beliar
+-
+  firstname: Jacky
+  lastname: Castex
+-
+  firstname: Hervé
+  lastname: Robert
+-
+  firstname: Marie Pierre
+  lastname: Robert
+  feminine: true
