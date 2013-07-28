@@ -4,7 +4,7 @@ package model.orga
  * Participant
  */
 sealed abstract class Participant {
-  def club: String
+  def clubAsString: String
 }
 
 /**
@@ -25,7 +25,7 @@ sealed abstract class Player extends Participant {
 case class NotLicensedPlayer(name: String, junior: Boolean = false, feminine: Boolean = false) extends Player {
   override def toString = name
 
-  def club: String = "NL"
+  def clubAsString = "NL"
 }
 
 
@@ -48,7 +48,28 @@ case class LicensedPlayer(licenseNumber: LicenseNumber,
     case _ => name
   }
 
-  def club: String = ??? // FIXME implements
+  def ligue: Ligue = {
+    // FIXME Cache
+    Ligue.ligues.find(_.players.contains(this)).get
+  }
+
+  def comite: Comite = {
+    // FIXME Cache
+    ligue.comites.find(_.players.contains(this)).get
+  }
+
+  def club: Club = {
+    // FIXME Cache
+    comite.clubs.find(_.players.contains(this)).get
+  }
+
+  def team: Team = {
+    // FIXME Cache
+    club.teams.find(_.players.contains(this)).get
+  }
+
+
+  def clubAsString = club.name
 }
 
 /**
@@ -59,9 +80,9 @@ case class LicensedPlayer(licenseNumber: LicenseNumber,
 case class Doublette(player1: Player, player2: Player) extends Participant {
   require(player1 != player2, "Deux joueurs différent dans une doublette")
 
-  def club: String = {
-    val club1 = player1.club
-    val club2 = player2.club
+  def clubAsString: String = {
+    val club1 = player1.clubAsString
+    val club2 = player2.clubAsString
     if (club1 == club2) club1 else s"$club1 - $club2"
   }
 }
@@ -72,6 +93,21 @@ case class Doublette(player1: Player, player2: Player) extends Participant {
  * @param players players
  */
 case class Team(name: String, players: Seq[LicensedPlayer]) extends Participant {
-  def club: String = ??? // FIXME implements
+  def ligue: Ligue = {
+    // FIXME Cache
+    Ligue.ligues.find(_.teams.contains(this)).get
+  }
+
+  def comite: Comite = {
+    // FIXME Cache
+    ligue.comites.find(_.teams.contains(this)).get
+  }
+
+  def club: Club = {
+    // FIXME Cache
+    comite.clubs.find(_.teams.contains(this)).get
+  }
+
+  def clubAsString: String = club.name
 }
 

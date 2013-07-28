@@ -1,6 +1,5 @@
 package model.orga
 
-import model.tournament._
 import java.util.Calendar
 
 /**
@@ -26,11 +25,23 @@ case class Ligue(name: String,
 
   def findComiteByShortName(shortName: String): Option[Comite] = comites.find(_.shortName == shortName)
 
-  lazy val players = {
+  lazy val clubs = {
     for {
       comite <- comites
       club <- comite.clubs
+    } yield club
+  }
+
+  lazy val teams = {
+    for {
+      club <- clubs
       team <- club.teams
+    } yield team
+  }
+
+  lazy val players = {
+    for {
+      team <- teams
       player <- team.players
     } yield player
   }
@@ -46,7 +57,7 @@ case class Ligue(name: String,
 
     val comiteRankings = for {
       comite <- comites
-    } yield ComiteRanking(dateRanking)
+    } yield ComiteRank(dateRanking)
 
     val list = (coupe :: master :: opens.toList) ::: comiteCoupes.toList ::: comiteRankings.toList
     list.sortBy(_.date.getTimeInMillis)
@@ -54,9 +65,37 @@ case class Ligue(name: String,
 }
 
 object Ligue {
-  val all: Seq[Ligue] = Data.readLigues()
+  val ligues: Seq[Ligue] = Data.readLigues()
 
-  def findByShortName(shortName: String): Option[Ligue] = all.find(_.shortName == shortName)
+  lazy val comites = {
+    for {
+      ligue <- ligues
+      comite <- ligue.comites
+    } yield comite
+  }
+
+  lazy val clubs = {
+    for {
+      ligue <- ligues
+      club <- ligue.clubs
+    } yield club
+  }
+
+  lazy val teams = {
+    for {
+      ligue <- ligues
+      team <- ligue.teams
+    } yield team
+  }
+
+  lazy val players = {
+    for {
+      ligue <- ligues
+      player <- ligue.players
+    } yield player
+  }
+
+  def findByShortName(shortName: String): Option[Ligue] = ligues.find(_.shortName == shortName)
 }
 
 /**
@@ -78,10 +117,16 @@ case class Comite(name: String,
 
   def findClubByShortName(shortName: String): Option[Club] = clubs.find(_.shortName == shortName)
 
-  lazy val players = {
+  lazy val teams = {
     for {
       club <- clubs
       team <- club.teams
+    } yield team
+  }
+
+  lazy val players = {
+    for {
+      team <- teams
       player <- team.players
     } yield player
   }
@@ -94,6 +139,11 @@ case class Comite(name: String,
 
     (coupe :: seq.toList).sortBy(_.date.getTimeInMillis)
   }
+
+  def ligue: Ligue = {
+    // FIXME Cache
+    Ligue.ligues.find(_.clubs.contains(this)).get
+  }
 }
 
 /**
@@ -105,6 +155,9 @@ case class Comite(name: String,
  * @param info information
  */
 case class Club(name: String, shortName: String, opens: Seq[OpenClub], teams: Seq[Team], info: Option[Info]) {
+  lazy val fullName = s"[$shortName] $name"
+
+  override def toString = fullName
 
   def findTeamByName(name: String): Option[Team] = teams.find(_.name == name)
 
@@ -113,5 +166,15 @@ case class Club(name: String, shortName: String, opens: Seq[OpenClub], teams: Se
       team <- teams
       player <- team.players
     } yield player
+  }
+
+  def ligue: Ligue = {
+    // FIXME Cache
+    Ligue.ligues.find(_.clubs.contains(this)).get
+  }
+
+  def comite: Comite = {
+    // FIXME Cache
+    ligue.comites.find(_.clubs.contains(this)).get
   }
 }

@@ -1,4 +1,5 @@
 @(ligue: model.orga.Ligue, comite: model.orga.Comite, ranking: model.rank.SeasonDoubleRanking)
+@import model.orga._
 
 <table class="table table-striped table-bordered rank">
     <caption>@Messages("rank.double.caption", ranking.season)</caption>
@@ -9,15 +10,15 @@
             <th>@Messages("rank.club")</th>
             @for(tournament <- ranking.tournaments) {
                 @tournament match {
-                    case model.tournament.CoupeComite(_) => {
+                    case CoupeComite(_) => {
                         <th>
                             <abbr title="@Messages("rank.comite.coupe.title")">@Messages("rank.comite.coupe")</abbr>
                         </th>
                     }
-                    case oc: model.tournament.OpenClub => {
+                    case oc: OpenClub => {
                         <th>
-                            <abbr title="@Messages("rank.comite.open.title", oc.club)">
-                            @Messages("rank.comite.open", oc.club)
+                            <abbr title="@Messages("rank.comite.open.title", oc.club.name)">
+                            @Messages("rank.comite.open", oc.club.shortName)
                             </abbr>
                         </th>
                     }
@@ -32,7 +33,7 @@
         <tr>
             <td>@ranking.getPosition(rank)</td>
             <td>@rank.participant</td>
-            <td>@rank.participant.club</td>
+            <td>@rank.participant.clubAsString</td>
             @for(tournament <- ranking.tournaments) {
                 <td>
                 @if(rank.results.contains(tournament)) {
