@@ -24,7 +24,6 @@ object Data {
     cal
   }
 
-
   val seasons: List[Season] = List("2013-2014")
   val currentSeason: Season = seasons.last
 
