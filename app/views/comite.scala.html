@@ -19,7 +19,7 @@
                     <li><a href="#">@Messages("menu.rank.double")</a></li>
                     <li><a id="teamsRank" href="#">@Messages("menu.rank.team")</a></li>
                     <li class="nav-header">@Messages("menu.club")</li>
-                    @for(club <- Club.findByComite(comite)) {
+                    @for(club <- comite.clubs) {
                         <li><a href="#">@club.name</a></li>
                     }
                 </ul>

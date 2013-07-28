@@ -14,6 +14,7 @@ case class SeasonRanking(season: Season, teamRanks: Seq[TeamRank]) {
 object SeasonRanking {
   // FIXME dummy data
 
+  /*
   private val list = List(
     TeamRank(Team.Satanas, win = 9, loose = 0, draw = 0, plus = 133, minus = 47),
     TeamRank(Team.DDD, win = 7, loose = 1, draw = 1, plus = 127, minus = 53),
@@ -24,15 +25,16 @@ object SeasonRanking {
     TeamRank(Team.Diabolo, win = 1, loose = 5, draw = 1, fail = 2, plus = 47, minus = 93),
     TeamRank(Team.Wood, win = 1, loose = 5, draw = 1, fail = 1, plus = 55, minus = 105)
   )
+  */
 
 
-  def forComite(comite: Comite) = SeasonRanking("2012-2013", list.filter(_.team.club.comite == comite))
+  def forComite(comite: Comite) = SeasonRanking("2012-2013", Nil) // FIXME Read
 
 }
 
 case class TeamRank(team: Team, win: Int, loose: Int, draw: Int, fail: Int = 0, plus: Int, minus: Int) {
   val days: Int = win + loose + draw + fail
-  val points: Int = 3 * win + draw
+  val points: Int = 3 * win + 2 * draw + loose
   val diff: Int = plus - minus
 
   def betterThan(other: TeamRank): Boolean = (this.points > other.points) || (
