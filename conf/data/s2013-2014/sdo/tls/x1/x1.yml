@@ -1,0 +1,45 @@
+# Équipe X1
+name: X1
+players:
+-
+  firstname: Laurent
+  lastname: Sailour
+  commonname: Lolo
+-
+  firstname: Martin
+  lastname: Goodin
+  commonname: Fucking Martin
+-
+  firstname: Ted
+  lastname: Cowman
+-
+  firstname: Didier
+  lastname: Lansoy
+  commonname: Did
+-
+  firstname: Huges
+  lastname: Lansoy
+  junior: true
+-
+  firstname: Christophe
+  lastname: Cerisier
+  commonname: cerise
+-
+  firstname: Frédéric
+  lastname: Cazes
+-
+  firstname: Sandrine
+  lastname: Valverde
+  feminine: true
+-
+  firstname: Dominique
+  lastname: Scarpato
+  commonname: Dom
+-
+  firstname: Sonia
+  lastname: Gouel
+  feminine: true
+-
+  firstname: Yaël
+  lastname: Werndorfer
+  feminine: true

@@ -1,0 +1,31 @@
+# Équipe DDD1
+name: DDD1
+players:
+-
+  firstname: Pierre
+  lastname: Sandrini
+  surname: Riddar
+-
+  firstname: Igor
+  lastname: Laborie
+  surname: Ishur
+  capitain: true
+  admin: true
+-
+  firstname: Jean Christophe
+  lastname: Sirot
+  surname: Dick
+-
+  firstname: Frédéric
+  lastname: Cash
+  commonName: Fred
+-
+  firstname: Mathieux
+  lastname: Lamorrise
+-
+  firstname: Éric
+  lastname: Roudey
+  president: true
+-
+  firstname: Stéphane
+  lastname: Corbières

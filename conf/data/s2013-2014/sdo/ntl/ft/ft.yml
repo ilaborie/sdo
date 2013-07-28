@@ -1,0 +1,19 @@
+# Équipe FT
+name: Fléchettes Tordues
+players:
+-
+  firstname: Thierry
+  lastname: Agard
+-
+  firstname: Patrice
+  lastname: Dhap
+-
+  firstname: Arnaud
+  lastname: Pétrel
+-
+  firstname: Thierry
+  lastname: Fort
+-
+  firstname: Christelle
+  lastname: Buffa
+  feminine: true

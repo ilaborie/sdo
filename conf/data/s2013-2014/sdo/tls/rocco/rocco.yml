@@ -1,0 +1,30 @@
+# Équipe Rocco
+name: Rocco
+players:
+-
+  firstname: Renaud
+  lastname: Lescure
+  commonname: Reno
+-
+  firstname: Christophe
+  lastname: Gayral
+  commonname: Kaï
+-
+  firstname: Christophe
+  lastname: Ousset
+-
+  firstname: Michel
+  lastname: Andurand
+  commonname: Mica
+-
+  firstname: Sabine
+  lastname: Legal
+  feminine: true
+-
+  firstname: Anne Claire
+  lastname: Collet
+  feminine: true
+-
+  firstname: Aurelie
+  lastname: Lalliaud
+  feminine: true
