@@ -72,7 +72,7 @@ case class MasterLigue(date: Calendar) extends LigueTournament {
 /**
  * Comite Ranking
  */
-case class ComiteRank(date: Calendar) extends LigueTournament {
+case class ComiteRank(comite: Comite, date: Calendar) extends LigueTournament {
 
   def getPoint(position: TournamentResult): Int = position match {
     case RoundRobin(pos) => pos match {
@@ -93,7 +93,10 @@ case class ComiteRank(date: Calendar) extends LigueTournament {
 /**
  * Coupe Comite
  */
-case class ComiteCoupeLigue(date: Calendar) extends LigueTournament {
+case class ComiteCoupeLigue(comite: Comite) extends LigueTournament {
+
+  val date: Calendar = comite.coupe.date
+
   def getPoint(position: TournamentResult): Int = position match {
     case Winner => 29
     case RunnerUp => 22
@@ -102,6 +105,7 @@ case class ComiteCoupeLigue(date: Calendar) extends LigueTournament {
     case RoundRobin(pos) => if (pos == 3) 4 else 2
     case _ => 0
   }
+
 }
 
 
