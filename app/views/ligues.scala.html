@@ -1,12 +1,21 @@
 @(ligues: Seq[model.orga.Ligue])
 
 @layout.main(Messages("title.ligues"), navbar = navbar.ligues(ligues)) {
-    <div class="container well well-small">
-        <h1>@Messages("title.ligues")</h1>
-        <ul>
-        @for(ligue <- ligues) {
-            <li><a href="@routes.Application.ligue(ligue.shortName)">@ligue.name</a></li>
-        }
-        </ul>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span3 well well-small">
+                <ul class="nav nav-list">
+                    <li class="nav-header">@Messages("menu.ligues")</li>
+                    @for(ligue <- ligues) {
+                        <li>
+                            <a href="@routes.Application.ligue(ligue.shortName)">@ligue.name</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+            <div class="span9 well well-small">
+                <h1>@Messages("title.ligues")</h1>
+            </div>
+        </div>
     </div>
 }

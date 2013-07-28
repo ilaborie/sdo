@@ -1,5 +1,6 @@
 # Ligues
 title.ligues=Ligues
+menu.ligues=Ligues
 
 # Ligue
 menu.comite=Comités
