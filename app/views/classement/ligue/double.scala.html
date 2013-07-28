@@ -1,8 +1,8 @@
-@(ligue: model.orga.Ligue, comite: model.orga.Comite, ranking: model.rank.SeasonSingleRanking)
+@(ligue: model.orga.Ligue, ranking: model.rank.SeasonDoubleRanking)
 @import model.orga._
 
 <table class="table table-striped table-bordered rank">
-    <caption>@Messages("rank.single.caption", ranking.season)</caption>
+    <caption>@Messages("rank.double.ligue.caption", ligue.name, ranking.season)</caption>
     <thead>
         <tr>
             <th></th>
@@ -10,15 +10,26 @@
             <th>@Messages("rank.club")</th>
             @for(tournament <- ranking.tournaments) {
                 @tournament match {
-                    case CoupeComite(_) => {
+                    case CoupeLigue(_) => {
+                        <th>@tags.abbr("rank.ligue.coupe")</th>
+                    }
+                    case OpenLigue(_) => {
+                        <th>@tags.abbr("rank.ligue.open")</th>
+                    }
+                    case MasterLigue(_) => {
+                        <th>@tags.abbr("rank.ligue.master")</th>
+                    }
+                    case ComiteRank(comite,_) => {
                         <th>
-                            <abbr title="@Messages("rank.comite.coupe.title")">@Messages("rank.comite.coupe")</abbr>
+                            <abbr title="@Messages("rank.ligue.comite.rank.title", comite.name)">
+                            @Messages("rank.ligue.comite.rank", comite.shortName)
+                            </abbr>
                         </th>
                     }
-                    case oc: OpenClub => {
+                    case ComiteCoupeLigue(comite) => {
                         <th>
-                            <abbr title="@Messages("rank.comite.open.title", oc.club.name)">
-                            @Messages("rank.comite.open", oc.club.shortName)
+                            <abbr title="@Messages("rank.ligue.comite.coupe.title", comite.name)">
+                            @Messages("rank.ligue.comite.coupe", comite.shortName)
                             </abbr>
                         </th>
                     }

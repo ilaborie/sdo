@@ -1,9 +1,8 @@
 @(ligue: model.orga.Ligue, comite: model.orga.Comite, ranking: model.rank.SeasonTeamRanking)
 
 
-
 <table class="table table-striped table-bordered rank">
-    <caption>@Messages("rank.team.caption", ranking.season)</caption>
+    <caption>@Messages("rank.team.comite.caption", comite.name, ranking.season)</caption>
     <thead>
         <tr>
             <th></th>

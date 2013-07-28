@@ -1,11 +1,6 @@
 @(ligue: model.orga.Ligue, comite: model.orga.Comite)
 
-    @comiteScript = {
-    @layout.script()
-        <script src="@routes.Assets.at("scripts/comite.js")"></script>
-    }
-
-@layout.main(s"Comite ${comite.shortName}", navbar = navbar.comite(ligue, comite), scripts = comiteScript) {
+@layout.main(s"Comite ${comite.shortName}", navbar = navbar.comite(ligue, comite)) {
 
     <div class="container-fluid">
         <div class="row-fluid">
@@ -13,34 +8,40 @@
                 <ul class="nav nav-list">
                     <li class="nav-header">@Messages("menu.rank")</li>
                     <li>
-                        <a href="@routes.Classements.comiteSingle(ligue.shortName, comite.shortName)">
+                        <a href="@routes.Classements.comiteSingle(ligue.shortName, comite.shortName)"
+                        data-target="#bodyComite">
                         @Messages("menu.rank.men")
                         </a>
                     </li>
                     <li>
-                        <a href="@routes.Classements.comiteFeminine(ligue.shortName, comite.shortName)">
+                        <a href="@routes.Classements.comiteFeminine(ligue.shortName, comite.shortName)"
+                        data-target="#bodyComite">
                         @Messages("menu.rank.women")
                         </a>
                     </li>
                     <li>
-                        <a href="@routes.Classements.comiteJunior(ligue.shortName, comite.shortName)">
+                        <a href="@routes.Classements.comiteJunior(ligue.shortName, comite.shortName)"
+                        data-target="#bodyComite">
                         @Messages("menu.rank.junior")
                         </a>
                     </li>
                     <li>
-                        <a href="@routes.Classements.comiteDoublette(ligue.shortName, comite.shortName)">
+                        <a href="@routes.Classements.comiteDoublette(ligue.shortName, comite.shortName)"
+                        data-target="#bodyComite">
                         @Messages("menu.rank.double")
                         </a>
                     </li>
                     <li>
-                        <a href="@routes.Classements.comiteTeam(ligue.shortName, comite.shortName)">
+                        <a href="@routes.Classements.comiteTeam(ligue.shortName, comite.shortName)"
+                        data-target="#bodyComite">
                         @Messages("menu.rank.team")
                         </a>
                     </li>
                     <li class="nav-header">@Messages("menu.club")</li>
                     @for(club <- comite.clubs) {
                         <li>
-                            <a href="@routes.Application.club(ligue.shortName, comite.shortName, club.shortName)">
+                            <a href="@routes.Application.club(ligue.shortName, comite.shortName, club.shortName)"
+                            data-target="#bodyComite">
                             @club.name
                             </a>
                         </li>
