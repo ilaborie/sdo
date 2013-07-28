@@ -33,21 +33,31 @@ rank.ligue.open=OL
 rank.ligue.open.title=Open Ligue
 rank.ligue.master=Mast.
 rank.ligue.master.title=Master
+rank.ligue.comite.coupe=CC {0}
+rank.ligue.comite.coupe.title=Coupe {0}
+rank.ligue.comite.rank=Class. {0}
+rank.ligue.comite.rank.title=Classsement {0}
 
 # Single Rank
-rank.single.caption=Classement Simple {0}
+rank.single.ligue.caption=Classement {0} - Simple {1}
+rank.single.comite.caption=Classement Comité {0} - Simple {1}
 
 # Feminine Rank
-rank.feminine.caption=Classement Feminine {0}
+rank.feminine.ligue.caption=Classement {0} - Feminine {1}
+rank.feminine.comite.caption=Classement Comité {0} - Feminine {1}
 
 # Junior Rank
-rank.junior.caption=Classement Junior {0}
+rank.junior.ligue.caption=Classement {0} - Junior {1}
+rank.junior.comite.caption=Classement Comité {0} - Junior {1}
 
 # Double Rank
-rank.double.caption=Classement Doublettes {0}
+rank.double.ligue.caption=Classement {0} - Doublettes {1}
+rank.double.comite.caption=Classement Comité {0} - Doublettes {1}
 
 # Team Rank
-rank.team.caption=Classement Équipes {0}
+rank.team.ligue.caption=Classement {0} - Équipes {1}
+rank.team.comite.caption=Classement Comité {0} - Équipes {1}
+
 rank.team=Équipes
 rank.team.day=J.
 rank.team.day.title=Journées
@@ -65,5 +75,3 @@ rank.team.match.loose=Pts. -
 rank.team.match.loose.title=Matchs perdus
 rank.team.diff=Diff.
 rank.team.diff.title=Différence
-
-

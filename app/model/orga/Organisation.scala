@@ -49,7 +49,7 @@ case class Ligue(name: String,
   lazy val tournaments: List[LigueTournament] = {
     val comiteCoupes = for {
       comite <- comites
-    } yield ComiteCoupeLigue(comite.coupe.date)
+    } yield ComiteCoupeLigue(comite)
 
     val dateRanking = Calendar.getInstance()
     dateRanking.setTimeInMillis(master.date.getTimeInMillis)
@@ -57,7 +57,7 @@ case class Ligue(name: String,
 
     val comiteRankings = for {
       comite <- comites
-    } yield ComiteRank(dateRanking)
+    } yield ComiteRank(comite, dateRanking)
 
     val list = (coupe :: master :: opens.toList) ::: comiteCoupes.toList ::: comiteRankings.toList
     list.sortBy(_.date.getTimeInMillis)

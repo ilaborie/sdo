@@ -7,6 +7,12 @@ GET        /ligues/:ligue                                    controllers.Applica
 GET        /ligues/:ligue/comites/:comite                    controllers.Application.comite(ligue,comite )
 GET        /ligues/:ligue/comites/:comite/clubs/:club        controllers.Application.club(ligue, comite, club)
 
+# Ligue Rank
+GET        /ligues/:ligue/single                             controllers.Classements.ligueSingle(ligue)
+GET        /ligues/:ligue/feminine                           controllers.Classements.ligueFeminine(ligue)
+GET        /ligues/:ligue/junior                             controllers.Classements.ligueJunior(ligue)
+GET        /ligues/:ligue/double                             controllers.Classements.ligueDoublette(ligue)
+
 # Comite Rank
 GET        /ligues/:ligue/comites/:comite/single             controllers.Classements.comiteSingle(ligue, comite)
 GET        /ligues/:ligue/comites/:comite/feminine           controllers.Classements.comiteFeminine(ligue, comite)
