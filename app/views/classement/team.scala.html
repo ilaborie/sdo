@@ -1,24 +1,22 @@
-@(ligue: model.orga.Ligue, comite: model.orga.Comite, ranking: model.rank.SeasonRanking)
+@(ligue: model.orga.Ligue, comite: model.orga.Comite, ranking: model.rank.SeasonTeamRanking)
 
-    @Abbr(key: String) = {
-        <abbr title="@Messages(s"$key.title")">@Messages(key)</abbr>
-    }
 
-<table id="classement" class="table table-striped table-bordered rank">
+
+<table class="table table-striped table-bordered rank">
     <caption>@Messages("rank.team.caption", ranking.season)</caption>
     <thead>
         <tr>
             <th></th>
             <th>@Messages("rank.team")</th>
-            <th>@Abbr("rank.team.point")</th>
-            <th class="hidden-phone">@Abbr("rank.team.day")</th>
-            <th>@Abbr("rank.team.win")</th>
-            <th>@Abbr("rank.team.loose")</th>
-            <th>@Abbr("rank.team.draw")</th>
-            <th>@Abbr("rank.team.fail")</th>
-            <th class="hidden-phone">@Abbr("rank.team.match.win")</th>
-            <th class="hidden-phone">@Abbr("rank.team.match.loose")</th>
-            <th>@Abbr("rank.team.diff")</th>
+            <th>@tags.abbr("rank.point")</th>
+            <th class="hidden-phone">@tags.abbr("rank.team.day")</th>
+            <th>@tags.abbr("rank.team.win")</th>
+            <th>@tags.abbr("rank.team.loose")</th>
+            <th>@tags.abbr("rank.team.draw")</th>
+            <th>@tags.abbr("rank.team.fail")</th>
+            <th class="hidden-phone">@tags.abbr("rank.team.match.win")</th>
+            <th class="hidden-phone">@tags.abbr("rank.team.match.loose")</th>
+            <th>@tags.abbr("rank.team.diff")</th>
         </tr>
     </thead>
     <tbody>
