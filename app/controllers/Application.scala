@@ -1,7 +1,7 @@
 package controllers
 
 import play.api.mvc._
-import model.orga.Ligue
+import model.orga._
 
 /**
  * Mains pages
@@ -28,10 +28,9 @@ object Application extends Controller {
    * @return the ligue page
    */
   def ligue(shortName: String) = Action {
-    Ligue.findByShortName(shortName) match {
-      case Some(ligue) => Ok(views.html.ligue(ligue))
-      case _ => BadRequest(s"Ligue non connue: $shortName")
-    }
+    LigueAction(shortName) {
+      (ligue: Ligue) => Ok(views.html.ligue(ligue))
+    }.result
   }
 
   /**
@@ -41,26 +40,24 @@ object Application extends Controller {
    * @return the comite page
    */
   def comite(ligueShortName: String, comiteShortName: String) = Action {
-    Ligue.findByShortName(ligueShortName) match {
-      case Some(ligue) => ligue.comites.find(_.shortName == comiteShortName) match {
-        case Some(comite) => Ok(views.html.comite(ligue, comite))
-        case _ => BadRequest(s"Comite non connue: $comiteShortName dans la ligue $ligue")
-      }
-      case _ => BadRequest(s"Ligue non connue: $ligueShortName")
-    }
+    ComiteAction(ligueShortName, comiteShortName) {
+      (ligue: Ligue, comite: Comite) => Ok(views.html.comite(ligue, comite))
+    }.result
   }
 
+  /**
+   * Club page
+   * @param ligueShortName ligue short name
+   * @param comiteShortName comite short name
+   * @param clubShortName club short name
+   * @return the club page
+   */
   def club(ligueShortName: String, comiteShortName: String, clubShortName: String) = Action {
-    Ligue.findByShortName(ligueShortName) match {
-      case Some(ligue) => ligue.comites.find(_.shortName == comiteShortName) match {
-        case Some(comite) => comite.findClubByShortName(clubShortName) match {
-          case Some(club) => Ok(views.html.club(ligue, comite, club))
-          case _ => BadRequest(s"Club non connue: $clubShortName dans le comité $comite")
-        }
-        case _ => BadRequest(s"Comite non connue: $comiteShortName dans la ligue $ligue")
+    ComiteAction(ligueShortName, comiteShortName) {
+      (ligue: Ligue, comite: Comite) => comite.findClubByShortName(clubShortName) match {
+        case Some(club) => Ok(views.html.club(ligue, comite, club))
+        case _ => BadRequest(s"Club non connue: $clubShortName dans le comité $comite")
       }
-
-      case _ => BadRequest(s"Ligue non connue: $ligueShortName")
-    }
+    }.result
   }
 }
