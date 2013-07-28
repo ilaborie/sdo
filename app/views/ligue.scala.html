@@ -1,15 +1,25 @@
 @(ligue: model.orga.Ligue)
 
 @layout.main(s"Ligue ${ligue.shortName}", navbar = navbar.ligue(ligue)) {
-    <div class="container well well-small">
-        <h1>@ligue.name</h1>
-        @if(ligue.info.isDefined) {
-            <p>@Html(ligue.info.get)</p>
-        }
-        <ul>
-        @for(comite <- ligue.comites) {
-            <li><a href="@routes.Application.comite(ligue.shortName, comite.shortName)">@comite.name</a></li>
-        }
-        </ul>
+
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span3 well well-small">
+                <ul class="nav nav-list">
+                    <li class="nav-header">@Messages("menu.comite")</li>
+                    @for(comite <- ligue.comites) {
+                        <li>
+                            <a href="@routes.Application.comite(ligue.shortName, comite.shortName)">@comite.name</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+            <div class="span9 well well-small">
+                <h1>@ligue.name</h1>
+                @if(ligue.info.isDefined) {
+                    <p>@Html(ligue.info.get)</p>
+                }
+            </div>
+        </div>
     </div>
 }

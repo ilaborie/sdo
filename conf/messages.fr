@@ -2,6 +2,7 @@
 title.ligues=Ligues
 
 # Ligue
+menu.comite=Comités
 
 # Comite
 menu.rank=Classements
