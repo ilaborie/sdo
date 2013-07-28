@@ -3,7 +3,9 @@
 @layout.main(s"Ligue ${ligue.shortName}", navbar = navbar.ligue(ligue)) {
     <div class="container well well-small">
         <h1>@ligue.name</h1>
-        <p>@Html(ligue.info.get)</p>
+        @if(ligue.info.isDefined) {
+            <p>@Html(ligue.info.get)</p>
+        }
         <ul>
         @for(comite <- ligue.comites) {
             <li><a href="@routes.Application.comite(ligue.shortName, comite.shortName)">@comite.name</a></li>

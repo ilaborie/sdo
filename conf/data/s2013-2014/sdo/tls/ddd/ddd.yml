@@ -9,8 +9,9 @@ players:
   firstname: Igor
   lastname: Laborie
   surname: Ishur
-  capitain: true
-  admin: true
+  posts:
+    - capitain: true
+    - admin: true
 -
   firstname: Jean Christophe
   lastname: Sirot
@@ -25,7 +26,8 @@ players:
 -
   firstname: Éric
   lastname: Roudey
-  president: true
+  posts :
+    - president: true
 -
   firstname: Stéphane
   lastname: Corbières

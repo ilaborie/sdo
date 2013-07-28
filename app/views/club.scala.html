@@ -1,0 +1,25 @@
+@(ligue: model.orga.Ligue, comite: model.orga.Comite, club: model.orga.Club)
+
+    @displayPlayer(player: model.orga.LicensedPlayer) = {
+        @if(player.feminine) { <i class="glyphicons girl"></i>} else { <i class="glyphicons user"></i>}
+        @if(player.junior) { <i class="glyphicons soccer_ball"></i>}
+        @player.name
+        @if(player.surname.isDefined) { - «@player.surname»}
+    }
+
+<div class="well well-small">
+    <h1>@club.name</h1>
+    @if(club.info.isDefined) {
+        <p>@Html(club.info.get)</p>
+    }
+    <ul>
+    @for(team <- club.teams) {
+        <h2><i class="glyphicons group"></i> @team.name</h2>
+        <ul>
+        @for(player <- team.players) {
+            <li>@displayPlayer(player)</li>
+        }
+        </ul>
+    }
+    </ul>
+</div>

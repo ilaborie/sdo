@@ -10,8 +10,5 @@ case class Comite(name: String, shortName: String, clubs: Seq[Club], info: Optio
 
   override def toString = fullName
 
-  def findClubByShortName: Option[Club] = clubs.filter(_.shortName == shortName) match {
-    case club :: _ => Some(club)
-    case Nil => None
-  }
+  def findClubByShortName(shortName: String): Option[Club] = clubs.find(_.shortName == shortName)
 }

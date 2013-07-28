@@ -6,15 +6,22 @@ package model.orga
  * Time: 11:20
  */
 sealed abstract class Player extends Participant {
-  override def toString = this match {
-    case NotLicensedPlayer(name) => name
-    case LicensedPlayer(_, name, surname) => if (surname.isDefined) s"«$surname»" else name
-  }
+
+  def junior: Boolean
+
+  def feminine: Boolean
 }
 
-case class NotLicensedPlayer(name: String) extends Player
+case class NotLicensedPlayer(name: String, junior: Boolean = false, feminine: Boolean = false) extends Player {
+  override def toString = name
+}
 
-case class LicensedPlayer(licenseNumber: LicenseNumber, name: String, surname: Option[String]) extends Player
+case class LicensedPlayer(licenseNumber: LicenseNumber, name: String, surname: Option[String], junior: Boolean = false, feminine: Boolean = false) extends Player {
+  override def toString = surname match {
+    case Some(sn) => s"«$sn»"
+    case _ => name
+  }
+}
 
 
 case class Doublette(player1: Player, player2: Player) extends Participant {
