@@ -1,4 +1,4 @@
-package model.tournament
+package model.orga
 
 import java.util.Calendar
 
@@ -72,7 +72,7 @@ case class MasterLigue(date: Calendar) extends LigueTournament {
 /**
  * Comite Ranking
  */
-case class ComiteRanking(date: Calendar) extends LigueTournament {
+case class ComiteRank(date: Calendar) extends LigueTournament {
 
   def getPoint(position: TournamentResult): Int = position match {
     case RoundRobin(pos) => pos match {
@@ -130,7 +130,11 @@ case class CoupeComite(date: Calendar) extends ComiteTournament {
  */
 case class OpenClub(date: Calendar) extends ComiteTournament {
 
-  val club = "club?"
+  def club: Club = {
+    // FIXME Cache
+    Ligue.clubs.find(_.opens.contains(this)).get
+  }
+
 
   def getPoint(position: TournamentResult): Int = position match {
     case Winner => 16

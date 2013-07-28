@@ -1,4 +1,4 @@
-package model.tournament
+package model.orga
 
 /**
  * Tournament Result

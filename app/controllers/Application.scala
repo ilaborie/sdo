@@ -19,7 +19,7 @@ object Application extends Controller {
    * @return ligues page
    */
   def ligues = Action {
-    Ok(views.html.ligues(Ligue.all))
+    Ok(views.html.ligues(Ligue.ligues))
   }
 
   /**
