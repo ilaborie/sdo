@@ -39,6 +39,11 @@ case class Ligue(name: String,
     } yield team
   }
 
+  def findTeamByName(name: String): Option[Team] = {
+    // FIXME Cache
+    teams.find(_.name == name)
+  }
+
   lazy val players = {
     for {
       team <- teams
@@ -95,7 +100,10 @@ object Ligue {
     } yield player
   }
 
-  def findByShortName(shortName: String): Option[Ligue] = ligues.find(_.shortName == shortName)
+  def findByShortName(shortName: String): Option[Ligue] = {
+    // FIXME Cache
+    ligues.find(_.shortName == shortName)
+  }
 }
 
 /**
@@ -115,7 +123,10 @@ case class Comite(name: String,
 
   override def toString = fullName
 
-  def findClubByShortName(shortName: String): Option[Club] = clubs.find(_.shortName == shortName)
+  def findClubByShortName(shortName: String): Option[Club] = {
+    // FIXME Cache
+    clubs.find(_.shortName == shortName)
+  }
 
   lazy val teams = {
     for {
@@ -159,7 +170,10 @@ case class Club(name: String, shortName: String, opens: Seq[OpenClub], teams: Se
 
   override def toString = fullName
 
-  def findTeamByName(name: String): Option[Team] = teams.find(_.name == name)
+  def findTeamByName(name: String): Option[Team] = {
+    // FIXME Cache
+    teams.find(_.name == name)
+  }
 
   lazy val players = {
     for {

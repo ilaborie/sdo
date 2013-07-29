@@ -1,5 +1,6 @@
 @import "bootstrap/variables";
 
+// Rank
 table.table.rank {
   thead th {
     background-color: @gray;
@@ -32,3 +33,25 @@ table.table.rank {
   //
   //  }
 }
+
+// Journee
+table.table.journee td:first-child {
+  text-align: right;
+  width: 35%;
+}
+table.table.journee td:nth-child(2),
+table.table.journee td:nth-child(3) {
+  font-family: "UbuntuMono", monaco, monospace;
+  width: 15%;
+}
+table.table.journee td:last-child {
+  text-align: left;
+  width: 35%;
+}
+table.table.journee td.win {
+  color: @green;
+}
+table.table.journee td.loose {
+  color: @red;
+}
+
