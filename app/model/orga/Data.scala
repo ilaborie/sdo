@@ -123,7 +123,7 @@ object Data {
    */
   def readTeam(ligue: String, comite: String, club: String, team: String): Team = {
     val teamFile = s"data/s$currentSeason/$ligue/$comite/$club/$team.yml"
-    logger.info(s"Read team information in $teamFile")
+    logger.debug(s"Read team information in $teamFile")
     val info = Yaml.load(teamFile).asInstanceOf[JavaMap[String, AnyRef]].toMap
     logger.trace(s"Read $info")
 
@@ -146,7 +146,7 @@ object Data {
     val isFeminine = data.contains("feminine")
     val isJunior = data.contains("junior")
 
-    LicensedPlayer(license, s"$firstName $lastName", surname, feminine = isFeminine, junior = isJunior)
+    LicensedPlayer(license, s"$lastName $firstName", surname, feminine = isFeminine, junior = isJunior)
   }
 
 
@@ -165,3 +165,5 @@ object Data {
     } else None
   }
 }
+
+case class ParseDataException(message: String) extends RuntimeException(message)

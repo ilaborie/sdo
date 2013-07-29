@@ -9,14 +9,14 @@ import java.util.Calendar
  */
 case class TeamMatchDetail(team: Team,
                            players: Array[LicensedPlayer],
-                           substitute: Option[Substitue],
+                           substitute: Option[Substitute],
                            doublettes: (Doublette, Doublette)) {
   require(players.size == 4)
   // Check Club
+  require(players(0).club == team.club)
   require(players(1).club == team.club)
   require(players(2).club == team.club)
   require(players(3).club == team.club)
-  require(players(4).club == team.club)
   require(substitute.isEmpty || (substitute.get.player.club == team.club))
   require(substitute.isEmpty || substitute.get.replace.isEmpty || (substitute.get.replace.get.club == team.club))
   // Check in playersList
@@ -44,25 +44,25 @@ case class TeamMatchDetail(team: Team,
 
   def getPlayer1(index: Int): Participant = {
     val basic = index match {
-      case 1 => players(1)
-      case 7 => players(1)
-      case 11 => players(1)
-      case 17 => players(1)
+      case 1 => players(0)
+      case 7 => players(0)
+      case 11 => players(0)
+      case 17 => players(0)
 
-      case 2 => players(2)
-      case 8 => players(2)
-      case 13 => players(2)
-      case 19 => players(2)
+      case 2 => players(1)
+      case 8 => players(1)
+      case 13 => players(1)
+      case 19 => players(1)
 
-      case 3 => players(3)
-      case 9 => players(3)
-      case 12 => players(3)
-      case 20 => players(3)
+      case 3 => players(2)
+      case 9 => players(2)
+      case 12 => players(2)
+      case 20 => players(2)
 
-      case 4 => players(4)
-      case 10 => players(4)
-      case 14 => players(4)
-      case 18 => players(4)
+      case 4 => players(3)
+      case 10 => players(3)
+      case 14 => players(3)
+      case 18 => players(3)
 
       case 5 => doublettes._1
       case 15 => doublettes._1
@@ -78,25 +78,25 @@ case class TeamMatchDetail(team: Team,
 
   def getPlayer2(index: Int): Participant = {
     val basic = index match {
-      case 2 => players(1)
-      case 7 => players(1)
-      case 12 => players(1)
-      case 18 => players(1)
+      case 2 => players(0)
+      case 7 => players(0)
+      case 12 => players(0)
+      case 18 => players(0)
 
-      case 1 => players(2)
-      case 8 => players(2)
-      case 14 => players(2)
-      case 20 => players(2)
+      case 1 => players(1)
+      case 8 => players(1)
+      case 14 => players(1)
+      case 20 => players(1)
 
-      case 4 => players(3)
-      case 9 => players(3)
-      case 11 => players(3)
-      case 19 => players(3)
+      case 4 => players(2)
+      case 9 => players(2)
+      case 11 => players(2)
+      case 19 => players(2)
 
-      case 3 => players(4)
-      case 10 => players(4)
-      case 13 => players(4)
-      case 17 => players(4)
+      case 3 => players(3)
+      case 10 => players(3)
+      case 13 => players(3)
+      case 17 => players(3)
 
       case 5 => doublettes._1
       case 16 => doublettes._1
@@ -117,7 +117,7 @@ case class TeamMatchDetail(team: Team,
  * @param replace replaced player
  * @param afterMatch match
  */
-case class Substitue(player: LicensedPlayer, replace: Option[LicensedPlayer], afterMatch: Option[Int]) {
+case class Substitute(player: LicensedPlayer, replace: Option[LicensedPlayer], afterMatch: Option[Int]) {
   require((replace.isDefined && afterMatch.isDefined) || (replace.isEmpty && afterMatch.isEmpty))
   require(afterMatch.isEmpty || (1 to 20).contains(afterMatch.get))
 }
@@ -129,8 +129,8 @@ case class Substitue(player: LicensedPlayer, replace: Option[LicensedPlayer], af
  * @param player1Start is the player1 start
  * @param legs legs
  */
-case class Match(player1: Player,
-                 player2: Player,
+case class Match(player1: Participant,
+                 player2: Participant,
                  player1Start: Boolean,
                  legs: (Leg, Leg, Option[Leg])) {
   require((legs._1.winner == player1) || (legs._1.winner == player2))
@@ -148,7 +148,7 @@ case class Match(player1: Player,
  * Leg
  * @param winner winner
  */
-case class Leg(winner: LicensedPlayer)
+case class Leg(winner: Participant)
 
 /**
  * Team Score
@@ -158,7 +158,7 @@ case class TeamScore(team: Team, matchWin: Int, legs: Int)
 /**
  * Planned match
  */
-case class PlannedTeamMatch(day: Int, team1: Team, team2: Team)
+case class PlannedTeamMatch(day: Int, team1: Team, team2: Team, detail: Option[MatchDetail])
 
 /**
  * Match Detail
