@@ -1,5 +1,12 @@
-@(ligue: model.orga.Ligue, comite: model.orga.Comite, ranking: model.rank.SeasonTeamRanking)
+@(ligue: model.orga.Ligue, comite: model.orga.Comite, ranking: model.rank.SeasonTeamRanking, championship: model.team.Championship)
+@import model.orga.Team
+@import model.team.MatchDetail
 
+@teamClass(t:Team, d: MatchDetail ) = {
+    @if(d.winner.isDefined) {
+        @if(d.winner.get==t) {win} else {loose}
+    }
+}
 
 <table class="table table-striped table-bordered rank">
     <caption>@Messages("rank.team.comite.caption", comite.name, ranking.season)</caption>
@@ -40,3 +47,23 @@
     }
     </tbody>
 </table>
+<hr>
+@for(day <- championship.days) {
+    <table class="table table-bordered journee">
+        <caption>@Messages("championship.day.caption", day.day, championship.season)</caption>
+        @for(m <- day.matches) {
+            @m.detail match {
+                case None => {<tr><td>@m.team1.name</td><td> - </td><td> - </td><td>@m.team2.name</td></tr>}
+                case Some(detail) => {
+                    <tr>
+                        <td class="@teamClass(m.team1,detail)">@m.team1.name</td>
+                        <td>@detail.score1.matchWin</td>
+                        <td>@detail.score2.matchWin</td>
+                        <td class="@teamClass(m.team2,detail)">@m.team2.name</td>
+                    </tr>
+                }
+            }
+        }
+    </table>
+}
+
