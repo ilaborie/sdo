@@ -1,15 +1,16 @@
 package model.orga
 
-import play.libs.Yaml
 import java.util.{List => JavaList, Map => JavaMap, Calendar}
+import java.text.SimpleDateFormat
 
 import scala.collection.JavaConversions._
-import play.api.Logger
+
 import play.Play
+import play.api.Logger
+import play.libs.Yaml
+
 import com.google.common.io.{ByteStreams, CharStreams}
 import com.google.common.base.Charsets
-import java.text.SimpleDateFormat
-import model.tournament._
 
 /**
  * Data helpers
@@ -18,7 +19,7 @@ object Data {
   private val logger = Logger("data")
   private val dateFormater = new SimpleDateFormat("dd-MM-yyyy")
 
-  private def readDate(date: String): Calendar = {
+  def readDate(date: String): Calendar = {
     val cal = Calendar.getInstance()
     cal.setTime(dateFormater.parse(date))
     cal
@@ -122,7 +123,7 @@ object Data {
    */
   def readTeam(ligue: String, comite: String, club: String, team: String): Team = {
     val teamFile = s"data/s$currentSeason/$ligue/$comite/$club/$team.yml"
-    logger.info(s"Read team information in $teamFile")
+    logger.debug(s"Read team information in $teamFile")
     val info = Yaml.load(teamFile).asInstanceOf[JavaMap[String, AnyRef]].toMap
     logger.trace(s"Read $info")
 
@@ -145,7 +146,7 @@ object Data {
     val isFeminine = data.contains("feminine")
     val isJunior = data.contains("junior")
 
-    LicensedPlayer(license, s"$firstName $lastName", surname, feminine = isFeminine, junior = isJunior)
+    LicensedPlayer(license, s"$lastName $firstName", surname, feminine = isFeminine, junior = isJunior)
   }
 
 
@@ -164,3 +165,5 @@ object Data {
     } else None
   }
 }
+
+case class ParseDataException(message: String) extends RuntimeException(message)
