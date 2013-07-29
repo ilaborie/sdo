@@ -25,7 +25,12 @@ sealed abstract class Player extends Participant {
 case class NotLicensedPlayer(name: String, junior: Boolean = false, feminine: Boolean = false) extends Player {
   override def toString = name
 
+  // FIXME read NL
   def clubAsString = "NL"
+}
+
+object NotLicensedPlayer {
+  // FIXME def findByName(name: String): Option[LicensedPlayer] = Ligue.nlPlayers.find(_.name == name)
 }
 
 
@@ -68,8 +73,12 @@ case class LicensedPlayer(licenseNumber: LicenseNumber,
     club.teams.find(_.players.contains(this)).get
   }
 
-
   def clubAsString = club.name
+}
+
+object LicensedPlayer {
+
+  def findByName(name: String): Option[LicensedPlayer] = Ligue.players.find(_.name == name)
 }
 
 /**
