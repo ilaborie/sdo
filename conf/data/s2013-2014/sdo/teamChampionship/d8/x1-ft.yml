@@ -1,119 +1,119 @@
 date: "08-03-2013"
 location: Le Carpe Diem - Cornebarieu
 team1:
-  - team: "X1"
-  - joueurs:
+  team: X1
+  joueurs:
     - Goodin Martin
     - Saillour Laurent
     - Scarpato Dominique
     - Lansoy Didier
-  - doubles:
-    - double:
-      - j1: Goodin Martin
-      - j2: Saillour Laurent
-    - double:
-      - j1: Lansoy Didier
-      - j2: Scarpato Dominique
-  - substitue:
-    - j:
-    - out:
-    - match:
+  doubles:
+    -
+      j1: Goodin Martin
+      j2: Saillour Laurent
+    -
+      j1: Lansoy Didier
+      j2: Scarpato Dominique
+  substitue:
+    j:
+    out:
+    match:
 team2:
-  - team: "FT"
-  - joueurs:
-    - Petrel Arnaud
+  team: FT
+  joueurs:
+    - Pétrel Arnaud
     - Dhap Patrice
     - Namartre Cédric
     - Mahieu Guillaume
-  - doubles:
-    - double:
-      - j1: Dhap Patrice
-      - j2: Mahieu Guillaume
-    - double:
-      - j1: Namartre Cédric
-      - j2: Petrel Arnaud
-  - substitue:
-    - j:
-    - out:
-    - match:
-matchs:
-  - match1:
-    - l1: 1
-    - l2: 1
-    - l3:
-  - match2:
-    - l1: 1
-    - l2: 1
-    - l3:
-  - match3:
-    - l1: 1
-    - l2: 1
-    - l3:
-  - match4:
-    - l1: 2
-    - l2: 1
-    - l3: 1
-  - match5:
-    - l1: 1
-    - l2: 1
-    - l3:
-  - match6:
-    - l1: 1
-    - l2: 1
-    - l3:
-  - match7:
-    - l1: 1
-    - l2: 1
-    - l3:
-  - match8:
-    - l1: 1
-    - l2: 1
-    - l3:
-  - match9:
-    - l1: 1
-    - l2: 1
-    - l3:
-  - match10:
-    - l1: 1
-    - l2: 1
-    - l3:
-  - match11:
-    - l1: 1
-    - l2: 1
-    - l3:
-  - match12:
-    - l1: 1
-    - l2: 1
-    - l3:
-  - match13:
-    - l1: 1
-    - l2: 1
-    - l3:
-  - match14:
-    - l1: 2
-    - l2: 2
-    - l3:
-  - match15:
-    - l1: 1
-    - l2: 1
-    - l3:
-  - match16:
-    - l1: 2
-    - l2: 2
-    - l3:
-  - match17:
-    - l1: 1
-    - l2: 1
-    - l3:
-  - match18:
-    - l1: 2
-    - l2: 1
-    - l3: 1
-  - match19:
-    - l1: 1
-    - l2: 1
-    - l3:
-  - match20:
-    - l1: 2
-    - l2: 1
-    - l3: 1
+  doubles:
+    -
+      j1: Dhap Patrice
+      j2: Mahieu Guillaume
+    -
+      j1: Namartre Cédric
+      j2: Petrel Arnaud
+  substitue:
+    j:
+    out:
+    match:
+matches:
+  match1:
+    l1: 1
+    l2: 1
+    l3:
+  match2:
+    l1: 1
+    l2: 1
+    l3:
+  match3:
+    l1: 1
+    l2: 1
+    l3:
+  match4:
+    l1: 2
+    l2: 1
+    l3: 1
+  match5:
+    l1: 1
+    l2: 1
+    l3:
+  match6:
+    l1: 1
+    l2: 1
+    l3:
+  match7:
+    l1: 1
+    l2: 1
+    l3:
+  match8:
+    l1: 1
+    l2: 1
+    l3:
+  match9:
+    l1: 1
+    l2: 1
+    l3:
+  match10:
+    l1: 1
+    l2: 1
+    l3:
+  match11:
+    l1: 1
+    l2: 1
+    l3:
+  match12:
+    l1: 1
+    l2: 1
+    l3:
+  match13:
+    l1: 1
+    l2: 1
+    l3:
+  match14:
+    l1: 2
+    l2: 2
+    l3:
+  match15:
+    l1: 1
+    l2: 1
+    l3:
+  match16:
+    l1: 2
+    l2: 2
+    l3:
+  match17:
+    l1: 1
+    l2: 1
+    l3:
+  match18:
+    l1: 2
+    l2: 1
+    l3: 1
+  match19:
+    l1: 1
+    l2: 1
+    l3:
+  match20:
+    l1: 2
+    l2: 1
+    l3: 1
