@@ -55,7 +55,7 @@ rank.double.ligue.caption=Classement {0} - Doublettes {1}
 rank.double.comite.caption=Classement {0} - Doublettes {1}
 
 # Team Rank
-rank.team.ligue.caption=Classement {0} - Équipes {1}
+rank.team.ligue.caption=Classement {0} - Équipes
 rank.team.comite.caption=Classement {0} - Équipes {1}
 
 rank.team=Équipes
