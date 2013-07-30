@@ -61,6 +61,18 @@ object Classements extends Controller {
     }.result
   }
 
+  /**
+   * Ligue Team
+   * @param ligueShortName ligue
+   * @return team ranking
+   */
+  def ligueTeam(ligueShortName: String) = Action {
+    LigueAction(ligueShortName) {
+      (ligue: Ligue) =>
+        Ok(views.html.classement.ligue.team(ligue, LigueRanking.team(ligue)))
+    }.result
+  }
+
 
   /**
    * Comite Single
