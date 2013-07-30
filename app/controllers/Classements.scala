@@ -3,13 +3,15 @@ package controllers
 import play.api.mvc._
 import model.orga._
 import model.rank._
-import model.team.Championship
+import model.team.TeamChampionship
 
 
 /**
  * Classements pages
  */
 object Classements extends Controller {
+
+  private val season: Season = Data.currentSeason
 
   /**
    * Ligue Single
@@ -121,7 +123,7 @@ object Classements extends Controller {
   def comiteTeam(ligueShortName: String, comiteShortName: String) = Action {
     ComiteAction(ligueShortName, comiteShortName) {
       (ligue: Ligue, comite: Comite) =>
-        Ok(views.html.classement.comite.team(ligue, comite, ComiteRanking.team(comite), Championship.championship))
+        Ok(views.html.classement.comite.team(ligue, comite, ComiteRanking.team(comite)))
     }.result
   }
 }
