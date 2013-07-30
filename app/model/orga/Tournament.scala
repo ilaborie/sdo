@@ -1,6 +1,8 @@
 package model.orga
 
 import java.util.Calendar
+import play.api.cache.Cache
+import play.api.Play.current
 
 /**
  * Tournament
@@ -134,8 +136,7 @@ case class CoupeComite(date: Calendar) extends ComiteTournament {
  */
 case class OpenClub(date: Calendar) extends ComiteTournament {
 
-  def club: Club = {
-    // FIXME Cache
+  def club: Club = Cache.getOrElse[Club](s"openClub.$date.club") {
     Ligue.clubs.find(_.opens.contains(this)).get
   }
 
