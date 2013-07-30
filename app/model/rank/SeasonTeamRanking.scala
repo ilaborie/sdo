@@ -1,8 +1,9 @@
 package model.rank
 
-import model.orga._
-import model.team.{MatchDetail, TeamChampionship}
 import play.api.Logger
+
+import model.orga._
+import model.team._
 
 /**
  * Season team ranking
@@ -23,13 +24,13 @@ object SeasonTeamRanking {
 
   def apply(season: Season, ligue: Ligue): SeasonTeamRanking = {
     val champ = TeamChampionship(season)
-    val ranks = for (team <- Ligue.teams) yield buildRank(champ, team)
+    val ranks = for (team <- Ligue.teams if !team.omit) yield buildRank(champ, team)
     SeasonTeamRanking(champ, ranks)
   }
 
   def apply(season: Season, comite: Comite): SeasonTeamRanking = {
     val champ = TeamChampionship(season, comite)
-    val ranks = for (team <- comite.teams) yield buildRank(champ, team)
+    val ranks = for (team <- comite.teams if !team.omit) yield buildRank(champ, team)
     SeasonTeamRanking(champ, ranks)
   }
 
