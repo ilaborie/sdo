@@ -1,7 +1,6 @@
 package model.rank
 
 import model.orga._
-import model.team.TeamChampionship
 
 
 object ComiteRanking {
@@ -17,7 +16,7 @@ object ComiteRanking {
 
   def double(comite: Comite) = SeasonDoubleRanking(season, comite.tournaments, Nil)
 
-  def team(comite: Comite) = SeasonTeamRanking(TeamChampionship(season))
+  def team(comite: Comite) = SeasonTeamRanking(season, comite)
 
 }
 
@@ -34,7 +33,7 @@ object LigueRanking {
 
   def double(ligue: Ligue) = SeasonDoubleRanking(Data.currentSeason, ligue.tournaments, Nil)
 
-  // FIXME def team(ligue: Ligue) = SeasonTeamRanking(Data.currentSeason, Nil)
+  def team(ligue: Ligue) = SeasonTeamRanking(season, ligue)
 
 }
 

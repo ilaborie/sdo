@@ -12,6 +12,7 @@ GET        /ligues/:ligue/single                             controllers.Classem
 GET        /ligues/:ligue/feminine                           controllers.Classements.ligueFeminine(ligue)
 GET        /ligues/:ligue/junior                             controllers.Classements.ligueJunior(ligue)
 GET        /ligues/:ligue/double                             controllers.Classements.ligueDoublette(ligue)
+GET        /ligues/:ligue/team                               controllers.Classements.ligueTeam(ligue)
 
 # Comite Rank
 GET        /ligues/:ligue/comites/:comite/single             controllers.Classements.comiteSingle(ligue, comite)

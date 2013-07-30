@@ -1,8 +1,6 @@
 package model.rank
 
 import model.orga._
-import play.api.cache.Cache
-import play.api.Play.current
 import model.team.{MatchDetail, TeamChampionship}
 import play.api.Logger
 
@@ -14,7 +12,7 @@ import play.api.Logger
 case class SeasonTeamRanking(champ: TeamChampionship, teamRanks: Seq[TeamRank]) {
   lazy val ordered: Seq[TeamRank] = teamRanks.sortBy(getPosition)
 
-  def getPosition(teamRank: TeamRank): Int = Cache.getOrElse[Int](s"TeamRanking.${champ.season}.team.${teamRank.team.name}") {
+  def getPosition(teamRank: TeamRank): Int = {
     1 + teamRanks.count(_.betterThan(teamRank))
   }
 }
@@ -23,8 +21,15 @@ object SeasonTeamRanking {
 
   private val logger = Logger("teamRank")
 
-  def apply(champ: TeamChampionship): SeasonTeamRanking = {
+  def apply(season: Season, ligue: Ligue): SeasonTeamRanking = {
+    val champ = TeamChampionship(season)
     val ranks = for (team <- Ligue.teams) yield buildRank(champ, team)
+    SeasonTeamRanking(champ, ranks)
+  }
+
+  def apply(season: Season, comite: Comite): SeasonTeamRanking = {
+    val champ = TeamChampionship(season, comite)
+    val ranks = for (team <- comite.teams) yield buildRank(champ, team)
     SeasonTeamRanking(champ, ranks)
   }
 
@@ -39,6 +44,7 @@ object SeasonTeamRanking {
 
     TeamRank(team, teamMatches)
   }
+
 }
 
 
