@@ -104,7 +104,7 @@ case class Doublette(player1: Player, player2: Player) extends Participant {
  * @param name name
  * @param players players
  */
-case class Team(name: String, players: Seq[LicensedPlayer]) extends Participant {
+case class Team(name: String, players: Seq[LicensedPlayer], omit: Boolean = false) extends Participant {
   def ligue: Ligue = Cache.getOrElse[Ligue](s"team.$name.ligue") {
     Ligue.ligues.find(_.teams.contains(this)).get
   }

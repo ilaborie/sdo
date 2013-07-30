@@ -165,7 +165,7 @@ case class TeamScore(team: Team, matchWin: Int, legs: Int)
  * Planned match
  */
 case class PlannedTeamMatch(day: Int, team1: Team, team2: Team, detail: Option[MatchDetail]) {
-  def applyTo(team: Team): Boolean = team1 == team || team2 == team
+  def applyTo(team: Team): Boolean = (team1 == team || team2 == team) && !team.omit
 
   def applyTo(comite: Comite): Boolean = team1.comite == comite && team2.comite == comite
 

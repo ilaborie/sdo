@@ -38,6 +38,7 @@ case class Ligue(name: String,
     for {
       club <- clubs
       team <- club.teams
+      if !team.omit
     } yield team
   }
 
@@ -91,6 +92,7 @@ object Ligue {
     for {
       ligue <- ligues
       team <- ligue.teams
+      if !team.omit
     } yield team
   }
 
@@ -131,6 +133,7 @@ case class Comite(name: String,
     for {
       club <- clubs
       team <- club.teams
+      if !team.omit
     } yield team
   }
 
