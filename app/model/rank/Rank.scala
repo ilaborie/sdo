@@ -1,25 +1,30 @@
 package model.rank
 
 import model.orga._
+import model.team.TeamChampionship
 
 
 object ComiteRanking {
   // FIXME dummy data
 
-  def single(comite: Comite) = SeasonSingleRanking(Data.currentSeason, comite.tournaments, Nil)
+  val season = Data.currentSeason
 
-  def feminine(comite: Comite) = SeasonFeminineRanking(Data.currentSeason, comite.tournaments, Nil)
+  def single(comite: Comite) = SeasonSingleRanking(season, comite.tournaments, Nil)
 
-  def junior(comite: Comite) = SeasonJuniorRanking(Data.currentSeason, comite.tournaments, Nil)
+  def feminine(comite: Comite) = SeasonFeminineRanking(season, comite.tournaments, Nil)
 
-  def double(comite: Comite) = SeasonDoubleRanking(Data.currentSeason, comite.tournaments, Nil)
+  def junior(comite: Comite) = SeasonJuniorRanking(season, comite.tournaments, Nil)
 
-  def team(comite: Comite) = SeasonTeamRanking(Data.currentSeason, Nil)
+  def double(comite: Comite) = SeasonDoubleRanking(season, comite.tournaments, Nil)
+
+  def team(comite: Comite) = SeasonTeamRanking(TeamChampionship(season))
 
 }
 
 object LigueRanking {
   // FIXME dummy data
+
+  val season = Data.currentSeason
 
   def single(ligue: Ligue) = SeasonSingleRanking(Data.currentSeason, ligue.tournaments, Nil)
 
@@ -29,7 +34,7 @@ object LigueRanking {
 
   def double(ligue: Ligue) = SeasonDoubleRanking(Data.currentSeason, ligue.tournaments, Nil)
 
-  def team(ligue: Ligue) = SeasonTeamRanking(Data.currentSeason, Nil)
+  // FIXME def team(ligue: Ligue) = SeasonTeamRanking(Data.currentSeason, Nil)
 
 }
 

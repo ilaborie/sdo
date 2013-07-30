@@ -20,23 +20,22 @@ import model.orga.Doublette
 object DataChampionship {
 
   private val logger = Logger("data")
-  private val currentSeason = Data.currentSeason
 
   /**
-   * Read Championship
+   * Read TeamChampionship
    * @param ligue ligue
-   * @return Championship
+   * @return TeamChampionship
    */
-  def readChampionship(ligue: Ligue) = {
-    val champFile = s"data/s$currentSeason/${ligue.shortName}/teamChampionship/championship.yml"
-    logger.info(s"Read Championship information in $champFile")
+  def readChampionship(season: Season, ligue: Ligue) = {
+    val champFile = s"data/s$season/${ligue.shortName}/teamChampionship/championship.yml"
+    logger.info(s"Read TeamChampionship information in $champFile")
 
     val dayList = Yaml.load(champFile).asInstanceOf[JavaList[JavaMap[String, Any]]]
     logger.trace(s"Read $dayList")
 
-    val champDays = for (day <- dayList.toList) yield readChampionshipDay(ligue, day.toMap)
+    val champDays = for (day <- dayList.toList) yield readChampionshipDay(season, ligue, day.toMap)
 
-    Championship(currentSeason, champDays)
+    TeamChampionship(season, champDays)
   }
 
   /**
@@ -62,20 +61,19 @@ object DataChampionship {
     case None => throw ParseDataException(s"Cannot find player $name")
   }
 
-
   /**
-   * ChampionshipDay
+   * TeamChampionshipDay
    * @param ligue ligue
    * @param dayMap day
    * @return the championship day
    */
-  private def readChampionshipDay(ligue: Ligue, dayMap: Map[Any, Any]): ChampionshipDay = {
+  private def readChampionshipDay(season: Season, ligue: Ligue, dayMap: Map[Any, Any]): TeamChampionshipDay = {
     val day: Int = dayMap("day").asInstanceOf[Integer]
     val matchList = dayMap("matches").asInstanceOf[JavaList[JavaMap[String, String]]]
     logger.trace(s"Read $matchList")
-    val matches = for (m <- matchList.toList) yield readPlannedTeamMatch(ligue, day, m.toMap)
+    val matches = for (m <- matchList.toList) yield readPlannedTeamMatch(season, ligue, day, m.toMap)
 
-    ChampionshipDay(day, matches)
+    TeamChampionshipDay(day, matches)
   }
 
   /**
@@ -85,11 +83,11 @@ object DataChampionship {
    * @param m match
    * @return PlannedTeamMatch
    */
-  private def readPlannedTeamMatch(ligue: Ligue, day: Int, m: Map[String, String]): PlannedTeamMatch = {
+  private def readPlannedTeamMatch(season: Season, ligue: Ligue, day: Int, m: Map[String, String]): PlannedTeamMatch = {
     val team1 = shouldFindTeam(ligue, m("team1"))
     val team2 = shouldFindTeam(ligue, m("team2"))
 
-    PlannedTeamMatch(day, team1, team2, readDetail(ligue, day, team1, team2))
+    PlannedTeamMatch(day, team1, team2, readDetail(season, ligue, day, team1, team2))
   }
 
   /**
@@ -100,9 +98,9 @@ object DataChampionship {
    * @param team2 team2
    * @return Detail
    */
-  def readDetail(ligue: Ligue, day: Int, team1: Team, team2: Team): Option[MatchDetail] = {
-    val detailFile = s"data/s$currentSeason/${ligue.shortName}/teamChampionship/d$day/${team1.name}-${team2.name}.yml"
-    logger.info(s"Read Championship information in $detailFile")
+  def readDetail(season: Season, ligue: Ligue, day: Int, team1: Team, team2: Team): Option[MatchDetail] = {
+    val detailFile = s"data/s$season/${ligue.shortName}/teamChampionship/d$day/${team1.name}-${team2.name}.yml"
+    logger.info(s"Read TeamChampionship information in $detailFile")
 
     val stream = play.Play.application().resourceAsStream(detailFile)
     if (stream != null) {
@@ -110,6 +108,7 @@ object DataChampionship {
       val detailMap = Yaml.load(stream, cl).asInstanceOf[JavaMap[String, Any]]
       logger.trace(s"Read $detailMap")
 
+      // FIXME Handle Fails
       val date = Data.readDate(detailMap.get("date").asInstanceOf[String])
       val location = detailMap.get("date").asInstanceOf[String]
 
@@ -122,7 +121,7 @@ object DataChampionship {
       logger.trace(s"Read matches: $matchesList")
       val matches: List[Match] = readMatchs(t1, t2, matchesList.asInstanceOf[JavaMap[String, Any]].toMap)
 
-      Some(MatchDetail(day, date, location, t1, t2, matches))
+      Some(PlayedMatchDetail(day, date, location, t1, t2, matches))
     } else {
       None
     }
