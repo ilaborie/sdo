@@ -130,7 +130,9 @@ object Data {
     val name = info("name").asInstanceOf[String]
     val playerList = info("players").asInstanceOf[JavaList[JavaMap[String, String]]].toList
     val players = for (player <- playerList) yield createLicensedPlayer(player.toMap)
-    Team(name, players)
+    val omit = info.contains("omit")
+
+    Team(name, players, omit)
   }
 
   /**
