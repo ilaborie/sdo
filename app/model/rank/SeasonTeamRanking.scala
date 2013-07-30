@@ -2,6 +2,7 @@ package model.rank
 
 import model.orga._
 import play.api.cache.Cache
+import play.api.Play.current
 
 /**
  * Season team ranking
@@ -11,10 +12,10 @@ import play.api.cache.Cache
 case class SeasonTeamRanking(season: Season, teamRanks: Seq[TeamRank]) {
   lazy val ordered: Seq[TeamRank] = teamRanks.sortBy(getPosition)
 
-  def getPosition(teamRank: TeamRank): Int = {
-    // FIXME Cache data
+  def getPosition(teamRank: TeamRank): Int = Cache.getOrElse[Int](s"TeamRanking.$season.team.${teamRank.team.name}") {
     1 + teamRanks.count(_.betterThan(teamRank))
   }
+
 }
 
 /**
