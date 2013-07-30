@@ -1,10 +1,15 @@
 package model.orga
 
+import play.api.cache.Cache
+import play.api.Play.current
+
 /**
  * Participant
  */
 sealed abstract class Participant {
   def clubAsString: String
+
+  def name: String
 }
 
 /**
@@ -53,23 +58,19 @@ case class LicensedPlayer(licenseNumber: LicenseNumber,
     case _ => name
   }
 
-  def ligue: Ligue = {
-    // FIXME Cache
+  def ligue: Ligue = Cache.getOrElse[Ligue](s"player.$name.ligue") {
     Ligue.ligues.find(_.players.contains(this)).get
   }
 
-  def comite: Comite = {
-    // FIXME Cache
+  def comite: Comite = Cache.getOrElse[Comite](s"player.$name.comite") {
     ligue.comites.find(_.players.contains(this)).get
   }
 
-  def club: Club = {
-    // FIXME Cache
+  def club: Club = Cache.getOrElse[Club](s"player.$name.club") {
     comite.clubs.find(_.players.contains(this)).get
   }
 
-  def team: Team = {
-    // FIXME Cache
+  def team: Team = Cache.getOrElse[Team](s"player.$name.team") {
     club.teams.find(_.players.contains(this)).get
   }
 
@@ -89,6 +90,8 @@ object LicensedPlayer {
 case class Doublette(player1: Player, player2: Player) extends Participant {
   require(player1 != player2, "Deux joueurs différent dans une doublette")
 
+  val name = s"$player1 / $player2"
+
   def clubAsString: String = {
     val club1 = player1.clubAsString
     val club2 = player2.clubAsString
@@ -102,18 +105,15 @@ case class Doublette(player1: Player, player2: Player) extends Participant {
  * @param players players
  */
 case class Team(name: String, players: Seq[LicensedPlayer]) extends Participant {
-  def ligue: Ligue = {
-    // FIXME Cache
+  def ligue: Ligue = Cache.getOrElse[Ligue](s"team.$name.ligue") {
     Ligue.ligues.find(_.teams.contains(this)).get
   }
 
-  def comite: Comite = {
-    // FIXME Cache
+  def comite: Comite = Cache.getOrElse[Comite](s"team.$name.comite") {
     ligue.comites.find(_.teams.contains(this)).get
   }
 
-  def club: Club = {
-    // FIXME Cache
+  def club: Club = Cache.getOrElse[Club](s"team.$name.club") {
     comite.clubs.find(_.teams.contains(this)).get
   }
 

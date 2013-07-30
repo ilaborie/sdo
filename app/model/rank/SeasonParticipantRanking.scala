@@ -1,8 +1,8 @@
 package model.rank
 
 import model.orga._
-import model.team._
-
+import play.api.cache.Cache
+import play.api.Play.current
 
 /**
  * Season Single Ranking
@@ -15,8 +15,7 @@ sealed abstract class SeasonParticipantRanking[T <: Participant](season: Season,
   // FIXME require team mapping OK
   lazy val ordered: Seq[ParticipantRank[T]] = ranks.sortBy(getPosition)
 
-  def getPosition(rank: ParticipantRank[T]): Int = {
-    // FIXME Cache data
+  def getPosition(rank: ParticipantRank[T]): Int = Cache.getOrElse[Int](s"player.${rank.participant.name}.position") {
     1 + ranks.count(_.betterThan(rank))
   }
 }

@@ -1,6 +1,8 @@
 package model.orga
 
 import java.util.Calendar
+import play.api.cache.Cache
+import play.api.Play.current
 
 /**
  * Ligue
@@ -39,8 +41,7 @@ case class Ligue(name: String,
     } yield team
   }
 
-  def findTeamByName(name: String): Option[Team] = {
-    // FIXME Cache
+  def findTeamByName(name: String): Option[Team] = Cache.getOrElse[Option[Team]](s"Ligue.team.$name") {
     teams.find(_.name == name)
   }
 
@@ -100,8 +101,7 @@ object Ligue {
     } yield player
   }
 
-  def findByShortName(shortName: String): Option[Ligue] = {
-    // FIXME Cache
+  def findByShortName(shortName: String): Option[Ligue] = Cache.getOrElse[Option[Ligue]](s"ligue.$shortName") {
     ligues.find(_.shortName == shortName)
   }
 }
@@ -123,9 +123,8 @@ case class Comite(name: String,
 
   override def toString = fullName
 
-  def findClubByShortName(shortName: String): Option[Club] = {
-    // FIXME Cache
-    clubs.find(_.shortName == shortName)
+  def findClubByShortName(sname: String): Option[Club] = Cache.getOrElse[Option[Club]](s"comite.$shortName.club.$name") {
+    clubs.find(_.shortName == sname)
   }
 
   lazy val teams = {
@@ -151,8 +150,7 @@ case class Comite(name: String,
     (coupe :: seq.toList).sortBy(_.date.getTimeInMillis)
   }
 
-  def ligue: Ligue = {
-    // FIXME Cache
+  def ligue: Ligue = Cache.getOrElse[Ligue](s"comite.$shortName.ligue") {
     Ligue.ligues.find(_.clubs.contains(this)).get
   }
 }
@@ -170,8 +168,7 @@ case class Club(name: String, shortName: String, opens: Seq[OpenClub], teams: Se
 
   override def toString = fullName
 
-  def findTeamByName(name: String): Option[Team] = {
-    // FIXME Cache
+  def findTeamByName(name: String): Option[Team] = Cache.getOrElse[Option[Team]](s"club.$shortName.team.$name") {
     teams.find(_.name == name)
   }
 
@@ -182,13 +179,11 @@ case class Club(name: String, shortName: String, opens: Seq[OpenClub], teams: Se
     } yield player
   }
 
-  def ligue: Ligue = {
-    // FIXME Cache
+  def ligue: Ligue = Cache.getOrElse[Ligue](s"club.$shortName.ligue") {
     Ligue.ligues.find(_.clubs.contains(this)).get
   }
 
-  def comite: Comite = {
-    // FIXME Cache
+  def comite: Comite = Cache.getOrElse[Comite](s"club.$shortName.comite") {
     ligue.comites.find(_.clubs.contains(this)).get
   }
 }
