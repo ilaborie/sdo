@@ -29,7 +29,7 @@ object Application extends Controller {
    */
   def ligue(shortName: String) = Action {
     LigueAction(shortName) {
-      (ligue: Ligue) => Ok(views.html.ligue(ligue))
+      ligue => Ok(views.html.ligue(ligue))
     }.result
   }
 
@@ -41,7 +41,7 @@ object Application extends Controller {
    */
   def comite(ligueShortName: String, comiteShortName: String) = Action {
     ComiteAction(ligueShortName, comiteShortName) {
-      (ligue: Ligue, comite: Comite) => Ok(views.html.comite(ligue, comite))
+      comite => Ok(views.html.comite(comite))
     }.result
   }
 
@@ -54,8 +54,8 @@ object Application extends Controller {
    */
   def club(ligueShortName: String, comiteShortName: String, clubShortName: String) = Action {
     ComiteAction(ligueShortName, comiteShortName) {
-      (ligue: Ligue, comite: Comite) => comite.findClubByShortName(clubShortName) match {
-        case Some(club) => Ok(views.html.club(ligue, comite, club))
+      comite => comite.findClubByShortName(clubShortName) match {
+        case Some(club) => Ok(views.html.club(club))
         case _ => BadRequest(s"Club non connue: $clubShortName dans le comité $comite")
       }
     }.result
