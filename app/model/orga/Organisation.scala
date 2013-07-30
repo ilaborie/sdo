@@ -3,6 +3,7 @@ package model.orga
 import java.util.Calendar
 import play.api.cache.Cache
 import play.api.Play.current
+import play.api.Logger
 
 /**
  * Ligue
@@ -125,9 +126,7 @@ case class Comite(name: String,
 
   override def toString = fullName
 
-  def findClubByShortName(sname: String): Option[Club] = Cache.getOrElse[Option[Club]](s"comite.$shortName.club.$name") {
-    clubs.find(_.shortName == sname)
-  }
+  def findClubByShortName(sname: String): Option[Club] = clubs.find(_.shortName == sname)
 
   lazy val teams = {
     for {
@@ -154,7 +153,7 @@ case class Comite(name: String,
   }
 
   def ligue: Ligue = Cache.getOrElse[Ligue](s"comite.$shortName.ligue") {
-    Ligue.ligues.find(_.clubs.contains(this)).get
+    Ligue.ligues.find(_.comites.contains(this)).get
   }
 }
 

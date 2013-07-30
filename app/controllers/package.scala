@@ -14,7 +14,7 @@ package object controllers {
    * @param fun a function
    * @return the results
    */
-  case class LigueAction(val ligueShortName: String)(val fun: Ligue => Result) {
+  case class LigueAction(ligueShortName: String)(val fun: Ligue => Result) {
     val result = Ligue.findByShortName(ligueShortName) match {
       case Some(ligue) => fun(ligue)
       case _ => Results.BadRequest(s"Ligue non connue: $ligueShortName")
@@ -29,10 +29,10 @@ package object controllers {
    * @param fun a function
    * @return the results
    */
-  case class ComiteAction(val ligueShortName: String, val comiteShortName: String)(val fun: (Ligue, Comite) => Result) {
+  case class ComiteAction(ligueShortName: String, comiteShortName: String)(val fun: Comite => Result) {
     val result = Ligue.findByShortName(ligueShortName) match {
       case Some(ligue) => ligue.comites.find(_.shortName == comiteShortName) match {
-        case Some(comite) => fun(ligue, comite)
+        case Some(comite) => fun(comite)
         case _ => Results.BadRequest(s"Comite non connue: $comiteShortName dans la ligue $ligue")
       }
       case _ => Results.BadRequest(s"Ligue non connue: $ligueShortName")
