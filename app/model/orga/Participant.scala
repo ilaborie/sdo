@@ -1,10 +1,17 @@
 package model.orga
 
+import play.api.cache.Cache
+import play.api.Play.current
+import scala.Predef._
+import scala.Some
+
 /**
  * Participant
  */
 sealed abstract class Participant {
   def clubAsString: String
+
+  def name: String
 }
 
 /**
@@ -25,12 +32,18 @@ sealed abstract class Player extends Participant {
 case class NotLicensedPlayer(name: String, junior: Boolean = false, feminine: Boolean = false) extends Player {
   override def toString = name
 
-  // FIXME read NL
   def clubAsString = "NL"
 }
 
 object NotLicensedPlayer {
-  // FIXME def findByName(name: String): Option[LicensedPlayer] = Ligue.nlPlayers.find(_.name == name)
+  def findByName(name: String): Option[NotLicensedPlayer] = Ligue.nlPlayers.find(_.name == name)
+}
+
+/**
+ * Team
+ */
+sealed abstract class TeamParticipant extends Participant {
+  def club: Club
 }
 
 
@@ -46,30 +59,26 @@ case class LicensedPlayer(licenseNumber: LicenseNumber,
                           name: String,
                           surname: Option[String],
                           junior: Boolean = false,
-                          feminine: Boolean = false) extends Player {
+                          feminine: Boolean = false) extends TeamParticipant {
 
   override def toString = surname match {
     case Some(sn) => s"«$sn»"
     case _ => name
   }
 
-  def ligue: Ligue = {
-    // FIXME Cache
+  def ligue: Ligue = Cache.getOrElse[Ligue](s"player.$name.ligue") {
     Ligue.ligues.find(_.players.contains(this)).get
   }
 
-  def comite: Comite = {
-    // FIXME Cache
+  def comite: Comite = Cache.getOrElse[Comite](s"player.$name.comite") {
     ligue.comites.find(_.players.contains(this)).get
   }
 
-  def club: Club = {
-    // FIXME Cache
+  def club: Club = Cache.getOrElse[Club](s"player.$name.club") {
     comite.clubs.find(_.players.contains(this)).get
   }
 
-  def team: Team = {
-    // FIXME Cache
+  def team: Team = Cache.getOrElse[Team](s"player.$name.team") {
     club.teams.find(_.players.contains(this)).get
   }
 
@@ -82,12 +91,29 @@ object LicensedPlayer {
 }
 
 /**
+ * Team Doublette
+ * @param player1 first player
+ * @param player2 second player
+ */
+case class TeamDoublette(player1: LicensedPlayer, player2: LicensedPlayer) extends TeamParticipant {
+  require(player1 != player2, "Deux joueurs différent dans une doublette")
+  require(player1.club != player2.club, "Deux joureurs dans le même club")
+
+  val name = s"$player1 / $player2"
+  val club = player1.club
+
+  val clubAsString = club.name
+}
+
+/**
  * Doublette
  * @param player1 first player
  * @param player2 second player
  */
 case class Doublette(player1: Player, player2: Player) extends Participant {
   require(player1 != player2, "Deux joueurs différent dans une doublette")
+
+  val name = s"$player1 / $player2"
 
   def clubAsString: String = {
     val club1 = player1.clubAsString
@@ -101,19 +127,16 @@ case class Doublette(player1: Player, player2: Player) extends Participant {
  * @param name name
  * @param players players
  */
-case class Team(name: String, players: Seq[LicensedPlayer]) extends Participant {
-  def ligue: Ligue = {
-    // FIXME Cache
+case class Team(name: String, players: Seq[LicensedPlayer], omit: Boolean = false) extends Participant {
+  def ligue: Ligue = Cache.getOrElse[Ligue](s"team.$name.ligue") {
     Ligue.ligues.find(_.teams.contains(this)).get
   }
 
-  def comite: Comite = {
-    // FIXME Cache
+  def comite: Comite = Cache.getOrElse[Comite](s"team.$name.comite") {
     ligue.comites.find(_.teams.contains(this)).get
   }
 
-  def club: Club = {
-    // FIXME Cache
+  def club: Club = Cache.getOrElse[Club](s"team.$name.club") {
     comite.clubs.find(_.teams.contains(this)).get
   }
 

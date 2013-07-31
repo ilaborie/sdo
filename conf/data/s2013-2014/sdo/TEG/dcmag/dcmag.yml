@@ -1,5 +1,6 @@
 # Équipe DCMAG
 name: DCMAG
+omit: true
 players:
 -
   firstname: Jean Marie
