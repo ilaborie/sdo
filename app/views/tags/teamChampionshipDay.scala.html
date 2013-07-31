@@ -1,0 +1,31 @@
+@(caption: String, day: model.team.TeamChampionshipDay)
+@import model.orga.Team
+@import model.team.MatchDetail
+
+    @teamClass(t: Team, d: MatchDetail) = {
+        @if(d.winner.isDefined) {
+            @if(d.winner.get == t) {win} else {loose}
+        }
+    }
+
+<table class="table table-bordered journee">
+    <caption>
+        <div class="pull-left">@caption</div>
+        <small class="pull-right">@tags.date(day.from) - @tags.date(day.to)</small>
+    </caption>
+    @for(m <- day.matches) {
+        @m.detail match {
+            case None => {
+                <tr><td>@m.team1.name</td> <td> - </td> <td> - </td> <td>@m.team2.name</td></tr>
+            }
+            case Some(detail) => {
+                <tr>
+                    <td class="@teamClass(m.team1, detail)">@m.team1.name</td>
+                    <td>@detail.plus(m.team1)</td>
+                    <td>@detail.plus(m.team2)</td>
+                    <td class="@teamClass(m.team2, detail)">@m.team2.name</td>
+                </tr>
+            }
+        }
+    }
+</table>
