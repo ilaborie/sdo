@@ -73,6 +73,8 @@ case class Ligue(name: String,
 }
 
 object Ligue {
+  val nlPlayers = Seq[NotLicensedPlayer] = Data.readNotLicensedPlayers()
+
   val ligues: Seq[Ligue] = Data.readLigues()
 
   lazy val comites = {
