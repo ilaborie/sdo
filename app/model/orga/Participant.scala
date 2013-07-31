@@ -97,7 +97,7 @@ object LicensedPlayer {
  */
 case class TeamDoublette(player1: LicensedPlayer, player2: LicensedPlayer) extends TeamParticipant {
   require(player1 != player2, "Deux joueurs différent dans une doublette")
-  require(player1.club != player2.club, "Deux joureurs dans le même club")
+  require(player1.club == player2.club, "Deux joureurs dans le même club")
 
   val name = s"$player1 / $player2"
   val club = player1.club

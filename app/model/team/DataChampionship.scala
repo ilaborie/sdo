@@ -67,11 +67,13 @@ object DataChampionship {
    */
   private def readChampionshipDay(season: Season, ligue: Ligue, dayMap: Map[Any, Any]): TeamChampionshipDay = {
     val day: Int = dayMap("day").asInstanceOf[Integer]
+    val from = Data.readDate(dayMap("from").asInstanceOf[String])
+    val to = Data.readDate(dayMap("to").asInstanceOf[String])
     val matchList = dayMap("matches").asInstanceOf[JavaList[JavaMap[String, String]]]
     logger.trace(s"Read $matchList")
     val matches = for (m <- matchList.toList) yield readPlannedTeamMatch(season, ligue, day, m.toMap)
 
-    TeamChampionshipDay(day, matches)
+    TeamChampionshipDay(day, from, to, matches)
   }
 
   /**
@@ -199,6 +201,8 @@ object DataChampionship {
       player1 <- Some(detail1.getPlayer1(i))
       player2 <- Some(detail2.getPlayer2(i))
     } yield Match(
+        detail1.team,
+        detail2.team,
         player1,
         player2,
         detail1.isPlayer1Start(i),
