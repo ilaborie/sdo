@@ -30,6 +30,12 @@
                         @Messages("menu.rank.double")
                         </a>
                     </li>
+                    <li>
+                        <a href="@routes.Classements.ligueTeam(ligue.shortName)"
+                        data-target="#bodyLigue">
+                        @Messages("menu.rank.team")
+                        </a>
+                    </li>
                     <li class="nav-header">@Messages("menu.comite")</li>
                     @for(comite <- ligue.comites) {
                         <li>

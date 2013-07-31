@@ -1,7 +1,17 @@
 @(ligue: model.orga.Ligue)
 
-@brand = {<a class="brand" href="#"><img src="@routes.Assets.at(s"images/${ligue.shortName}.png")"/> @ligue.name</a>}
+@brand = {
+    <a class="brand" href="#">
+        <img src="@routes.Assets.at(s"images/${ligue.shortName}.png")"/>
+        @ligue.name
+    </a>
+}
 
 @default(brand = brand) {
-    <li><a href="@routes.Application.ligues()"><i class="glyphicons home"></i> @Messages("title.ligues")</a></li>
+    <li>
+        <a href="@routes.Application.ligues()">
+            <i class="glyphicons home"></i>
+            @Messages("title.ligues")
+        </a>
+    </li>
 }
