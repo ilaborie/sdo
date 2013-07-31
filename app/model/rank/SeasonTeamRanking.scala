@@ -1,21 +1,53 @@
 package model.rank
 
+import play.api.Logger
+
 import model.orga._
-import play.api.cache.Cache
+import model.team._
 
 /**
  * Season team ranking
- * @param season season
+ * @param champ championship
  * @param teamRanks team ranking
  */
-case class SeasonTeamRanking(season: Season, teamRanks: Seq[TeamRank]) {
+case class SeasonTeamRanking(champ: TeamChampionship, teamRanks: Seq[TeamRank]) {
   lazy val ordered: Seq[TeamRank] = teamRanks.sortBy(getPosition)
 
   def getPosition(teamRank: TeamRank): Int = {
-    // FIXME Cache data
     1 + teamRanks.count(_.betterThan(teamRank))
   }
 }
+
+object SeasonTeamRanking {
+
+  private val logger = Logger("teamRank")
+
+  def apply(season: Season, ligue: Ligue): SeasonTeamRanking = {
+    val champ = TeamChampionship(season)
+    val ranks = for (team <- Ligue.teams if !team.omit) yield buildRank(champ, team)
+    SeasonTeamRanking(champ, ranks)
+  }
+
+  def apply(season: Season, comite: Comite): SeasonTeamRanking = {
+    val champ = TeamChampionship(season, comite)
+    val ranks = for (team <- comite.teams if !team.omit) yield buildRank(champ, team)
+    SeasonTeamRanking(champ, ranks)
+  }
+
+  private def buildRank(champ: TeamChampionship, team: Team) = {
+    val teamMatches: List[MatchDetail] = for {
+      day <- champ.days
+      ms <- day.matches
+      detail <- ms.detail
+      if ms.applyTo(team)
+    } yield detail
+    logger.debug(s"find ${teamMatches.size} for $team")
+
+    TeamRank(team, teamMatches)
+  }
+
+}
+
 
 /**
  * Team ranking
@@ -34,4 +66,17 @@ case class TeamRank(team: Team, win: Int, loose: Int, draw: Int, fail: Int = 0, 
 
   def betterThan(other: TeamRank): Boolean = (this.points > other.points) || (
     (this.points == other.points) && (this.diff > other.diff))
+}
+
+object TeamRank {
+  def apply(team: Team, details: List[MatchDetail]): TeamRank = {
+    val win = details.count(_.win(team))
+    val loose = details.count(_.loose(team))
+    val draw = details.count(_.draw(team))
+    val fail = details.count(_.fail(team))
+    val plus = details.map(_.plus(team)).sum
+    val minus = details.map(_.minus(team)).sum
+
+    TeamRank(team, win = win, loose = loose, draw = draw, fail = fail, plus = plus, minus = minus)
+  }
 }
