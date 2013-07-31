@@ -2,6 +2,8 @@ package model.orga
 
 import play.api.cache.Cache
 import play.api.Play.current
+import scala.Predef._
+import scala.Some
 
 /**
  * Participant
@@ -30,12 +32,18 @@ sealed abstract class Player extends Participant {
 case class NotLicensedPlayer(name: String, junior: Boolean = false, feminine: Boolean = false) extends Player {
   override def toString = name
 
-  // FIXME read NL
   def clubAsString = "NL"
 }
 
 object NotLicensedPlayer {
-  // FIXME def findByName(name: String): Option[LicensedPlayer] = Ligue.nlPlayers.find(_.name == name)
+  def findByName(name: String): Option[NotLicensedPlayer] = Ligue.nlPlayers.find(_.name == name)
+}
+
+/**
+ * Team
+ */
+sealed abstract class TeamParticipant extends Participant {
+  def club: Club
 }
 
 
@@ -51,7 +59,7 @@ case class LicensedPlayer(licenseNumber: LicenseNumber,
                           name: String,
                           surname: Option[String],
                           junior: Boolean = false,
-                          feminine: Boolean = false) extends Player {
+                          feminine: Boolean = false) extends TeamParticipant {
 
   override def toString = surname match {
     case Some(sn) => s"«$sn»"
@@ -80,6 +88,21 @@ case class LicensedPlayer(licenseNumber: LicenseNumber,
 object LicensedPlayer {
 
   def findByName(name: String): Option[LicensedPlayer] = Ligue.players.find(_.name == name)
+}
+
+/**
+ * Team Doublette
+ * @param player1 first player
+ * @param player2 second player
+ */
+case class TeamDoublette(player1: LicensedPlayer, player2: LicensedPlayer) extends TeamParticipant {
+  require(player1 != player2, "Deux joueurs différent dans une doublette")
+  require(player1.club != player2.club, "Deux joureurs dans le même club")
+
+  val name = s"$player1 / $player2"
+  val club = player1.club
+
+  val clubAsString = club.name
 }
 
 /**

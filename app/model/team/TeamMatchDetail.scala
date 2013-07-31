@@ -10,7 +10,7 @@ import java.util.Calendar
 case class TeamMatchDetail(team: Team,
                            players: Array[LicensedPlayer],
                            substitute: Option[Substitute],
-                           doublettes: (Doublette, Doublette)) {
+                           doublettes: (TeamDoublette, TeamDoublette)) {
   require(players.size == 4)
   // Check Club
   require(players(0).club == team.club)
@@ -26,15 +26,15 @@ case class TeamMatchDetail(team: Team,
   require(players.contains(doublettes._2.player2))
   require(substitute.isEmpty || substitute.get.replace.isEmpty || players.contains(substitute.get.replace.get.club))
 
-  def doSubstitution(participant: Participant): Participant = {
+  def doSubstitution(participant: TeamParticipant): TeamParticipant = {
     val replace = substitute.get.replace.get
     val replaceBy = substitute.get.player
     participant match {
       case LicensedPlayer(_, _, _, _, _) =>
         if (participant == replace) replaceBy else participant
-      case Doublette(p1, p2) =>
-        if (p1 == replace) Doublette(replaceBy, p2)
-        else if (p2 == replace) Doublette(p1, replaceBy)
+      case TeamDoublette(p1, p2) =>
+        if (p1 == replace) TeamDoublette(replaceBy, p2)
+        else if (p2 == replace) TeamDoublette(p1, replaceBy)
         else participant
       case _ => participant
     }
@@ -42,7 +42,7 @@ case class TeamMatchDetail(team: Team,
 
   def isPlayer1Start(index: Int): Boolean = Array(1, 3, 5, 6, 8, 10, 11, 12, 18, 19).contains(index)
 
-  def getPlayer1(index: Int): Participant = {
+  def getPlayer1(index: Int): TeamParticipant = {
     val basic = index match {
       case 1 => players(0)
       case 7 => players(0)
@@ -76,7 +76,7 @@ case class TeamMatchDetail(team: Team,
     } else basic
   }
 
-  def getPlayer2(index: Int): Participant = {
+  def getPlayer2(index: Int): TeamParticipant = {
     val basic = index match {
       case 2 => players(0)
       case 7 => players(0)
@@ -129,8 +129,8 @@ case class Substitute(player: LicensedPlayer, replace: Option[LicensedPlayer], a
  * @param player1Start is the player1 start
  * @param legs legs
  */
-case class Match(player1: Participant,
-                 player2: Participant,
+case class Match(player1: TeamParticipant,
+                 player2: TeamParticipant,
                  player1Start: Boolean,
                  legs: (Leg, Leg, Option[Leg])) {
   require((legs._1.winner == player1) || (legs._1.winner == player2))
@@ -139,12 +139,11 @@ case class Match(player1: Participant,
   require((legs._3.isEmpty && (legs._1.winner == legs._2.winner)) ||
     (legs._3.isDefined && (legs._1.winner != legs._2.winner)))
 
-  val winner: Participant = if (legs._1.winner == legs._2.winner) legs._1.winner else legs._3.get.winner
+  val winner: TeamParticipant = if (legs._1.winner == legs._2.winner) legs._1.winner else legs._3.get.winner
 
   val teamWinner: Team = winner match {
     case p: LicensedPlayer => p.team
     case Doublette(p1, p2) => p1.asInstanceOf[LicensedPlayer].team
-    case _ => throw new RuntimeException("Unexpected result") // FIXME better typing
   }
 
   val legsAsList = if (legs._3.isDefined) List(legs._1, legs._2, legs._3.get) else List(legs._1, legs._2)
@@ -154,7 +153,7 @@ case class Match(player1: Participant,
  * Leg
  * @param winner winner
  */
-case class Leg(winner: Participant)
+case class Leg(winner: TeamParticipant)
 
 /**
  * Team Score
@@ -171,7 +170,6 @@ case class PlannedTeamMatch(day: Int, team1: Team, team2: Team, detail: Option[M
 
   def applyTo(comite: Comite, team: Team): Boolean = applyTo(comite) && applyTo(team)
 }
-
 
 /**
  * Match Detail
