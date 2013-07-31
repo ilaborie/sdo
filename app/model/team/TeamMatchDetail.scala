@@ -129,7 +129,7 @@ case class Substitute(player: LicensedPlayer, replace: Option[LicensedPlayer], a
  * @param player1Start is the player1 start
  * @param legs legs
  */
-case class Match(player1: TeamParticipant,
+case class Match(team1: Team, team2: Team, player1: TeamParticipant,
                  player2: TeamParticipant,
                  player1Start: Boolean,
                  legs: (Leg, Leg, Option[Leg])) {
@@ -141,10 +141,7 @@ case class Match(player1: TeamParticipant,
 
   val winner: TeamParticipant = if (legs._1.winner == legs._2.winner) legs._1.winner else legs._3.get.winner
 
-  val teamWinner: Team = winner match {
-    case p: LicensedPlayer => p.team
-    case Doublette(p1, p2) => p1.asInstanceOf[LicensedPlayer].team
-  }
+  val teamWinner: Team = if (legs._1.winner == legs._2.winner) team1 else team2
 
   val legsAsList = if (legs._3.isDefined) List(legs._1, legs._2, legs._3.get) else List(legs._1, legs._2)
 }

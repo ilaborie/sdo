@@ -3,7 +3,6 @@ package model.orga
 import java.util.Calendar
 import play.api.cache.Cache
 import play.api.Play.current
-import play.api.Logger
 
 /**
  * Ligue
@@ -73,7 +72,7 @@ case class Ligue(name: String,
 }
 
 object Ligue {
-  val nlPlayers = Seq[NotLicensedPlayer] = Data.readNotLicensedPlayers()
+  val nlPlayers: Seq[NotLicensedPlayer] = Data.readNotLicensedPlayers()
 
   val ligues: Seq[Ligue] = Data.readLigues()
 
