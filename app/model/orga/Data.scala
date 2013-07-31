@@ -16,6 +16,7 @@ import com.google.common.base.Charsets
  * Data helpers
  */
 object Data {
+
   private val logger = Logger("data")
   private val dateFormater = new SimpleDateFormat("dd-MM-yyyy")
 
@@ -40,6 +41,34 @@ object Data {
     logger.trace(s"Read $liguesList")
 
     for (ligue <- liguesList.toList) yield readLigue(ligue)
+  }
+
+  /**
+   * Read all not licensied players
+   * @return players
+   */
+  def readNotLicensedPlayers(): List[NotLicensedPlayer] = {
+    val nlFile = s"data/s$currentSeason/nl.yml"
+    logger.info(s"Read not licensied players in $nlFile")
+
+    val nlList = Yaml.load(nlFile).asInstanceOf[JavaList[JavaMap[String, String]]]
+    logger.trace(s"Read $nlList")
+
+    for (nl <- nlList.toList) yield readNotLicensiedPlayer(nl.toMap)
+  }
+
+  /**
+   * Read not licensed player
+   * @param data data
+   * @return the player
+   */
+  def readNotLicensiedPlayer(data: Map[String, String]): NotLicensedPlayer = {
+    val firstName = data.getOrElse("firstname", "???")
+    val lastName = data.getOrElse("lastname", "???")
+    val isFeminine = data.contains("feminine")
+    val isJunior = data.contains("junior")
+
+    NotLicensedPlayer(s"$lastName $firstName", feminine = isFeminine, junior = isJunior)
   }
 
   /**

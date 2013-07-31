@@ -7,12 +7,10 @@ import scala.collection.JavaConversions._
 import play.api.Logger
 import play.libs.Yaml
 
-import model.orga._
 import scala.Predef._
 import scala.Some
-import model.orga.Team
-import model.orga.Doublette
 
+import model.orga._
 
 /**
  * DataChampionship
@@ -108,7 +106,6 @@ object DataChampionship {
       val detailMap = Yaml.load(stream, cl).asInstanceOf[JavaMap[String, Any]]
       logger.trace(s"Read $detailMap")
 
-      // FIXME Handle Fails
       val date = Data.readDate(detailMap.get("date").asInstanceOf[String])
       val location = detailMap.get("date").asInstanceOf[String]
 
@@ -140,7 +137,7 @@ object DataChampionship {
     val players = playersName map shouldFindLicensiedPlayer
 
     val substitute: Option[Substitute] = readSubstitute(map("substitue").asInstanceOf[JavaMap[String, Any]])
-    val doublettes: (Doublette, Doublette) = readDoublettes(map("doubles")
+    val doublettes: (TeamDoublette, TeamDoublette) = readDoublettes(map("doubles")
       .asInstanceOf[JavaList[JavaMap[String, String]]].toList)
 
     TeamMatchDetail(team, players.toArray, substitute, doublettes)
@@ -174,7 +171,7 @@ object DataChampionship {
    * @param list data
    * @return Doublettes
    */
-  def readDoublettes(list: List[JavaMap[String, String]]): (Doublette, Doublette) = {
+  def readDoublettes(list: List[JavaMap[String, String]]): (TeamDoublette, TeamDoublette) = {
     (readDoublette(list(0).toMap), readDoublette(list(0).toMap))
   }
 
@@ -183,8 +180,8 @@ object DataChampionship {
    * @param map data
    * @return the Doublette
    */
-  def readDoublette(map: Map[String, String]): Doublette =
-    Doublette(shouldFindLicensiedPlayer(map("j1")), shouldFindLicensiedPlayer(map("j2")))
+  def readDoublette(map: Map[String, String]): TeamDoublette =
+    TeamDoublette(shouldFindLicensiedPlayer(map("j1")), shouldFindLicensiedPlayer(map("j2")))
 
 
   /**
@@ -217,7 +214,7 @@ object DataChampionship {
    * @param data data
    * @return legs
    */
-  def readLegs(player1: Participant, player2: Participant, data: Map[String, Any]): (Leg, Leg, Option[Leg]) = {
+  def readLegs(player1: TeamParticipant, player2: TeamParticipant, data: Map[String, Any]): (Leg, Leg, Option[Leg]) = {
     def int2Leg(i: Int) = i match {
       case 1 => Leg(player1)
       case 2 => Leg(player2)
