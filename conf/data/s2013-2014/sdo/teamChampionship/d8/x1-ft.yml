@@ -14,7 +14,7 @@ team1:
     -
       j1: Lansoy Didier
       j2: Scarpato Dominique
-  substitue:
+  substitute:
     j:
     out:
     match:
@@ -31,11 +31,11 @@ team2:
       j2: Mahieu Guillaume
     -
       j1: Namartre Cédric
-      j2: Petrel Arnaud
-  substitue:
-    j:
-    out:
-    match:
+      j2: Pétrel Arnaud
+  substitute:
+    j:  Buffa Christelle
+    out: Mahieu Guillaume
+    match: 10
 matches:
   match1:
     l1: 1
