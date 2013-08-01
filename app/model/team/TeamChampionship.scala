@@ -15,7 +15,7 @@ object TeamChampionship {
   def apply(season: Season, comite: Comite): TeamChampionship = {
     val days = for {
       ds <- TeamChampionship(season).days
-    } yield TeamChampionshipDay(ds.day, ds.from, ds.to, ds.matches.filter(_.applyTo(comite)))
+    } yield TeamChampionshipDay(comite.ligue, ds.day, ds.from, ds.to, ds.matches.filter(_.applyTo(comite)))
 
     TeamChampionship(season, days)
   }
@@ -26,4 +26,4 @@ object TeamChampionship {
  * @param day day
  * @param matches matchs
  */
-case class TeamChampionshipDay(day: Int, from: Calendar, to: Calendar, matches: Seq[PlannedTeamMatch])
+case class TeamChampionshipDay(ligue: Ligue, day: Int, from: Calendar, to: Calendar, matches: Seq[PlannedTeamMatch])
