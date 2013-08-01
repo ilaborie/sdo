@@ -170,7 +170,7 @@ object Data {
    * @return player
    */
   def createLicensedPlayer(data: Map[String, String]): LicensedPlayer = {
-    val license = data.getOrElse("license", "???")
+    val license = data.getOrElse("license", "license ###")
     val firstName = data.getOrElse("firstname", "???")
     val lastName = data.getOrElse("lastname", "???")
     val surname = if (data.contains("surename")) data.get("surname") else data.get("commonname")

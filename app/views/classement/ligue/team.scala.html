@@ -1,69 +1,8 @@
 @(ligue: model.orga.Ligue, ranking: model.rank.SeasonTeamRanking)
-@import model.orga.Team
-@import model.team.MatchDetail
 
-@teamClass(t:Team, d: MatchDetail ) = {
-    @if(d.winner.isDefined) {
-        @if(d.winner.get==t) {win} else {loose}
-    }
-}
-
-<table class="table table-striped table-bordered rank">
-    <caption>@Messages("rank.team.ligue.caption",  ranking.champ.season)</caption>
-    <thead>
-        <tr>
-            <th></th>
-            <th>@Messages("rank.team")</th>
-            <th>@tags.abbr("rank.point")</th>
-            <th class="hidden-phone">@tags.abbr("rank.team.day")</th>
-            <th>@tags.abbr("rank.team.win")</th>
-            <th>@tags.abbr("rank.team.loose")</th>
-            <th>@tags.abbr("rank.team.draw")</th>
-            <th>@tags.abbr("rank.team.fail")</th>
-            <th class="hidden-phone">@tags.abbr("rank.team.match.win")</th>
-            <th class="hidden-phone">@tags.abbr("rank.team.match.loose")</th>
-            <th>@tags.abbr("rank.team.diff")</th>
-        </tr>
-    </thead>
-    <tbody>
-    @for(teamRank <- ranking.ordered) {
-        <tr>
-            <td><span class="badge">@ranking.getPosition(teamRank)</span></td>
-            <td>@teamRank.team.name</td>
-            <td>@teamRank.points</td>
-            <td class="hidden-phone">@teamRank.days</td>
-            <td>@teamRank.win</td>
-            <td>@teamRank.loose</td>
-            <td>@teamRank.draw</td>
-            <td>@teamRank.fail</td>
-            <td class="hidden-phone">@teamRank.plus</td>
-            <td class="hidden-phone">@teamRank.minus</td>
-            @if(teamRank.diff > 0) {
-                <td class="pos">@teamRank.diff </td>
-            } else {
-                <td class="neg">@teamRank.diff </td>
-            }
-        </tr>
-    }
-    </tbody>
-</table>
+@tags.rankTeamTable(Messages("rank.team.ligue.caption", ranking.champ.season), ranking)
 <hr>
 @for(day <- ranking.champ.days) {
-    <table class="table table-bordered journee">
-        <caption>@Messages("championship.day.caption", day.day, ranking.champ.season)</caption>
-        @for(m <- day.matches) {
-            @m.detail match {
-                case None => {<tr><td>@m.team1.name</td><td> - </td><td> - </td><td>@m.team2.name</td></tr>}
-                case Some(detail) => {
-                    <tr>
-                        <td class="@teamClass(m.team1,detail)">@m.team1.name</td>
-                        <td>@detail.plus(m.team1)</td>
-                        <td>@detail.plus(m.team2)</td>
-                        <td class="@teamClass(m.team2,detail)">@m.team2.name</td>
-                    </tr>
-                }
-            }
-        }
-    </table>
+    @tags.teamChampionshipDay(Messages("championship.day.caption", day.day, ranking.champ.season), day)
 }
 

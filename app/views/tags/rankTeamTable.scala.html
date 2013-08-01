@@ -1,0 +1,43 @@
+@(caption: String, ranking: model.rank.SeasonTeamRanking)
+@import model.orga.Team
+@import model.team.MatchDetail
+
+<table class="table table-striped table-bordered rank">
+    <caption>@caption</caption>
+    <thead>
+        <tr>
+            <th></th>
+            <th>@Messages("rank.team")</th>
+            <th>@tags.abbr("rank.point")</th>
+            <th class="hidden-phone">@tags.abbr("rank.team.day")</th>
+            <th>@tags.abbr("rank.team.win")</th>
+            <th>@tags.abbr("rank.team.loose")</th>
+            <th>@tags.abbr("rank.team.draw")</th>
+            <th>@tags.abbr("rank.team.fail")</th>
+            <th class="hidden-phone">@tags.abbr("rank.team.match.win")</th>
+            <th class="hidden-phone">@tags.abbr("rank.team.match.loose")</th>
+            <th>@tags.abbr("rank.team.diff")</th>
+        </tr>
+    </thead>
+    <tbody>
+    @for(teamRank <- ranking.ordered) {
+        <tr>
+            <td><span class="badge">@ranking.getPosition(teamRank)</span></td>
+            <td>@teamRank.team.name</td>
+            <td>@teamRank.points</td>
+            <td class="hidden-phone">@teamRank.days</td>
+            <td>@teamRank.win</td>
+            <td>@teamRank.loose</td>
+            <td>@teamRank.draw</td>
+            <td>@teamRank.fail</td>
+            <td class="hidden-phone">@teamRank.plus</td>
+            <td class="hidden-phone">@teamRank.minus</td>
+            @if(teamRank.diff > 0) {
+                <td class="pos">@teamRank.diff </td>
+            } else {
+                <td class="neg">@teamRank.diff </td>
+            }
+        </tr>
+    }
+    </tbody>
+</table>
