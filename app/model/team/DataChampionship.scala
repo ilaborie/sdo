@@ -20,23 +20,6 @@ object DataChampionship {
   private val logger = Logger("data")
 
   /**
-   * Read TeamChampionship
-   * @param ligue ligue
-   * @return TeamChampionship
-   */
-  def readChampionship(season: Season, ligue: Ligue) = {
-    val champFile = s"data/s$season/${ligue.shortName}/teamChampionship/championship.yml"
-    logger.info(s"Read TeamChampionship information in $champFile")
-
-    val dayList = Yaml.load(champFile).asInstanceOf[JavaList[JavaMap[String, Any]]]
-    logger.trace(s"Read $dayList")
-
-    val champDays = for (day <- dayList.toList) yield readChampionshipDay(season, ligue, day.toMap)
-
-    TeamChampionship(season, champDays)
-  }
-
-  /**
    * Find a Team
    * @param ligue the ligue
    * @param name the team name
@@ -60,6 +43,23 @@ object DataChampionship {
   }
 
   /**
+   * Read TeamChampionship
+   * @param ligue ligue
+   * @return TeamChampionship
+   */
+  def readChampionship(season: Season, ligue: Ligue) = {
+    val champFile = s"data/s$season/${ligue.shortName}/teamChampionship/championship.yml"
+    logger.info(s"Read TeamChampionship information in $champFile")
+
+    val dayList = Yaml.load(champFile).asInstanceOf[JavaList[JavaMap[String, Any]]]
+    logger.trace(s"Read $dayList")
+
+    val champDays = for (day <- dayList.toList) yield readChampionshipDay(season, ligue, day.toMap)
+
+    TeamChampionship(season, champDays)
+  }
+
+  /**
    * TeamChampionshipDay
    * @param ligue ligue
    * @param dayMap day
@@ -67,11 +67,13 @@ object DataChampionship {
    */
   private def readChampionshipDay(season: Season, ligue: Ligue, dayMap: Map[Any, Any]): TeamChampionshipDay = {
     val day: Int = dayMap("day").asInstanceOf[Integer]
+    val from = Data.readDate(dayMap("from").asInstanceOf[String])
+    val to = Data.readDate(dayMap("to").asInstanceOf[String])
     val matchList = dayMap("matches").asInstanceOf[JavaList[JavaMap[String, String]]]
     logger.trace(s"Read $matchList")
     val matches = for (m <- matchList.toList) yield readPlannedTeamMatch(season, ligue, day, m.toMap)
 
-    TeamChampionshipDay(day, matches)
+    TeamChampionshipDay(ligue, day, from, to, matches)
   }
 
   /**
@@ -107,7 +109,7 @@ object DataChampionship {
       logger.trace(s"Read $detailMap")
 
       val date = Data.readDate(detailMap.get("date").asInstanceOf[String])
-      val location = detailMap.get("date").asInstanceOf[String]
+      val location = detailMap.get("location").asInstanceOf[String]
 
       val t1: TeamMatchDetail = readTeamMatchDetail(team1, detailMap.get("team1")
         .asInstanceOf[JavaMap[String, Any]].toMap)
@@ -136,7 +138,7 @@ object DataChampionship {
 
     val players = playersName map shouldFindLicensiedPlayer
 
-    val substitute: Option[Substitute] = readSubstitute(map("substitue").asInstanceOf[JavaMap[String, Any]])
+    val substitute: Option[Substitute] = readSubstitute(map("substitute").asInstanceOf[JavaMap[String, Any]])
     val doublettes: (TeamDoublette, TeamDoublette) = readDoublettes(map("doubles")
       .asInstanceOf[JavaList[JavaMap[String, String]]].toList)
 
@@ -151,6 +153,7 @@ object DataChampionship {
   def readSubstitute(map: JavaMap[String, Any]): Option[Substitute] = {
     if (map != null) {
       val m = map.toMap
+      logger.debug(s"Read substitute from $m")
 
       val j = m("j").asInstanceOf[String]
       val inPlayer = if (j != null) LicensedPlayer.findByName(j) else None
@@ -160,7 +163,6 @@ object DataChampionship {
 
       val after = m("match").asInstanceOf[Integer]
       val afterMatch = if (after != null) Some(after.toInt) else None
-
 
       if (inPlayer.isDefined) Some(Substitute(inPlayer.get, outPlayer, afterMatch)) else None
     } else None
@@ -172,7 +174,7 @@ object DataChampionship {
    * @return Doublettes
    */
   def readDoublettes(list: List[JavaMap[String, String]]): (TeamDoublette, TeamDoublette) = {
-    (readDoublette(list(0).toMap), readDoublette(list(0).toMap))
+    (readDoublette(list(0).toMap), readDoublette(list(1).toMap))
   }
 
   /**
@@ -199,6 +201,8 @@ object DataChampionship {
       player1 <- Some(detail1.getPlayer1(i))
       player2 <- Some(detail2.getPlayer2(i))
     } yield Match(
+        detail1.team,
+        detail2.team,
         player1,
         player2,
         detail1.isPlayer1Start(i),

@@ -78,3 +78,22 @@ rank.team.diff.title=Différence
 
 # Championsihp
 championship.day.caption=Journée n° {0}
+
+# Detail
+team.detail.title=Détail du match {0}
+team.detail.fail=Forfait de {0}
+team.detail.day=Journée
+team.detail.date=Date
+team.detail.location=Lieu
+team.detail.players=Simples
+team.detail.doublettes=Doubles
+team.detail.substitute=Remplaçant(e)
+team.detail.substitute.who=Remplace le joueur
+team.detail.substitute.after=après le match
+team.detail.match=Match {0}
+team.detail.score=Score
+team.detail.matches=Matches
+team.detail.legs=Manches
+team.detail.points=Points
+team.detail.result=Résultat
+

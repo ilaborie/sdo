@@ -97,9 +97,10 @@ object LicensedPlayer {
  */
 case class TeamDoublette(player1: LicensedPlayer, player2: LicensedPlayer) extends TeamParticipant {
   require(player1 != player2, "Deux joueurs différent dans une doublette")
-  require(player1.club != player2.club, "Deux joureurs dans le même club")
+  require(player1.club == player2.club, "Deux joureurs dans le même club")
 
-  val name = s"$player1 / $player2"
+  override val toString = name
+  val name = s"${player1.name} / ${player2.name}"
   val club = player1.club
 
   val clubAsString = club.name
@@ -113,33 +114,12 @@ case class TeamDoublette(player1: LicensedPlayer, player2: LicensedPlayer) exten
 case class Doublette(player1: Player, player2: Player) extends Participant {
   require(player1 != player2, "Deux joueurs différent dans une doublette")
 
-  val name = s"$player1 / $player2"
+  val name = s"${player1.name} / ${player2.name}"
 
   def clubAsString: String = {
     val club1 = player1.clubAsString
     val club2 = player2.clubAsString
     if (club1 == club2) club1 else s"$club1 - $club2"
   }
-}
-
-/**
- * Team
- * @param name name
- * @param players players
- */
-case class Team(name: String, players: Seq[LicensedPlayer], omit: Boolean = false) extends Participant {
-  def ligue: Ligue = Cache.getOrElse[Ligue](s"team.$name.ligue") {
-    Ligue.ligues.find(_.teams.contains(this)).get
-  }
-
-  def comite: Comite = Cache.getOrElse[Comite](s"team.$name.comite") {
-    ligue.comites.find(_.teams.contains(this)).get
-  }
-
-  def club: Club = Cache.getOrElse[Club](s"team.$name.club") {
-    comite.clubs.find(_.teams.contains(this)).get
-  }
-
-  def clubAsString: String = club.name
 }
 
