@@ -190,3 +190,26 @@ case class Club(name: String, shortName: String, opens: Seq[OpenClub], teams: Se
     ligue.comites.find(_.clubs.contains(this)).get
   }
 }
+
+
+/**
+ * Team
+ * @param name name
+ * @param players players
+ */
+case class Team(name: String, players: Seq[LicensedPlayer], omit: Boolean = false) {
+  override val toString = name
+
+  def ligue: Ligue = Cache.getOrElse[Ligue](s"team.$name.ligue") {
+    Ligue.ligues.find(_.teams.contains(this)).get
+  }
+
+  def comite: Comite = Cache.getOrElse[Comite](s"team.$name.comite") {
+    ligue.comites.find(_.teams.contains(this)).get
+  }
+
+  def club: Club = Cache.getOrElse[Club](s"team.$name.club") {
+    comite.clubs.find(_.teams.contains(this)).get
+  }
+
+}
