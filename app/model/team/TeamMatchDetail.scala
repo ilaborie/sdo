@@ -24,7 +24,7 @@ case class TeamMatchDetail(team: Team,
   require(players.contains(doublettes._1.player2))
   require(players.contains(doublettes._2.player1))
   require(players.contains(doublettes._2.player2))
-  require(substitute.isEmpty || substitute.get.replace.isEmpty || players.contains(substitute.get.replace.get.club))
+  require(substitute.isEmpty || substitute.get.replace.isEmpty || players.contains(substitute.get.replace.get))
 
   def doSubstitution(participant: TeamParticipant): TeamParticipant = {
     val replace = substitute.get.replace.get
@@ -129,7 +129,9 @@ case class Substitute(player: LicensedPlayer, replace: Option[LicensedPlayer], a
  * @param player1Start is the player1 start
  * @param legs legs
  */
-case class Match(player1: TeamParticipant,
+case class Match(team1: Team,
+                 team2: Team,
+                 player1: TeamParticipant,
                  player2: TeamParticipant,
                  player1Start: Boolean,
                  legs: (Leg, Leg, Option[Leg])) {
@@ -141,12 +143,9 @@ case class Match(player1: TeamParticipant,
 
   val winner: TeamParticipant = if (legs._1.winner == legs._2.winner) legs._1.winner else legs._3.get.winner
 
-  val teamWinner: Team = winner match {
-    case p: LicensedPlayer => p.team
-    case Doublette(p1, p2) => p1.asInstanceOf[LicensedPlayer].team
-  }
+  val teamWinner: Team = if (winner == player1) team1 else team2
 
-  val legsAsList = if (legs._3.isDefined) List(legs._1, legs._2, legs._3.get) else List(legs._1, legs._2)
+  val legsAsList: List[Leg] = if (legs._3.isDefined) List(legs._1, legs._2, legs._3.get) else List(legs._1, legs._2)
 }
 
 /**
@@ -175,6 +174,8 @@ case class PlannedTeamMatch(day: Int, team1: Team, team2: Team, detail: Option[M
  * Match Detail
  */
 sealed abstract class MatchDetail {
+  def day: Int
+
   def winner: Option[Team]
 
   def win(team: Team): Boolean
@@ -188,11 +189,22 @@ sealed abstract class MatchDetail {
   def plus(team: Team): Int
 
   def minus(team: Team): Int
+
+  def legs(team: Team): Int
+
+  def points(team: Team): Int = {
+    if (win(team)) 3
+    else if (draw(team)) 2
+    else if (fail(team)) 0
+    else 1
+  }
 }
 
 case class MatchDetailFail(day: Int, team1: Team, team2: Team, fails: Seq[Team]) extends MatchDetail {
   require(!fails.isEmpty)
   require(fails.filter(t => t == team1 || t == team2).isEmpty)
+
+  override val toString = s"[J$day] ${team1} - ${team2}"
 
   def win(team: Team): Boolean = {
     require(team1 == team || team2 == team)
@@ -229,6 +241,12 @@ case class MatchDetailFail(day: Int, team1: Team, team2: Team, fails: Seq[Team])
     require(team1 == team || team2 == team)
     if (loose(team)) 20 else 0
   }
+
+  def legs(team: Team): Int = {
+    require(team1 == team || team2 == team)
+    if (win(team)) 40 else 0
+  }
+
 }
 
 /**
@@ -248,6 +266,8 @@ case class PlayedMatchDetail(day: Int,
                              matches: List[Match]) extends MatchDetail {
   require(team1.team.ligue == team2.team.ligue)
   require(matches.size == 20)
+
+  override val toString = s"[J$day] ${team1.team} - ${team2.team}"
 
   val score1: TeamScore = {
     val legs = {
@@ -307,6 +327,13 @@ case class PlayedMatchDetail(day: Int,
   def minus(team: Team): Int = {
     require(team1.team == team || team2.team == team)
     matches.count(_.teamWinner != team)
+  }
+
+  def legs(team: Team): Int = {
+    require(team1.team == team || team2.team == team)
+
+    //  2* win + loose this 3 legs
+    2 * plus(team) + matches.count(m => (m.teamWinner != team) && (m.legsAsList.size == 3))
   }
 }
 
