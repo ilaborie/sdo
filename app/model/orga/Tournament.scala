@@ -3,6 +3,7 @@ package model.orga
 import java.util.Calendar
 import play.api.cache.Cache
 import play.api.Play.current
+import play.api.i18n.Messages
 
 /**
  * Tournament
@@ -15,18 +16,24 @@ sealed abstract class Tournament {
 }
 
 object Tournament {
-  val ordering: Ordering[Tournament] = Ordering.by[Tournament, Long](_.date.getTimeInMillis)
+  val orderByDate: Ordering[Tournament] = Ordering.by[Tournament, Long](_.date.getTimeInMillis)
 }
 
 /**
  * Ligue Tournament
  */
-sealed abstract class LigueTournament extends Tournament
+sealed abstract class LigueTournament extends Tournament {
+  val isEvent: Boolean = true
+
+  val isTeam: Boolean = false
+}
 
 /**
  * Open Ligue
  */
 case class OpenLigue(date: Calendar) extends LigueTournament {
+
+  override def toString = Messages("rank.ligue.open.title")
 
   def getPoint(position: TournamentResult): Int = position match {
     case Winner => 16
@@ -42,6 +49,8 @@ case class OpenLigue(date: Calendar) extends LigueTournament {
  * Coupe Ligue
  */
 case class CoupeLigue(date: Calendar) extends LigueTournament {
+
+  override def toString = Messages("rank.ligue.coupe.title")
 
   def getPoint(position: TournamentResult): Int = position match {
     case Winner => 22
@@ -60,6 +69,8 @@ case class CoupeLigue(date: Calendar) extends LigueTournament {
  */
 case class MasterLigue(date: Calendar) extends LigueTournament {
 
+  override def toString = Messages("rank.ligue.master.title")
+
   def getPoint(position: TournamentResult): Int = position match {
     case Winner => 29
     case RunnerUp => 22
@@ -68,13 +79,26 @@ case class MasterLigue(date: Calendar) extends LigueTournament {
     case RoundRobin(pos) => if (pos == 3) 4 else 2
     case _ => 0
   }
+}
+/**
+ * Master Ligue Team
+ */
+case class MasterLigueTeam(date: Calendar) extends LigueTournament {
+  override val isTeam: Boolean = true
 
+  override def toString = Messages("rank.ligue.master.team.title")
+
+  def getPoint(position: TournamentResult): Int = ???
 }
 
 /**
  * Comite Ranking
  */
 case class ComiteRank(comite: Comite, date: Calendar) extends LigueTournament {
+
+  override def toString = Messages("rank.ligue.comite.rank.title", comite)
+
+  override val isEvent: Boolean = false
 
   def getPoint(position: TournamentResult): Int = position match {
     case RoundRobin(pos) => pos match {
@@ -96,6 +120,8 @@ case class ComiteRank(comite: Comite, date: Calendar) extends LigueTournament {
  * Coupe Comite
  */
 case class ComiteCoupeLigue(comite: Comite) extends LigueTournament {
+  override def toString = Messages("rank.ligue.comite.coupe.title",comite)
+  override val isEvent: Boolean = false
 
   val date: Calendar = comite.coupe.date
 
@@ -120,7 +146,7 @@ sealed abstract class ComiteTournament extends Tournament
  * Coupe Comite
  */
 case class CoupeComite(date: Calendar) extends ComiteTournament {
-
+  override def toString = Messages("rank.comite.coupe.title")
   def getPoint(position: TournamentResult): Int = position match {
     case Winner => 29
     case RunnerUp => 22
@@ -135,11 +161,11 @@ case class CoupeComite(date: Calendar) extends ComiteTournament {
  * Open Club
  */
 case class OpenClub(date: Calendar) extends ComiteTournament {
+  override def toString = Messages("rank.comite.open.title", club.name)
 
   def club: Club = Cache.getOrElse[Club](s"openClub.$date.club") {
     Ligue.clubs.find(_.opens.contains(this)).get
   }
-
 
   def getPoint(position: TournamentResult): Int = position match {
     case Winner => 16

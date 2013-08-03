@@ -1,0 +1,27 @@
+@()
+
+@script = {
+    @layout.script()
+    <script src="@routes.Assets.at("/scripts/events.js")"></script>
+}
+@layout.main(Messages("title.events"), navbar = navbar.empty(Messages("title.events")),scripts = script) {
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span3 well well-small">
+                <ul class="nav nav-list">
+                    <li class="nav-header">@Messages("menu.event.view")</li>
+                    <li>
+                        <a class="autoClick" href="@routes.Application.eventsList()" data-target="#bodyEvents">
+                        @Messages("menu.event.list")
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="span9 well well-small">
+                <div id="bodyEvents">
+
+                </div>
+            </div>
+        </div>
+    </div>
+}

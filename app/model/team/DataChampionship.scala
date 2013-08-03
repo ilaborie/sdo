@@ -47,7 +47,7 @@ object DataChampionship {
    * @param ligue ligue
    * @return TeamChampionship
    */
-  def readChampionship(season: Season, ligue: Ligue) = {
+  def readChampionship(season: Season, ligue: Ligue): TeamChampionship = {
     val champFile = s"data/s$season/${ligue.shortName}/teamChampionship/championship.yml"
     logger.info(s"Read TeamChampionship information in $champFile")
 

@@ -1,0 +1,12 @@
+@(site: String)
+
+@if(site.startsWith("http:")) {
+    <a class="btn btn-info" target="_blank" href="@site">
+        <i class="glyphicons white new_window"></i>
+        @site
+    </a>
+} else {
+    <a class="btn btn-primary" href="@site">
+        <i class="glyphicons white share"></i>
+    </a>
+}

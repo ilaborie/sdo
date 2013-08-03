@@ -19,6 +19,7 @@ case class Ligue(name: String,
                  opens: Seq[OpenLigue],
                  coupe: CoupeLigue,
                  master: MasterLigue,
+                 masterTeam: MasterLigueTeam,
                  info: Option[Info]) {
 
   lazy val fullName = s"[$shortName] $name"
@@ -64,15 +65,15 @@ case class Ligue(name: String,
       comite <- comites
     } yield ComiteRank(comite, dateRanking)
 
-    val list = (coupe :: master :: opens.toList) ::: comiteCoupes.toList ::: comiteRankings.toList
+    val list = (coupe :: master ::masterTeam:: opens.toList) ::: comiteCoupes.toList ::: comiteRankings.toList
     list.sortBy(_.date.getTimeInMillis)
   }
 }
 
 object Ligue {
-  val nlPlayers: Seq[NotLicensedPlayer] = Data.readNotLicensedPlayers()
+  val nlPlayers: Seq[NotLicensedPlayer] = Data.readNotLicensedPlayers(Season.currentSeason)
 
-  val ligues: Seq[Ligue] = Data.readLigues()
+  val ligues: Seq[Ligue] = Data.readLigues(Season.currentSeason)
 
   lazy val comites = {
     for {
