@@ -10,7 +10,7 @@ import model.team.{MatchDetail, PlannedTeamMatch, TeamChampionship}
  */
 object Detail extends Controller {
 
-  private val season: Season = Data.currentSeason
+  private val season: Season = Season.currentSeason
 
   /**
    * Team match detail
