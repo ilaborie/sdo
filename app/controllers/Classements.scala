@@ -10,7 +10,7 @@ import model.rank._
  */
 object Classements extends Controller {
 
-  private val season: Season = Data.currentSeason
+  private val season: Season = Season.currentSeason
 
   /**
    * Ligue Single
