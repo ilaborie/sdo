@@ -1,0 +1,96 @@
+# List of events
+-
+  name: Open de France
+  type: world france
+  url: http://www.royalflechettes.com/
+  location:
+    name: Bray Dunes
+    venue: Salle Dany Boon
+  from: "31-08-2013"
+  to: "01-09-2013"
+-
+  name:
+  type: world
+  url: http://www.dardscatalunya.cat
+  location:
+    name: Caella (Maresme)
+    venue: Fábrica Llobet-Gurí ("The Old Factory")
+  from: "06-09-2013"
+  to: "07-09-2013"
+-
+  name: WDF World Cup - Canada
+  type: world
+  from: "01-10-2013"
+  to: "05-10-2013"
+-
+  name: Winmau World Masters
+  type: world
+  from: "12-10-2013"
+  to: "13-10-2013"
+-
+  name: Conseil Fédéral
+  type: fede
+  from: "19-10-2013"
+  to: "20-10-2013"
+-
+  name: Open Fédéral
+  type: france
+  location:
+    name: Granville
+  from: "02-11-2013"
+  to: "03-11-2013"
+-
+  name: Conseil Fédéral
+  type: fede
+  from: "18-01-2014"
+  to: "19-01-2014"
+-
+  name: Open National
+  type: france
+  url: http://fcmhalluin.over-blog.com/
+  location:
+    name: Halluim
+  from: "15-02-2014"
+  to: "16-02-2014"
+-
+  name: Intercomités National
+  type: france
+  location:
+    name: Saint leger les Vignes
+  from: "01-03-2014"
+  to: "02-03-2014"
+-
+  name: Trophée John Philips
+  location:
+  from: "22-03-2014"
+  to: "23-03-2014"
+-
+  name: Conseil Fédéral
+  type: fede
+  from: "05-04-2014"
+  to: "06-04-2014"
+-
+  name: Coupe de France
+  type: france
+  from: "19-04-2014"
+  to: "20-04-2014"
+-
+  name: Masters nationaux par équipes
+  type: france
+  from: "10-05-2014"
+  to: "11-05-2014"
+-
+  name: Med Cup
+  type: world
+  from: "17-05-2014"
+  to: "18-05-2014"
+-
+  name: Masters nationaux individuels et doubles
+  type: france
+  from: "10-05-2014"
+  to: "11-05-2014"
+-
+  name: AG FFD
+  type: fede
+  from: "21-06-2014"
+  to: "22-06-2014"

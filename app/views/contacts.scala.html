@@ -1,0 +1,33 @@
+@(contacts: Seq[model.contact.Contact])
+
+@layout.main(Messages("title.contacts"), navbar = navbar.empty(Messages("title.contacts"))) {
+    <div class="container well well-small">
+        <h1>@Messages("title.contacts")</h1>
+        <p class="lead">@Html(Messages("contacts.mention"))</p>
+
+        @for(contact <- contacts) {
+            <h2>@contact.name</h2>
+            <div class="contact">
+                @if(contact.url.isDefined) {
+                    <span class="label label-info">@Messages("contacts.url")</span>
+                    <a target="_blank" href="@contact.url">@contact.url</a>
+                    <br>
+                }
+                @if(contact.email.isDefined) {
+                    <br>
+                    <span class="label label-info">@Messages("contacts.email")</span>
+                    <a target="_blank" class="mailto" href="#" data-name="@contact.email.get.name" data-server="contact.email.get.server">
+                        <i class="glyphicons envelope"></i>
+                        @contact.email
+                    </a>
+                }
+                @if(contact.info.isDefined) {
+                    <br>
+                    <blockquote>
+                        @Html(contact.info.get)
+                    </blockquote>
+                }
+            </div>
+        }
+    </div>
+}
