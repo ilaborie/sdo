@@ -18,12 +18,11 @@ object ApplicationBuild extends Build {
   def customLessEntryPoints(base: File): PathFinder = ((base / "app" / "assets" / "style" * "*.less"))
 
 
+  val defaultSettings =  Project.defaultSettings ++ org.scalastyle.sbt.ScalastylePlugin.Settings
 
-  val main = play.Project(appName, appVersion, appDependencies).settings(
+  val main = play.Project(appName, appVersion, appDependencies, settings= defaultSettings).settings(
     // Add your own project settings here
     lessEntryPoints <<= baseDirectory(customLessEntryPoints)
-
-    //customLintSettings ++ org.scalastyle.sbt.ScalastylePlugin.Settings
   )
 
 
