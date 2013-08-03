@@ -9,7 +9,7 @@
         <div class="controls">
             <div class="input-prepend input-append">
                 <span class="add-on">@i</span>
-                <input type="text" id="p@i-@tmd.team.shortname" class="span4 uneditable-input" value="@tmd.players(i - 1).name">
+                <input type="text" id="p@i-@tmd.team.shortName" class="span4 uneditable-input" value="@tmd.players(i - 1).name">
                 <span class="add-on">@tmd.players(i - 1).licenseNumber</span>
             </div>
         </div>
@@ -19,13 +19,13 @@
         <div class="controls">
             <div class="input-prepend">
                 <span class="add-on">1</span>
-                <input type="text" id="d1-@tmd.team.shortname" class="span5 uneditable-input" value="@tmd.doublettes._1.name">
+                <input type="text" id="d1-@tmd.team.shortName" class="span5 uneditable-input" value="@tmd.doublettes._1.name">
             </div>
         </div>
         <div class="controls">
             <div class="input-prepend">
                 <span class="add-on">2</span>
-                <input type="text" id="d2-@tmd.team.shortname" class="span5 uneditable-input" value="@tmd.doublettes._2.name">
+                <input type="text" id="d2-@tmd.team.shortName" class="span5 uneditable-input" value="@tmd.doublettes._2.name">
             </div>
         </div>
 
@@ -33,7 +33,7 @@
         <label class="block">@Messages("team.detail.substitute")</label>
         <div class="controls">
             <div class="input-append">
-                <input type="text" id="psubs-@tmd.team.shortname" class="span4 uneditable-input" value="@tmd.substitute.map(_.player.name)">
+                <input type="text" id="psubs-@tmd.team.shortName" class="span4 uneditable-input" value="@tmd.substitute.map(_.player.name)">
                 <span class="add-on">@tmd.substitute.map(_.player.licenseNumber)</span>
             </div>
         </div>
@@ -41,13 +41,13 @@
         <label>@Messages("team.detail.substitute.who")</label>
         <div class="controls">
             <div class="input-append">
-                <input type="text" id="psubs-who-@tmd.team.shortname" class="span4 uneditable-input" value="@tmd.substitute.map(_.replace.map(_.name))">
+                <input type="text" id="psubs-who-@tmd.team.shortName" class="span4 uneditable-input" value="@tmd.substitute.map(_.replace.map(_.name))">
                 <span class="add-on">@tmd.substitute.map(_.replace.map(_.licenseNumber))</span>
             </div>
         </div>
         <div class="controls">
             <label class="span3">@Messages("team.detail.substitute.after")</label>
-            <input type="text" id="psubs-when-@tmd.team.shortname" class="span1 uneditable-input" value="@tmd.substitute.map(_.afterMatch.getOrElse(""))">
+            <input type="text" id="psubs-when-@tmd.team.shortName" class="span1 uneditable-input" value="@tmd.substitute.map(_.afterMatch.getOrElse("../../../public"))">
         </div>
     }
 

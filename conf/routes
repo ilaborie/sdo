@@ -11,7 +11,7 @@ GET        /eventsList                                       controllers.Applica
 
 # Ligue, Comite, Club
 GET        /ligues/:ligue                                    controllers.Application.ligue(ligue)
-GET        /ligues/:ligue/body                                    controllers.Application.ligueBody(ligue)
+GET        /ligues/:ligue/body                               controllers.Application.ligueBody(ligue)
 GET        /ligues/:ligue/comites/:comite                    controllers.Application.comite(ligue,comite )
 GET        /ligues/:ligue/comites/:comite/body               controllers.Application.comiteBody(ligue,comite )
 GET        /ligues/:ligue/comites/:comite/clubs/:club        controllers.Application.club(ligue, comite, club)
@@ -29,6 +29,10 @@ GET        /ligues/:ligue/comites/:comite/feminine           controllers.Classem
 GET        /ligues/:ligue/comites/:comite/junior             controllers.Classements.comiteJunior(ligue, comite)
 GET        /ligues/:ligue/comites/:comite/double             controllers.Classements.comiteDoublette(ligue, comite)
 GET        /ligues/:ligue/comites/:comite/team               controllers.Classements.comiteTeam(ligue, comite)
+
+# Tournament
+GET        /ligues/:ligue/tour/:tour                         controllers.Application.ligueTournament(ligue, tour)
+GET        /ligues/:ligue/comites/:comite/tour/:tour         controllers.Application.comiteTournament(ligue, comite, tour)
 
 # Detail
 GET        /ligues/:ligue/team/day/:day/:team1/:team2        controllers.Detail.team(ligue,day:Int,team1,team2)

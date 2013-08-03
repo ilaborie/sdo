@@ -2,7 +2,9 @@
 
 <div class="well well-small">
     <h1>@comite.name</h1>
-    @if(comite.info.isDefined) {
-    <p>@Html(comite.info.get)</p>
+    @comite.info.map(tags.info(_))
+
+    @for(event <- comite.events) {
+        @tags.event(event)
     }
 </div>

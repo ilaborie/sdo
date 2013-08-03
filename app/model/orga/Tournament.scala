@@ -4,6 +4,7 @@ import java.util.Calendar
 import play.api.cache.Cache
 import play.api.Play.current
 import play.api.i18n.Messages
+import org.apache.commons.lang3.time.FastDateFormat
 
 /**
  * Tournament
@@ -24,8 +25,9 @@ object Tournament {
  */
 sealed abstract class LigueTournament extends Tournament {
   val isEvent: Boolean = true
-
   val isTeam: Boolean = false
+
+  def shortName: String
 }
 
 /**
@@ -34,6 +36,9 @@ sealed abstract class LigueTournament extends Tournament {
 case class OpenLigue(date: Calendar) extends LigueTournament {
 
   override def toString = Messages("rank.ligue.open.title")
+
+
+  val shortName = s"OL-${FastDateFormat.getInstance("yyyyMMdd").format(date)}"
 
   def getPoint(position: TournamentResult): Int = position match {
     case Winner => 16
@@ -51,6 +56,8 @@ case class OpenLigue(date: Calendar) extends LigueTournament {
 case class CoupeLigue(date: Calendar) extends LigueTournament {
 
   override def toString = Messages("rank.ligue.coupe.title")
+
+  val shortName = "CL"
 
   def getPoint(position: TournamentResult): Int = position match {
     case Winner => 22
@@ -71,6 +78,8 @@ case class MasterLigue(date: Calendar) extends LigueTournament {
 
   override def toString = Messages("rank.ligue.master.title")
 
+  val shortName = "Ma"
+
   def getPoint(position: TournamentResult): Int = position match {
     case Winner => 29
     case RunnerUp => 22
@@ -80,11 +89,13 @@ case class MasterLigue(date: Calendar) extends LigueTournament {
     case _ => 0
   }
 }
+
 /**
  * Master Ligue Team
  */
 case class MasterLigueTeam(date: Calendar) extends LigueTournament {
   override val isTeam: Boolean = true
+  val shortName = "MaT"
 
   override def toString = Messages("rank.ligue.master.team.title")
 
@@ -97,6 +108,7 @@ case class MasterLigueTeam(date: Calendar) extends LigueTournament {
 case class ComiteRank(comite: Comite, date: Calendar) extends LigueTournament {
 
   override def toString = Messages("rank.ligue.comite.rank.title", comite)
+  val shortName = "LCR"
 
   override val isEvent: Boolean = false
 
@@ -120,7 +132,10 @@ case class ComiteRank(comite: Comite, date: Calendar) extends LigueTournament {
  * Coupe Comite
  */
 case class ComiteCoupeLigue(comite: Comite) extends LigueTournament {
-  override def toString = Messages("rank.ligue.comite.coupe.title",comite)
+  override def toString = Messages("rank.ligue.comite.coupe.title", comite)
+
+  val shortName = "LCC"
+
   override val isEvent: Boolean = false
 
   val date: Calendar = comite.coupe.date
@@ -140,13 +155,17 @@ case class ComiteCoupeLigue(comite: Comite) extends LigueTournament {
 /**
  * Comite Tournament
  */
-sealed abstract class ComiteTournament extends Tournament
+sealed abstract class ComiteTournament extends Tournament {
+  def shortName: String
+}
 
 /**
  * Coupe Comite
  */
 case class CoupeComite(date: Calendar) extends ComiteTournament {
   override def toString = Messages("rank.comite.coupe.title")
+  val shortName = "CC"
+
   def getPoint(position: TournamentResult): Int = position match {
     case Winner => 29
     case RunnerUp => 22
@@ -162,6 +181,8 @@ case class CoupeComite(date: Calendar) extends ComiteTournament {
  */
 case class OpenClub(date: Calendar) extends ComiteTournament {
   override def toString = Messages("rank.comite.open.title", club.name)
+
+  val shortName = s"OC-${FastDateFormat.getInstance("yyyyMMdd").format(date)}"
 
   def club: Club = Cache.getOrElse[Club](s"openClub.$date.club") {
     Ligue.clubs.find(_.opens.contains(this)).get

@@ -56,7 +56,7 @@ object DataChampionship {
 
     val champDays = for (day <- dayList.toList) yield readChampionshipDay(season, ligue, day.toMap)
 
-    TeamChampionship(season, champDays)
+    TeamChampionship(season, ligue, champDays)
   }
 
   /**
@@ -99,7 +99,7 @@ object DataChampionship {
    * @return Detail
    */
   def readDetail(season: Season, ligue: Ligue, day: Int, team1: Team, team2: Team): Option[MatchDetail] = {
-    val detailFile = s"data/s$season/${ligue.shortName}/teamChampionship/d$day/${team1.shortname}-${team2.shortname}.yml"
+    val detailFile = s"data/s$season/${ligue.shortName}/teamChampionship/d$day/${team1.shortName}-${team2.shortName}.yml"
     logger.info(s"Read TeamChampionship information in $detailFile")
 
     val stream = play.Play.application().resourceAsStream(detailFile)

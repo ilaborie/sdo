@@ -32,8 +32,8 @@ object Detail extends Controller {
             val m: Option[PlannedTeamMatch] = champDay.findMatch(team1.get, team2.get)
             if (m.isDefined) {
               val detail: Option[MatchDetail] = m.get.detail
-              if (detail.isDefined) Ok(views.html.classement.teamDetail(ligue, detail.get))
-              else Ok(views.html.classement.teamDetailPlay(ligue, m.get))
+              if (detail.isDefined) Ok(views.html.team.teamDetail(ligue, detail.get))
+              else Ok(views.html.team.teamDetailPlay(ligue, m.get))
             }
             else BadRequest(s"Match $team1Name - $team2Name non trouvée dans la journée $day !")
           } else if (team1.isDefined) BadRequest(s"Équipe $team2Name non trouvée !")

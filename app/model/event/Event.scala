@@ -17,7 +17,7 @@ import play.api.i18n.Messages
  * @param name a name
  * @param email maybe an email address
  * @param url maybe an URL
- * @param info maybe some info
+ * @param info maybe some ligue
  */
 case class Event(name: String,
                  eventType: EventType,
@@ -38,22 +38,21 @@ object Event {
     // ligues
     val ligueEvents: Seq[Event] = for {
       ligue <- Ligue.ligues
-      tournament <- ligue.tournaments
-      if tournament.isEvent
-    } yield Event(ligue, tournament)
+      event <- ligue.events
+    } yield event
 
     // comites
     val comiteEvents: Seq[Event] = for {
       ligue <- Ligue.ligues
       comite <- ligue.comites
-      tournament <- comite.tournaments
-    } yield Event(comite, tournament)
+      event <- comite.events
+    } yield event
 
     // Team
     val teamEvents: Seq[Event] = for {
       ligue <- Ligue.ligues
-      day <- DataChampionship.readChampionship(season, ligue).days
-    } yield Event(ligue, day)
+      event <- DataChampionship.readChampionship(season, ligue).events
+    } yield event
 
     ligueEvents ++ comiteEvents ++ teamEvents ++ DataEvent.readEvents(season)
   }.sorted(orderByStartDate)
