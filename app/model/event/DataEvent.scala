@@ -50,9 +50,7 @@ object DataEvent {
       case None => None
     }
 
-    val evt = Event(name, eventType, from, to, location, email, url, information)
-    println(evt)
-    evt
+    Event(name, EventType(eventType), from, to, location, email, url, information)
   }
 
   /**

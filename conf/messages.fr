@@ -1,5 +1,5 @@
 # Ligues
-title.ligues=Ligues
+title.ligues=Home
 menu.ligues=Ligues
 
 # Ligue
@@ -28,6 +28,14 @@ event.email=EMail
 event.location=Lieu
 menu.event.list=Liste
 menu.event.view=Événements
+event.type.world=International
+event.type.worldfrance=International [FR]
+event.type.fede=Fédé
+event.type.france=National
+event.type.ligue=Ligue
+event.type.comite=Comité
+event.type.team=Équipes
+event.type.default=ø
 
 # Rank
 rank.point=Pts.
@@ -39,19 +47,21 @@ rank.club=Club
 rank.comite.open=OC {0}
 rank.comite.open.title=Open Comité {0}
 rank.comite.coupe=CC
-rank.comite.coupe.title=Coupe Comité
+rank.comite.coupe.title=Coupe de Comité
 rank.comite.rank=Com.
 rank.comite.rank.title=Classement {0}
 rank.ligue.coupe=CL
-rank.ligue.coupe.title=Coupe Ligue
+rank.ligue.coupe.title=Coupe de Ligue
 rank.ligue.open=OL
-rank.ligue.open.title=Open Ligue
+rank.ligue.open.title=Open de Ligue
 rank.ligue.master=Mast.
 rank.ligue.master.title=Master
+rank.ligue.master.team=Mast. Éq.
+rank.ligue.master.team.title=Master par Équipe
 rank.ligue.comite.coupe=CC {0}
-rank.ligue.comite.coupe.title=Coupe {0}
+rank.ligue.comite.coupe.title=Coupe du {0}
 rank.ligue.comite.rank=Class. {0}
-rank.ligue.comite.rank.title=Classsement {0}
+rank.ligue.comite.rank.title=Classsement du {0}
 
 # Single Rank
 rank.single.ligue.caption=Classement {0} - Simple {1}
@@ -92,7 +102,8 @@ rank.team.diff=Diff.
 rank.team.diff.title=Différence
 
 # Championsihp
-championship.day.caption=Journée n° {0}
+championship.day.caption=Journée n°{0}
+team.championship.day=Championat par équipe - Journée n°{0}
 
 # Detail
 team.detail.title=Détail du match {0}

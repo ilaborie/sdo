@@ -1,0 +1,8 @@
+@(location: model.event.Location)
+
+<i class="glyphicons google_maps"></i>
+@if(location.venue.isDefined) {
+    @location.name - <em>@location.venue</em>
+} else {
+    @location.name
+}
