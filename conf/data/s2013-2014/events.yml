@@ -9,7 +9,7 @@
   from: "31-08-2013"
   to: "01-09-2013"
 -
-  name:
+  name: Catalonia Open Darts
   type: world
   url: http://www.dardscatalunya.cat
   location:
@@ -61,7 +61,7 @@
   to: "02-03-2014"
 -
   name: Trophée John Philips
-  location:
+  type: other
   from: "22-03-2014"
   to: "23-03-2014"
 -

@@ -1,0 +1,8 @@
+@(ligue: model.orga.Ligue)
+
+<div class="well well-small">
+    <h1>@ligue.name</h1>
+    @if(ligue.info.isDefined) {
+        <p>@Html(ligue.info.get)</p>
+    }
+</div>

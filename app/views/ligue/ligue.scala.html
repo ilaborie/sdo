@@ -5,6 +5,12 @@
         <div class="row-fluid">
             <div class="span3 well well-small">
                 <ul class="nav nav-list">
+                    <li>
+                        <a href="@routes.Application.ligueBody(ligue.shortName)"
+                        data-target="#bodyLigue" class="autoClick">
+                        @ligue.name
+                        </a>
+                    </li>
                     <li class="nav-header">@Messages("menu.rank")</li>
                     <li>
                         <a href="@routes.Classements.ligueSingle(ligue.shortName)"
@@ -45,14 +51,7 @@
                 </ul>
             </div>
             <div class="span9">
-                <div id="bodyLigue">
-                    <div class="well well-small">
-                        <h1>@ligue.name</h1>
-                        @if(ligue.info.isDefined) {
-                            <p>@Html(ligue.info.get)</p>
-                        }
-                    </div>
-                </div>
+                <div id="bodyLigue"></div>
             </div>
         </div>
     </div>
