@@ -2,7 +2,9 @@
 
 <div class="well well-small">
     <h1>@ligue.name</h1>
-    @if(ligue.info.isDefined) {
-        <p>@Html(ligue.info.get)</p>
+    @ligue.info.map(tags.info(_))
+
+    @for(event <- ligue.events) {
+        @tags.event(event)
     }
 </div>

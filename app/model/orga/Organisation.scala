@@ -3,11 +3,12 @@ package model.orga
 import java.util.Calendar
 import play.api.cache.Cache
 import play.api.Play.current
+import model.event.Event
 
 /**
  * Ligue
  * @param name name
- * @param shortName shortname
+ * @param shortName shortName
  * @param comites comites
  * @param coupe coupe
  * @param master master
@@ -26,7 +27,11 @@ case class Ligue(name: String,
 
   override def toString = fullName
 
+  def findTournamentByShortName(sname: String): Option[LigueTournament] = tournaments.find(_.shortName == sname)
+
   def findComiteByShortName(sname: String): Option[Comite] = comites.find(_.shortName == sname)
+
+  def findTeamByShortName(sname: String): Option[Team] = teams.find(_.shortName == sname)
 
   lazy val clubs = {
     for {
@@ -42,8 +47,6 @@ case class Ligue(name: String,
       if !team.omit
     } yield team
   }
-
-  def findTeamByShortName(sname: String): Option[Team] = teams.find(_.shortname == sname)
 
   lazy val players = {
     for {
@@ -65,9 +68,14 @@ case class Ligue(name: String,
       comite <- comites
     } yield ComiteRank(comite, dateRanking)
 
-    val list = (coupe :: master ::masterTeam:: opens.toList) ::: comiteCoupes.toList ::: comiteRankings.toList
+    val list = (coupe :: master :: masterTeam :: opens.toList) ::: comiteCoupes.toList ::: comiteRankings.toList
     list.sortBy(_.date.getTimeInMillis)
   }
+
+  lazy val events = for {
+    tournament <- this.tournaments
+    if tournament.isEvent
+  } yield Event(this, tournament)
 }
 
 object Ligue {
@@ -126,6 +134,8 @@ case class Comite(name: String,
 
   def findClubByShortName(sname: String): Option[Club] = clubs.find(_.shortName == sname)
 
+  def findTournamentByShortName(sname: String): Option[ComiteTournament] = tournaments.find(_.shortName == sname)
+
   lazy val teams = {
     for {
       club <- clubs
@@ -153,6 +163,10 @@ case class Comite(name: String,
   def ligue: Ligue = Cache.getOrElse[Ligue](s"comite.$shortName.ligue") {
     Ligue.ligues.find(_.comites.contains(this)).get
   }
+
+  lazy val events = for {
+    tournament <- this.tournaments
+  } yield Event(this, tournament)
 }
 
 /**
@@ -168,7 +182,7 @@ case class Club(name: String, shortName: String, opens: Seq[OpenClub], teams: Se
 
   override def toString = fullName
 
-  def findTeamByShortName(teamShortName: String): Option[Team] = teams.find(_.shortname == teamShortName)
+  def findTeamByShortName(teamShortName: String): Option[Team] = teams.find(_.shortName == teamShortName)
 
   lazy val players = {
     for {
@@ -184,17 +198,19 @@ case class Club(name: String, shortName: String, opens: Seq[OpenClub], teams: Se
   def comite: Comite = Cache.getOrElse[Comite](s"club.$shortName.comite") {
     ligue.comites.find(_.clubs.contains(this)).get
   }
+
+  lazy val events= for(open <- opens) yield Event(comite, open)
 }
 
 
 /**
  * Team
  * @param name name
- * @param shortname short name
+ * @param shortName short name
  * @param players team players
  * @param omit if not playing the team championship
  */
-case class Team(name: String,shortname: String, players: Seq[LicensedPlayer], omit: Boolean = false) {
+case class Team(name: String, shortName: String, players: Seq[LicensedPlayer], omit: Boolean = false) {
   override val toString = name
 
   def ligue: Ligue = Cache.getOrElse[Ligue](s"team.$name.ligue") {

@@ -2,12 +2,15 @@ package model.team
 
 import model.orga.{Team, Comite, Season, Ligue}
 import java.util.Calendar
+import model.event.Event
 
 /**
  * Team TeamChampionship
  */
-case class TeamChampionship(season: Season, days: List[TeamChampionshipDay]) {
+case class TeamChampionship(season: Season, ligue: Ligue, days: List[TeamChampionshipDay]) {
   def findDay(day: Int): Option[TeamChampionshipDay] = days.find(_.day == day)
+
+  lazy val events = for (day <- days) yield Event(ligue, day)
 }
 
 object TeamChampionship {
@@ -20,7 +23,7 @@ object TeamChampionship {
       ds <- TeamChampionship(season).days
     } yield TeamChampionshipDay(comite.ligue, ds.day, ds.from, ds.to, ds.matches.filter(_.applyTo(comite)))
 
-    TeamChampionship(season, days)
+    TeamChampionship(season, comite.ligue, days)
   }
 }
 

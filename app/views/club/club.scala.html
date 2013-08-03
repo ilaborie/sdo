@@ -17,9 +17,12 @@
 
 <div class="well well-small">
     <h1>@club.name</h1>
-    @if(club.info.isDefined) {
-        <p>@Html(club.info.get)</p>
+    @club.info.map(tags.info(_))
+
+    @for(event <- club.events) {
+        @tags.event(event)
     }
+
     @if(club.teams.size == 1) {
         @displayTeam(club.teams.head)
     } else {
@@ -30,4 +33,5 @@
         }
         </ul>
     }
+
 </div>

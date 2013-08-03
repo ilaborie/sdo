@@ -187,7 +187,7 @@ case class TeamScore(team: Team, matchWin: Int, legs: Int)
  */
 case class PlannedTeamMatch(day: Int, team1: Team, team2: Team, detail: Option[MatchDetail]) {
 
-  override val toString = s"[J$day] ${team1.shortname} - ${team2.shortname}"
+  override val toString = s"[J$day] ${team1.shortName} - ${team2.shortName}"
 
   def applyTo(team: Team): Boolean = (team1 == team || team2 == team) && !team.omit
 
@@ -201,7 +201,7 @@ case class PlannedTeamMatch(day: Int, team1: Team, team2: Team, detail: Option[M
  */
 sealed abstract class MatchDetail {
 
-  override def toString = s"[J$day] ${team1.shortname} - ${team2.shortname}"
+  override def toString = s"[J$day] ${team1.shortName} - ${team2.shortName}"
 
   def day: Int
 
