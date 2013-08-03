@@ -1,0 +1,8 @@
+@(comite: model.orga.Comite)
+
+<div class="well well-small">
+    <h1>@comite.name</h1>
+    @if(comite.info.isDefined) {
+    <p>@Html(comite.info.get)</p>
+    }
+</div>

@@ -14,9 +14,8 @@
                     <br>
                 }
                 @if(contact.email.isDefined) {
-                    <br>
                     <span class="label label-info">@Messages("contacts.email")</span>
-                    <a target="_blank" class="mailto" href="#" data-name="@contact.email.get.name" data-server="contact.email.get.server">
+                    <a target="_blank" class="mailto" href="#" data-name="@contact.email.get.name" data-server="@contact.email.get.server">
                         <i class="glyphicons envelope"></i>
                         @contact.email
                     </a>
