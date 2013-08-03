@@ -9,7 +9,7 @@
         <div class="controls">
             <div class="input-prepend input-append">
                 <span class="add-on">@i</span>
-                <input type="text" id="p@i-@tmd.team.name" class="span4 uneditable-input" value="@tmd.players(i - 1).name">
+                <input type="text" id="p@i-@tmd.team.shortname" class="span4 uneditable-input" value="@tmd.players(i - 1).name">
                 <span class="add-on">@tmd.players(i - 1).licenseNumber</span>
             </div>
         </div>
@@ -19,13 +19,13 @@
         <div class="controls">
             <div class="input-prepend">
                 <span class="add-on">1</span>
-                <input type="text" id="d1-@tmd.team.name" class="span5 uneditable-input" value="@tmd.doublettes._1.name">
+                <input type="text" id="d1-@tmd.team.shortname" class="span5 uneditable-input" value="@tmd.doublettes._1.name">
             </div>
         </div>
         <div class="controls">
             <div class="input-prepend">
                 <span class="add-on">2</span>
-                <input type="text" id="d2-@tmd.team.name" class="span5 uneditable-input" value="@tmd.doublettes._2.name">
+                <input type="text" id="d2-@tmd.team.shortname" class="span5 uneditable-input" value="@tmd.doublettes._2.name">
             </div>
         </div>
 
@@ -33,7 +33,7 @@
         <label class="block">@Messages("team.detail.substitute")</label>
         <div class="controls">
             <div class="input-append">
-                <input type="text" id="psubs-@tmd.team.name" class="span4 uneditable-input" value="@tmd.substitute.map(_.player.name)">
+                <input type="text" id="psubs-@tmd.team.shortname" class="span4 uneditable-input" value="@tmd.substitute.map(_.player.name)">
                 <span class="add-on">@tmd.substitute.map(_.player.licenseNumber)</span>
             </div>
         </div>
@@ -41,20 +41,20 @@
         <label>@Messages("team.detail.substitute.who")</label>
         <div class="controls">
             <div class="input-append">
-                <input type="text" id="psubs-who-@tmd.team.name" class="span4 uneditable-input" value="@tmd.substitute.map(_.replace.map(_.name))">
+                <input type="text" id="psubs-who-@tmd.team.shortname" class="span4 uneditable-input" value="@tmd.substitute.map(_.replace.map(_.name))">
                 <span class="add-on">@tmd.substitute.map(_.replace.map(_.licenseNumber))</span>
             </div>
         </div>
         <div class="controls">
             <label class="span3">@Messages("team.detail.substitute.after")</label>
-            <input type="text" id="psubs-when-@tmd.team.name" class="span1 uneditable-input" value="@tmd.substitute.map(_.afterMatch.getOrElse(""))">
+            <input type="text" id="psubs-when-@tmd.team.shortname" class="span1 uneditable-input" value="@tmd.substitute.map(_.afterMatch.getOrElse(""))">
         </div>
     }
 
     @leg(player: TeamParticipant, leg: Leg) = {
-    @if(leg.winner == player) {
-        <i class="glyphicons ok_2"></i>
-    } else { &nbsp;}
+        @if(leg.winner == player) {
+            <i class="glyphicons ok_2"></i>
+        } else { &nbsp;}
     }
 
     @displayMatch(i: Int, m: Match) = {
@@ -232,16 +232,16 @@
                                 <br>
                                 <div class="row-fluid">
                                     <div class="controls controls-row">
-                                        <label class="span5" for="location">@team1.team</label>
+                                        <label class="span5" for="t1-capitain">@team1.team</label>
                                         <div class="input-append span4">
-                                            <input type="text" id="location" class="span2 uneditable-input" value="@team1.capitain.name">
+                                            <input type="text" id="t1-capitain" class="span2 uneditable-input" value="@team1.capitain.name">
                                             <span class="add-on"><i class="glyphicons ok_2"></i></span>
                                         </div>
                                     </div>
                                     <div class="controls controls-row">
-                                        <label class="span5" for="location">@team2.team</label>
+                                        <label class="span5" for="t2-capitain">@team2.team</label>
                                         <div class="input-append span4">
-                                            <input type="text" id="location" class="span2 uneditable-input" value="@team2.capitain.name">
+                                            <input type="text" id="t2-capitain" class="span2 uneditable-input" value="@team2.capitain.name">
                                             <span class="add-on"><i class="glyphicons ok_2"></i></span>
                                         </div>
                                     </div>

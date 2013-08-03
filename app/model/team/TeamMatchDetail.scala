@@ -41,35 +41,14 @@ case class TeamMatchDetail(team: Team,
     }
   }
 
-  def isPlayer1Start(index: Int): Boolean = Array(1, 3, 5, 6, 8, 10, 11, 12, 18, 19).contains(index)
-
   def getPlayer1(index: Int): TeamParticipant = {
-    val basic = index match {
-      case 1 => players(0)
-      case 7 => players(0)
-      case 11 => players(0)
-      case 17 => players(0)
-
-      case 2 => players(1)
-      case 8 => players(1)
-      case 13 => players(1)
-      case 19 => players(1)
-
-      case 3 => players(2)
-      case 9 => players(2)
-      case 12 => players(2)
-      case 20 => players(2)
-
-      case 4 => players(3)
-      case 10 => players(3)
-      case 14 => players(3)
-      case 18 => players(3)
-
-      case 5 => doublettes._1
-      case 15 => doublettes._1
-
-      case 6 => doublettes._2
-      case 16 => doublettes._2
+    val basic = TeamMatchDetail.getPlayer1Index(index) match {
+      case "p1" => players(0)
+      case "p2" => players(1)
+      case "p3" => players(2)
+      case "p4" => players(3)
+      case "d1" => doublettes._1
+      case "d2" => doublettes._2
     }
 
     if (substitute.isDefined && substitute.get.replace.isDefined && index >= substitute.get.afterMatch.get) {
@@ -78,32 +57,13 @@ case class TeamMatchDetail(team: Team,
   }
 
   def getPlayer2(index: Int): TeamParticipant = {
-    val basic = index match {
-      case 2 => players(0)
-      case 7 => players(0)
-      case 12 => players(0)
-      case 18 => players(0)
-
-      case 1 => players(1)
-      case 8 => players(1)
-      case 14 => players(1)
-      case 20 => players(1)
-
-      case 4 => players(2)
-      case 9 => players(2)
-      case 11 => players(2)
-      case 19 => players(2)
-
-      case 3 => players(3)
-      case 10 => players(3)
-      case 13 => players(3)
-      case 17 => players(3)
-
-      case 5 => doublettes._1
-      case 16 => doublettes._1
-
-      case 6 => doublettes._2
-      case 15 => doublettes._2
+    val basic = TeamMatchDetail.getPlayer2Index(index) match {
+      case "p1" => players(0)
+      case "p2" => players(1)
+      case "p3" => players(2)
+      case "p4" => players(3)
+      case "d1" => doublettes._1
+      case "d2" => doublettes._2
     }
 
     if (substitute.isDefined && substitute.get.replace.isDefined && index >= substitute.get.afterMatch.get) {
@@ -111,6 +71,68 @@ case class TeamMatchDetail(team: Team,
     } else basic
   }
 }
+
+object TeamMatchDetail {
+  def isPlayer1Start(index: Int): Boolean = Array(1, 3, 5, 6, 8, 10, 11, 12, 18, 19).contains(index)
+
+
+  def getPlayer1Index(index: Int): String = index match {
+      case 1 => "p1"
+      case 7 => "p1"
+      case 11 => "p1"
+      case 17 => "p1"
+
+      case 2 => "p2"
+      case 8 => "p2"
+      case 13 => "p2"
+      case 19 => "p2"
+
+      case 3 => "p3"
+      case 9 => "p3"
+      case 12 => "p3"
+      case 20 => "p3"
+
+      case 4 => "p4"
+      case 10 => "p4"
+      case 14 => "p4"
+      case 18 => "p4"
+
+      case 5 => "d1"
+      case 15 => "d1"
+
+      case 6 => "d2"
+      case 16 => "d2"
+    }
+
+  def getPlayer2Index(index: Int): String = index match {
+      case 2 => "p1"
+      case 7 => "p1"
+      case 12 => "p1"
+      case 18 => "p1"
+
+      case 1 => "p2"
+      case 8 => "p2"
+      case 14 => "p2"
+      case 20 => "p2"
+
+      case 4 => "p3"
+      case 9 => "p3"
+      case 11 => "p3"
+      case 19 => "p3"
+
+      case 3 => "p4"
+      case 10 => "p4"
+      case 13 => "p4"
+      case 17 => "p4"
+
+      case 5 => "d1"
+      case 16 => "d1"
+
+      case 6 => "d2"
+      case 15 => "d2"
+    }
+}
+
 
 /**
  * Substitute
@@ -165,7 +187,7 @@ case class TeamScore(team: Team, matchWin: Int, legs: Int)
  */
 case class PlannedTeamMatch(day: Int, team1: Team, team2: Team, detail: Option[MatchDetail]) {
 
-  override val toString = s"[J$day] $team1 - $team2"
+  override val toString = s"[J$day] ${team1.shortname} - ${team2.shortname}"
 
   def applyTo(team: Team): Boolean = (team1 == team || team2 == team) && !team.omit
 
