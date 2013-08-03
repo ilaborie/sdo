@@ -12,6 +12,7 @@ case class TeamChampionship(season: Season, days: List[TeamChampionshipDay]) {
 
 object TeamChampionship {
 
+  // FIXME Cache
   def apply(season: Season): TeamChampionship = DataChampionship.readChampionship(season, Ligue.ligues.head)
 
   def apply(season: Season, comite: Comite): TeamChampionship = {

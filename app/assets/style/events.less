@@ -1,0 +1,97 @@
+/*
+world       purple
+worldfrance purple -> blue
+fede        dark gray
+france      navy
+ligue       red
+comite      orang
+team        green
+default     gris
+*/
+@import "bootstrap/variables";
+@import "bootstrap/mixins";
+
+@world: #7a43b6;
+@france: #0064cd;
+@fede: #333;
+@ligue: #9d261d;
+@comite: #f89406;
+@team: #46a546;
+
+.label,
+.badge {
+  &-world {
+    background-color: @world;
+  }
+  &-world[href] {
+    background-color: darken(@world, 10%);
+  }
+  &-worldfrance {
+    #gradient > .horizontal(@world, @france);
+  }
+  &-worldfrance[href] {
+    #gradient > .horizontal(darken(@world, 10%), darken(@france, 10%));
+  }
+  &-fede {
+    background-color: @fede;
+  }
+  &-fede[href] {
+    background-color: darken(@fede, 10%);
+  }
+  &-france {
+    background-color: @france;
+  }
+  &-france[href] {
+    background-color: darken(@france, 10%);
+  }
+  &-ligue {
+    background-color: @ligue;
+  }
+  &-ligue[href] {
+    background-color: darken(@ligue, 10%);
+  }
+  &-comite {
+    background-color: @comite;
+  }
+  &-comite[href] {
+    background-color: darken(@comite, 10%);
+  }
+  &-team {
+    background-color: @team;
+  }
+  &-team[href] {
+    background-color: darken(@team, 10%);
+  }
+  &-default {
+  }
+  &-default[href] {
+  }
+}
+
+
+.btn{
+  &-world {
+    .buttonBackground(@world, darken(@world, 15%));
+  }
+  &-fede {
+    .buttonBackground(@fede, darken(@fede, 15%));
+  }
+  &-france {
+    .buttonBackground(@france, darken(@france, 15%));
+  }
+  &-ligue {
+    .buttonBackground(@ligue, darken(@ligue, 15%));
+  }
+  &-comite {
+    .buttonBackground(@comite, darken(@comite, 15%));
+  }
+  &-team {
+    .buttonBackground(@team, darken(@team, 15%));
+  }
+  &-default {
+  }
+  &.active {
+    background-color: @grayLighter;
+    color: @grayDark;
+  }
+}

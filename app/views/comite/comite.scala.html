@@ -6,6 +6,12 @@
         <div class="row-fluid">
             <div class="span3 well well-small">
                 <ul class="nav nav-list">
+                    <li>
+                        <a href="@routes.Application.comiteBody(comite.ligue.shortName, comite.shortName)"
+                        data-target="#bodyComite" class="autoClick">
+                            @comite.name
+                        </a>
+                    </li>
                     <li class="nav-header">@Messages("menu.rank")</li>
                     <li>
                         <a href="@routes.Classements.comiteSingle(comite.ligue.shortName, comite.shortName)"
@@ -49,14 +55,7 @@
                 </ul>
             </div>
             <div class="span9">
-                <div id="bodyComite">
-                    <div class="well well-small">
-                        <h1>@comite.name</h1>
-                        @if(comite.info.isDefined) {
-                            <p>@Html(comite.info.get)</p>
-                        }
-                    </div>
-                </div>
+                <div id="bodyComite"></div>
             </div>
         </div>
     </div>

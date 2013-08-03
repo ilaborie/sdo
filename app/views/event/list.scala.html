@@ -1,0 +1,31 @@
+@(events: Seq[model.event.Event])
+@import model.event.EventType
+
+<h1>@Messages("title.events")</h1>
+<p class="lead">@Html(Messages("event.mention"))</p>
+
+<div id="eventTypeFilter" class="btn-group" data-toggle="buttons-checkbox">
+    @for(eventType <- EventType.all) {
+        <button type="button" data-filter="@eventType.style" class="btn btn-@eventType.style">
+            @Messages(s"event.type.${eventType.style}")
+        </button>
+    }
+</div>
+
+@for(event <- events) {
+    <div class="event @event.eventType.styles">
+        <h2>
+            <span class="label label-@event.eventType.style">@Messages(s"event.type.${event.eventType.style}")</span>
+            @event.name
+            <small>@tags.date(event.from) - @tags.date(event.to)</small>
+        </h2>
+        <div class="detail">
+            <div class="links">
+                @event.url.map(tags.site(_))
+                @event.email.map(tags.email(_))
+            </div>
+            <div>@event.location.map(tags.location(_))</div>
+            @event.info.map(tags.info(_))
+        </div>
+    </div>
+}
