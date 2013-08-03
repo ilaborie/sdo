@@ -1,11 +1,13 @@
 # Basic script
 $ ->
   # Register PostLoadEvent
-  $("#bodyEvents").on "postLoad", registerFilterAction
+  $("#bodyEvents").on "postLoad", () ->
+    registerFilter()
+    registerPopover()
 
 
 # Filtering events
-registerFilterAction = () ->
+registerFilter = () ->
   $("#eventTypeFilter button").click () ->
     active = $(this).hasClass "active"
     filter = $(this).attr "data-filter"
@@ -13,3 +15,19 @@ registerFilterAction = () ->
       $("." + filter).show()
     else
       $("." + filter).hide()
+
+registerPopover = () ->
+  $("td.event").popover {
+    html: true,
+    title: getTitle,
+    container: "body",
+    content: getContent
+  }
+
+getTitle = () ->
+  content = $(this).find ".title.hidden"
+  content.html()
+
+getContent = () ->
+  content = $(this).find ".content.hidden"
+  content.html()

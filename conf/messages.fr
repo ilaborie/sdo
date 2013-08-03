@@ -28,6 +28,7 @@ event.url=Site
 event.email=EMail
 event.location=Lieu
 menu.event.list=Liste
+menu.event.calendar=Calendrier
 menu.event.view=Événements
 event.type.world=International
 event.type.worldfrance=International [FR]
@@ -46,9 +47,9 @@ rank.club=Club
 
 # Tournament
 rank.comite.open=OC {0}
-rank.comite.open.title=Open Comité {0}
+rank.comite.open.title=Open de Comité - {0}
 rank.comite.coupe=CC
-rank.comite.coupe.title=Coupe de Comité
+rank.comite.coupe.title=Coupe du Comité
 rank.comite.rank=Com.
 rank.comite.rank.title=Classement {0}
 rank.ligue.coupe=CL

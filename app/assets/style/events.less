@@ -30,7 +30,7 @@ default     gris
     #gradient > .horizontal(@world, @france);
   }
   &-worldfrance[href] {
-    #gradient > .horizontal(darken(@world, 10%), darken(@france, 10%));
+    #gradient > .directional(darken(@world, 10%), darken(@france, 10%));
   }
   &-fede {
     background-color: @fede;
@@ -68,8 +68,7 @@ default     gris
   }
 }
 
-
-.btn{
+.btn {
   &-world {
     .buttonBackground(@world, darken(@world, 15%));
   }
@@ -95,3 +94,66 @@ default     gris
     color: @grayDark;
   }
 }
+
+ul.calendar li {
+  vertical-align: top;
+}
+
+table.calendar {
+  margin-left: auto;
+  margin-right: auto;
+
+  thead tr {
+    background-color: @gray;
+    color: @grayLighter;
+  }
+
+  tbody {
+    td.nope {
+      background-color: @grayLight;
+      cursor: not-allowed;
+    }
+    td.empty {
+      background-color: @grayLighter;
+      color: @gray;
+      cursor: not-allowed;
+    }
+    td.event {
+      color: @white;
+      cursor: pointer;
+    }
+
+    td:nth-child(n+6) {
+      font-weight: bold;
+    }
+
+    td.rainbow {
+      background-image: linear-gradient(45deg, @world, @france,@ligue,@comite, @team);
+    }
+    td.world {
+      background-color: @world;
+    }
+    td.worldfrance {
+      #gradient > .directional(@world, @france);
+    }
+    td.fede {
+      background-color: @fede;
+    }
+    td.france {
+      background-color: @france;
+    }
+    td.ligue {
+      background-color: @ligue;
+    }
+    td.comite {
+      background-color: @comite;
+    }
+    td.team {
+      background-color: @team;
+    }
+    td.default {
+      background-color: @grayDark;
+    }
+  }
+}
+
