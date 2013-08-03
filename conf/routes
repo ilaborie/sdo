@@ -5,9 +5,15 @@ GET        /ligues                                           controllers.Applica
 # Contact
 GET        /contacts                                         controllers.Application.contact
 
+# Event
+GET        /events                                           controllers.Application.event
+GET        /eventsList                                       controllers.Application.eventsList()
+
 # Ligue, Comite, Club
 GET        /ligues/:ligue                                    controllers.Application.ligue(ligue)
+GET        /ligues/:ligue/body                                    controllers.Application.ligueBody(ligue)
 GET        /ligues/:ligue/comites/:comite                    controllers.Application.comite(ligue,comite )
+GET        /ligues/:ligue/comites/:comite/body               controllers.Application.comiteBody(ligue,comite )
 GET        /ligues/:ligue/comites/:comite/clubs/:club        controllers.Application.club(ligue, comite, club)
 
 # Ligue Rank

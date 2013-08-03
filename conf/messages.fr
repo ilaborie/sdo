@@ -20,6 +20,15 @@ contacts.mention=Si vous souhaitez ajouter vos coordonées sur cette page, veuil
 contacts.url=Site
 contacts.email=EMail
 
+# Events
+title.events=Événements
+event.mention=Si vous souhaitez corriger ou ajouter un événement sur cette page, veuillez me <a class="mailto" href="#" data-name="ilaborie" data-server="gmail.com"><i class="glyphicons envelope"></i> contacter</a>.
+event.url=Site
+event.email=EMail
+event.location=Lieu
+menu.event.list=Liste
+menu.event.view=Événements
+
 # Rank
 rank.point=Pts.
 rank.point.title=Points
