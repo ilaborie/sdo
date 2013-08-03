@@ -3,7 +3,7 @@ package controllers
 import play.api.mvc._
 import model.orga._
 import model.contact.Contact
-import model.event.Event
+import model.event.{EventYear, Event}
 
 /**
  * Mains pages
@@ -135,4 +135,14 @@ object Application extends Controller {
   def eventsList() = Action {
     Ok(views.html.event.list(Event.events))
   }
+
+  /**
+   * Events calendar
+   * @return calendar page
+   */
+  def eventsCalendar() = Action {
+    val years = EventYear.years(Event.events)
+    Ok(views.html.event.calendar(years))
+  }
+
 }

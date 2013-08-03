@@ -35,7 +35,7 @@ object DataEvent {
     val name = data("name").asInstanceOf[String]
     val eventType = data("type").asInstanceOf[String]
     val from = Data.readDate(data("from").asInstanceOf[String])
-    val to = Data.readDate(data("from").asInstanceOf[String])
+    val to = Data.readDate(data("to").asInstanceOf[String])
     val location = {
       if (!data.contains("location")) None
       else readLocation(data("location").asInstanceOf[JavaMap[String, String]].toMap)
