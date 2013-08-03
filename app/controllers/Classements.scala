@@ -19,7 +19,7 @@ object Classements extends Controller {
    */
   def ligueSingle(ligueShortName: String) = Action {
     LigueAction(ligueShortName) {
-      ligue => Ok(views.html.classement.ligue.single(ligue, LigueRanking.single(ligue)))
+      ligue => Ok(views.html.ligue.single(ligue, LigueRanking.single(ligue)))
     }.result
   }
 
@@ -30,7 +30,7 @@ object Classements extends Controller {
    */
   def ligueFeminine(ligueShortName: String) = Action {
     LigueAction(ligueShortName) {
-      ligue => Ok(views.html.classement.ligue.feminine(ligue, LigueRanking.feminine(ligue)))
+      ligue => Ok(views.html.ligue.feminine(ligue, LigueRanking.feminine(ligue)))
     }.result
   }
 
@@ -41,7 +41,7 @@ object Classements extends Controller {
    */
   def ligueJunior(ligueShortName: String) = Action {
     LigueAction(ligueShortName) {
-      ligue => Ok(views.html.classement.ligue.junior(ligue, LigueRanking.junior(ligue)))
+      ligue => Ok(views.html.ligue.junior(ligue, LigueRanking.junior(ligue)))
     }.result
   }
 
@@ -52,7 +52,7 @@ object Classements extends Controller {
    */
   def ligueDoublette(ligueShortName: String) = Action {
     LigueAction(ligueShortName) {
-      ligue=> Ok(views.html.classement.ligue.double(ligue, LigueRanking.double(ligue)))
+      ligue=> Ok(views.html.ligue.double(ligue, LigueRanking.double(ligue)))
     }.result
   }
 
@@ -63,7 +63,7 @@ object Classements extends Controller {
    */
   def ligueTeam(ligueShortName: String) = Action {
     LigueAction(ligueShortName) {
-      ligue=> Ok(views.html.classement.ligue.team(ligue, LigueRanking.team(ligue)))
+      ligue=> Ok(views.html.ligue.team(ligue, LigueRanking.team(ligue)))
     }.result
   }
 
@@ -76,7 +76,7 @@ object Classements extends Controller {
    */
   def comiteSingle(ligueShortName: String, comiteShortName: String) = Action {
     ComiteAction(ligueShortName, comiteShortName) {
-      comite=> Ok(views.html.classement.comite.single(comite, ComiteRanking.single(comite)))
+      comite=> Ok(views.html.comite.single(comite, ComiteRanking.single(comite)))
     }.result
   }
 
@@ -88,7 +88,7 @@ object Classements extends Controller {
    */
   def comiteFeminine(ligueShortName: String, comiteShortName: String) = Action {
     ComiteAction(ligueShortName, comiteShortName) {
-      comite => Ok(views.html.classement.comite.feminine(comite, ComiteRanking.feminine(comite)))
+      comite => Ok(views.html.comite.feminine(comite, ComiteRanking.feminine(comite)))
     }.result
   }
 
@@ -100,7 +100,7 @@ object Classements extends Controller {
    */
   def comiteJunior(ligueShortName: String, comiteShortName: String) = Action {
     ComiteAction(ligueShortName, comiteShortName) {
-      comite => Ok(views.html.classement.comite.junior(comite, ComiteRanking.junior(comite)))
+      comite => Ok(views.html.comite.junior(comite, ComiteRanking.junior(comite)))
     }.result
   }
 
@@ -112,7 +112,7 @@ object Classements extends Controller {
    */
   def comiteDoublette(ligueShortName: String, comiteShortName: String) = Action {
     ComiteAction(ligueShortName, comiteShortName) {
-      comite => Ok(views.html.classement.comite.double(comite, ComiteRanking.double(comite)))
+      comite => Ok(views.html.comite.double(comite, ComiteRanking.double(comite)))
     }.result
   }
 
@@ -124,7 +124,7 @@ object Classements extends Controller {
    */
   def comiteTeam(ligueShortName: String, comiteShortName: String) = Action {
     ComiteAction(ligueShortName, comiteShortName) {
-      comite => Ok(views.html.classement.comite.team(comite, ComiteRanking.team(comite)))
+      comite => Ok(views.html.comite.team(comite, ComiteRanking.team(comite)))
     }.result
   }
 }

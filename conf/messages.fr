@@ -13,6 +13,7 @@ menu.rank.women=Féminines
 menu.rank.junior=Juniors
 menu.rank.double=Doubles
 menu.club=Clubs
+menu.tournaments=Tournois
 
 # Contacts
 title.contacts=Contacts

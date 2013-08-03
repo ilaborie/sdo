@@ -25,13 +25,13 @@ object LigueRanking {
 
   val season = Season.currentSeason
 
-  def single(ligue: Ligue) = SeasonSingleRanking(season, ligue.tournaments, Nil)
+  def single(ligue: Ligue) = SeasonSingleRanking(season, ligue.tournaments.filter(!_.isTeam), Nil)
 
-  def feminine(ligue: Ligue) = SeasonFeminineRanking(season, ligue.tournaments, Nil)
+  def feminine(ligue: Ligue) = SeasonFeminineRanking(season, ligue.tournaments.filter(!_.isTeam), Nil)
 
-  def junior(ligue: Ligue) = SeasonJuniorRanking(season, ligue.tournaments, Nil)
+  def junior(ligue: Ligue) = SeasonJuniorRanking(season, ligue.tournaments.filter(!_.isTeam), Nil)
 
-  def double(ligue: Ligue) = SeasonDoubleRanking(season, ligue.tournaments, Nil)
+  def double(ligue: Ligue) = SeasonDoubleRanking(season, ligue.tournaments.filter(!_.isTeam), Nil)
 
   def team(ligue: Ligue) = SeasonTeamRanking(season, ligue)
 

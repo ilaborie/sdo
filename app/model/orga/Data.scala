@@ -88,7 +88,7 @@ object Data {
     val coupe = CoupeLigue(readDate(info("coupe").asInstanceOf[String]))
     val master = MasterLigue(readDate(info("master").asInstanceOf[String]))
     val masterTeam = MasterLigueTeam(readDate(info("master").asInstanceOf[String]))
-    val information = readInfo(s"data/s$season/$ligue/info.html")
+    val information = readInfo(s"data/s$season/$ligue/ligue.html")
 
     Ligue(name, shortName, comites, opens, coupe, master, masterTeam, information)
   }
@@ -111,7 +111,7 @@ object Data {
     val clubList = info("clubs").asInstanceOf[JavaList[String]].toList
     val clubs = for (club <- clubList) yield readClub(season, ligue, comite, club)
     val coupe = CoupeComite(readDate(info("coupe").asInstanceOf[String]))
-    val information = readInfo(s"data/s$season/$ligue/$comite/info.html")
+    val information = readInfo(s"data/s$season/$ligue/$comite/ligue.html")
 
     Comite(name, shortName, clubs, coupe, information)
   }
@@ -135,7 +135,7 @@ object Data {
     val opens = for (open <- openList) yield OpenClub(readDate(open))
     val teamList = info("teams").asInstanceOf[JavaList[String]].toList
     val teams = for (team <- teamList) yield readTeam(season, ligue, comite, club, team)
-    val information = readInfo(s"data/s$season/$ligue/$comite/$club/info.html")
+    val information = readInfo(s"data/s$season/$ligue/$comite/$club/ligue.html")
 
     Club(name, shortName, opens, teams, information)
   }
@@ -181,9 +181,9 @@ object Data {
 
 
   /**
-   * Read info file
-   * @param infoFile info file
-   * @return the info
+   * Read ligue file
+   * @param infoFile ligue file
+   * @return the ligue
    */
   def readInfo(infoFile: String): Option[Info] = {
     val stream = Play.application.resourceAsStream(infoFile)

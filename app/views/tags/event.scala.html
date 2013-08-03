@@ -1,0 +1,17 @@
+@(event: model.event.Event)
+
+<div class="event @event.eventType.styles">
+    <h2>
+        <span class="label label-@event.eventType.style">@Messages(s"event.type.${event.eventType.style}")</span>
+        @event.name
+        <small>@tags.date(event.from) - @tags.date(event.to)</small>
+    </h2>
+    <div class="detail">
+        <div class="links">
+            @event.url.map(tags.site(_))
+            @event.email.map(tags.email(_))
+        </div>
+        <div>@event.location.map(tags.location(_))</div>
+        @event.info.map(tags.info(_))
+    </div>
+</div>
