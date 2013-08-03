@@ -16,12 +16,22 @@
     @for(m <- day.matches) {
         @m.detail match {
             case None => {
-                <tr><td></td> <td>@m.team1.name</td> <td> - </td> <td> - </td> <td>@m.team2.name</td></tr>
+                <tr>
+                    <td>
+                        <a href="@routes.Detail.team(day.ligue.shortName, day.day, m.team1.shortname, m.team2.shortname)" class="btn btn-primary">
+                            <i class="glyphicons white play"></i>
+                        </a>
+                    </td>
+                    <td>@m.team1.name</td>
+                    <td> - </td>
+                    <td> - </td>
+                    <td>@m.team2.name</td>
+                </tr>
             }
             case Some(detail) => {
                 <tr>
                     <td>
-                        <a href="@routes.Detail.team(day.ligue.shortName, day.day, m.team1.name, m.team2.name)" class="btn">
+                        <a href="@routes.Detail.team(day.ligue.shortName, day.day, m.team1.shortname, m.team2.shortname)" class="btn">
                             <i class="glyphicons search"></i>
                         </a>
                     </td>

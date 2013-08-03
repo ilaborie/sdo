@@ -205,7 +205,7 @@ object DataChampionship {
         detail2.team,
         player1,
         player2,
-        detail1.isPlayer1Start(i),
+        TeamMatchDetail.isPlayer1Start(i),
         readLegs(player1, player2, getMatchData(i)))
 
     res.toList

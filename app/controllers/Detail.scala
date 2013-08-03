@@ -33,7 +33,7 @@ object Detail extends Controller {
             if (m.isDefined) {
               val detail: Option[MatchDetail] = m.get.detail
               if (detail.isDefined) Ok(views.html.classement.teamDetail(ligue, detail.get))
-              else BadRequest(s"Match J$day $team1Name - $team2Name non joué !")
+              else Ok(views.html.classement.teamDetailPlay(ligue, m.get))
             }
             else BadRequest(s"Match $team1Name - $team2Name non trouvée dans la journée $day !")
           } else if (team1.isDefined) BadRequest(s"Équipe $team2Name non trouvée !")
