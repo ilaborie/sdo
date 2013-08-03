@@ -2,33 +2,23 @@
 
 <h1>@Messages("title.events")</h1>
 <p class="lead">@Html(Messages("event.mention"))</p>
+
+
+
 @for(event <- events) {
-    <h2>
-        @event.name
-    <small>@tags.date(event.from) - @tags.date(event.to)</small>
-    </h2>
-    <div class="event @event.eventType">
-        @if(event.url.isDefined) {
-            <span class="label label-info">@Messages("event.url")</span>
-            <a target="_blank" href="@event.url">@event.url</a>
-            <br>
-        }
-        @if(event.location.isDefined) {
-            <span class="label label-info">@Messages("event.location")</span>
-            @event.location
-        }
-        @if(event.email.isDefined) {
-            <span class="label label-info">@Messages("event.email")</span>
-            <a target="_blank" class="mailto" href="#" data-name="@event.email.get.name" data-server="@event.email.get.server">
-                <i class="glyphicons envelope"></i>
-                @event.email
-            </a>
-        }
-        @if(event.info.isDefined) {
-            <br>
-            <blockquote>
-            @Html(event.info.get)
-            </blockquote>
-        }
+    <div class="event @event.eventType.style">
+        <h2>
+            <span class="label label-@event.eventType.style">@Messages(s"event.type.${event.eventType.style}")</span>
+            @event.name
+            <small>@tags.date(event.from) - @tags.date(event.to)</small>
+        </h2>
+        <div class="detail">
+            <div class="links">
+                @event.url.map(tags.site(_))
+                @event.email.map(tags.email(_))
+            </div>
+            <div>@event.location.map(tags.location(_))</div>
+            @event.info.map(tags.info(_))
+        </div>
     </div>
 }

@@ -87,9 +87,10 @@ object Data {
     val opens = for (open <- openList) yield OpenLigue(readDate(open))
     val coupe = CoupeLigue(readDate(info("coupe").asInstanceOf[String]))
     val master = MasterLigue(readDate(info("master").asInstanceOf[String]))
+    val masterTeam = MasterLigueTeam(readDate(info("master").asInstanceOf[String]))
     val information = readInfo(s"data/s$season/$ligue/info.html")
 
-    Ligue(name, shortName, comites, opens, coupe, master, information)
+    Ligue(name, shortName, comites, opens, coupe, master, masterTeam, information)
   }
 
 
