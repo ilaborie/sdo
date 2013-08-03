@@ -2,6 +2,9 @@
 GET        /                                                 controllers.Application.index
 GET        /ligues                                           controllers.Application.ligues
 
+# Contact
+GET        /contacts                                         controllers.Application.contact
+
 # Ligue, Comite, Club
 GET        /ligues/:ligue                                    controllers.Application.ligue(ligue)
 GET        /ligues/:ligue/comites/:comite                    controllers.Application.comite(ligue,comite )

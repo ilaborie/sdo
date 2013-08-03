@@ -2,11 +2,14 @@ package controllers
 
 import play.api.mvc._
 import model.orga._
+import model.contact.Contact
 
 /**
  * Mains pages
  */
 object Application extends Controller {
+
+  private val season: Season = Season.currentSeason
 
   /**
    * Index page
@@ -59,5 +62,13 @@ object Application extends Controller {
         case _ => BadRequest(s"Club non connue: $clubShortName dans le comité $comite")
       }
     }.result
+  }
+
+  /**
+   * Show contacts
+   * @return contacts page
+   */
+  def contact() = Action {
+    Ok(views.html.contacts(Contact.contacts))
   }
 }

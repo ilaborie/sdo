@@ -14,6 +14,12 @@ menu.rank.junior=Juniors
 menu.rank.double=Doubles
 menu.club=Clubs
 
+# Contacts
+title.contacts=Contacts
+contacts.mention=Si vous souhaitez ajouter vos coordonées sur cette page, veuillez me <a class="mailto" href="#" data-name="ilaborie" data-server="gmail.com"><i class="glyphicons envelope"></i> contacter</a>.
+contacts.url=Site
+contacts.email=EMail
+
 # Rank
 rank.point=Pts.
 rank.point.title=Points
