@@ -8,6 +8,7 @@ $ ->
     url = $this.attr "href"
     $(target).load url, () ->
       $this.parent().addClass "active"
+      $(target).trigger("postLoad")
     event.preventDefault
     false
 
