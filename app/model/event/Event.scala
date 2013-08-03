@@ -28,6 +28,33 @@ case class Event(name: String,
                  url: Option[String] = None,
                  info: Option[Info] = None) {
 
+  val range: DateRange = {
+    val fromDate = {
+      val cal = Calendar.getInstance()
+      cal.clear()
+      cal.set(Calendar.YEAR, from.get(Calendar.YEAR))
+      cal.set(Calendar.MONTH, from.get(Calendar.MONTH))
+      cal.set(Calendar.DATE, from.get(Calendar.DATE))
+      cal
+    }
+
+    val toDate = {
+      val cal = Calendar.getInstance()
+      cal.clear()
+      cal.set(Calendar.YEAR, to.get(Calendar.YEAR))
+      cal.set(Calendar.MONTH, to.get(Calendar.MONTH))
+      cal.set(Calendar.DATE, to.get(Calendar.DATE) + 1)
+      cal.add(Calendar.MILLISECOND, -1)
+      cal
+    }
+
+    ClosedDateRange(fromDate, toDate)
+  }
+
+  def applyTo(year: Year, month: Month): Boolean = !(range intersection ClosedDateRange(year, month)).isEmpty
+
+  def applyTo(year: Year, month: Month, day: Day): Boolean = !(range intersection ClosedDateRange(year, month, day)).isEmpty
+
 }
 
 object Event {
@@ -61,7 +88,7 @@ object Event {
     val name = Messages("team.championship.day", day.day)
     // FIXME reverse routing, ligue, team
     val url = controllers.routes.Application.ligue(ligue.shortName).url
-    
+
     Event(name, TeamEvent, day.from, day.to)
   }
 

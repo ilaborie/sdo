@@ -7,7 +7,8 @@ GET        /contacts                                         controllers.Applica
 
 # Event
 GET        /events                                           controllers.Application.event
-GET        /eventsList                                       controllers.Application.eventsList()
+GET        /eventsList                                       controllers.Application.eventsList
+GET        /eventsCal                                        controllers.Application.eventsCalendar
 
 # Ligue, Comite, Club
 GET        /ligues/:ligue                                    controllers.Application.ligue(ligue)
