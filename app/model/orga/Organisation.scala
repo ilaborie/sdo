@@ -25,7 +25,7 @@ case class Ligue(name: String,
 
   override def toString = fullName
 
-  def findComiteByShortName(shortName: String): Option[Comite] = comites.find(_.shortName == shortName)
+  def findComiteByShortName(sname: String): Option[Comite] = comites.find(_.shortName == sname)
 
   lazy val clubs = {
     for {
@@ -42,9 +42,7 @@ case class Ligue(name: String,
     } yield team
   }
 
-  def findTeamByName(name: String): Option[Team] = Cache.getOrElse[Option[Team]](s"Ligue.team.$name") {
-    teams.find(_.name == name)
-  }
+  def findTeamByShortName(sname: String): Option[Team] = teams.find(_.shortname == sname)
 
   lazy val players = {
     for {
@@ -105,9 +103,7 @@ object Ligue {
     } yield player
   }
 
-  def findByShortName(shortName: String): Option[Ligue] = Cache.getOrElse[Option[Ligue]](s"ligue.$shortName") {
-    ligues.find(_.shortName == shortName)
-  }
+  def findByShortName(sname: String): Option[Ligue] = ligues.find(_.shortName == sname)
 }
 
 /**
@@ -171,9 +167,7 @@ case class Club(name: String, shortName: String, opens: Seq[OpenClub], teams: Se
 
   override def toString = fullName
 
-  def findTeamByName(name: String): Option[Team] = Cache.getOrElse[Option[Team]](s"club.$shortName.team.$name") {
-    teams.find(_.name == name)
-  }
+  def findTeamByShortName(teamShortName: String): Option[Team] = teams.find(_.shortname == teamShortName)
 
   lazy val players = {
     for {
@@ -195,9 +189,11 @@ case class Club(name: String, shortName: String, opens: Seq[OpenClub], teams: Se
 /**
  * Team
  * @param name name
- * @param players players
+ * @param shortname short name
+ * @param players team players
+ * @param omit if not playing the team championship
  */
-case class Team(name: String, players: Seq[LicensedPlayer], omit: Boolean = false) {
+case class Team(name: String,shortname: String, players: Seq[LicensedPlayer], omit: Boolean = false) {
   override val toString = name
 
   def ligue: Ligue = Cache.getOrElse[Ligue](s"team.$name.ligue") {

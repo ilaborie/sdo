@@ -1,6 +1,7 @@
 @import "bootstrap/variables";
 @import "bootstrap/mixins";
 
+
 .match {
   margin-top: 1em;
   border: thin solid @gray;
@@ -10,11 +11,13 @@
     text-align: center;
     background-color: @gray;
     color: @grayLighter;
+    font-weight: bold;
   }
 
   .player {
     padding: .5em;
     text-align: center;
+    font-weight: bold;
   }
 
   i {
@@ -54,10 +57,20 @@
   .head {
     background-color: @gray;
     color: @grayLighter;
+    font-weight: bold;
   }
   .row-fluid {
     margin-top: 0.6em;
-    font-size: 1.2em;
+    font-size: 1.3em;
+  }
+
+  .elt {
+    padding-top: 5px;
+    font-weight: bold;
+  }
+
+  i {
+    font-size: 1.3em;
   }
 }
 
@@ -70,6 +83,7 @@ table.result {
 
   caption {
     font-size: 18px;
+    display: none;
   }
   thead tr {
     background-color: @gray;
@@ -79,5 +93,18 @@ table.result {
   tbody tr td:first-child, tbody tr td:last-child {
     width: 40%;
     font-family: "Ubuntu Mono", monaco, monospace;
+  }
+}
+
+.capitain {
+  margin-top: 1em;
+  border: thin solid @gray;
+  .border-radius(4px);
+  text-align: center;
+
+  .head {
+    background-color: @gray;
+    color: @grayLighter;
+    font-weight: bold;
   }
 }
