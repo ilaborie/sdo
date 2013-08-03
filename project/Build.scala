@@ -2,6 +2,7 @@ import sbt._
 import Keys._
 import play.Project._
 
+
 object ApplicationBuild extends Build {
 
   val appName = "sdo"
@@ -21,6 +22,9 @@ object ApplicationBuild extends Build {
   val main = play.Project(appName, appVersion, appDependencies).settings(
     // Add your own project settings here
     lessEntryPoints <<= baseDirectory(customLessEntryPoints)
+
+    //customLintSettings ++ org.scalastyle.sbt.ScalastylePlugin.Settings
   )
+
 
 }

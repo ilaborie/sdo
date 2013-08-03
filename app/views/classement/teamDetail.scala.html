@@ -1,9 +1,10 @@
-@(detail: model.team.MatchDetail)
+@(ligue: model.orga.Ligue, detail: model.team.MatchDetail)
 @import model.team._
 @import model.orga.TeamParticipant
 
+
     @displayTeam(tmd: TeamMatchDetail) = {
-        <label>@Messages("team.detail.players")</label>
+        <label class="block">@Messages("team.detail.players")</label>
     @for(i <- 1 to 4) {
         <div class="controls">
             <div class="input-prepend input-append">
@@ -14,7 +15,7 @@
         </div>
     }
 
-        <label>@Messages("team.detail.doublettes")</label>
+        <label class="block">@Messages("team.detail.doublettes")</label>
         <div class="controls">
             <div class="input-prepend">
                 <span class="add-on">1</span>
@@ -29,7 +30,7 @@
         </div>
 
 
-        <label>@Messages("team.detail.substitute")</label>
+        <label class="block">@Messages("team.detail.substitute")</label>
         <div class="controls">
             <div class="input-append">
                 <input type="text" id="psubs-@tmd.team.name" class="span4 uneditable-input" value="@tmd.substitute.map(_.player.name)">
@@ -63,9 +64,10 @@
                 @if(m.player1Start) {
                     <i class="glyphicons asterisk"></i>
                 }
-                @m.player1.name
                 @if(m.winner == m.player1) {
-                    <i class="glyphicons check"></i>
+                    <span class="win">@m.player1.name</span>
+                } else {
+                    <span class="loose">@m.player1.name</span>
                 }
             </div>
             <div class="legs">
@@ -94,22 +96,28 @@
                 @if(!m.player1Start) {
                     <i class="glyphicons asterisk"></i>
                 }
-                @m.player2.name
                 @if(m.winner == m.player2) {
-                    <i class="glyphicons check pull-right"></i>
+                    <span class="win">@m.player2.name</span>
+                } else {
+                    <span class="loose">@m.player2.name</span>
                 }
             </div>
         </div>
     }
 
-@layout.main(Messages("team.detail.title", detail)) {
+@layout.main(Messages("team.detail.title", detail), navbar = navbar.teamDetail(ligue, detail)) {
     <div class="container well well-small">
-        <h1>@detail</h1>
         @detail match {
             case MatchDetailFail(_, _, _, fails) => {
                 @Messages("team.detail.fail", fails)
             }
             case PlayedMatchDetail(day, date, location, team1, team2, matches) => {
+                <h1>
+                    @Messages("championship.day.caption",day) -
+                    <span class="@tags.winLooseDraw(detail.plus(team1.team),detail.plus(team2.team))">@team1.team</span>
+                    vs.
+                    <span class="@tags.winLooseDraw(detail.plus(team2.team),detail.plus(team1.team))">@team2.team</span>
+                </h1>
                 <form>
                     <fieldset>
                         <div class="controls controls-row">
@@ -160,7 +168,7 @@
                                         <i class="glyphicons unchecked"></i>
                                     }
                                     </div>
-                                    <div class="span4">@i</div>
+                                    <div class="span4 elt">@i</div>
                                     <div class="span4">
                                     @if(matches(i - 1).teamWinner == team2.team) {
                                         <i class="glyphicons check"></i>
@@ -175,33 +183,71 @@
                     </div>
 
                     <fieldset>
-                        <table class="table table-bordered table-striped table-condensed result">
-                            <caption>@Messages("team.detail.result")</caption>
-                            <thead>
-                                <tr>
-                                    <th>@team1.team.name</th>
-                                    <th></th>
-                                    <th>@team2.team.name</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>@detail.plus(team1.team)</td>
-                                    <th>@Messages("team.detail.matches")</th>
-                                    <td>@detail.plus(team2.team)</td>
-                                </tr>
-                                <tr>
-                                    <td>@detail.legs(team1.team)</td>
-                                    <th>@Messages("team.detail.legs")</th>
-                                    <td>@detail.legs(team2.team)</td>
-                                </tr>
-                                <tr>
-                                    <td>@detail.points(team1.team)</td>
-                                    <th>@Messages("team.detail.points")</th>
-                                    <td>@detail.points(team2.team)</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="row-fluid">
+                            <div class="span8">
+                                <table class="table table-bordered table-striped table-condensed result">
+                                    <caption>@Messages("team.detail.result")</caption>
+                                    <thead>
+                                        <tr>
+                                            <th>@team1.team.name</th>
+                                            <th></th>
+                                            <th>@team2.team.name</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="@tags.winLooseDraw(detail.plus(team1.team),detail.plus(team2.team))">
+                                            @detail.plus(team1.team)
+                                            </td>
+                                            <th>@Messages("team.detail.matches")</th>
+                                            <td class="@tags.winLooseDraw(detail.plus(team2.team),detail.plus(team1.team))">
+                                            @detail.plus(team2.team)
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="@tags.winLooseDraw(detail.legs(team1.team),detail.legs(team2.team))">
+                                            @detail.legs(team1.team)
+                                            </td>
+                                            <th>@Messages("team.detail.legs")</th>
+                                            <td class="@tags.winLooseDraw(detail.legs(team2.team),detail.legs(team1.team))">
+                                            @detail.legs(team2.team)
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="@tags.winLooseDraw(detail.points(team1.team),detail.points(team2.team))">
+                                            @detail.points(team1.team)
+                                            </td>
+                                            <th>@Messages("team.detail.points")</th>
+                                            <td class="@tags.winLooseDraw(detail.points(team2.team),detail.points(team1.team))">
+                                            @detail.points(team2.team)
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="span4 capitain">
+                                <div class="head">
+                                    @Messages("team.detail.capitain")
+                                </div>
+                                <br>
+                                <div class="row-fluid">
+                                    <div class="controls controls-row">
+                                        <label class="span5" for="location">@team1.team</label>
+                                        <div class="input-append span4">
+                                            <input type="text" id="location" class="span2 uneditable-input" value="@team1.capitain.name">
+                                            <span class="add-on"><i class="glyphicons ok_2"></i></span>
+                                        </div>
+                                    </div>
+                                    <div class="controls controls-row">
+                                        <label class="span5" for="location">@team2.team</label>
+                                        <div class="input-append span4">
+                                            <input type="text" id="location" class="span2 uneditable-input" value="@team2.capitain.name">
+                                            <span class="add-on"><i class="glyphicons ok_2"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </fieldset>
                 </form>
             }

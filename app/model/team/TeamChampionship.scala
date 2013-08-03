@@ -1,12 +1,14 @@
 package model.team
 
-import model.orga.{Comite, Season, Ligue}
+import model.orga.{Team, Comite, Season, Ligue}
 import java.util.Calendar
 
 /**
  * Team TeamChampionship
  */
-case class TeamChampionship(season: Season, days: List[TeamChampionshipDay])
+case class TeamChampionship(season: Season, days: List[TeamChampionshipDay]) {
+  def findDay(day: Int): Option[TeamChampionshipDay] = days.find(_.day == day)
+}
 
 object TeamChampionship {
 
@@ -26,4 +28,8 @@ object TeamChampionship {
  * @param day day
  * @param matches matchs
  */
-case class TeamChampionshipDay(ligue: Ligue, day: Int, from: Calendar, to: Calendar, matches: Seq[PlannedTeamMatch])
+case class TeamChampionshipDay(ligue: Ligue, day: Int, from: Calendar, to: Calendar, matches: Seq[PlannedTeamMatch]) {
+  def findMatch(team1: Team, team2: Team): Option[PlannedTeamMatch] =
+    matches.find(m => m.applyTo(team1) && m.applyTo(team2))
+
+}

@@ -87,7 +87,7 @@ team.detail.date=Date
 team.detail.location=Lieu
 team.detail.players=Simples
 team.detail.doublettes=Doubles
-team.detail.substitute=Remplaçant(e)
+team.detail.substitute=Remplaçant
 team.detail.substitute.who=Remplace le joueur
 team.detail.substitute.after=après le match
 team.detail.match=Match {0}
@@ -96,4 +96,4 @@ team.detail.matches=Matches
 team.detail.legs=Manches
 team.detail.points=Points
 team.detail.result=Résultat
-
+team.detail.capitain=Capitaines
