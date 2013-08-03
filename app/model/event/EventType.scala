@@ -4,9 +4,13 @@ package model.event
   */
 sealed abstract class EventType {
   def style: String
+  def styles: String = style
 }
 
 object EventType {
+
+  val all: List[EventType] = List(WorldEvent, FranceEvent, FederationEvent, LigueEvent, ComiteEvent, TeamEvent)
+
   def apply(evtType: String): EventType = {
     evtType match {
       case "world france" => WorldFranceEvent
@@ -27,6 +31,7 @@ object WorldEvent extends EventType {
 
 object WorldFranceEvent extends EventType {
   val style = "worldfrance"
+  override val styles= "world france"
 }
 
 object FranceEvent extends EventType {

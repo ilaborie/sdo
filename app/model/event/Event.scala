@@ -62,8 +62,8 @@ object Event {
     val name = Messages("team.championship.day", day.day)
     // FIXME reverse routing, ligue, team
     val url = controllers.routes.Application.ligue(ligue.shortName).url
-
-    Event(name, TeamEvent, day.from, day.to, url = Some(url))
+    
+    Event(name, TeamEvent, day.from, day.to)
   }
 
   def apply(ligue: Ligue, tournament: LigueTournament): Event = {
@@ -71,7 +71,7 @@ object Event {
     // FIXME reverse routing, ligue, tournament
     val url = controllers.routes.Application.ligue(ligue.shortName).url
 
-    Event(name, LigueEvent, tournament.date, tournament.date, url = Some(url))
+    Event(name, LigueEvent, tournament.date, tournament.date)
   }
 
   def apply(comite: Comite, tournament: ComiteTournament): Event = {
@@ -79,7 +79,7 @@ object Event {
     // FIXME reverse routing, comite, tournament
     val url = controllers.routes.Application.comite(comite.ligue.shortName, comite.shortName).url
 
-    Event(name, ComiteEvent, tournament.date, tournament.date, url = Some(url))
+    Event(name, ComiteEvent, tournament.date, tournament.date)
   }
 }
 

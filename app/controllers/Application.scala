@@ -75,7 +75,7 @@ object Application extends Controller {
   def club(ligueShortName: String, comiteShortName: String, clubShortName: String) = Action {
     ComiteAction(ligueShortName, comiteShortName) {
       comite => comite.findClubByShortName(clubShortName) match {
-        case Some(club) => Ok(views.html.comite.club(club))
+        case Some(club) => Ok(views.html.club.club(club))
         case _ => BadRequest(s"Club non connue: $clubShortName dans le comité $comite")
       }
     }.result
