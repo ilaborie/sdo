@@ -1,5 +1,6 @@
 # Équipe DDD1
-name: DDD
+shortname: DDD
+name: Dubliners Darts Drinkers
 players:
 -
   firstname: Pierre

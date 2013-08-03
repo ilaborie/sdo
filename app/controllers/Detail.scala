@@ -22,17 +22,17 @@ object Detail extends Controller {
    */
   def team(ligueShortName: String, day: Int, team1Name: String, team2Name: String) = Action {
     LigueAction(ligueShortName) {
-      ligue => TeamChampionship(season).days.find(_.day == day) match {
+      ligue => TeamChampionship(season).findDay(day) match {
         case None => BadRequest(s"Journée $day non trouvée !")
         case Some(champDay) => {
-          val team1 = ligue.teams.find(_.name == team1Name)
-          val team2 = ligue.teams.find(_.name == team2Name)
+          val team1 = ligue.findTeamByShortName(team1Name)
+          val team2 = ligue.findTeamByShortName(team2Name)
 
           if (team1.isDefined && team2.isDefined) {
-            val m: Option[PlannedTeamMatch] = champDay.matches.find(m => m.applyTo(team1.get) && m.applyTo(team2.get))
+            val m: Option[PlannedTeamMatch] = champDay.findMatch(team1.get, team2.get)
             if (m.isDefined) {
               val detail: Option[MatchDetail] = m.get.detail
-              if (detail.isDefined) Ok(views.html.classement.teamDetail(detail.get))
+              if (detail.isDefined) Ok(views.html.classement.teamDetail(ligue, detail.get))
               else BadRequest(s"Match J$day $team1Name - $team2Name non joué !")
             }
             else BadRequest(s"Match $team1Name - $team2Name non trouvée dans la journée $day !")

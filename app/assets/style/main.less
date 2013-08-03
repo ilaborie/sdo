@@ -5,7 +5,7 @@
 @import "bootstrap/responsive.less";
 @import "glyphicons/glyphicons-boostrap.less";
 
-// Base
+// Bases
 body {
   background-image: url("../images/dartboard-1.jpg");
   font-family: 'Ubuntu', sans-serif;
@@ -19,9 +19,23 @@ body {
   }
 }
 
+h1 {
+  font-size: 32px;
+}
+
 // Default
 .mono {
   font-family: "Ubuntu Mono", monaco, monospace;
+}
+
+.win {
+  color: @green;
+}
+.loose {
+  color: @red;
+}
+.draw {
+  color: @grayDark;
 }
 
 // MenuBar

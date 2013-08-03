@@ -22,13 +22,13 @@ object DataChampionship {
   /**
    * Find a Team
    * @param ligue the ligue
-   * @param name the team name
+   * @param shortName the team short name
    * @return the team
    * @throws ParseDataException if not found
    */
-  private def shouldFindTeam(ligue: Ligue, name: String): Team = ligue.findTeamByName(name) match {
+  private def shouldFindTeam(ligue: Ligue, shortName: String): Team = ligue.findTeamByShortName(shortName) match {
     case Some(team) => team
-    case None => throw ParseDataException(s"Cannot find team $name in $ligue")
+    case None => throw ParseDataException(s"Cannot find team $shortName in $ligue")
   }
 
   /**
@@ -99,7 +99,7 @@ object DataChampionship {
    * @return Detail
    */
   def readDetail(season: Season, ligue: Ligue, day: Int, team1: Team, team2: Team): Option[MatchDetail] = {
-    val detailFile = s"data/s$season/${ligue.shortName}/teamChampionship/d$day/${team1.name}-${team2.name}.yml"
+    val detailFile = s"data/s$season/${ligue.shortName}/teamChampionship/d$day/${team1.shortname}-${team2.shortname}.yml"
     logger.info(s"Read TeamChampionship information in $detailFile")
 
     val stream = play.Play.application().resourceAsStream(detailFile)
@@ -136,13 +136,13 @@ object DataChampionship {
     val playersName = map("joueurs").asInstanceOf[JavaList[String]].toList
     logger.debug(s"Read players from $playersName")
 
+    val capitain = shouldFindLicensiedPlayer(map("capitain").asInstanceOf[String])
     val players = playersName map shouldFindLicensiedPlayer
-
     val substitute: Option[Substitute] = readSubstitute(map("substitute").asInstanceOf[JavaMap[String, Any]])
     val doublettes: (TeamDoublette, TeamDoublette) = readDoublettes(map("doubles")
       .asInstanceOf[JavaList[JavaMap[String, String]]].toList)
 
-    TeamMatchDetail(team, players.toArray, substitute, doublettes)
+    TeamMatchDetail(team, capitain, players.toArray, substitute, doublettes)
   }
 
   /**
