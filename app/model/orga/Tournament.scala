@@ -33,7 +33,7 @@ sealed abstract class LigueTournament extends Tournament {
 /**
  * Open Ligue
  */
-case class OpenLigue(date: Calendar) extends LigueTournament {
+case class OpenLigue(date: Calendar, location: String) extends LigueTournament {
 
   override def toString = Messages("rank.ligue.open.title")
 
@@ -53,7 +53,7 @@ case class OpenLigue(date: Calendar) extends LigueTournament {
 /**
  * Coupe Ligue
  */
-case class CoupeLigue(date: Calendar) extends LigueTournament {
+case class CoupeLigue(date: Calendar, location: String) extends LigueTournament {
 
   override def toString = Messages("rank.ligue.coupe.title")
 
@@ -74,7 +74,7 @@ case class CoupeLigue(date: Calendar) extends LigueTournament {
 /**
  * Master Ligue
  */
-case class MasterLigue(date: Calendar) extends LigueTournament {
+case class MasterLigue(date: Calendar, location: String) extends LigueTournament {
 
   override def toString = Messages("rank.ligue.master.title")
 
@@ -93,7 +93,7 @@ case class MasterLigue(date: Calendar) extends LigueTournament {
 /**
  * Master Ligue Team
  */
-case class MasterLigueTeam(date: Calendar) extends LigueTournament {
+case class MasterLigueTeam(date: Calendar, location: String) extends LigueTournament {
   override val isTeam: Boolean = true
   val shortName = "MaT"
 
@@ -162,7 +162,7 @@ sealed abstract class ComiteTournament extends Tournament {
 /**
  * Coupe Comite
  */
-case class CoupeComite(date: Calendar) extends ComiteTournament {
+case class CoupeComite(date: Calendar, location: String) extends ComiteTournament {
   override def toString = Messages("rank.comite.coupe.title")
   val shortName = "CC"
 
