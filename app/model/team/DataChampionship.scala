@@ -5,12 +5,12 @@ import java.util.{List => JavaList, Map => JavaMap}
 import scala.collection.JavaConversions._
 
 import play.api.Logger
-import play.libs.Yaml
 
 import scala.Predef._
 import scala.Some
 
 import model.orga._
+import util.YamlParser
 
 /**
  * DataChampionship
@@ -51,7 +51,7 @@ object DataChampionship {
     val champFile = s"data/s$season/${ligue.shortName}/teamChampionship/championship.yml"
     logger.info(s"Read TeamChampionship information in $champFile")
 
-    val dayList = Yaml.load(champFile).asInstanceOf[JavaList[JavaMap[String, Any]]]
+    val dayList = YamlParser.parseFile(champFile).asInstanceOf[JavaList[JavaMap[String, Any]]]
     logger.trace(s"Read $dayList")
 
     val champDays = for (day <- dayList.toList) yield readChampionshipDay(season, ligue, day.toMap)
@@ -102,28 +102,26 @@ object DataChampionship {
     val detailFile = s"data/s$season/${ligue.shortName}/teamChampionship/d$day/${team1.shortName}-${team2.shortName}.yml"
     logger.info(s"Read TeamChampionship information in $detailFile")
 
-    val stream = play.Play.application().resourceAsStream(detailFile)
-    if (stream != null) {
-      val cl = play.Play.application().classloader()
-      val detailMap = Yaml.load(stream, cl).asInstanceOf[JavaMap[String, Any]]
-      logger.trace(s"Read $detailMap")
+    val detailMap = YamlParser.tryParseFile(detailFile)
+    detailMap.map(
+      detailM => {
+        val detail: JavaMap[String, Any] = detailM.asInstanceOf[JavaMap[String, Any]]
+        logger.trace(s"Read $detail")
 
-      val date = Data.readDate(detailMap.get("date").asInstanceOf[String])
-      val location = detailMap.get("location").asInstanceOf[String]
+        val date = Data.readDate(detail.get("date").asInstanceOf[String])
+        val location = detail.get("location").asInstanceOf[String]
 
-      val t1: TeamMatchDetail = readTeamMatchDetail(team1, detailMap.get("team1")
-        .asInstanceOf[JavaMap[String, Any]].toMap)
-      val t2: TeamMatchDetail = readTeamMatchDetail(team2, detailMap.get("team2")
-        .asInstanceOf[JavaMap[String, Any]].toMap)
+        val t1: TeamMatchDetail = readTeamMatchDetail(team1, detail.get("team1")
+          .asInstanceOf[JavaMap[String, Any]].toMap)
+        val t2: TeamMatchDetail = readTeamMatchDetail(team2, detail.get("team2")
+          .asInstanceOf[JavaMap[String, Any]].toMap)
 
-      val matchesList = detailMap.get("matches")
-      logger.trace(s"Read matches: $matchesList")
-      val matches: List[Match] = readMatchs(t1, t2, matchesList.asInstanceOf[JavaMap[String, Any]].toMap)
+        val matchesList = detail.get("matches")
+        logger.trace(s"Read matches: $matchesList")
+        val matches: List[Match] = readMatchs(t1, t2, matchesList.asInstanceOf[JavaMap[String, Any]].toMap)
 
-      Some(PlayedMatchDetail(day, date, location, t1, t2, matches))
-    } else {
-      None
-    }
+        PlayedMatchDetail(day, date, location, t1, t2, matches)
+      })
   }
 
   /**
