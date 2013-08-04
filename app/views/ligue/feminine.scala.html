@@ -10,13 +10,13 @@
             <th>@Messages("rank.club")</th>
             @for(tournament <- ranking.tournaments) {
                 @tournament match {
-                    case CoupeLigue(_) => {
+                    case CoupeLigue(_,_) => {
                         <th>@tags.abbr("rank.ligue.coupe")</th>
                     }
-                    case OpenLigue(_) => {
+                    case OpenLigue(_,_) => {
                         <th>@tags.abbr("rank.ligue.open")</th>
                     }
-                    case MasterLigue(_) => {
+                    case MasterLigue(_,_) => {
                         <th>@tags.abbr("rank.ligue.master")</th>
                     }
                     case ComiteRank(comite,_) => {

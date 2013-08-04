@@ -27,22 +27,6 @@ object Data {
   }
 
   /**
-   * Read list of ligue
-   * @return all ligues
-   */
-  def readLigues(season: Season) = {
-    val liguesFile = s"data/s$season/ligues.yml"
-
-
-    logger.info(s"Read ligues information in $liguesFile")
-
-    val liguesList = YamlParser.parseFile(liguesFile).asInstanceOf[JavaList[String]]
-    logger.trace(s"Read $liguesList")
-
-    for (ligue <- liguesList.toList) yield readLigue(season, ligue)
-  }
-
-  /**
    * Read all not licensied players
    * @return players
    */
@@ -71,6 +55,20 @@ object Data {
   }
 
   /**
+   * Read list of ligue
+   * @return all ligues
+   */
+  def readLigues(season: Season) = {
+    val liguesFile = s"data/s$season/ligues.yml"
+    logger.info(s"Read ligues information in $liguesFile")
+
+    val liguesList = YamlParser.parseFile(liguesFile).asInstanceOf[JavaList[String]]
+    logger.trace(s"Read $liguesList")
+
+    for (ligue <- liguesList.toList) yield readLigue(season, ligue)
+  }
+
+  /**
    * Read a ligue
    * @param ligue ligue perfix
    * @return a ligue
@@ -83,13 +81,22 @@ object Data {
 
     val name = info("name").asInstanceOf[String]
     val shortName = info("shortname").asInstanceOf[String]
+
     val comitesList = info("comites").asInstanceOf[JavaList[String]].toList
     val comites = for (comite <- comitesList) yield readComite(season, ligue, comite)
-    val openList = info("opens").asInstanceOf[JavaList[String]].toList
-    val opens = for (open <- openList) yield OpenLigue(readDate(open))
-    val coupe = CoupeLigue(readDate(info("coupe").asInstanceOf[String]))
-    val master = MasterLigue(readDate(info("master").asInstanceOf[String]))
-    val masterTeam = MasterLigueTeam(readDate(info("master").asInstanceOf[String]))
+
+    val openList = info("opens").asInstanceOf[JavaList[JavaMap[String,String]]].toList
+    val opens = for (open <- openList) yield OpenLigue(readDate(open.get("date")), open.get("location"))
+
+    val coupeMap = info("coupe").asInstanceOf[JavaMap[String,String]]
+    val coupe = CoupeLigue(readDate(coupeMap.get("date")), coupeMap.get("location"))
+
+    val masterMap = info("master").asInstanceOf[JavaMap[String,String]]
+    val master = MasterLigue(readDate(masterMap.get("date")), masterMap.get("location"))
+
+    val teamMaster = info("team-master").asInstanceOf[JavaMap[String,String]]
+    val masterTeam = MasterLigueTeam(readDate(teamMaster.get("date")), teamMaster.get("location"))
+
     val information = readInfo(s"data/s$season/$ligue/ligue.html")
 
     Ligue(name, shortName, comites, opens, coupe, master, masterTeam, information)
@@ -111,8 +118,11 @@ object Data {
     val name = info("name").asInstanceOf[String]
     val shortName = info("shortname").asInstanceOf[String]
     val clubList = info("clubs").asInstanceOf[JavaList[String]].toList
+
     val clubs = for (club <- clubList) yield readClub(season, ligue, comite, club)
-    val coupe = CoupeComite(readDate(info("coupe").asInstanceOf[String]))
+    val coupeMap = info("coupe").asInstanceOf[JavaMap[String,String]]
+
+    val coupe = CoupeComite(readDate(coupeMap.get("date")), coupeMap.get("location"))
     val information = readInfo(s"data/s$season/$ligue/$comite/ligue.html")
 
     Comite(name, shortName, clubs, coupe, information)
@@ -133,8 +143,10 @@ object Data {
 
     val name = info("name").asInstanceOf[String]
     val shortName = info("shortname").asInstanceOf[String]
-    val openList = info("opens").asInstanceOf[JavaList[String]].toList
-    val opens = for (open <- openList) yield OpenClub(readDate(open))
+    val opens = if (info.contains("opens")) {
+      val openList = info("opens").asInstanceOf[JavaList[String]].toList
+     for (open <- openList) yield OpenClub(readDate(open))
+    } else Nil
     val teamList = info("teams").asInstanceOf[JavaList[String]].toList
     val teams = for (team <- teamList) yield readTeam(season, ligue, comite, club, team)
     val information = readInfo(s"data/s$season/$ligue/$comite/$club/ligue.html")
