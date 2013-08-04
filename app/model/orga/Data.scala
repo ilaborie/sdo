@@ -32,6 +32,8 @@ object Data {
    */
   def readLigues(season: Season) = {
     val liguesFile = s"data/s$season/ligues.yml"
+
+
     logger.info(s"Read ligues information in $liguesFile")
 
     val liguesList = Yaml.load(liguesFile).asInstanceOf[JavaList[String]]

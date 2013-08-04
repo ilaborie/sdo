@@ -8,6 +8,8 @@ import model.event.Event
  * Team TeamChampionship
  */
 case class TeamChampionship(season: Season, ligue: Ligue, days: List[TeamChampionshipDay]) {
+  override val toString = s"TeamChampionship $season - $ligue"
+
   def findDay(day: Int): Option[TeamChampionshipDay] = days.find(_.day == day)
 
   lazy val events = for (day <- days) yield Event(ligue, day)
@@ -16,11 +18,11 @@ case class TeamChampionship(season: Season, ligue: Ligue, days: List[TeamChampio
 object TeamChampionship {
 
   // FIXME Cache
-  def apply(season: Season): TeamChampionship = DataChampionship.readChampionship(season, Ligue.ligues.head)
+  def apply(season: Season, ligue: Ligue): TeamChampionship = DataChampionship.readChampionship(season, ligue)
 
   def apply(season: Season, comite: Comite): TeamChampionship = {
     val days = for {
-      ds <- TeamChampionship(season).days
+      ds <- TeamChampionship(season, comite.ligue).days
     } yield TeamChampionshipDay(comite.ligue, ds.day, ds.from, ds.to, ds.matches.filter(_.applyTo(comite)))
 
     TeamChampionship(season, comite.ligue, days)
