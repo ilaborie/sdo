@@ -1,12 +1,12 @@
 package model.contact
 
 import model.orga._
-import play.libs.Yaml
 import play.api.Logger
 import java.util.{List => JavaList, Map => JavaMap}
 
 import scala.collection.JavaConversions._
 import scala.Predef._
+import util.YamlParser
 
 /**
  * Contact reader
@@ -18,7 +18,7 @@ object DataContact {
     val contactsFile = s"data/s$season/contacts.yml"
     logger.info(s"Read contacts information in $contactsFile")
 
-    val contactsList = Yaml.load(contactsFile).asInstanceOf[JavaList[JavaMap[String, String]]]
+    val contactsList = YamlParser.parseFile(contactsFile).asInstanceOf[JavaList[JavaMap[String, String]]]
     logger.trace(s"Read $contactsList")
 
     for (contact <- contactsList.toList) yield readContact(season, contact.toMap)

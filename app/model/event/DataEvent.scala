@@ -1,13 +1,13 @@
 package model.event
 
 import model.orga._
-import play.libs.Yaml
 import play.api.Logger
 import java.util.{List => JavaList, Map => JavaMap}
 
 import scala.collection.JavaConversions._
 import scala.Predef._
 import model.contact.EMail
+import util.YamlParser
 
 /**
  * Event reader
@@ -19,7 +19,7 @@ object DataEvent {
     val contactsFile = s"data/s$season/events.yml"
     logger.info(s"Read events information in $contactsFile")
 
-    val contactsList = Yaml.load(contactsFile).asInstanceOf[JavaList[JavaMap[String, Any]]]
+    val contactsList = YamlParser.parseFile(contactsFile).asInstanceOf[JavaList[JavaMap[String, Any]]]
     logger.trace(s"Read $contactsList")
 
     for (contact <- contactsList.toList) yield readEvent(season, contact.toMap)

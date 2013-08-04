@@ -7,10 +7,10 @@ import scala.collection.JavaConversions._
 
 import play.Play
 import play.api.Logger
-import play.libs.Yaml
 
 import com.google.common.io.{ByteStreams, CharStreams}
 import com.google.common.base.Charsets
+import util.YamlParser
 
 /**
  * Data helpers
@@ -36,7 +36,7 @@ object Data {
 
     logger.info(s"Read ligues information in $liguesFile")
 
-    val liguesList = Yaml.load(liguesFile).asInstanceOf[JavaList[String]]
+    val liguesList = YamlParser.parseFile(liguesFile).asInstanceOf[JavaList[String]]
     logger.trace(s"Read $liguesList")
 
     for (ligue <- liguesList.toList) yield readLigue(season, ligue)
@@ -50,7 +50,7 @@ object Data {
     val nlFile = s"data/s$season/nl.yml"
     logger.info(s"Read not licensied players in $nlFile")
 
-    val nlList = Yaml.load(nlFile).asInstanceOf[JavaList[JavaMap[String, String]]]
+    val nlList = YamlParser.parseFile(nlFile).asInstanceOf[JavaList[JavaMap[String, String]]]
     logger.trace(s"Read $nlList")
 
     for (nl <- nlList.toList) yield readNotLicensiedPlayer(nl.toMap)
@@ -78,7 +78,7 @@ object Data {
   def readLigue(season: Season, ligue: String): Ligue = {
     val ligueFile = s"data/s$season/$ligue/ligue.yml"
     logger.info(s"Read ligue information in $ligueFile")
-    val info = Yaml.load(ligueFile).asInstanceOf[JavaMap[String, AnyRef]].toMap
+    val info = YamlParser.parseFile(ligueFile).asInstanceOf[JavaMap[String, AnyRef]].toMap
     logger.trace(s"Read $info")
 
     val name = info("name").asInstanceOf[String]
@@ -105,7 +105,7 @@ object Data {
   def readComite(season: Season, ligue: String, comite: String): Comite = {
     val comiteFile = s"data/s$season/$ligue/$comite/comite.yml"
     logger.info(s"Read comite information in $comiteFile")
-    val info = Yaml.load(comiteFile).asInstanceOf[JavaMap[String, AnyRef]].toMap
+    val info = YamlParser.parseFile(comiteFile).asInstanceOf[JavaMap[String, AnyRef]].toMap
     logger.trace(s"Read $info")
 
     val name = info("name").asInstanceOf[String]
@@ -128,7 +128,7 @@ object Data {
   def readClub(season: Season, ligue: String, comite: String, club: String): Club = {
     val clubFile = s"data/s$season/$ligue/$comite/$club/club.yml"
     logger.info(s"Read club information in $clubFile")
-    val info = Yaml.load(clubFile).asInstanceOf[JavaMap[String, AnyRef]].toMap
+    val info = YamlParser.parseFile(clubFile).asInstanceOf[JavaMap[String, AnyRef]].toMap
     logger.trace(s"Read $info")
 
     val name = info("name").asInstanceOf[String]
@@ -153,7 +153,7 @@ object Data {
   def readTeam(season: Season, ligue: String, comite: String, club: String, team: String): Team = {
     val teamFile = s"data/s$season/$ligue/$comite/$club/$team.yml"
     logger.debug(s"Read team information in $teamFile")
-    val info = Yaml.load(teamFile).asInstanceOf[JavaMap[String, AnyRef]].toMap
+    val info = YamlParser.parseFile(teamFile).asInstanceOf[JavaMap[String, AnyRef]].toMap
     logger.trace(s"Read $info")
 
     val name = info("name").asInstanceOf[String]
