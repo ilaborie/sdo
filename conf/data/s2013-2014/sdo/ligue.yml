@@ -1,12 +1,11 @@
-# Ligue Sud Ouest
 shortname: SDO
 name: Ligue Sud Ouest
-coupe: "02-02-2014"
-team-master: "27-04-2014"
-master: "25-05-2014"
+coupe: 02-02-2014
+team-master: 27-04-2014
+master: 25-05-2014
 opens:
-- "21-10-2013"
-- "21-11-2013"
+- 21-10-2013
+- 21-11-2013
 comites:
 - MPY
 - TEG

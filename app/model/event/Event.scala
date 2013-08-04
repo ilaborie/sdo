@@ -2,10 +2,14 @@ package model.event
 
 import java.util.Calendar
 
-import model.contact._
 import model.orga._
 import model.team._
 import play.api.i18n.Messages
+import util._
+import util.EMail
+import util.Year
+import model.team.TeamChampionshipDay
+import model.orga.Comite
 
 
 /**

@@ -1,6 +1,7 @@
 package model.contact
 
 import model.orga.Season
+import util.EMail
 
 /**
  * Contact

@@ -1,4 +1,4 @@
-package model.event
+package util
 
 import java.util.Calendar
 import org.apache.commons.lang3.time.FastDateFormat

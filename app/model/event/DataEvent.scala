@@ -1,13 +1,8 @@
 package model.event
 
 import model.orga._
-import play.libs.Yaml
 import play.api.Logger
-import java.util.{List => JavaList, Map => JavaMap}
-
-import scala.collection.JavaConversions._
-import scala.Predef._
-import model.contact.EMail
+import util.{YamlParser, EMail}
 
 /**
  * Event reader
@@ -16,13 +11,17 @@ object DataEvent {
   private val logger = Logger("data")
 
   def readEvents(season: Season): Seq[Event] = {
-    val contactsFile = s"data/s$season/events.yml"
-    logger.info(s"Read events information in $contactsFile")
+    val eventsFile = s"data/s$season/events.yml"
+    logger.info(s"Read events information in $eventsFile")
 
-    val contactsList = Yaml.load(contactsFile).asInstanceOf[JavaList[JavaMap[String, Any]]]
-    logger.trace(s"Read $contactsList")
-
-    for (contact <- contactsList.toList) yield readEvent(season, contact.toMap)
+    YamlParser.parseFile(eventsFile) match {
+      case Some(eventsList) => {
+        logger.trace(s"Read $eventsList")
+        for (contact <- eventsList.asInstanceOf[List[Map[String, Any]]])
+        yield readEvent(season, contact.toMap)
+      }
+      case None => Nil
+    }
   }
 
   /**
@@ -32,13 +31,15 @@ object DataEvent {
    * @return the event
    */
   def readEvent(season: Season, data: Map[String, Any]): Event = {
+    println(s"read event: $data")
+    println(s"read event: ${data.keySet}")
     val name = data("name").asInstanceOf[String]
     val eventType = data("type").asInstanceOf[String]
     val from = Data.readDate(data("from").asInstanceOf[String])
     val to = Data.readDate(data("to").asInstanceOf[String])
     val location = {
       if (!data.contains("location")) None
-      else readLocation(data("location").asInstanceOf[JavaMap[String, String]].toMap)
+      else readLocation(data("location").asInstanceOf[Map[String, String]].toMap)
     }
     val email = toOption(data, "email") match {
       case Some(em) => Some(EMail(em))
