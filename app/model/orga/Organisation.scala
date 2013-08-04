@@ -79,9 +79,9 @@ case class Ligue(name: String,
 }
 
 object Ligue {
-  val nlPlayers: Seq[NotLicensedPlayer] = Data.readNotLicensedPlayers(Season.currentSeason)
+  lazy val nlPlayers: Seq[NotLicensedPlayer] = Data.readNotLicensedPlayers(Season.currentSeason)
 
-  val ligues: Seq[Ligue] = Data.readLigues(Season.currentSeason)
+  lazy val ligues: Seq[Ligue] = Data.readLigues(Season.currentSeason)
 
   lazy val comites = {
     for {

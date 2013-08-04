@@ -22,7 +22,7 @@ object Detail extends Controller {
    */
   def team(ligueShortName: String, day: Int, team1Name: String, team2Name: String) = Action {
     LigueAction(ligueShortName) {
-      ligue => TeamChampionship(season).findDay(day) match {
+      ligue => TeamChampionship(season, ligue).findDay(day) match {
         case None => BadRequest(s"Journée $day non trouvée !")
         case Some(champDay) => {
           val team1 = ligue.findTeamByShortName(team1Name)

@@ -28,6 +28,8 @@ case class Event(name: String,
                  url: Option[String] = None,
                  info: Option[Info] = None) {
 
+  override val toString = name
+
   val range: DateRange = {
     val fromDate = {
       val cal = Calendar.getInstance()

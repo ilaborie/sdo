@@ -9,7 +9,9 @@ import model.orga.Season
  * @param url maybe an URL
  * @param info maybe some ligue
  */
-case class Contact(name: String, email: Option[EMail], url: Option[String], info: Option[Info])
+case class Contact(name: String, email: Option[EMail], url: Option[String], info: Option[Info]) {
+  override val toString = name
+}
 
 
 object Contact {
