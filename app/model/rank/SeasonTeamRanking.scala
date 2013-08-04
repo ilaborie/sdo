@@ -23,7 +23,7 @@ object SeasonTeamRanking {
   private val logger = Logger("teamRank")
 
   def apply(season: Season, ligue: Ligue): SeasonTeamRanking = {
-    val champ = TeamChampionship(season)
+    val champ = TeamChampionship(season, ligue)
     val ranks = for (team <- Ligue.teams if !team.omit) yield buildRank(champ, team)
     SeasonTeamRanking(champ, ranks)
   }
