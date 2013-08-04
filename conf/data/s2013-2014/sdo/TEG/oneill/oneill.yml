@@ -12,6 +12,7 @@ players:
 -
   firstname: Lucy
   lastname: Perrier
+  feminine: true
 -
   firstname: James
   lastname: Pounaud
@@ -19,5 +20,24 @@ players:
   firstname: Jean Marie
   lastname: Quero
 -
+  firstname: Gaël
+  lastname: Quero
+  feminine: true
+-
   firstname: Francis
   lastname: Quero
+-
+  firstname: Jules
+  lastname: Saulet
+-
+  firstname: Fabien
+  lastname: Lasserre
+-
+  firstname: Ronald
+  lastname: Augustin
+-
+  firstname: Jean Louis
+  lastname: Besnard
+-
+  firstname: Cédric
+  lastname: Rodrigues

@@ -1,7 +1,16 @@
 # Comité Toulouse
 shortname: MPY
 name: Comité Midi-Pyrénnées
-coupe: "17-12-2013"
+coupe:
+  date: "13-04-2014"
+  location: St Martory
+roles:
+  president: Anne Claire ???
+  vice-president:
+  secretaire: Papy
+  tresorier: Christian
+  classement: Igor
+  selectionneur: Reno
 clubs:
 - ddd
 - x1

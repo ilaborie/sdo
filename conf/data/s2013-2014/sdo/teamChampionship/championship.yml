@@ -1,31 +1,99 @@
 # Team Championship
 -
   day: 1
-  from: "21-09-2013"
-  to: "28-09-2013"
+  from: "14-09-2013"
+  to: "22-09-2013"
   matches:
     -
-      team1: X1
-      team2: DDD
+      team1: "Rocco"
+      team2: "X1"
     -
-      team1: Coch
-      team2: Rocco
+      team1: "FT"
+      team2: "Wood"
+    -
+      team1: "ONeill"
+      team2: "DDD"
 -
   day: 2
-  from: "21-10-2013"
-  to: "28-10-2013"
+  from: "05-10-2013"
+  to: "13-10-2013"
   matches:
     -
-      team1: Coch
-      team2: DDD
+      team1: "X1"
+      team2: "FT"
     -
-      team1: X1
-      team2: Rocco
+      team1: "DDD"
+      team2: "Coch"
+    -
+      team1: "Wood"
+      team2: "ONeill"
 -
-  day: 8
-  from: "21-11-2013"
-  to: "28-11-2013"
+  day: 3
+  from: "02-11-2013"
+  to: "10-11-2013"
   matches:
     -
-      team1: X1
-      team2: FT
+      team1: "FT"
+      team2: "Rocco"
+    -
+      team1: "ONeill"
+      team2: "X1"
+    -
+      team1: "Coch"
+      team2: "Wood"
+-
+  day: 4
+  from: "23-11-2013"
+  to: "01-12-2013"
+  matches:
+    -
+      team1: "X1"
+      team2: "Coch"
+    -
+      team1: "Rocco"
+      team2: "ONeill"
+    -
+      team1: "Wood"
+      team2: "DDD"
+-
+  day: 5
+  from: "04-01-2014"
+  to: "12-01-2014"
+  matches:
+    -
+      team1: "ONeill"
+      team2: "FT"
+    -
+      team1: "Coch"
+      team2: "Rocco"
+    -
+      team1: "DDD"
+      team2: "X1"
+-
+  day: 6
+  from: "15-02-2014"
+  to: "23-02-2014"
+  matches:
+    -
+      team1: "X1"
+      team2: "Wood"
+    -
+      team1: "Rocco"
+      team2: "DDD"
+    -
+      team1: "FT"
+      team2: "Coch"
+-
+  day: 7
+  from: "01-04-2014"
+  to: "09-04-2014"
+  matches:
+    -
+      team1: "Coch"
+      team2: "ONeill"
+    -
+      team1: "DDD"
+      team2: "FT"
+    -
+      team1: "Wood"
+      team2: "Rocco"

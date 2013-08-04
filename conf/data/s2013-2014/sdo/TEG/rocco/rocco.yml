@@ -19,14 +19,13 @@ players:
   lastname: Andurand
   commonname: Mica
 -
+  firstname: Gaston
+  lastname: Letorrielec
+-
   firstname: Sabine
   lastname: Legal
   feminine: true
 -
   firstname: Anne Claire
   lastname: Collet
-  feminine: true
--
-  firstname: Aurelie
-  lastname: Lalliaud
   feminine: true

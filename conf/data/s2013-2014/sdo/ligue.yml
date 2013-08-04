@@ -1,12 +1,31 @@
 # Ligue Sud Ouest
 shortname: SDO
 name: Ligue Sud Ouest
-coupe: "02-02-2014"
-team-master: "27-04-2014"
-master: "25-05-2014"
+roles:
+  president: Mathieux
+  vice-president: Reno
+  secretaire: Sabine
+  tresorier: Toufou
+  classement: Igor
+  selectionneur: Reno
+  resp-salle: Pierre Belliard
+  resp-materiel: Fred Caze
+coupe:
+  date: "02-02-2014"
+  location: ???
+team-master:
+  date: "27-04-2014"
+  location: ???
+master:
+  date: "25-05-2014"
+  location: ???
 opens:
-- "21-10-2013"
-- "21-11-2013"
+-
+  date: "20-10-2013"
+  location: St Martin
+-
+  date: "01-12-2013"
+  location: Caussade
 comites:
 - MPY
 - TEG

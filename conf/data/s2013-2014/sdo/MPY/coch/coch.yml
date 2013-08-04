@@ -17,6 +17,9 @@ players:
   firstname: Christian
   lastname: Contin
 -
-  firstname: Milie
+  firstname: Mily
   lastname: Cabrol
   feminine: true
+-
+  firstname: Romain
+  lastname: Teulet

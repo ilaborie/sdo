@@ -24,3 +24,7 @@ players:
 -
   firstname: Guillaume
   lastname: Mahieu
+-
+  firstname: Aurelie
+  lastname: Lalliaud
+  feminine: true

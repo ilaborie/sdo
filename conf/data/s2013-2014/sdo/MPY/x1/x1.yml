@@ -22,10 +22,6 @@ players:
   lastname: Lansoy
   junior: true
 -
-  firstname: Christophe
-  lastname: Cerisier
-  commonname: cerise
--
   firstname: Frédéric
   lastname: Cazes
 -
@@ -44,3 +40,7 @@ players:
   firstname: Yaël
   lastname: Werndorfer
   feminine: true
+-
+  firstname: Christophe
+  lastname: Cerisier
+  commonname: cerise

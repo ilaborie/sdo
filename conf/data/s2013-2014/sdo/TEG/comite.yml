@@ -1,7 +1,16 @@
 # Comité Tarn et Garonne
 shortname: TEG
 name: Comité Tarn et Garonne
-coupe: "17-12-2013"
+coupe:
+  date: "13-04-2014"
+  location: St Martory
+roles:
+  president: JM Querro
+  vice-president:
+  secretaire: Gaël Querro
+  tresorier: Aurélie
+  classement: Igor ???
+  selectionneur: Reno ???
 clubs:
 - dcmag
 - oneill
