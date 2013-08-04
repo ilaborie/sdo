@@ -11,6 +11,8 @@ import model.team.TeamChampionship
 
 import util.YamlParser
 
+import play.api._
+
 object Global extends GlobalSettings {
 
   private val season: Season = Season.currentSeason
