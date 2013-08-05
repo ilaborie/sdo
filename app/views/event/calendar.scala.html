@@ -27,18 +27,18 @@
                 <td class="nope">&nbsp;</td>
             }
             case EmptyDay(d) => {
-                <td class="empty">@d</td>
+                <td class="empty">@d.getDayOfMonth</td>
             }
             case EventsDay(d, events) => {
                 @if(events.size == 1) {
                     <td class="event @events.head.eventType.style">
-                        @d
+                        @d.getDayOfMonth
                         <div class="hidden title">@eventTitle(d)</div>
                         <div class="hidden content">@eventContent(events.head)</div>
                     </td>
                 } else {
                     <td class='event @events.map(_.eventType.style).toSet.mkString(" ")'>
-                        @d
+                        @d.getDayOfMonth
                         <div class="hidden title">@eventTitle(d)</div>
                         <div class="hidden content">@eventsContent(events)</div>
                     </td>

@@ -4,7 +4,7 @@ import model.contact._
 import model.orga._
 import model.team._
 import play.api.i18n.Messages
-import org.joda.time.{DateMidnight, Interval, Period, LocalDate}
+import org.joda.time.{Interval, LocalDate}
 
 
 /**
@@ -31,13 +31,18 @@ case class Event(name: String,
 
   private val interval: Interval = new Interval(from.toDate.getTime, to.toDate.getTime)
 
-  def applyTo(anotherInterval:Interval): Boolean = interval overlaps anotherInterval
+  def applyTo(anotherInterval: Interval): Boolean = interval overlaps anotherInterval
+
+  def applyTo(date: LocalDate): Boolean =
+    (from.isEqual(date) || to.isEqual(date)) || (from.isBefore(date) && to.isAfter(date))
+
 
 }
 
 object Event {
 
   implicit def dateTimeOrdering: Ordering[LocalDate] = Ordering.fromLessThan(_ isBefore _)
+
   val orderByStartDate: Ordering[Event] = Ordering.by[Event, LocalDate](_.from)
 
   lazy val events: Seq[Event] = {

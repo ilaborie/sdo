@@ -48,7 +48,7 @@ object DataChampionship {
    * @return TeamChampionship
    */
   def readChampionship(season: Season, ligue: Ligue): TeamChampionship = {
-    val champFile = s"data/s$season/${ligue.shortName}/teamChampionship/championship.yml"
+    val champFile = s"s$season/${ligue.shortName}/teamChampionship/championship.yml"
     logger.info(s"Read TeamChampionship information in $champFile")
 
     val dayList = YamlParser.parseFile(champFile).asInstanceOf[JavaList[JavaMap[String, Any]]]
@@ -99,7 +99,7 @@ object DataChampionship {
    * @return Detail
    */
   def readDetail(season: Season, ligue: Ligue, day: Int, team1: Team, team2: Team): Option[MatchDetail] = {
-    val detailFile = s"data/s$season/${ligue.shortName}/teamChampionship/d$day/${team1.shortName}-${team2.shortName}.yml"
+    val detailFile = s"s$season/${ligue.shortName}/teamChampionship/d$day/${team1.shortName}-${team2.shortName}.yml"
     logger.info(s"Read TeamChampionship information in $detailFile")
 
     val detailMap = YamlParser.tryParseFile(detailFile)
