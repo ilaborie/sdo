@@ -19,8 +19,10 @@ registerFilter = () ->
 registerPopover = () ->
   $("td.event").popover {
     html: true,
+    placement: autoPlacement,
+    trigger: "hover",
     title: getTitle,
-    container: "body",
+    container: "#bodyEvents",
     content: getContent
   }
 
@@ -31,3 +33,21 @@ getTitle = () ->
 getContent = () ->
   content = $(this).find ".content.hidden"
   content.html()
+
+
+autoPlacement = (tip, element) ->
+  offset = $(element).offset()
+  height = $(document).outerHeight()
+  width = $(document).outerWidth()
+  vert = 0.5 * height - offset.top
+  horiz = 0.5 * width - offset.left
+  if (Math.abs(horiz) > Math.abs(vert))
+    if (horiz > 0)
+      'right'
+    else
+      'left'
+  else
+    if (vert > 0)
+      'bottom'
+    else
+      'top'
