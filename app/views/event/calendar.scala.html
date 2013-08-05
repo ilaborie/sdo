@@ -21,23 +21,26 @@
         }
     }
 
+    @today(date:LocalDate) = {@if(date.isEqual(LocalDate.now)) {today}}
+
+
     @displayDay(year: EventYear, month: EventMonth, day: EventDay) = {
         @day match {
             case Nope => {
                 <td class="nope">&nbsp;</td>
             }
             case EmptyDay(d) => {
-                <td class="empty">@d.getDayOfMonth</td>
+                <td class="empty @today(d)">@d.getDayOfMonth</td>
             }
             case EventsDay(d, events) => {
                 @if(events.size == 1) {
-                    <td class="event @events.head.eventType.style">
+                    <td class="event @today(d) @events.head.eventType.style">
                         @d.getDayOfMonth
                         <div class="hidden title">@eventTitle(d)</div>
                         <div class="hidden content">@eventContent(events.head)</div>
                     </td>
                 } else {
-                    <td class='event @events.map(_.eventType.style).toSet.mkString(" ")'>
+                    <td class='event @today(d) @events.map(_.eventType.style).toSet.mkString(" ")'>
                         @d.getDayOfMonth
                         <div class="hidden title">@eventTitle(d)</div>
                         <div class="hidden content">@eventsContent(events)</div>
