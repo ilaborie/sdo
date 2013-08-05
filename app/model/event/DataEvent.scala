@@ -16,7 +16,7 @@ object DataEvent {
   private val logger = Logger("data")
 
   def readEvents(season: Season): Seq[Event] = {
-    val contactsFile = s"data/s$season/events.yml"
+    val contactsFile = s"s$season/events.yml"
     logger.info(s"Read events information in $contactsFile")
 
     val contactsList = YamlParser.parseFile(contactsFile).asInstanceOf[JavaList[JavaMap[String, Any]]]

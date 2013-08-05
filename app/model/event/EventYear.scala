@@ -1,6 +1,7 @@
 package model.event
 
 import org.joda.time.{LocalDate, YearMonth, DateTimeConstants}
+import org.joda.time.format.DateTimeFormat
 
 /**
  * Year Events
@@ -19,17 +20,18 @@ object EventYear {
     val endDate = events.map(_.to).max
 
     // From min date to max date
-    val years = for (y <- startDate.getYear to endDate.getYear) yield {
+    val years = for (year <- startDate.getYear to endDate.getYear) yield {
 
-      val startMonth = if (startDate.getYear == y) startDate.getMonthOfYear else DateTimeConstants.JANUARY
-      val endMonth = if (endDate.getYear == y) endDate.getMonthOfYear else DateTimeConstants.DECEMBER
+      val startMonth = if (startDate.getYear == year) startDate.getMonthOfYear else DateTimeConstants.JANUARY
+      val endMonth = if (endDate.getYear == year) endDate.getMonthOfYear else DateTimeConstants.DECEMBER
 
       val months = for (month <- startMonth to endMonth) yield {
-        val ym = new YearMonth(y, month)
+        val ym = new YearMonth(year, month)
+
         val monthEvents: Seq[Event] = events.filter(_.applyTo(ym.toInterval))
         EventMonth(ym, monthEvents)
       }
-      EventYear(y, months.toList)
+      EventYear(year, months.toList)
     }
     years.toList
   }
@@ -39,19 +41,19 @@ object EventYear {
  * Month Event
  */
 case class EventMonth(yearMonth: YearMonth, weeks: List[EventWeek]) {
-  override val toString = yearMonth.toString
+  override val toString = DateTimeFormat.forPattern("MMMM").print(yearMonth).capitalize
 }
 
 object EventMonth {
   def apply(yearMonth: YearMonth, events: Seq[Event]): EventMonth = {
     val interval = yearMonth.toInterval
     val monthStart = interval.getStart.toLocalDate
-    val monthEnd = interval.getEnd.toLocalDate
+    val monthEnd = interval.getEnd.toLocalDate.plusDays(-1)
 
     // From create Days event
     val days = for (d <- monthStart.getDayOfMonth to monthEnd.getDayOfMonth) yield {
       val date = yearMonth.toLocalDate(d)
-      val dayEvents = events.filter(_.applyTo(date.toInterval))
+      val dayEvents = events.filter(_.applyTo(date))
       MonthDay(date, dayEvents)
     }
 
@@ -60,7 +62,6 @@ object EventMonth {
       val weeksDays: List[(Int, Seq[MonthDay])] = days.groupBy(_.date.getWeekOfWeekyear)
         .toList
         .sorted(Ordering.by((x: (Int, Seq[MonthDay])) => x._1))
-
       // build week
       for ((w, md) <- weeksDays) yield {
         EventWeek(yearMonth, w, md)
