@@ -1,41 +1,35 @@
 package model.event
 
-import java.util.Calendar
+import org.joda.time.{LocalDate, YearMonth, DateTimeConstants}
 
 /**
  * Year Events
  * @param year year
  * @param months months
  */
-case class EventYear(year: Year, months: List[EventMonth]) {
+case class EventYear(year: Int, months: List[EventMonth]) {
   override val toString = year.toString
 }
 
 object EventYear {
 
   def years(events: Seq[Event]): List[EventYear] = {
-    // Starting Date
-    val startDate = Calendar.getInstance()
-    startDate.setTimeInMillis(events.map(_.from.getTimeInMillis).min)
-    val startYear = startDate.get(Calendar.YEAR)
-
-    // End Date
-    val endDate = Calendar.getInstance()
-    endDate.setTimeInMillis(events.map(_.to.getTimeInMillis).max)
-    val endYear = endDate.get(Calendar.YEAR)
+    // Starting/End Date
+    val startDate = events.map(_.from).min
+    val endDate = events.map(_.to).max
 
     // From min date to max date
-    val years = for (y <- startYear to endYear) yield {
-      val year = Year(y)
-      val startMonth = if (startDate.get(Calendar.YEAR) == y) startDate.get(Calendar.MONTH) else Calendar.JANUARY
-      val endMonth = if (endDate.get(Calendar.YEAR) == y) endDate.get(Calendar.MONTH) else Calendar.DECEMBER
+    val years = for (y <- startDate.getYear to endDate.getYear) yield {
 
-      val months = for (m <- startMonth to endMonth) yield {
-        val month = Month(m)
-        val monthEvents: Seq[Event] = events.filter(_.applyTo(year, month))
-        EventMonth(year, month, monthEvents)
+      val startMonth = if (startDate.getYear == y) startDate.getMonthOfYear else DateTimeConstants.JANUARY
+      val endMonth = if (endDate.getYear == y) endDate.getMonthOfYear else DateTimeConstants.DECEMBER
+
+      val months = for (month <- startMonth to endMonth) yield {
+        val ym = new YearMonth(y, month)
+        val monthEvents: Seq[Event] = events.filter(_.applyTo(ym.toInterval))
+        EventMonth(ym, monthEvents)
       }
-      EventYear(year, months.toList)
+      EventYear(y, months.toList)
     }
     years.toList
   }
@@ -44,34 +38,35 @@ object EventYear {
 /**
  * Month Event
  */
-case class EventMonth(year: Year, month: Month, weeks: List[EventWeek]) {
-  override val toString = month.toString
-
+case class EventMonth(yearMonth: YearMonth, weeks: List[EventWeek]) {
+  override val toString = yearMonth.toString
 }
 
 object EventMonth {
-  def apply(year: Year, month: Month, events: Seq[Event]): EventMonth = {
-    val lastDate = Month.lastDate(year, month)
+  def apply(yearMonth: YearMonth, events: Seq[Event]): EventMonth = {
+    val interval = yearMonth.toInterval
+    val monthStart = interval.getStart.toLocalDate
+    val monthEnd = interval.getEnd.toLocalDate
 
     // From create Days event
-    val days = for (d <- 1 to lastDate.day) yield {
-      val day = Day(d)
-      val dayEvents = events.filter(_.applyTo(year, month, day))
-      MonthDay(year, month, day, dayEvents)
+    val days = for (d <- monthStart.getDayOfMonth to monthEnd.getDayOfMonth) yield {
+      val date = yearMonth.toLocalDate(d)
+      val dayEvents = events.filter(_.applyTo(date.toInterval))
+      MonthDay(date, dayEvents)
     }
 
     val weeks: List[EventWeek] = {
       //  group by week
-      val weeksDays: List[(Int, Seq[MonthDay])] = days.groupBy(md => Day.week(year, month, md.day))
+      val weeksDays: List[(Int, Seq[MonthDay])] = days.groupBy(_.date.getWeekOfWeekyear)
         .toList
         .sorted(Ordering.by((x: (Int, Seq[MonthDay])) => x._1))
 
       // build week
       for ((w, md) <- weeksDays) yield {
-        EventWeek(year, month, w, md)
+        EventWeek(yearMonth, w, md)
       }
     }
-    EventMonth(year, month, weeks)
+    EventMonth(yearMonth, weeks)
   }
 }
 
@@ -92,8 +87,8 @@ object EventWeek {
     else list
   }
 
-  def apply(year: Year, month: Month, week: Int, events: Seq[MonthDay]): EventWeek = {
-    val lst = events.sorted(Ordering.by((md: MonthDay) => md.day.day))
+  def apply(yearMonth: YearMonth, week: Int, events: Seq[MonthDay]): EventWeek = {
+    val lst = events.sorted(Ordering.by((md: MonthDay) => md.date))
     if (week < 2) EventWeek(padLeft(lst.toList))
     else EventWeek(padRight(lst.toList))
   }
@@ -107,15 +102,15 @@ abstract sealed class EventDay
 case object Nope extends EventDay
 
 abstract class MonthDay extends EventDay {
-  def day: Day
+  def date: LocalDate
 }
 
 object MonthDay {
-  def apply(year: Year, month: Month, day: Day, events: Seq[Event]): MonthDay = {
-    if (events.isEmpty) EmptyDay(day) else EventsDay(day, events)
+  def apply(date: LocalDate, events: Seq[Event]): MonthDay = {
+    if (events.isEmpty) EmptyDay(date) else EventsDay(date, events)
   }
 }
 
-case class EmptyDay(day: Day) extends MonthDay
+case class EmptyDay(date: LocalDate) extends MonthDay
 
-case class EventsDay(day: Day, events: Seq[Event]) extends MonthDay
+case class EventsDay(date: LocalDate, events: Seq[Event]) extends MonthDay

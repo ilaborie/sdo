@@ -1,11 +1,10 @@
 package model.event
 
-import java.util.Calendar
-
 import model.contact._
 import model.orga._
 import model.team._
 import play.api.i18n.Messages
+import org.joda.time.{DateMidnight, Interval, Period, LocalDate}
 
 
 /**
@@ -21,8 +20,8 @@ import play.api.i18n.Messages
  */
 case class Event(name: String,
                  eventType: EventType,
-                 from: Calendar,
-                 to: Calendar,
+                 from: LocalDate,
+                 to: LocalDate,
                  location: Option[Location] = None,
                  email: Option[EMail] = None,
                  url: Option[String] = None,
@@ -30,37 +29,16 @@ case class Event(name: String,
 
   override val toString = name
 
-  val range: DateRange = {
-    val fromDate = {
-      val cal = Calendar.getInstance()
-      cal.clear()
-      cal.set(Calendar.YEAR, from.get(Calendar.YEAR))
-      cal.set(Calendar.MONTH, from.get(Calendar.MONTH))
-      cal.set(Calendar.DATE, from.get(Calendar.DATE))
-      cal
-    }
+  private val interval: Interval = new Interval(from.toDate.getTime, to.toDate.getTime)
 
-    val toDate = {
-      val cal = Calendar.getInstance()
-      cal.clear()
-      cal.set(Calendar.YEAR, to.get(Calendar.YEAR))
-      cal.set(Calendar.MONTH, to.get(Calendar.MONTH))
-      cal.set(Calendar.DATE, to.get(Calendar.DATE) + 1)
-      cal.add(Calendar.MILLISECOND, -1)
-      cal
-    }
-
-    ClosedDateRange(fromDate, toDate)
-  }
-
-  def applyTo(year: Year, month: Month): Boolean = !(range intersection ClosedDateRange(year, month)).isEmpty
-
-  def applyTo(year: Year, month: Month, day: Day): Boolean = !(range intersection ClosedDateRange(year, month, day)).isEmpty
+  def applyTo(anotherInterval:Interval): Boolean = interval overlaps anotherInterval
 
 }
 
 object Event {
-  val orderByStartDate: Ordering[Event] = Ordering.by[Event, Long](_.from.getTimeInMillis)
+
+  implicit def dateTimeOrdering: Ordering[LocalDate] = Ordering.fromLessThan(_ isBefore _)
+  val orderByStartDate: Ordering[Event] = Ordering.by[Event, LocalDate](_.from)
 
   lazy val events: Seq[Event] = {
     val season = Season.currentSeason

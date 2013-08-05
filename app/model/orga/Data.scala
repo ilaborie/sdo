@@ -1,8 +1,6 @@
 package model.orga
 
-import java.util.{List => JavaList, Map => JavaMap, Calendar}
-import java.text.SimpleDateFormat
-
+import java.util.{List => JavaList, Map => JavaMap}
 import scala.collection.JavaConversions._
 
 import play.Play
@@ -11,6 +9,8 @@ import play.api.Logger
 import com.google.common.io.{ByteStreams, CharStreams}
 import com.google.common.base.Charsets
 import util.YamlParser
+import org.joda.time.format.DateTimeFormat
+import org.joda.time.LocalDate
 
 /**
  * Data helpers
@@ -18,12 +18,9 @@ import util.YamlParser
 object Data {
 
   private val logger = Logger("data")
-  private val dateFormater = new SimpleDateFormat("dd-MM-yyyy")
 
-  def readDate(date: String): Calendar = {
-    val cal = Calendar.getInstance()
-    cal.setTime(dateFormater.parse(date))
-    cal
+  def readDate(date: String): LocalDate = {
+    DateTimeFormat.forPattern("dd-MM-yyyy").parseDateTime(date).toLocalDate
   }
 
   /**

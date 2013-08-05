@@ -1,18 +1,11 @@
 @(years: List[model.event.EventYear])
+@import org.joda.time.LocalDate
 @import java.util.Calendar
 @import model.event._
 @import util._
 
-    @eventTitle(year:Year, month:Month, day:Day) = {
-        <strong>
-            @{
-                val cal = Calendar.getInstance()
-                cal.set(Calendar.YEAR, year.year)
-                cal.set(Calendar.MONTH, month.month)
-                cal.set(Calendar.DATE, day.day)
-                tags.date(cal)
-            }
-        </strong>
+    @eventTitle(date:LocalDate) = {
+        <strong>@tags.date(date)</strong>
     }
     @eventContent(event: Event) = {
         <div>
@@ -40,13 +33,13 @@
                 @if(events.size == 1) {
                     <td class="event @events.head.eventType.style">
                         @d
-                        <div class="hidden title">@eventTitle(year.year, month.month, d)</div>
+                        <div class="hidden title">@eventTitle(d)</div>
                         <div class="hidden content">@eventContent(events.head)</div>
                     </td>
                 } else {
                     <td class='event @events.map(_.eventType.style).toSet.mkString(" ")'>
                         @d
-                        <div class="hidden title">@eventTitle(year.year, month.month, d)</div>
+                        <div class="hidden title">@eventTitle(d)</div>
                         <div class="hidden content">@eventsContent(events)</div>
                     </td>
                 }
