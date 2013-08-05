@@ -16,18 +16,17 @@ object Global extends GlobalSettings {
   override def onStart(app: Application) {
     // Load and trace
     YamlParser.parser = YamlParser(app)
-    logger.info("Application")
-    if (logger.isTraceEnabled) {
-      logger.trace("Loading ...")
-      Ligue.ligues.foreach(ligue => logger.trace(s"Ligue: $ligue"))
-      Event.events.foreach(event => logger.trace(s"Event: $event"))
-      Contact.contacts.foreach(contact => logger.trace(s"Contact: $contact"))
+    if (logger.isInfoEnabled) {
+      logger.info("Loading ...")
+      Ligue.ligues.foreach(ligue => logger.info(s"Ligue: $ligue"))
+      Event.events.foreach(event => logger.info(s"Event: $event"))
+      Contact.contacts.foreach(contact => logger.info(s"Contact: $contact"))
       Ligue.ligues.map {
         ligue =>
           val champ = TeamChampionship(season, ligue)
-          logger.trace(s"TeamChampionship: $champ")
+          logger.info(s"TeamChampionship: $champ")
       }
-      logger.trace("[Done]")
+      logger.info("[Done]")
     }
   }
 }

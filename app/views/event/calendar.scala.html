@@ -1,74 +1,60 @@
 @(years: List[model.event.EventYear])
+@import java.util.Calendar
 @import model.event._
+@import util._
 
-    @eventTitle(event: Event) = {
-        <span class="label label-@event.eventType.style">@Messages(s"event.type.${event.eventType.style}")</span>
-    @event.name
-        <small>@tags.date(event.from) - @tags.date(event.to)</small>
+    @eventTitle(year:Year, month:Month, day:Day) = {
+        <strong>
+            @{
+                val cal = Calendar.getInstance()
+                cal.set(Calendar.YEAR, year.year)
+                cal.set(Calendar.MONTH, month.month)
+                cal.set(Calendar.DATE, day.day)
+                tags.date(cal)
+            }
+        </strong>
     }
     @eventContent(event: Event) = {
-        <div class="detail">
-            <div class="links">
-                @event.url.map(tags.site(_))
-                @event.email.map(tags.email(_))
-            </div>
-            <div>@event.location.map(tags.location(_))</div>
-            @event.info.map(tags.info(_))
+        <div>
+            <span class="label label-@event.eventType.style">@Messages(s"event.type.${event.eventType.style}")</span>
+            <strong>@event.name</strong>
         </div>
+        @if(event.location.isDefined) { <div>@tags.location(event.location.get)</div>}
     }
-    @eventsTitle(events: Seq[Event]) = {
-    @for(event <- events) {
-        <span class="label label-@event.eventType.style">@Messages(s"event.type.${event.eventType.style}")</span>
-        @event.name
-        <small>@tags.date(event.from) - @tags.date(event.to)</small> <br>
-    }
-    }
+
     @eventsContent(events: Seq[Event]) = {
-    @for(event <- events) {
-        <div class="detail">
-            <div class="links">
-                @event.url.map(tags.site(_))
-                @event.email.map(tags.email(_))
-            </div>
-            <div>@event.location.map(tags.location(_))</div>
-            @event.info.map(tags.info(_))
-        </div> <br>
-    }
+        @for(event <- events) {
+            @eventContent(event) <br>
+        }
     }
 
     @displayDay(year: EventYear, month: EventMonth, day: EventDay) = {
-    @day match {
-        case Nope => {
-            <td class="nope">&nbsp;</td>
-        }
-        case EmptyDay(d) => {
-            <td class="empty">@d</td>
-        }
-        case EventsDay(d, events) => {
-            @if(events.size == 1) {
-                <td class="event @events.head.eventType.style"
-                data-html="true"
-                data-year="@year.year.year"
-                data-month="@month.month.month"
-                data-month="@d.day">@d
-                    <div class="hidden title">@eventTitle(events.head)</div>
-                    <div class="hidden content">@eventContent(events.head)</div>
-                </td>
-            } else {
-                <td class="event rainbow"
-                data-html="true"
-                data-year="@year.year.year"
-                data-month="@month.month.month"
-                data-month="@d.day">@d
-                    <div class="hidden title">@eventsTitle(events)</div>
-                    <div class="hidden content">@eventsContent(events)</div>
-                </td>
+        @day match {
+            case Nope => {
+                <td class="nope">&nbsp;</td>
+            }
+            case EmptyDay(d) => {
+                <td class="empty">@d</td>
+            }
+            case EventsDay(d, events) => {
+                @if(events.size == 1) {
+                    <td class="event @events.head.eventType.style">
+                        @d
+                        <div class="hidden title">@eventTitle(year.year, month.month, d)</div>
+                        <div class="hidden content">@eventContent(events.head)</div>
+                    </td>
+                } else {
+                    <td class='event @events.map(_.eventType.style).toSet.mkString(" ")'>
+                        @d
+                        <div class="hidden title">@eventTitle(year.year, month.month, d)</div>
+                        <div class="hidden content">@eventsContent(events)</div>
+                    </td>
+                }
+            }
+            case _ => {
+                <td></td>
             }
         }
-        case _ => {
-            <td></td>
-        }
-    }
     }
 
     @displayMonth(year: EventYear, month: EventMonth) = {
