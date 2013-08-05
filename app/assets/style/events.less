@@ -130,11 +130,17 @@ table.calendar {
     td.world.comite {
       background-image: linear-gradient(45deg, @world, @comite);
     }
+    td.world.ligue {
+      background-image: linear-gradient(45deg, @world, @ligue);
+    }
+    td.world.france {
+      background-image: linear-gradient(45deg, @world, @france);
+    }
     td.team.comite {
       background-image: linear-gradient(45deg, @team, @comite);
     }
-    td.team.comite.france {
-      background-image: linear-gradient(45deg, @team, @comite, @france);
+    td.team.france {
+      background-image: linear-gradient(45deg, @team, @france);
     }
     td.team.ligue {
       background-image: linear-gradient(45deg, @team, @ligue);
@@ -147,7 +153,7 @@ table.calendar {
       background-color: @world;
     }
     td.worldfrance {
-      #gradient > .directional(@world, @france);
+      background-image: linear-gradient(45deg, @world, @france);
     }
     td.fede {
       background-color: @fede;
