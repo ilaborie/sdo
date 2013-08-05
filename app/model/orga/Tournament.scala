@@ -1,23 +1,23 @@
 package model.orga
 
-import java.util.Calendar
-import play.api.cache.Cache
-import play.api.Play.current
 import play.api.i18n.Messages
-import org.apache.commons.lang3.time.FastDateFormat
+import org.joda.time.LocalDate
+import org.joda.time.format.DateTimeFormat
 
 /**
  * Tournament
  */
 sealed abstract class Tournament {
-  def date: Calendar
+  def date: LocalDate
 
   def getPoint(position: TournamentResult): Int
 
+  def shortName: String
 }
 
 object Tournament {
-  val orderByDate: Ordering[Tournament] = Ordering.by[Tournament, Long](_.date.getTimeInMillis)
+
+  val orderByDate: Ordering[Tournament] = Ordering.by[Tournament, LocalDate](_.date)
 }
 
 /**
@@ -27,18 +27,19 @@ sealed abstract class LigueTournament extends Tournament {
   val isEvent: Boolean = true
   val isTeam: Boolean = false
 
-  def shortName: String
+  def ligue: Ligue
 }
 
 /**
  * Open Ligue
  */
-case class OpenLigue(date: Calendar, location: String) extends LigueTournament {
+case class OpenLigue(date: LocalDate, location: String) extends LigueTournament {
 
-  override def toString = Messages("rank.ligue.open.title")
+  override def toString = Messages("rank.ligue.open.title", ligue)
 
+  lazy val ligue = Ligue.ligues.find(_.opens.contains(this)).get
 
-  val shortName = s"OL-${FastDateFormat.getInstance("yyyyMMdd").format(date)}"
+  val shortName = s"OL-${DateTimeFormat.shortDate().print(date)}"
 
   def getPoint(position: TournamentResult): Int = position match {
     case Winner => 16
@@ -53,11 +54,13 @@ case class OpenLigue(date: Calendar, location: String) extends LigueTournament {
 /**
  * Coupe Ligue
  */
-case class CoupeLigue(date: Calendar, location: String) extends LigueTournament {
+case class CoupeLigue(date: LocalDate, location: String) extends LigueTournament {
 
-  override def toString = Messages("rank.ligue.coupe.title")
+  override def toString = Messages("rank.ligue.coupe.title", ligue)
 
   val shortName = "CL"
+
+  lazy val ligue = Ligue.ligues.find(_.coupe == this).get
 
   def getPoint(position: TournamentResult): Int = position match {
     case Winner => 22
@@ -74,11 +77,13 @@ case class CoupeLigue(date: Calendar, location: String) extends LigueTournament 
 /**
  * Master Ligue
  */
-case class MasterLigue(date: Calendar, location: String) extends LigueTournament {
+case class MasterLigue(date: LocalDate, location: String) extends LigueTournament {
 
   override def toString = Messages("rank.ligue.master.title")
 
-  val shortName = "Ma"
+  val shortName = "Mast"
+
+  lazy val ligue = Ligue.ligues.find(_.master == this).get
 
   def getPoint(position: TournamentResult): Int = position match {
     case Winner => 29
@@ -93,21 +98,25 @@ case class MasterLigue(date: Calendar, location: String) extends LigueTournament
 /**
  * Master Ligue Team
  */
-case class MasterLigueTeam(date: Calendar, location: String) extends LigueTournament {
+case class MasterLigueTeam(date: LocalDate, location: String) extends LigueTournament {
   override val isTeam: Boolean = true
-  val shortName = "MaT"
+  val shortName = "MastTeam"
+  lazy val ligue = Ligue.ligues.find(_.masterTeam == this).get
 
   override def toString = Messages("rank.ligue.master.team.title")
 
-  def getPoint(position: TournamentResult): Int = ???
+  def getPoint(position: TournamentResult): Int = 0
 }
 
 /**
  * Comite Ranking
  */
-case class ComiteRank(comite: Comite, date: Calendar) extends LigueTournament {
+case class ComiteRank(comite: Comite, date: LocalDate) extends LigueTournament {
 
   override def toString = Messages("rank.ligue.comite.rank.title", comite)
+
+  lazy val ligue = comite.ligue
+
   val shortName = "LCR"
 
   override val isEvent: Boolean = false
@@ -136,9 +145,11 @@ case class ComiteCoupeLigue(comite: Comite) extends LigueTournament {
 
   val shortName = "LCC"
 
+  lazy val ligue = comite.ligue
+
   override val isEvent: Boolean = false
 
-  val date: Calendar = comite.coupe.date
+  val date: LocalDate = comite.coupe.date
 
   def getPoint(position: TournamentResult): Int = position match {
     case Winner => 29
@@ -157,14 +168,19 @@ case class ComiteCoupeLigue(comite: Comite) extends LigueTournament {
  */
 sealed abstract class ComiteTournament extends Tournament {
   def shortName: String
+
+  def comite: Comite
 }
 
 /**
  * Coupe Comite
  */
-case class CoupeComite(date: Calendar, location: String) extends ComiteTournament {
+case class CoupeComite(date: LocalDate, location: String) extends ComiteTournament {
   override def toString = Messages("rank.comite.coupe.title")
+
   val shortName = "CC"
+
+  lazy val comite: Comite = Ligue.comites.find(_.coupe == this).get
 
   def getPoint(position: TournamentResult): Int = position match {
     case Winner => 29
@@ -179,14 +195,13 @@ case class CoupeComite(date: Calendar, location: String) extends ComiteTournamen
 /**
  * Open Club
  */
-case class OpenClub(date: Calendar) extends ComiteTournament {
+case class OpenClub(date: LocalDate) extends ComiteTournament {
   override def toString = Messages("rank.comite.open.title", club.name)
 
-  val shortName = s"OC-${FastDateFormat.getInstance("yyyyMMdd").format(date)}"
+  val shortName = s"OC-${DateTimeFormat.shortDate().print(date)}"
 
-  def club: Club = Cache.getOrElse[Club](s"openClub.$date.club") {
-    Ligue.clubs.find(_.opens.contains(this)).get
-  }
+  lazy val club: Club = Ligue.clubs.find(_.opens.contains(this)).get
+  lazy val comite = club.comite
 
   def getPoint(position: TournamentResult): Int = position match {
     case Winner => 16

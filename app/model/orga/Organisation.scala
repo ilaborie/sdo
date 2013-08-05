@@ -1,6 +1,5 @@
 package model.orga
 
-import java.util.Calendar
 import play.api.cache.Cache
 import play.api.Play.current
 import model.event.Event
@@ -56,20 +55,13 @@ case class Ligue(name: String,
   }
 
   lazy val tournaments: List[LigueTournament] = {
-    val comiteCoupes = for {
-      comite <- comites
-    } yield ComiteCoupeLigue(comite)
+    val comiteCoupes = for(comite <- comites) yield ComiteCoupeLigue(comite)
 
-    val dateRanking = Calendar.getInstance()
-    dateRanking.setTimeInMillis(master.date.getTimeInMillis)
-    dateRanking.add(Calendar.DAY_OF_MONTH, -1)
-
-    val comiteRankings = for {
-      comite <- comites
-    } yield ComiteRank(comite, dateRanking)
+    val dateRanking = master.date.plusDays(-1)
+    val comiteRankings = for(comite <- comites) yield ComiteRank(comite, dateRanking)
 
     val list = (coupe :: master :: masterTeam :: opens.toList) ::: comiteCoupes.toList ::: comiteRankings.toList
-    list.sortBy(_.date.getTimeInMillis)
+    list.sortBy(_.date)
   }
 
   lazy val events = for {
@@ -157,7 +149,7 @@ case class Comite(name: String,
       open <- club.opens
     } yield open
 
-    (coupe :: seq.toList).sortBy(_.date.getTimeInMillis)
+    (coupe :: seq.toList).sortBy(_.date)
   }
 
   def ligue: Ligue = Cache.getOrElse[Ligue](s"comite.$shortName.ligue") {
@@ -199,7 +191,7 @@ case class Club(name: String, shortName: String, opens: Seq[OpenClub], teams: Se
     ligue.comites.find(_.clubs.contains(this)).get
   }
 
-  lazy val events= for(open <- opens) yield Event(comite, open)
+  lazy val events = for (open <- opens) yield Event(comite, open)
 }
 
 

@@ -1,7 +1,7 @@
 package model.team
 
 import model.orga._
-import java.util.Calendar
+import org.joda.time.LocalDate
 
 
 /**
@@ -290,7 +290,7 @@ case class MatchDetailFail(day: Int, team1: Team, team2: Team, fails: Seq[Team])
  * @param matches matches
  */
 case class PlayedMatchDetail(day: Int,
-                             date: Calendar,
+                             date: LocalDate,
                              location: String,
                              team1Detail: TeamMatchDetail,
                              team2Detail: TeamMatchDetail,

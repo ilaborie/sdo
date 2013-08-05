@@ -1,8 +1,8 @@
 package model.team
 
 import model.orga.{Team, Comite, Season, Ligue}
-import java.util.Calendar
 import model.event.Event
+import org.joda.time.LocalDate
 
 /**
  * Team TeamChampionship
@@ -34,7 +34,7 @@ object TeamChampionship {
  * @param day day
  * @param matches matchs
  */
-case class TeamChampionshipDay(ligue: Ligue, day: Int, from: Calendar, to: Calendar, matches: Seq[PlannedTeamMatch]) {
+case class TeamChampionshipDay(ligue: Ligue, day: Int, from: LocalDate, to: LocalDate, matches: Seq[PlannedTeamMatch]) {
   def findMatch(team1: Team, team2: Team): Option[PlannedTeamMatch] =
     matches.find(m => m.applyTo(team1) && m.applyTo(team2))
 
