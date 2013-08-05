@@ -90,7 +90,7 @@ object EventWeek {
 
   def apply(yearMonth: YearMonth, week: Int, events: Seq[MonthDay]): EventWeek = {
     val lst = events.sorted(Ordering.by((md: MonthDay) => md.date))
-    if (week < 2) EventWeek(padLeft(lst.toList))
+    if (week == yearMonth.toInterval.getStart.getWeekOfWeekyear) EventWeek(padLeft(lst.toList))
     else EventWeek(padRight(lst.toList))
   }
 }
