@@ -35,7 +35,7 @@ sealed abstract class LigueTournament extends Tournament {
  */
 case class OpenLigue(date: LocalDate, location: String) extends LigueTournament {
 
-  override def toString = Messages("rank.ligue.open.title", ligue)
+  override def toString = Messages("rank.ligue.open.title", ligue.name)
 
   lazy val ligue = Ligue.ligues.find(_.opens.contains(this)).get
 
@@ -56,7 +56,7 @@ case class OpenLigue(date: LocalDate, location: String) extends LigueTournament 
  */
 case class CoupeLigue(date: LocalDate, location: String) extends LigueTournament {
 
-  override def toString = Messages("rank.ligue.coupe.title", ligue)
+  override def toString = Messages("rank.ligue.coupe.title", ligue.name)
 
   val shortName = "CL"
 
@@ -113,7 +113,7 @@ case class MasterLigueTeam(date: LocalDate, location: String) extends LigueTourn
  */
 case class ComiteRank(comite: Comite, date: LocalDate) extends LigueTournament {
 
-  override def toString = Messages("rank.ligue.comite.rank.title", comite)
+  override def toString = Messages("rank.ligue.comite.rank.title", comite.name)
 
   lazy val ligue = comite.ligue
 
@@ -141,7 +141,7 @@ case class ComiteRank(comite: Comite, date: LocalDate) extends LigueTournament {
  * Coupe Comite
  */
 case class ComiteCoupeLigue(comite: Comite) extends LigueTournament {
-  override def toString = Messages("rank.ligue.comite.coupe.title", comite)
+  override def toString = Messages("rank.ligue.comite.coupe.title", comite.name)
 
   val shortName = "LCC"
 
@@ -176,7 +176,7 @@ sealed abstract class ComiteTournament extends Tournament {
  * Coupe Comite
  */
 case class CoupeComite(date: LocalDate, location: String) extends ComiteTournament {
-  override def toString = Messages("rank.comite.coupe.title")
+  override def toString = Messages("rank.comite.coupe.title", comite.name)
 
   val shortName = "CC"
 
