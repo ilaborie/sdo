@@ -1,4 +1,4 @@
-@(title: String, navbar:Html= Html(""), scripts: Html = script())(content: Html)
+@(title: String, scripts: Html = script())(content: Html)
 <!DOCTYPE html>
 
 <html>
@@ -13,7 +13,7 @@
     </head>
     @* Body *@
     <body>
-        @navbar
+        @navbar.empty(title)
         @content
         @scripts
     </body>

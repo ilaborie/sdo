@@ -1,6 +1,6 @@
 @(ligue: model.orga.Ligue)
 
-@layout.main(s"Ligue ${ligue.shortName}", navbar = navbar.ligue(ligue)) {
+@layout.main(ligue.name) {
     <div class="container-fluid">
         <div class="row-fluid">
             <div class="span3 well well-small">

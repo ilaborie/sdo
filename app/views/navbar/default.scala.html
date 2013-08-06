@@ -1,4 +1,5 @@
-@(brand: Html = Html(""))(content: Html)
+@(title: String = "")(content: Html)
+@import model.orga._
 
 <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
@@ -8,11 +9,16 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </a>
-
-            @brand
+            <a class="brand" href="/sdo/"><i class="glyphicons home"></i></a>
+            <a class="brand" href="#">@title</a>
             <div class="nav-collapse collapse">
                 <ul class="nav">
-                @content
+                @for(ligue <- Ligue.ligues) {
+                    <li><a href="@routes.Application.ligue(ligue.shortName)"> @ligue.name</a></li>
+                    @for(comite <- ligue.comites) {
+                        <li><a href="@routes.Application.comite(ligue.shortName, comite.shortName)"> @comite.name</a></li>
+                    }
+                }
                 </ul>
                 <ul class="nav pull-right">
                     <li><a href="@routes.Application.event"><i class="glyphicons calendar"></i> @Messages("title.events")</a></li>
