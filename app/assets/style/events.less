@@ -18,6 +18,7 @@ default     gris
 @comite: #f89406;
 @team: #46a546;
 
+
 .label,
 .badge {
   &-world {
@@ -132,32 +133,32 @@ table.calendar {
     }
 
     td.world.comite {
-      background-image: linear-gradient(45deg, @world, @comite);
+      #gradient > .directional(@world, @comite);
     }
     td.world.ligue {
-      background-image: linear-gradient(45deg, @world, @ligue);
+      #gradient > .directional(@world, @ligue);
     }
     td.world.france {
-      background-image: linear-gradient(45deg, @world, @france);
+      #gradient > .directional(@world, @france);
     }
     td.team.comite {
-      background-image: linear-gradient(45deg, @team, @comite);
+      #gradient > .directional(@team, @comite);
     }
     td.team.france {
-      background-image: linear-gradient(45deg, @team, @france);
+      #gradient > .directional(@team, @france);
     }
     td.team.ligue {
-      background-image: linear-gradient(45deg, @team, @ligue);
+      #gradient > .directional(@team,@ligue);
     }
     td.team.world {
-      background-image: linear-gradient(45deg, @team, @world);
+      #gradient > .directional(@team,@world);
     }
 
     td.world {
       background-color: @world;
     }
     td.worldfrance {
-      background-image: linear-gradient(45deg, @world, @france);
+      #gradient > .directional(@world, @france);
     }
     td.fede {
       background-color: @fede;
