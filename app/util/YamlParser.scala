@@ -31,9 +31,13 @@ case class YamlParser(app: Application) {
 object YamlParser {
   var parser: YamlParser = null
 
-  def parseFile(path: String): Any = {
+  private def getFile(path:String): File = {
     val parent = new File(parser.app.configuration.getString("file.data").getOrElse("conf"))
-    val file = new File(parent.getAbsoluteFile + File.separator + path)
+    new File(parent.getAbsoluteFile + File.separator + path)
+  }
+
+  def parseFile(path: String): Any = {
+    val file = getFile(path)
     if (file.exists && file.isFile) {
       parser.parseFile(file)
     } else {
@@ -45,6 +49,21 @@ object YamlParser {
     Some(parseFile(path))
   } catch {
     case _: Throwable => None
+  }
+
+
+  /**
+   * Read info file
+   * @param infoFile ligue file
+   * @return the ligue
+   */
+  def readInfo(infoFile: String): Option[String] = {
+    val file = getFile(infoFile)
+    if (file.exists && file.isFile) {
+      Some(Files.toString(file, Charsets.UTF_8))
+    } else {
+      None
+    }
   }
 }
 

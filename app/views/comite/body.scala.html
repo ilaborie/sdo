@@ -1,7 +1,9 @@
 @(comite: model.orga.Comite)
 
 <div class="well well-small">
-    <h1>@comite.name</h1>
+    <div class="page-header">
+        <h1>@comite.name</h1>
+    </div>
     @comite.info.map(tags.info(_))
 
     @for(event <- comite.events) {

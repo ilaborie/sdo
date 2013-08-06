@@ -1,7 +1,10 @@
 @(events: Seq[model.event.Event])
 @import model.event.EventType
 
-<h1>@Messages("title.events")</h1>
+
+<div class="page-header">
+    <h1>@Messages("title.events")</h1>
+</div>
 <p class="lead">@Html(Messages("event.mention"))</p>
 
 <div id="eventTypeFilter" class="btn-group" data-toggle="buttons-checkbox">

@@ -105,7 +105,7 @@
         </div>
     }
 
-@layout.main(Messages("team.detail.title", detail), navbar = navbar.teamDetail(ligue, detail)) {
+@layout.main(Messages("team.detail.title", detail)) {
     <div class="container well well-small">
         @detail match {
             case MatchDetailFail(_, _, _, fails) => {
