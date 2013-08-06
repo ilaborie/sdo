@@ -1,7 +1,7 @@
 @(comite: model.orga.Comite)
 
-@layout.main(s"Comite ${comite.shortName}", navbar = navbar.comite(comite)) {
-    <div class="container-fluid">
+@layout.main(comite.name) {
+    <div class="container">
         <div class="row-fluid">
             <div class="span3 well well-small">
                 <ul class="nav nav-list">

@@ -1,8 +1,10 @@
 @(contacts: Seq[model.contact.Contact])
 
-@layout.main(Messages("title.contacts"), navbar = navbar.empty(Messages("title.contacts"))) {
+@layout.main(Messages("title.contacts")) {
     <div class="container well well-small">
-        <h1>@Messages("title.contacts")</h1>
+        <div class="page-header">
+            <h1>@Messages("title.contacts")</h1>
+        </div>
         <p class="lead">@Html(Messages("contacts.mention"))</p>
 
         @for(contact <- contacts) {

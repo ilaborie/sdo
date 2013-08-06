@@ -94,7 +94,7 @@ object Data {
     val teamMaster = info("team-master").asInstanceOf[JavaMap[String,String]]
     val masterTeam = MasterLigueTeam(readDate(teamMaster.get("date")), teamMaster.get("location"))
 
-    val information = readInfo(s"s$season/$ligue/ligue.html")
+    val information = YamlParser.readInfo(s"s$season/$ligue/info.html")
 
     Ligue(name, shortName, comites, opens, coupe, master, masterTeam, information)
   }
@@ -120,7 +120,7 @@ object Data {
     val coupeMap = info("coupe").asInstanceOf[JavaMap[String,String]]
 
     val coupe = CoupeComite(readDate(coupeMap.get("date")), coupeMap.get("location"))
-    val information = readInfo(s"s$season/$ligue/$comite/ligue.html")
+    val information = YamlParser.readInfo(s"s$season/$ligue/$comite/info.html")
 
     Comite(name, shortName, clubs, coupe, information)
   }
@@ -146,7 +146,7 @@ object Data {
     } else Nil
     val teamList = info("teams").asInstanceOf[JavaList[String]].toList
     val teams = for (team <- teamList) yield readTeam(season, ligue, comite, club, team)
-    val information = readInfo(s"s$season/$ligue/$comite/$club/ligue.html")
+    val information = YamlParser.readInfo(s"s$season/$ligue/$comite/$club/info.html")
 
     Club(name, shortName, opens, teams, information)
   }
@@ -191,20 +191,6 @@ object Data {
   }
 
 
-  /**
-   * Read ligue file
-   * @param infoFile ligue file
-   * @return the ligue
-   */
-  def readInfo(infoFile: String): Option[Info] = {
-    val stream = Play.application.resourceAsStream(infoFile)
-    if (stream != null) {
-      val supplier = ByteStreams.newInputStreamSupplier(ByteStreams.toByteArray(stream))
-      val input = CharStreams.newReaderSupplier(supplier, Charsets.UTF_8)
-      val info = CharStreams.toString(input)
-      Some(info)
-    } else None
-  }
 }
 
 case class ParseDataException(message: String) extends RuntimeException(message)
