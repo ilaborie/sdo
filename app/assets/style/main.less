@@ -22,8 +22,13 @@ body {
 h1 {
   font-size: 32px;
 }
+
 h2 {
   font-size: 24px;
+}
+
+dl {
+  margin-bottom: 0;
 }
 
 .links {
@@ -38,11 +43,20 @@ h2 {
 .win {
   color: @green;
 }
+
 .loose {
   color: @red;
 }
+
 .draw {
   color: @grayDark;
+}
+
+.alert {
+
+  a {
+    color: @warningText !important;
+  }
 }
 
 // MenuBar
@@ -88,3 +102,5 @@ table.table {
 // Events
 @import "events.less";
 
+// Home
+@import "home.less";

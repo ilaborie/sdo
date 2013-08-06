@@ -33,7 +33,7 @@ object DataContact {
     }
     val url = toOption(data, "url")
     val information = toOption(data, "info") match {
-      case Some(info) => Data.readInfo(s"data/s$season/$info")
+      case Some(info) => YamlParser.readInfo(s"s$season/$info")
       case None => None
     }
 

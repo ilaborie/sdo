@@ -16,7 +16,9 @@
     }
 
 <div class="well well-small">
-    <h1>@club.name</h1>
+    <div class="page-header">
+        <h1>@club.name</h1>
+    </div>
     @club.info.map(tags.info(_))
 
     @for(event <- club.events) {
