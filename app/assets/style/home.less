@@ -1,0 +1,43 @@
+
+@import "bootstrap/variables";
+@import "bootstrap/mixins";
+
+.homelink {
+  color: @infoText;
+  border-color: @infoBorder;
+  border-style: solid;
+  border-width: medium;
+  border-radius: 8px;
+  margin: .5em;
+  min-height: 2em;
+
+  #gradient > .vertical(@white, @grayLighter);
+  //.box-shadow();
+
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .25), inset 0 1px 0 rgba(0, 0, 0, .1);
+
+  &:hover {
+    .box-shadow(0 0 16px darken(@infoBorder, 10%));
+  }
+
+  vertical-align: middle;
+  font-size: 2em;
+  font-weight: bold;
+
+  img {
+    text-align: right;
+  }
+  .span10 {
+    margin-top: 16px;
+  }
+  .span2 {
+    margin-top: 5px;
+  }
+
+  .glyphicons {
+    color: @grayDarker;
+    font-size: 1.5em;
+    margin-left: 5px;
+  }
+
+}
