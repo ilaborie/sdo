@@ -47,7 +47,7 @@
                     <li class="nav-header">@Messages("menu.tournaments")</li>
                     @for(tournament <- comite.tournaments) {
                         <li>
-                            <a id="@tournament.shortName" href="#@tournament.shortName" data-href="#@tournament.shortName" data-href="@routes.Application.comiteTournament(comite.ligue.shortName, comite.shortName, tournament.shortName)" data-target="#bodyComite">
+                            <a id="@tournament.shortName" href="#@tournament.shortName" data-href="@routes.Application.comiteTournament(comite.ligue.shortName, comite.shortName, tournament.shortName)" data-target="#bodyComite">
                             @tournament
                             </a>
                         </li>
