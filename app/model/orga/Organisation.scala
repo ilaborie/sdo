@@ -55,12 +55,10 @@ case class Ligue(name: String,
   }
 
   lazy val tournaments: List[LigueTournament] = {
-    val comiteCoupes = for(comite <- comites) yield ComiteCoupeLigue(comite)
-
     val dateRanking = master.date.plusDays(-1)
     val comiteRankings = for(comite <- comites) yield ComiteRank(comite, dateRanking)
 
-    val list = (coupe :: master :: masterTeam :: opens.toList) ::: comiteCoupes.toList ::: comiteRankings.toList
+    val list = (coupe :: master :: masterTeam :: opens.toList) ::: comiteRankings.toList
     list.sortBy(_.date)
   }
 
