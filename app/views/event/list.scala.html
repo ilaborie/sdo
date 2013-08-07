@@ -1,4 +1,4 @@
-@(events: Seq[model.event.Event])
+@(events: Seq[model.event.Event], now: org.joda.time.LocalDate = org.joda.time.LocalDate.now)
 @import model.event.EventType
 
 
@@ -33,5 +33,5 @@
 </div>
 
 @for(event <- events) {
-    @tags.event(event)
+    @tags.event(event, now)
 }

@@ -26,6 +26,7 @@
     }
 
     @if(club.teams.size == 1) {
+        <h2><i class="glyphicons group"></i> @Messages("club.oneteam")</h2>
         @displayTeam(club.teams.head)
     } else {
         <ul class="unstyled">
