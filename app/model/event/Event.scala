@@ -73,9 +73,14 @@ object Event {
     val name = Messages("team.championship.day", day.day)
     // FIXME reverse routing, ligue, team
     val url = controllers.routes.Application.ligue(ligue.shortName).url
-
-    Event(name, TeamEvent, day.from, day.to)
+    val info = {
+      for (ma <- day.matches)
+      yield s"""<div>${ma.team1.name} - ${ma.team2.name}</div>"""
+    }.mkString("")
+    println(info)
+    Event(name, TeamEvent, day.from, day.to, info = Some(info))
   }
+
 
   def apply(ligue: Ligue, tournament: LigueTournament): Event = {
     val name = tournament.toString
