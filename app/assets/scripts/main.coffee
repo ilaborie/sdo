@@ -5,7 +5,7 @@ $ ->
     $this = $(this)
     target = $this.attr "data-target"
     $(".nav-list li").removeClass "active"
-    url = $this.attr "href"
+    url = $this.attr "data-href"
     $(target).load url, () ->
       $this.parent().addClass "active"
       $(target).trigger("postLoad")
@@ -25,4 +25,9 @@ $ ->
       $(elt).parent().addClass "active"
 
   # AutoClick
-  $("a.autoClick").click()
+  deepLink = window.location.href.split("#")[1]
+  if (deepLink)
+    $("#" + deepLink).click()
+    window.scrollTo(0, 0);
+  else
+    $("a.autoClick").click()

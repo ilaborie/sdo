@@ -6,33 +6,33 @@
             <div class="span3 well well-small">
                 <ul class="nav nav-list">
                     <li>
-                        <a href="@routes.Application.ligueBody(ligue.shortName)" data-target="#bodyLigue" class="autoClick">
+                        <a href="#" data-href="@routes.Application.ligueBody(ligue.shortName)" data-target="#bodyLigue" class="autoClick">
                         @ligue.name
                         </a>
                     </li>
                     <li class="nav-header">@Messages("menu.rank")</li>
                     <li>
-                        <a id="single" href="@routes.Classements.ligueSingle(ligue.shortName)" data-target="#bodyLigue">
+                        <a id="single" href="#single" data-href="@routes.Classements.ligueSingle(ligue.shortName)" data-target="#bodyLigue">
                         @Messages("menu.rank.men")
                         </a>
                     </li>
                     <li>
-                        <a id="women" href="@routes.Classements.ligueFeminine(ligue.shortName)" data-target="#bodyLigue">
+                        <a id="women" href="#women" data-href="@routes.Classements.ligueFeminine(ligue.shortName)" data-target="#bodyLigue">
                         @Messages("menu.rank.women")
                         </a>
                     </li>
                     <li>
-                        <a id="junior" href="@routes.Classements.ligueJunior(ligue.shortName)" data-target="#bodyLigue">
+                        <a id="junior" href="#junior" data-href="@routes.Classements.ligueJunior(ligue.shortName)" data-target="#bodyLigue">
                         @Messages("menu.rank.junior")
                         </a>
                     </li>
                     <li>
-                        <a id="pair" href="@routes.Classements.ligueDoublette(ligue.shortName)" data-target="#bodyLigue">
+                        <a id="pair" href="#pair" data-href="@routes.Classements.ligueDoublette(ligue.shortName)" data-target="#bodyLigue">
                         @Messages("menu.rank.double")
                         </a>
                     </li>
                     <li>
-                        <a id="team" href="@routes.Classements.ligueTeam(ligue.shortName)" data-target="#bodyLigue">
+                        <a id="team" href="#team" data-href="@routes.Classements.ligueTeam(ligue.shortName)" data-target="#bodyLigue">
                         @Messages("menu.rank.team")
                         </a>
                     </li>
@@ -45,7 +45,7 @@
                     <li class="nav-header">@Messages("menu.tournaments")</li>
                     @for(tournament <- ligue.tournaments; if tournament.isEvent) {
                         <li>
-                            <a id="@tournament.shortName" href="@routes.Application.ligueTournament(ligue.shortName, tournament.shortName)" data-target="#bodyLigue">
+                            <a id="@tournament.shortName" id="#@tournament.shortName" data-href="@routes.Application.ligueTournament(ligue.shortName, tournament.shortName)" data-target="#bodyLigue">
                                 @tournament
                             </a>
                         </li>
