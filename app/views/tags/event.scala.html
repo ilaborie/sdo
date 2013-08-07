@@ -1,6 +1,6 @@
-@(event: model.event.Event)
+@(event: model.event.Event, now: org.joda.time.LocalDate = org.joda.time.LocalDate.now)
 
-<div class="event @event.eventType.styles">
+<div class="event @event.eventType.styles @if(event.to.isBefore(now)) {now}">
     <h2>
         <span class="label label-@event.eventType.style">@Messages(s"event.type.${event.eventType.style}")</span>
         @event.name

@@ -1,10 +1,8 @@
-@(years: List[model.event.EventYear])
+@(years: List[model.event.EventYear], now: org.joda.time.LocalDate = org.joda.time.LocalDate.now)
 @import org.joda.time.LocalDate
-@import java.util.Calendar
 @import model.event._
-@import util._
 
-    @eventTitle(date:LocalDate) = {
+    @eventTitle(date: LocalDate) = {
         <strong>@tags.date(date)</strong>
     }
     @eventContent(event: Event) = {
@@ -13,45 +11,50 @@
             <strong>@event.name</strong>
             @event.info.map(tags.info(_))
         </div>
-        @if(event.location.isDefined) { <div>@tags.location(event.location.get)</div>}
+    @if(event.location.isDefined) {
+        <div>@tags.location(event.location.get)</div>
+    }
     }
 
     @eventsContent(events: Seq[Event]) = {
-        @for(event <- events) {
-            @eventContent(event) <br>
-        }
+    @for(event <- events) {
+        @eventContent(event) <br>
+    }
     }
 
-    @today(date:LocalDate) = {@if(date.isEqual(LocalDate.now)) {today}}
-
+    @today(date: LocalDate) = {
+    @if(date.isEqual(now)) {today} else {
+        @if(date.isBefore(now)) {muted}
+    }
+    }
 
     @displayDay(year: EventYear, month: EventMonth, day: EventDay) = {
-        @day match {
-            case Nope => {
-                <td class="nope">&nbsp;</td>
-            }
-            case EmptyDay(d) => {
-                <td class="empty @today(d)">@d.getDayOfMonth</td>
-            }
-            case EventsDay(d, events) => {
-                @if(events.size == 1) {
-                    <td class="event @today(d) @events.head.eventType.style">
-                        @d.getDayOfMonth
-                        <div class="hidden title">@eventTitle(d)</div>
-                        <div class="hidden content">@eventContent(events.head)</div>
-                    </td>
-                } else {
-                    <td class='event @today(d) @events.map(_.eventType.style).toSet.mkString(" ")'>
-                        @d.getDayOfMonth
-                        <div class="hidden title">@eventTitle(d)</div>
-                        <div class="hidden content">@eventsContent(events)</div>
-                    </td>
-                }
-            }
-            case _ => {
-                <td></td>
+    @day match {
+        case Nope => {
+            <td class="nope">&nbsp;</td>
+        }
+        case EmptyDay(d) => {
+            <td class="empty @today(d)">@d.getDayOfMonth</td>
+        }
+        case EventsDay(d, events) => {
+            @if(events.size == 1) {
+                <td class="event @today(d) @events.head.eventType.style">
+                    @d.getDayOfMonth
+                    <div class="hidden title">@eventTitle(d)</div>
+                    <div class="hidden content">@eventContent(events.head)</div>
+                </td>
+            } else {
+                <td class='event @today(d) @events.map(_.eventType.style).toSet.mkString(" ")'>
+                    @d.getDayOfMonth
+                    <div class="hidden title">@eventTitle(d)</div>
+                    <div class="hidden content">@eventsContent(events)</div>
+                </td>
             }
         }
+        case _ => {
+            <td></td>
+        }
+    }
     }
 
     @displayMonth(year: EventYear, month: EventMonth) = {

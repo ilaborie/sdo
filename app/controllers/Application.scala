@@ -4,6 +4,7 @@ import play.api.mvc._
 import model.orga._
 import model.contact.Contact
 import model.event.{EventYear, Event}
+import org.joda.time.LocalDate
 
 /**
  * Mains pages

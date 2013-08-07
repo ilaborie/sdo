@@ -128,3 +128,6 @@ team.detail.legs=Manches
 team.detail.points=Points
 team.detail.result=Résultat
 team.detail.capitain=Capitaines
+
+# Club
+club.oneteam=Équipe
