@@ -11,6 +11,7 @@
         <div>
             <span class="label label-@event.eventType.style">@Messages(s"event.type.${event.eventType.style}")</span>
             <strong>@event.name</strong>
+            @event.info.map(tags.info(_))
         </div>
         @if(event.location.isDefined) { <div>@tags.location(event.location.get)</div>}
     }
