@@ -7,6 +7,23 @@
 </div>
 <p class="lead">@Html(Messages("event.mention"))</p>
 
+<ul class="unstyled well well-small">
+    <li>
+        <a href="@routes.Assets.at("files/calendrier_2013-2014.pdf")" target="_blank">
+            <i class="glyphicons download_alt"></i>
+            Calendrier 2013-2014
+            <span class="label label-important">PDF</span>
+        </a>
+    </li>
+    <li>
+        <a href="@routes.Assets.at("files/calendrier_2013-2014.xlsx")" target="_blank">
+            <i class="glyphicons download_alt"></i>
+            Calendrier 2013-2014
+            <span class="label label-success">Excel</span>
+        </a>
+    </li>
+</ul>
+
 <div id="eventTypeFilter" class="btn-group" data-toggle="buttons-checkbox">
     @for(eventType <- EventType.all) {
         <button type="button" data-filter="@eventType.style" class="btn btn-@eventType.style">

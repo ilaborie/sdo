@@ -14,9 +14,9 @@
             <div class="nav-collapse collapse">
                 <ul class="nav">
                 @for(ligue <- Ligue.ligues) {
-                    <li><a href="@routes.Application.ligue(ligue.shortName)"> @ligue.name</a></li>
+                    <li><a href="@routes.Application.ligue(ligue.shortName)"> @ligue.shortName</a></li>
                     @for(comite <- ligue.comites) {
-                        <li><a href="@routes.Application.comite(ligue.shortName, comite.shortName)"> @comite.name</a></li>
+                        <li><a href="@routes.Application.comite(ligue.shortName, comite.shortName)"> @comite.shortName</a></li>
                     }
                 }
                 </ul>
