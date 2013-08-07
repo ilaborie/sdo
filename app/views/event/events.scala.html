@@ -11,12 +11,12 @@
                 <ul class="nav nav-list">
                     <li class="nav-header">@Messages("menu.event.view")</li>
                     <li>
-                        <a class="autoClick" href="@routes.Application.eventsList()" data-target="#bodyEvents">
+                        <a class="autoClick" href="#" data-href="@routes.Application.eventsList()" data-target="#bodyEvents">
                         @Messages("menu.event.list")
                         </a>
                     </li>
                     <li>
-                        <a href="@routes.Application.eventsCalendar" data-target="#bodyEvents">
+                        <a id="calendar" href="#calendar" data-href="@routes.Application.eventsCalendar" data-target="#bodyEvents">
                         @Messages("menu.event.calendar")
                         </a>
                     </li>

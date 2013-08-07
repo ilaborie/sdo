@@ -6,33 +6,33 @@
             <div class="span3 well well-small">
                 <ul class="nav nav-list">
                     <li>
-                        <a href="@routes.Application.comiteBody(comite.ligue.shortName, comite.shortName)" data-target="#bodyComite" class="autoClick">
+                        <a href="#" data-href="@routes.Application.comiteBody(comite.ligue.shortName, comite.shortName)" data-target="#bodyComite" class="autoClick">
                             @comite.name
                         </a>
                     </li>
                     <li class="nav-header">@Messages("menu.rank")</li>
                     <li>
-                        <a href="@routes.Classements.comiteSingle(comite.ligue.shortName, comite.shortName)" data-target="#bodyComite">
+                        <a id="single" href="#single" data-href="@routes.Classements.comiteSingle(comite.ligue.shortName, comite.shortName)" data-target="#bodyComite">
                         @Messages("menu.rank.men")
                         </a>
                     </li>
                     <li>
-                        <a href="@routes.Classements.comiteFeminine(comite.ligue.shortName, comite.shortName)" data-target="#bodyComite">
+                        <a id="women"  href="#women" data-href="@routes.Classements.comiteFeminine(comite.ligue.shortName, comite.shortName)" data-target="#bodyComite">
                         @Messages("menu.rank.women")
                         </a>
                     </li>
                     <li>
-                        <a href="@routes.Classements.comiteJunior(comite.ligue.shortName, comite.shortName)" data-target="#bodyComite">
+                        <a id="junior" href="#junior" data-href="@routes.Classements.comiteJunior(comite.ligue.shortName, comite.shortName)" data-target="#bodyComite">
                         @Messages("menu.rank.junior")
                         </a>
                     </li>
                     <li>
-                        <a href="@routes.Classements.comiteDoublette(comite.ligue.shortName, comite.shortName)" data-target="#bodyComite">
+                        <a id="pair" href="#pair" data-href="@routes.Classements.comiteDoublette(comite.ligue.shortName, comite.shortName)" data-target="#bodyComite">
                         @Messages("menu.rank.double")
                         </a>
                     </li>
                     <li>
-                        <a href="@routes.Classements.comiteTeam(comite.ligue.shortName, comite.shortName)" data-target="#bodyComite">
+                        <a id="team"  href="#team" data-href="@routes.Classements.comiteTeam(comite.ligue.shortName, comite.shortName)" data-target="#bodyComite">
                         @Messages("menu.rank.team")
                         </a>
                     </li>
@@ -47,7 +47,7 @@
                     <li class="nav-header">@Messages("menu.tournaments")</li>
                     @for(tournament <- comite.tournaments) {
                         <li>
-                            <a href="@routes.Application.comiteTournament(comite.ligue.shortName, comite.shortName, tournament.shortName)" data-target="#bodyComite">
+                            <a id="@tournament.shortName" href="#@tournament.shortName" data-href="#@tournament.shortName" data-href="@routes.Application.comiteTournament(comite.ligue.shortName, comite.shortName, tournament.shortName)" data-target="#bodyComite">
                             @tournament
                             </a>
                         </li>
