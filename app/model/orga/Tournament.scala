@@ -39,7 +39,7 @@ case class OpenLigue(date: LocalDate, location: String) extends LigueTournament 
 
   lazy val ligue = Ligue.ligues.find(_.opens.contains(this)).get
 
-  val shortName = s"OL-${DateTimeFormat.shortDate().print(date)}"
+  val shortName = s"OL-${DateTimeFormat.forPattern("yyyyMMdd").print(date)}"
 
   def getPoint(position: TournamentResult): Int = position match {
     case Winner => 16
@@ -198,7 +198,7 @@ case class CoupeComite(date: LocalDate, location: String) extends ComiteTourname
 case class OpenClub(date: LocalDate) extends ComiteTournament {
   override def toString = Messages("rank.comite.open.title", club.name)
 
-  val shortName = s"OC-${DateTimeFormat.shortDate().print(date)}"
+  val shortName = s"OC-${DateTimeFormat.forPattern("yyyyMMdd").print(date)}"
 
   lazy val club: Club = Ligue.clubs.find(_.opens.contains(this)).get
   lazy val comite = club.comite

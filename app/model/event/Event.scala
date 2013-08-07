@@ -6,6 +6,7 @@ import model.team._
 import play.api.i18n.Messages
 import org.joda.time.{Interval, LocalDate}
 
+import play.Play
 
 /**
  * Event
@@ -35,11 +36,11 @@ case class Event(name: String,
 
   def applyTo(date: LocalDate): Boolean =
     (from.isEqual(date) || to.isEqual(date)) || (from.isBefore(date) && to.isAfter(date))
-
-
 }
 
 object Event {
+
+  val context = "/sdo"
 
   implicit def dateTimeOrdering: Ordering[LocalDate] = Ordering.fromLessThan(_ isBefore _)
 
@@ -71,31 +72,26 @@ object Event {
 
   def apply(ligue: Ligue, day: TeamChampionshipDay): Event = {
     val name = Messages("team.championship.day", day.day)
-    // FIXME reverse routing, ligue, team
-    val url = controllers.routes.Application.ligue(ligue.shortName).url
+    val url =  context + controllers.routes.Application.ligue(ligue.shortName).url + "#team"
     val info = {
       for (ma <- day.matches)
       yield s"""<div>${ma.team1.name} - ${ma.team2.name}</div>"""
     }.mkString("")
-    println(info)
-    Event(name, TeamEvent, day.from, day.to, info = Some(info))
+    Event(name, TeamEvent, day.from, day.to, url=Some(url), info = Some(info))
   }
 
 
   def apply(ligue: Ligue, tournament: LigueTournament): Event = {
     val name = tournament.toString
-    // FIXME reverse routing, ligue, tournament
-    val url = controllers.routes.Application.ligue(ligue.shortName).url
-
-    Event(name, LigueEvent, tournament.date, tournament.date)
+    val url = context + controllers.routes.Application.ligue(ligue.shortName).url + "#" + tournament.shortName
+    Event(name, LigueEvent, tournament.date, tournament.date, url=Some(url))
   }
 
   def apply(comite: Comite, tournament: ComiteTournament): Event = {
     val name = tournament.toString
-    // FIXME reverse routing, comite, tournament
-    val url = controllers.routes.Application.comite(comite.ligue.shortName, comite.shortName).url
+    val url = context + controllers.routes.Application.comite(comite.ligue.shortName, comite.shortName).url+ "#" + tournament.shortName
 
-    Event(name, ComiteEvent, tournament.date, tournament.date)
+    Event(name, ComiteEvent, tournament.date, tournament.date, url=Some(url))
   }
 }
 
