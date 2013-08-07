@@ -1,5 +1,23 @@
 @(ligue: model.orga.Ligue, ranking: model.rank.SeasonTeamRanking)
 
+<ul class="unstyled well well-small">
+    <li>
+        <a href="@routes.Assets.at("files/MATCHS_EQUIPES_2013-2014.pdf")" target="_blank">
+            <i class="glyphicons download_alt"></i>
+            Matches équipes 2013-2014
+            <span class="label label-important">PDF</span>
+        </a>
+    </li>
+    <li>
+        <a href="@routes.Assets.at("files/MATCHS_EQUIPES_2013-2014.xlsx")" target="_blank">
+            <i class="glyphicons download_alt"></i>
+            Matches équipes 2013-2014
+            <span class="label label-success">Excel</span>
+        </a>
+    </li>
+</ul>
+
+<hr>
 @tags.rankTeamTable(Messages("rank.team.ligue.caption", ranking.champ.season), ranking)
 <hr>
 @for(day <- ranking.champ.days) {
