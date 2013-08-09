@@ -4,12 +4,13 @@ import play.api.mvc._
 import model.orga._
 import model.contact.Contact
 import model.event.{EventYear, Event}
-import org.joda.time.LocalDate
+
+import securesocial.core.{Identity, Authorization}
 
 /**
  * Mains pages
  */
-object Application extends Controller {
+object Application extends Controller with securesocial.core.SecureSocial {
 
   private val season: Season = Season.currentSeason
 
@@ -23,8 +24,8 @@ object Application extends Controller {
    * Ligues Pages
    * @return ligues page
    */
-  def ligues = Action {
-    Ok(views.html.ligues(Ligue.ligues))
+  def ligues = SecuredAction { implicit request =>
+    Ok(views.html.ligues(request.user, Ligue.ligues))
   }
 
   /**
@@ -144,6 +145,28 @@ object Application extends Controller {
   def eventsCalendar() = Action {
     val years = EventYear.years(Event.events)
     Ok(views.html.event.calendar(years))
+  }
+
+
+  // a sample action using the new authorization hook
+  def onlyTwitter = SecuredAction(WithProvider("twitter")) {
+    implicit request =>
+    //
+    //    Note: If you had a User class and returned an instance of it from UserService, this
+    //          is how you would convert Identity to your own class:
+    //
+    //    request.user match {
+    //      case user: User => // do whatever you need with your user class
+    //      case _ => // did not get a User instance, should not happen,log error/thow exception
+    //    }
+      Ok("You can see this because you logged in using Twitter")
+  }
+
+  // An Authorization implementation that only authorizes uses that logged in using twitter
+  case class WithProvider(provider: String) extends Authorization {
+    def isAuthorized(user: Identity) = {
+      user.identityId.providerId == provider
+    }
   }
 
 }

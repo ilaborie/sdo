@@ -1,7 +1,10 @@
-@(ligues: Seq[model.orga.Ligue])
+@(user: securesocial.core.Identity, ligues: Seq[model.orga.Ligue])(implicit request: RequestHeader)
 @import model.orga.Season
 
 @layout.main(Messages("title.ligues")) {
+
+    @tags.auth(user)
+
     <div class="container well well-small">
         <div class="page-header">
             <h1>@Messages("title.ligues")</h1>
