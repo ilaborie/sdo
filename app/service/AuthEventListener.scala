@@ -8,7 +8,9 @@ import play.api.{Application, Logger}
  * A sample event listener
  */
 class AuthEventListener(app: Application) extends EventListener {
-  override def id: String = "my_event_listener"
+  override def id: String = "AuthEventListener"
+
+  private val logger = Logger("Authentication")
 
   def onEvent(event: Event, request: RequestHeader, session: Session): Option[Session] = {
     val eventName = event match {
@@ -19,7 +21,7 @@ class AuthEventListener(app: Application) extends EventListener {
       case e: PasswordChangeEvent => "password change"
     }
 
-    Logger.info("traced %s event for user %s".format(eventName, event.user.fullName))
+    logger.info(s"traced $eventName event for user ${event.user.fullName}")
     // Not changing the session so just return None
     // if you wanted to change the session then you'd do something like
     // Some(session + ("your_key" -> "your_value"))

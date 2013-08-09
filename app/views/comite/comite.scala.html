@@ -6,7 +6,7 @@
             <div class="span3 well well-small">
                 <ul class="nav nav-list">
                     <li>
-                        <a href="#" data-href="@routes.Application.comiteBody(comite.ligue.shortName, comite.shortName)" data-target="#bodyComite" class="autoClick">
+                        <a href="#" data-href="@routes.Orga.comiteBody(comite.ligue.shortName, comite.shortName)" data-target="#bodyComite" class="autoClick">
                             @comite.name
                         </a>
                     </li>
@@ -39,7 +39,7 @@
                     <li class="nav-header">@Messages("menu.club")</li>
                     @for(club <- comite.clubs) {
                         <li>
-                            <a href="@routes.Application.club(comite.ligue.shortName, comite.shortName, club.shortName)" data-target="#bodyComite">
+                            <a href="@routes.Orga.club(comite.ligue.shortName, comite.shortName, club.shortName)" data-target="#bodyComite">
                             @club.name
                             </a>
                         </li>
@@ -47,7 +47,7 @@
                     <li class="nav-header">@Messages("menu.tournaments")</li>
                     @for(tournament <- comite.tournaments) {
                         <li>
-                            <a id="@tournament.shortName" href="#@tournament.shortName" data-href="@routes.Application.comiteTournament(comite.ligue.shortName, comite.shortName, tournament.shortName)" data-target="#bodyComite">
+                            <a id="@tournament.shortName" href="#@tournament.shortName" data-href="@routes.Orga.comiteTournament(comite.ligue.shortName, comite.shortName, tournament.shortName)" data-target="#bodyComite">
                             @tournament
                             </a>
                         </li>

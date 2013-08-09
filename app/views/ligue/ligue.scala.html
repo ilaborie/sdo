@@ -1,4 +1,4 @@
-@(ligue: model.orga.Ligue)
+@(ligue: model.orga.Ligue)(implicit request: RequestHeader)
 
 @layout.main(ligue.name) {
     <div class="container">
@@ -6,7 +6,7 @@
             <div class="span3 well well-small">
                 <ul class="nav nav-list">
                     <li>
-                        <a href="#" data-href="@routes.Application.ligueBody(ligue.shortName)" data-target="#bodyLigue" class="autoClick">
+                        <a href="#" data-href="@routes.Orga.ligueBody(ligue.shortName)" data-target="#bodyLigue" class="autoClick">
                         @ligue.name
                         </a>
                     </li>
@@ -39,13 +39,13 @@
                     <li class="nav-header">@Messages("menu.comite")</li>
                     @for(comite <- ligue.comites) {
                         <li>
-                            <a href="@routes.Application.comite(ligue.shortName, comite.shortName)">@comite.name</a>
+                            <a href="@routes.Orga.comite(ligue.shortName, comite.shortName)">@comite.name</a>
                         </li>
                     }
                     <li class="nav-header">@Messages("menu.tournaments")</li>
                     @for(tournament <- ligue.tournaments; if tournament.isEvent) {
                         <li>
-                            <a id="@tournament.shortName" id="#@tournament.shortName" data-href="@routes.Application.ligueTournament(ligue.shortName, tournament.shortName)" data-target="#bodyLigue">
+                            <a id="@tournament.shortName" id="#@tournament.shortName" data-href="@routes.Orga.ligueTournament(ligue.shortName, tournament.shortName)" data-target="#bodyLigue">
                                 @tournament
                             </a>
                         </li>

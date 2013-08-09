@@ -1,4 +1,6 @@
-@(comite: model.orga.Comite, ranking: model.rank.SeasonTeamRanking)
+@(user: securesocial.core.Identity, comite: model.orga.Comite, ranking: model.rank.SeasonTeamRanking)(implicit request: RequestHeader)
+
+@tags.auth(user)
 
 <ul class="unstyled well well-small">
     <li>
