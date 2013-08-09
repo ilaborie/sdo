@@ -139,16 +139,18 @@ club.oneteam=Équipe
 securesocial.appName=Ligue Sud Ouest Fléchettes
 
 # Login page
-securesocial.login.title=Login
-securesocial.login.instructions=Utilisez votre compte existant sur ​​l'un des sites suivants pour vous connecter.
+securesocial.login.title=Authentification
+securesocial.login.instructions=Par Facebook, Twitter ou Google+
 securesocial.login.accessDenied=Vous avez refuser l'accès à votre compte. Veuillez nous l'accorder pour vous connecter.
 securesocial.login.errorLoggingIn=Une erreur s'est produite pendant la connection. S'il vous plaît essayer à nouveau.
-securesocial.login.useEmailAndPassword=Ou connectez-vous en utilisant un nom et mot de passe.
+securesocial.login.useEmailAndPassword=Ou par e-mail / mot de passe
 securesocial.login.useEmailAndPasswordOnly=Connection avec un nom et mot de passe.
 securesocial.login.signUp=Si vous n''avez pas encore un compte vous pouvez vous inscrire
 securesocial.login.here=ici
+securesocial.login.signup.here=Je m'inscris
 securesocial.login.invalidCredentials=Les informations d'identification ne sont pas valides
-securesocial.login.forgotPassword=Vous avez oublié votre mot de passe?
+securesocial.login.forgotPassword=J'ai oublié mon mot de passe !
+securesocial.logout.title=Déconnexion
 
 # Sign up page
 securesocial.signup.title=Inscrivez-vous

@@ -3,7 +3,7 @@
         <h1>@Messages("securesocial.notAuthorized.title")</h1>
     </div>
 
-    <div class="alert alert-error">
+    @tags.alert() {
         @Messages("securesocial.notAuthorized.message")
-    </div>
+    }
 }

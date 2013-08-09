@@ -1,13 +1,15 @@
 @(user: securesocial.core.Identity)(implicit request: RequestHeader)
 @import securesocial.core.IdentityProvider
+@import securesocial.core.providers.utils.RoutesHelper
 
 <html>
     <body>
         <p>Bonjour @user.firstName,</p>
-
         <p>
             Vous avez tenté de vous inscrire mais vous avez déjà un compte chez ici.
             Si vous ne vous souvenez pas de votre mot de passe s'il vous pouvez aller
-            <a href="@securesocial.core.providers.utils.RoutesHelper.startResetPassword().absoluteURL(IdentityProvider.sslEnabled)">ici</a> pour le réinitialiser.</p>
+            <a href="@RoutesHelper.startResetPassword().absoluteURL(IdentityProvider.sslEnabled)">ici</a>
+            pour le réinitialiser.
+        </p>
     </body>
 </html>
