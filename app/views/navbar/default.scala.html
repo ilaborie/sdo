@@ -1,5 +1,6 @@
-@(title: String = "")(content: Html)
+@(title: String = "", oUser: Option[securesocial.core.Identity] = None)(content: Html)
 @import model.orga._
+@import securesocial.core._
 
 <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
@@ -14,15 +15,23 @@
             <div class="nav-collapse collapse">
                 <ul class="nav">
                 @for(ligue <- Ligue.ligues) {
-                    <li><a href="@routes.Application.ligue(ligue.shortName)"> @ligue.shortName</a></li>
+                    <li><a href="@routes.Orga.ligue(ligue.shortName)"> @ligue.shortName</a></li>
                     @for(comite <- ligue.comites) {
-                        <li><a href="@routes.Application.comite(ligue.shortName, comite.shortName)"> @comite.shortName</a></li>
+                        <li><a href="@routes.Orga.comite(ligue.shortName, comite.shortName)"> @comite.shortName</a></li>
                     }
                 }
                 </ul>
                 <ul class="nav pull-right">
-                    <li><a href="@routes.Application.event"><i class="glyphicons calendar"></i> @Messages("title.events")</a></li>
-                    <li><a href="@routes.Application.contact"><i class="glyphicons envelope"></i> @Messages("title.contacts")</a></li>
+                    <li><a href="@routes.Event.event"><i class="glyphicons calendar"></i> @Messages("title.events")</a></li>
+                    <li><a href="@routes.Contact.contact"><i class="glyphicons envelope"></i> @Messages("title.contacts")</a></li>
+                    <li>
+                        @if(oUser.isEmpty) {
+                            <a href="#">@Messages("securesocial.login.title")</a>
+                        } else {
+                            <img src="@oUser.get.avatarUrl" alt="@oUser.get.firstName" width="40px" height="40px"/>
+                            @oUser.get.firstName
+                        }
+                    </li>
                 </ul>
             </div>
         </div>

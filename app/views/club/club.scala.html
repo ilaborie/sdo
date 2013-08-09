@@ -1,4 +1,4 @@
-@(club: model.orga.Club)
+@(user: securesocial.core.Identity, club: model.orga.Club)(implicit request: RequestHeader)
 
     @displayPlayer(player: model.orga.LicensedPlayer) = {
         @if(player.feminine) { <i class="glyphicons female"></i> } else { <i class="glyphicons male"></i> }
