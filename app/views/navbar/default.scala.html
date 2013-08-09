@@ -1,6 +1,6 @@
 @(title: String = "", oUser: Option[securesocial.core.Identity] = None)(content: Html)
 @import model.orga._
-@import securesocial.core._
+@import securesocial.core.providers.utils.RoutesHelper
 
 <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
@@ -22,16 +22,37 @@
                 }
                 </ul>
                 <ul class="nav pull-right">
-                    <li><a href="@routes.Event.event"><i class="glyphicons calendar"></i> @Messages("title.events")</a></li>
-                    <li><a href="@routes.Contact.contact"><i class="glyphicons envelope"></i> @Messages("title.contacts")</a></li>
                     <li>
-                        @if(oUser.isEmpty) {
-                            <a href="#">@Messages("securesocial.login.title")</a>
-                        } else {
-                            <img src="@oUser.get.avatarUrl" alt="@oUser.get.firstName" width="40px" height="40px"/>
-                            @oUser.get.firstName
-                        }
+                        <a href="@routes.Event.event()">
+                            <i class="glyphicons calendar"></i>
+                            @Messages("title.events")
+                        </a>
                     </li>
+                    <li>
+                        <a href="@routes.Contact.contact()">
+                            <i class="glyphicons envelope"></i>
+                            @Messages("title.contacts")
+                        </a>
+                    </li>
+                    @if(oUser.isEmpty) {
+                        <li>
+                            <a href="@RoutesHelper.login()">
+                                <i class="glyphicons"></i>
+                                @Messages("securesocial.login.title")
+                            </a>
+                        </li>
+                    } else {
+                        <li>
+                            <img src="@oUser.get.avatarUrl" alt="@oUser.get.firstName" width="40px" height="40px"/>
+                            @oUser.get.fullName
+                        </li>
+                        <li>
+                            <a href="@RoutesHelper.logout()">
+                                <i class="glyphicons exit"></i>
+                                @Messages("securesocial.logout.title")
+                            </a>
+                        </li>
+                    }
                 </ul>
             </div>
         </div>
