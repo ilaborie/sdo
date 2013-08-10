@@ -4,6 +4,10 @@ import model.contact.Contact
 import model.event.Event
 import model.orga.{Ligue, Season}
 import model.team.TeamChampionship
+import securesocial.core.providers.UsernamePasswordProvider
+import securesocial.core.providers.utils.GravatarHelper
+import securesocial.core._
+import sun.security.jca.Providers
 import util.YamlParser
 
 
@@ -36,5 +40,26 @@ object Global extends GlobalSettings {
       "securesocial.google.clientId",
       "securesocial.google.clientSecret")
     confKey.foreach(key => logger.warn( s"""$key: ${app.configuration.getString(key)}"""))
+
+    if (app.mode== Mode.Dev) {
+      // Auto Register Igor
+      val firstname = "Igor"
+      val lastname = "Laborie"
+      val email = "ilaborie@gmail.com"
+      val password="plop"
+      val identityId = IdentityId(email, "userpass")
+
+      val user = SocialUser(
+        identityId,
+        firstname,
+        lastname,
+        s"$firstname $lastname",
+        Some(email),
+        GravatarHelper.avatarFor(email),
+        AuthenticationMethod.UserPassword,
+        passwordInfo = Some(Registry.hashers.currentHasher.hash(password))
+      )
+      UserService.save(user)
+    }
   }
 }

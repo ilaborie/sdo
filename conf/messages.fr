@@ -165,7 +165,7 @@ securesocial.signup.createAccount=Créer un compte
 securesocial.signup.cancel=Annuler
 securesocial.signup.userNameAlreadyTaken=Nom d'utilisateur déjà pris
 securesocial.signup.passwordsDoNotMatch=Les mots de passe ne correspond pas
-securesocial.signup.thankYouCheckEmail=Merci, S'il vous plaît vérifier vos e-mail pour de plus amples instructions
+securesocial.signup.thankYouCheckEmail=Consulter vos e-mail pour trouver les instrcutions d'inscription.
 securesocial.signup.invalidLink=Le lien que vous avez choisi est invalide
 securesocial.signup.signUpDone=Merci pour l'inscription. Vous pouvez maintenant vous connecter
 securesocial.signup.invalidPassword=Au moins {0} caractères requis
@@ -201,4 +201,30 @@ mails.welcomeEmail.subject=Bienvenue
 mails.passwordResetEmail.subject=Instruction pour la réinitialisation du mot de passe
 mails.unknownEmail.subject=Demande de réinitialisation du mot de passe
 mails.passwordResetOk.subject=Confirmation de la modification du mot de passe
+
+
+# --- Constraints
+constraint.required=Obligatoire
+constraint.min=Valeur minimale: {0}
+constraint.max=Valeur maximale: {0}
+constraint.minLength=Longueur minimale: {0}
+constraint.maxLength=Longueur maximale: {0}
+constraint.email=Email
+
+# --- Formats
+format.date=Date (''{0}'')
+format.numeric=Numérique
+format.real=Réel
+
+# --- Errors
+error.invalid=Valeur non autorisée
+error.required=Champ obligatoire
+error.number=Seul les valeurs numériques sont autorisées
+error.real=Seul les valeurs réelles sont autorisées
+error.min=Doit être plus grand ou égal à {0}
+error.max=Doit être plus petit ou égal à 0}
+error.minLength=Longueur minimale: {0}
+error.maxLength=Longueur maximale: {0}
+error.email=Un email valide est obligatoire
+error.pattern=Doit satisfaire: {0}
 

@@ -28,7 +28,7 @@ object DataChampionship {
    */
   private def shouldFindTeam(ligue: Ligue, shortName: String): Team = ligue.findTeamByShortName(shortName) match {
     case Some(team) => team
-    case None => throw ParseDataException(s"Cannot find team $shortName in $ligue")
+    case None => throw ParseDataException(s"Cannot find team $shortName inputFieldConstructor $ligue")
   }
 
   /**

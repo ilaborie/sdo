@@ -1,7 +1,6 @@
-@(ligues: Seq[model.orga.Ligue])
-@import model.orga.Season
+@(ligues: Seq[model.orga.Ligue], oUser:Option[model.user.User]=None)
 
-@layout.main(Messages("title.ligues")) {
+@layout.main(Messages("title.ligues"), user=oUser) {
 
     <div class="container well well-small">
         <div class="page-header">
@@ -85,36 +84,6 @@
                             </div>
                         </a>
                     </div >
-            </li>
-            <li class="span6">
-                <div class="homelink">
-                    <a href="@routes.Orga.comite(ligue.shortName, comite.shortName)#single">
-                        <div class="row-fluid">
-                            <div class="span2"><i class="glyphicons cup"></i></div>
-                            <div class="span10">@comite.shortName - @Messages("menu.rank.men")</div>
-                        </div>
-                    </a>
-                </div >
-            </li>
-            <li class="span6">
-                <div class="homelink">
-                    <a href="@routes.Orga.comite(ligue.shortName, comite.shortName)#women">
-                        <div class="row-fluid">
-                            <div class="span2"><i class="glyphicons cup"></i></div>
-                            <div class="span10">@comite.shortName - @Messages("menu.rank.women")</div>
-                        </div>
-                    </a>
-                </div >
-            </li>
-            <li class="span6">
-                <div class="homelink">
-                    <a href="@routes.Orga.comite(ligue.shortName, comite.shortName)#pair">
-                        <div class="row-fluid">
-                            <div class="span2"><i class="glyphicons cup"></i></div>
-                            <div class="span10">@comite.shortName - @Messages("menu.rank.double")</div>
-                        </div>
-                    </a>
-                </div >
             </li>
                 }
             }
