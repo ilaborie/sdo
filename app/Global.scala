@@ -30,12 +30,11 @@ object Global extends GlobalSettings {
     }
 
     // Info for authentication
-    val confKey = List("securesocial.twitter.consumerKey",
-      "securesocial.twitter.consumerSecret",
+    val confKey = List(
       "securesocial.facebook.clientId",
       "securesocial.facebook.clientSecret",
       "securesocial.google.clientId",
       "securesocial.google.clientSecret")
-    confKey.foreach(key => logger.info( s"""$key: ${app.configuration.getString(key)}"""))
+    confKey.foreach(key => logger.warn( s"""$key: ${app.configuration.getString(key)}"""))
   }
 }
