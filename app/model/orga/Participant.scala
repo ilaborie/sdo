@@ -4,6 +4,7 @@ import play.api.cache.Cache
 import play.api.Play.current
 import scala.Predef._
 import scala.Some
+import util.EMail
 
 /**
  * Participant
@@ -29,7 +30,13 @@ sealed abstract class Player extends Participant {
  * @param junior is junior
  * @param feminine is feminine
  */
-case class NotLicensedPlayer(name: String, junior: Boolean = false, feminine: Boolean = false) extends Player {
+case class NotLicensedPlayer(name: String,
+                             junior: Boolean = false,
+                             feminine: Boolean = false,
+                             emails: Set[EMail] = Set(),
+                             twitter: Option[String] = None,
+                             facebook: Option[String] = None,
+                             google: Option[String] = None) extends Player {
   override def toString = name
 
   def clubAsString = "NL"
@@ -59,28 +66,24 @@ case class LicensedPlayer(licenseNumber: LicenseNumber,
                           name: String,
                           surname: Option[String],
                           junior: Boolean = false,
-                          feminine: Boolean = false) extends TeamParticipant {
+                          feminine: Boolean = false,
+                          emails: Set[EMail] = Set(),
+                          twitter: Option[String] = None,
+                          facebook: Option[String] = None,
+                          google: Option[String] = None) extends TeamParticipant {
 
   override def toString = surname match {
     case Some(sn) => s"«$sn»"
     case _ => name
   }
 
-  def ligue: Ligue = Cache.getOrElse[Ligue](s"player.$name.ligue") {
-    Ligue.ligues.find(_.players.contains(this)).get
-  }
+  lazy val ligue: Ligue = Ligue.ligues.find(_.players.contains(this)).get
 
-  def comite: Comite = Cache.getOrElse[Comite](s"player.$name.comite") {
-    ligue.comites.find(_.players.contains(this)).get
-  }
+  lazy val comite: Comite = ligue.comites.find(_.players.contains(this)).get
 
-  def club: Club = Cache.getOrElse[Club](s"player.$name.club") {
-    comite.clubs.find(_.players.contains(this)).get
-  }
+  lazy val club: Club = comite.clubs.find(_.players.contains(this)).get
 
-  def team: Team = Cache.getOrElse[Team](s"player.$name.team") {
-    club.teams.find(_.players.contains(this)).get
-  }
+  lazy val team: Team = club.teams.find(_.players.contains(this)).get
 
   def clubAsString = club.name
 }

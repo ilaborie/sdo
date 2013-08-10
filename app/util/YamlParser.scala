@@ -8,6 +8,8 @@ import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.CustomClassLoaderConstructor
 import play.api.Application
 import java.io.File
+import org.joda.time.LocalDate
+import org.joda.time.format.DateTimeFormat
 
 /**
  * A YAML Parser
@@ -31,7 +33,7 @@ case class YamlParser(app: Application) {
 object YamlParser {
   var parser: YamlParser = null
 
-  private def getFile(path:String): File = {
+  private def getFile(path: String): File = {
     val parent = new File(parser.app.configuration.getString("file.data").getOrElse("conf"))
     new File(parent.getAbsoluteFile + File.separator + path)
   }
@@ -65,5 +67,25 @@ object YamlParser {
       None
     }
   }
+
+
+  /**
+   * Return an optional string
+   * @param data the map
+   * @param key the key
+   * @return the option
+   */
+  def toOption(data: Map[String, Any], key: String): Option[String] = {
+    if (!data.contains(key)) None
+    else {
+      val value = data(key)
+      if (value != null) Some(value.asInstanceOf[String]) else None
+    }
+  }
+
+  def readDate(date: String): LocalDate = {
+    DateTimeFormat.forPattern("dd-MM-yyyy").parseDateTime(date).toLocalDate
+  }
 }
 
+case class ParseDataException(message: String) extends RuntimeException(message)

@@ -1,4 +1,4 @@
-package model.contact
+package util
 
 /**
  * EMail

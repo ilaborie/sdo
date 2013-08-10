@@ -1,6 +1,6 @@
-@(comite: model.orga.Comite)
+@(comite: model.orga.Comite, user: model.user.User)
 
-@layout.main(comite.name) {
+@layout.main(comite.name, user=Some(user)) {
     <div class="container">
         <div class="row-fluid">
             <div class="span3 well well-small">

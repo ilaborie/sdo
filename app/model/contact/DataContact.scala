@@ -6,7 +6,7 @@ import java.util.{List => JavaList, Map => JavaMap}
 
 import scala.collection.JavaConversions._
 import scala.Predef._
-import util.YamlParser
+import util.{EMail, YamlParser}
 
 /**
  * Contact reader

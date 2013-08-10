@@ -1,9 +1,9 @@
 package controllers
 
-import securesocial.core.SecureSocial
 import play.mvc.Controller
+import securesocial.core.SecureSocial
 import model.orga._
-import play.api.mvc.Action
+import model.user.User
 
 /**
  * Mains pages
@@ -24,7 +24,7 @@ object Orga extends Controller with SecureSocial {
    */
   def ligues = SecuredAction {
     implicit request =>
-      Ok(views.html.ligues(Ligue.ligues))
+      Ok(views.html.ligues(Ligue.ligues, User(request.user)))
   }
 
   /**
@@ -35,7 +35,7 @@ object Orga extends Controller with SecureSocial {
   def ligue(shortName: String) = SecuredAction {
     implicit request =>
       LigueAction(shortName) {
-        ligue => Ok(views.html.ligue.ligue(ligue))
+        ligue => Ok(views.html.ligue.ligue(ligue, User(request.user)))
       }.result
   }
 
@@ -47,7 +47,7 @@ object Orga extends Controller with SecureSocial {
   def ligueBody(shortName: String) = SecuredAction {
     implicit request =>
       LigueAction(shortName) {
-        ligue => Ok(views.html.ligue.body(ligue))
+        ligue => Ok(views.html.ligue.body(ligue, User(request.user)))
       }.result
   }
 
@@ -61,7 +61,7 @@ object Orga extends Controller with SecureSocial {
     implicit request =>
       LigueAction(ligueShortName) {
         ligue => ligue.findTournamentByShortName(tournamentShortName) match {
-          case Some(t) => Ok(views.html.tournament.ligue(t))
+          case Some(t) => Ok(views.html.tournament.ligue(t, User(request.user)))
           case None => BadRequest(s"Tournoi non connu: $tournamentShortName dans la $ligue")
         }
       }.result
@@ -76,14 +76,14 @@ object Orga extends Controller with SecureSocial {
   def comite(ligueShortName: String, comiteShortName: String) = SecuredAction {
     implicit request =>
       ComiteAction(ligueShortName, comiteShortName) {
-        comite => Ok(views.html.comite.comite(comite))
+        comite => Ok(views.html.comite.comite(comite, User(request.user)))
       }.result
   }
 
   def comiteBody(ligueShortName: String, comiteShortName: String) = SecuredAction {
     implicit request =>
       ComiteAction(ligueShortName, comiteShortName) {
-        comite => Ok(views.html.comite.body(comite))
+        comite => Ok(views.html.comite.body(comite, User(request.user)))
       }.result
   }
 
@@ -97,7 +97,7 @@ object Orga extends Controller with SecureSocial {
     implicit request =>
       ComiteAction(ligueShortName, comiteShortName) {
         comite => comite.findTournamentByShortName(tournamentShortName) match {
-          case Some(t) => Ok(views.html.tournament.comite(t))
+          case Some(t) => Ok(views.html.tournament.comite(t, User(request.user)))
           case None => BadRequest(s"Tournoi non connu: $tournamentShortName dans le $comite")
         }
       }.result
@@ -115,7 +115,7 @@ object Orga extends Controller with SecureSocial {
       ComiteAction(ligueShortName, comiteShortName) {
         val user = request.user
         comite => comite.findClubByShortName(clubShortName) match {
-          case Some(club) => Ok(views.html.club.club(user, club))
+          case Some(club) => Ok(views.html.club.club(club, User(request.user)))
           case _ => BadRequest(s"Club non connue: $clubShortName dans le $comite")
         }
       }.result
