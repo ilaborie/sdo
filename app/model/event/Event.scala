@@ -83,6 +83,7 @@ object Event {
   def apply(ligue: Ligue, tournament: LigueTournament): Event = {
     val name = tournament.toString
     val url = controllers.routes.Orga.ligue(ligue.shortName).url + "#" + tournament.shortName
+
     Event(name, LigueEvent, tournament.date, tournament.date, url=Some(url))
   }
 

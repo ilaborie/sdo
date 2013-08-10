@@ -4,6 +4,7 @@ import play.api.mvc._
 import model.orga._
 import model.rank._
 import securesocial.core._
+import model.user.User
 
 
 /**
@@ -21,7 +22,7 @@ object Classements extends Controller with SecureSocial {
   def ligueSingle(ligueShortName: String) = SecuredAction {
     implicit request =>
       LigueAction(ligueShortName) {
-        ligue => Ok(views.html.ligue.single(request.user, ligue, LigueRanking.single(ligue)))
+        ligue => Ok(views.html.ligue.single(ligue, LigueRanking.single(ligue), User(request.user)))
       }.result
   }
 
@@ -33,7 +34,7 @@ object Classements extends Controller with SecureSocial {
   def ligueFeminine(ligueShortName: String) = SecuredAction {
     implicit request =>
       LigueAction(ligueShortName) {
-        ligue => Ok(views.html.ligue.feminine(request.user, ligue, LigueRanking.feminine(ligue)))
+        ligue => Ok(views.html.ligue.feminine(ligue, LigueRanking.feminine(ligue), User(request.user)))
       }.result
   }
 
@@ -45,7 +46,7 @@ object Classements extends Controller with SecureSocial {
   def ligueJunior(ligueShortName: String) = SecuredAction {
     implicit request =>
       LigueAction(ligueShortName) {
-        ligue => Ok(views.html.ligue.junior(request.user, ligue, LigueRanking.junior(ligue)))
+        ligue => Ok(views.html.ligue.junior(ligue, LigueRanking.junior(ligue), User(request.user)))
       }.result
   }
 
@@ -57,7 +58,7 @@ object Classements extends Controller with SecureSocial {
   def ligueDoublette(ligueShortName: String) = SecuredAction {
     implicit request =>
       LigueAction(ligueShortName) {
-        ligue => Ok(views.html.ligue.double(request.user, ligue, LigueRanking.double(ligue)))
+        ligue => Ok(views.html.ligue.double(ligue, LigueRanking.double(ligue), User(request.user)))
       }.result
   }
 
@@ -69,7 +70,7 @@ object Classements extends Controller with SecureSocial {
   def ligueTeam(ligueShortName: String) = SecuredAction {
     implicit request =>
       LigueAction(ligueShortName) {
-        ligue => Ok(views.html.ligue.team(request.user, ligue, LigueRanking.team(ligue)))
+        ligue => Ok(views.html.ligue.team(ligue, LigueRanking.team(ligue), User(request.user)))
       }.result
   }
 
@@ -83,7 +84,7 @@ object Classements extends Controller with SecureSocial {
   def comiteSingle(ligueShortName: String, comiteShortName: String) = SecuredAction {
     implicit request =>
       ComiteAction(ligueShortName, comiteShortName) {
-        comite => Ok(views.html.comite.single(request.user, comite, ComiteRanking.single(comite)))
+        comite => Ok(views.html.comite.single(comite, ComiteRanking.single(comite), User(request.user)))
       }.result
   }
 
@@ -96,7 +97,7 @@ object Classements extends Controller with SecureSocial {
   def comiteFeminine(ligueShortName: String, comiteShortName: String) = SecuredAction {
     implicit request =>
       ComiteAction(ligueShortName, comiteShortName) {
-        comite => Ok(views.html.comite.feminine(request.user, comite, ComiteRanking.feminine(comite)))
+        comite => Ok(views.html.comite.feminine(comite, ComiteRanking.feminine(comite), User(request.user)))
       }.result
   }
 
@@ -109,7 +110,7 @@ object Classements extends Controller with SecureSocial {
   def comiteJunior(ligueShortName: String, comiteShortName: String) = SecuredAction {
     implicit request =>
       ComiteAction(ligueShortName, comiteShortName) {
-        comite => Ok(views.html.comite.junior(request.user, comite, ComiteRanking.junior(comite)))
+        comite => Ok(views.html.comite.junior(comite, ComiteRanking.junior(comite), User(request.user)))
       }.result
   }
 
@@ -122,7 +123,7 @@ object Classements extends Controller with SecureSocial {
   def comiteDoublette(ligueShortName: String, comiteShortName: String) = SecuredAction {
     implicit request =>
       ComiteAction(ligueShortName, comiteShortName) {
-        comite => Ok(views.html.comite.double(request.user, comite, ComiteRanking.double(comite)))
+        comite => Ok(views.html.comite.double(comite, ComiteRanking.double(comite), User(request.user)))
       }.result
   }
 
@@ -135,7 +136,7 @@ object Classements extends Controller with SecureSocial {
   def comiteTeam(ligueShortName: String, comiteShortName: String) = SecuredAction {
     implicit request =>
       ComiteAction(ligueShortName, comiteShortName) {
-        comite => Ok(views.html.comite.team(request.user, comite, ComiteRanking.team(comite)))
+        comite => Ok(views.html.comite.team(comite, ComiteRanking.team(comite), User(request.user)))
       }.result
   }
 }

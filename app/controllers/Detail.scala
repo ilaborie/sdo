@@ -4,6 +4,7 @@ import play.api.mvc._
 import model.orga._
 import model.team._
 import securesocial.core._
+import model.user.User
 
 
 /**
@@ -27,7 +28,7 @@ object Detail extends Controller with SecureSocial {
         ligue => TeamChampionship(season, ligue).findDay(day) match {
           case None => BadRequest(s"Journée $day non trouvée !")
           case Some(champDay) => {
-            val user = request.user
+            val user = User(request.user)
             val team1 = ligue.findTeamByShortName(team1Name)
             val team2 = ligue.findTeamByShortName(team2Name)
 
@@ -35,8 +36,8 @@ object Detail extends Controller with SecureSocial {
               val m: Option[PlannedTeamMatch] = champDay.findMatch(team1.get, team2.get)
               if (m.isDefined) {
                 val detail: Option[MatchDetail] = m.get.detail
-                if (detail.isDefined) Ok(views.html.team.teamDetail(user, ligue, detail.get))
-                else Ok(views.html.team.teamDetailPlay(user, ligue, m.get))
+                if (detail.isDefined) Ok(views.html.team.teamDetail(ligue, detail.get, user))
+                else Ok(views.html.team.teamDetailPlay(ligue, m.get, user))
               }
               else BadRequest(s"Match $team1Name - $team2Name non trouvée dans la journée $day !")
             } else if (team1.isDefined) BadRequest(s"Équipe $team2Name non trouvée !")

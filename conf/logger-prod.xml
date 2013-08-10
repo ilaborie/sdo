@@ -15,6 +15,7 @@
     <logger name="data" level="WARN"/>
 
     <logger name="UserService" level="INFO"/>
+    <logger name="user" level="DEBUG"/>
     <logger name="AuthEventListener" level="TRACE"/>
 
     <root level="ERROR">
