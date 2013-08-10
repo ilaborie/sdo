@@ -14,7 +14,7 @@ object Global extends GlobalSettings {
   private val logger = Logger("loading")
 
   override def onStart(app: Application) {
-    // Load and trace
+    // Load Yaml data
     YamlParser.parser = YamlParser(app)
     if (logger.isInfoEnabled) {
       logger.info("Loading ...")
@@ -28,5 +28,14 @@ object Global extends GlobalSettings {
       }
       logger.info("[Done]")
     }
+
+    // Info for authentication
+    val confKey = List("securesocial.twitter.consumerKey",
+      "securesocial.twitter.consumerSecret",
+      "securesocial.facebook.clientId",
+      "securesocial.facebook.clientSecret",
+      "securesocial.google.clientId",
+      "securesocial.google.clientSecret")
+    confKey.foreach(key => logger.info( s"""$key: ${app.configuration.getString(key)}"""))
   }
 }
