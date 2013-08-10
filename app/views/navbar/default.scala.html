@@ -35,19 +35,7 @@
                             @Messages("title.contacts")
                         </a>
                     </li>
-                    @user match {
-                        case None => {
-                            <li>
-                                <a href="@RoutesHelper.login()">
-                                    <i class="glyphicons user"></i>
-                                    @Messages("securesocial.login.title")
-                                </a>
-                            </li>
-                        }
-                        case Some(u) => {
-                            @navbar.user(u)
-                        }
-                    }
+                    @user.map(u => navbar.user(u))
                 </ul>
             </div>
         </div>
