@@ -23,7 +23,7 @@ object Application extends Controller with SecureSocial {
       Ok("You can see this because you logged in using Twitter")
   }
 
-  // An Authorization implementation that only authorizes uses that logged in using twitter
+  // An Authorization implementation that only authorizes uses that logged inputFieldConstructor using twitter
   case class WithProvider(provider: String) extends Authorization {
     def isAuthorized(user: Identity) = {
       user.identityId.providerId == provider

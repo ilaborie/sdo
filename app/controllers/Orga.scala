@@ -22,8 +22,9 @@ object Orga extends Controller with SecureSocial {
    * Ligues Pages
    * @return ligues page
    */
-  def ligues = Action {
-    Ok(views.html.ligues(Ligue.ligues))
+  def ligues = SecuredAction {
+    implicit request =>
+      Ok(views.html.ligues(Ligue.ligues))
   }
 
   /**

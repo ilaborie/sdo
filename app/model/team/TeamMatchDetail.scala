@@ -20,7 +20,7 @@ case class TeamMatchDetail(team: Team,
   require(players(3).club == team.club)
   require(substitute.isEmpty || (substitute.get.player.club == team.club))
   require(substitute.isEmpty || substitute.get.replace.isEmpty || (substitute.get.replace.get.club == team.club))
-  // Check in playersList
+  // Check inputFieldConstructor playersList
   require(players.contains(doublettes._1.player1))
   require(players.contains(doublettes._1.player2))
   require(players.contains(doublettes._2.player1))

@@ -8,10 +8,10 @@ import securesocial.core.providers.Token
 
 
 /**
- * A Sample In Memory user service in Scala
+ * A Sample In Memory user service inputFieldConstructor Scala
  *
  * IMPORTANT: This is just a sample and not suitable for a production environment since
- * it stores everything in memory.
+ * it stores everything inputFieldConstructor memory.
  */
 class UserService(application: Application) extends UserServicePlugin(application) {
 
@@ -38,7 +38,7 @@ class UserService(application: Application) extends UserServicePlugin(applicatio
     logger.trace(s"save($users)")
     users = users + (user.identityId.userId + user.identityId.providerId -> user)
     // this sample returns the same user object, but you could return an instance of your own class
-    // here as long as it implements the Identity trait. This will allow you to use your own class in the protected
+    // here as long as it implements the Identity trait. This will allow you to use your own class inputFieldConstructor the protected
     // actions and event callbacks. The same goes for the find(id: UserId) method.
     user
   }

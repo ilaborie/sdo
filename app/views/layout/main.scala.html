@@ -1,4 +1,4 @@
-@(title: String, scripts: Html = script())(content: Html)
+@(title: String, user:Option[model.user.User]=None, scripts: Html = script())(content: Html)
 <!DOCTYPE html>
 
 <html>
@@ -8,12 +8,11 @@
         <link rel="stylesheet" href="@routes.Assets.at("style/main.min.css")">
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("ico/favicon.png")">
 
-        @* Fonts *@
         <link href='http://fonts.googleapis.com/css?family=Ubuntu+Mono|Ubuntu:400,700' rel='stylesheet' type='text/css'>
     </head>
-    @* Body *@
+
     <body>
-        @navbar.empty(title)
+        @navbar.empty(title, user)
         @content
         @scripts
     </body>
