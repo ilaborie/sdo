@@ -31,7 +31,7 @@ case class TeamMatchDetail(team: Team,
     val replace = substitute.get.replace.get
     val replaceBy = substitute.get.player
     participant match {
-      case LicensedPlayer(_, _, _, _, _) =>
+      case LicensedPlayer(_, _, _, _, _, _, _, _, _) =>
         if (participant == replace) replaceBy else participant
       case TeamDoublette(p1, p2) =>
         if (p1 == replace) TeamDoublette(replaceBy, p2)
@@ -77,60 +77,60 @@ object TeamMatchDetail {
 
 
   def getPlayer1Index(index: Int): String = index match {
-      case 1 => "p1"
-      case 7 => "p1"
-      case 11 => "p1"
-      case 17 => "p1"
+    case 1 => "p1"
+    case 7 => "p1"
+    case 11 => "p1"
+    case 17 => "p1"
 
-      case 2 => "p2"
-      case 8 => "p2"
-      case 13 => "p2"
-      case 19 => "p2"
+    case 2 => "p2"
+    case 8 => "p2"
+    case 13 => "p2"
+    case 19 => "p2"
 
-      case 3 => "p3"
-      case 9 => "p3"
-      case 12 => "p3"
-      case 20 => "p3"
+    case 3 => "p3"
+    case 9 => "p3"
+    case 12 => "p3"
+    case 20 => "p3"
 
-      case 4 => "p4"
-      case 10 => "p4"
-      case 14 => "p4"
-      case 18 => "p4"
+    case 4 => "p4"
+    case 10 => "p4"
+    case 14 => "p4"
+    case 18 => "p4"
 
-      case 5 => "d1"
-      case 15 => "d1"
+    case 5 => "d1"
+    case 15 => "d1"
 
-      case 6 => "d2"
-      case 16 => "d2"
-    }
+    case 6 => "d2"
+    case 16 => "d2"
+  }
 
   def getPlayer2Index(index: Int): String = index match {
-      case 2 => "p1"
-      case 7 => "p1"
-      case 12 => "p1"
-      case 18 => "p1"
+    case 2 => "p1"
+    case 7 => "p1"
+    case 12 => "p1"
+    case 18 => "p1"
 
-      case 1 => "p2"
-      case 8 => "p2"
-      case 14 => "p2"
-      case 20 => "p2"
+    case 1 => "p2"
+    case 8 => "p2"
+    case 14 => "p2"
+    case 20 => "p2"
 
-      case 4 => "p3"
-      case 9 => "p3"
-      case 11 => "p3"
-      case 19 => "p3"
+    case 4 => "p3"
+    case 9 => "p3"
+    case 11 => "p3"
+    case 19 => "p3"
 
-      case 3 => "p4"
-      case 10 => "p4"
-      case 13 => "p4"
-      case 17 => "p4"
+    case 3 => "p4"
+    case 10 => "p4"
+    case 13 => "p4"
+    case 17 => "p4"
 
-      case 5 => "d1"
-      case 16 => "d1"
+    case 5 => "d1"
+    case 16 => "d1"
 
-      case 6 => "d2"
-      case 15 => "d2"
-    }
+    case 6 => "d2"
+    case 15 => "d2"
+  }
 }
 
 
@@ -331,38 +331,38 @@ case class PlayedMatchDetail(day: Int,
   }
 
   def win(team: Team): Boolean = {
-    require(team1 == team || team2== team)
+    require(team1 == team || team2 == team)
     winner.isDefined && winner.get == team
   }
 
   def loose(team: Team): Boolean = {
-    require(team1 == team || team2== team)
+    require(team1 == team || team2 == team)
     winner.isDefined && winner.get != team
   }
 
   def draw(team: Team): Boolean = {
-    require(team1 == team || team2== team)
+    require(team1 == team || team2 == team)
     winner.isEmpty
   }
 
   def fail(team: Team): Boolean = {
-    require(team1 == team || team2== team)
+    require(team1 == team || team2 == team)
     false
   }
 
 
   def plus(team: Team): Int = {
-    require(team1 == team || team2== team)
+    require(team1 == team || team2 == team)
     matches.count(_.teamWinner == team)
   }
 
   def minus(team: Team): Int = {
-    require(team1 == team || team2== team)
+    require(team1 == team || team2 == team)
     matches.count(_.teamWinner != team)
   }
 
   def legs(team: Team): Int = {
-    require(team1 == team || team2== team)
+    require(team1 == team || team2 == team)
 
     //  2* win + loose this 3 legs
     2 * plus(team) + matches.count(m => (m.teamWinner != team) && (m.legsAsList.size == 3))

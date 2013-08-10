@@ -1,6 +1,6 @@
-@(ligues: Seq[model.orga.Ligue], oUser:Option[model.user.User]=None)
+@(ligues: Seq[model.orga.Ligue], user:model.user.User)
 
-@layout.main(Messages("title.ligues"), user=oUser) {
+@layout.main(Messages("title.ligues"), user=Some(user)) {
 
     <div class="container well well-small">
         <div class="page-header">

@@ -7,6 +7,7 @@ import play.api.i18n.Messages
 import org.joda.time.{Interval, LocalDate}
 
 import play.Play
+import util.EMail
 
 /**
  * Event

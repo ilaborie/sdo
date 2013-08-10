@@ -1,6 +1,6 @@
-@(ligue: model.orga.Ligue)(implicit request: RequestHeader)
+@(ligue: model.orga.Ligue, user: model.user.User)(implicit request: RequestHeader)
 
-@layout.main(ligue.name) {
+@layout.main(ligue.name, user = Some(user)) {
     <div class="container">
         <div class="row-fluid">
             <div class="span3 well well-small">

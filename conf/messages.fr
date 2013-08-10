@@ -4,13 +4,13 @@ menu.ligues=Ligue Sud Ouest Fléchettes
 warn=Attention
 home.mention=Ce site est encore en construction, n'hésitez pas à suggérer des évolutions ou des corrections.<br>Pour me <a class="mailto" href="#" data-name="ilaborie" data-server="gmail.com"><i class="glyphicons envelope"></i> contacter</a>.
 
-
 # Ligue
 menu.comite=Comités
 
 # Comite
 menu.rank=Classements
 menu.rank.team=Équipes
+menu.rank.indiv=Individuel
 menu.rank.men=Masculins
 menu.rank.women=Féminines
 menu.rank.junior=Juniors

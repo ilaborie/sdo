@@ -22,9 +22,8 @@ class UserService(application: Application) extends UserServicePlugin(applicatio
 
   def find(id: IdentityId): Option[Identity] = {
     logger.trace(s"find($id) with users = $users")
-    users.get(id.userId + id.providerId)
+    users.get(key(id))
   }
-
 
   def findByEmailAndProvider(email: String, providerId: String): Option[Identity] = {
     def checkUser(user: Identity) = {
@@ -36,12 +35,14 @@ class UserService(application: Application) extends UserServicePlugin(applicatio
 
   def save(user: Identity): Identity = {
     logger.trace(s"save($users)")
-    users = users + (user.identityId.userId + user.identityId.providerId -> user)
+    users = users + (key(user.identityId) -> user)
     // this sample returns the same user object, but you could return an instance of your own class
     // here as long as it implements the Identity trait. This will allow you to use your own class inputFieldConstructor the protected
     // actions and event callbacks. The same goes for the find(id: UserId) method.
     user
   }
+
+  private def key(id: IdentityId): String = id.userId + "|" + id.providerId
 
   def save(token: Token) {
     logger.trace(s"save($token)")
