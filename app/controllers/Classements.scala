@@ -3,12 +3,14 @@ package controllers
 import play.api.mvc._
 import model.orga._
 import model.rank._
+import securesocial.core._
+import model.user.User
 
 
 /**
  * Classements pages
  */
-object Classements extends Controller {
+object Classements extends Controller with SecureSocial {
 
   private val season: Season = Season.currentSeason
 
@@ -17,10 +19,11 @@ object Classements extends Controller {
    * @param ligueShortName ligue
    * @return single ranking
    */
-  def ligueSingle(ligueShortName: String) = Action {
-    LigueAction(ligueShortName) {
-      ligue => Ok(views.html.ligue.single(ligue, LigueRanking.single(ligue)))
-    }.result
+  def ligueSingle(ligueShortName: String) = SecuredAction {
+    implicit request =>
+      LigueAction(ligueShortName) {
+        ligue => Ok(views.html.ligue.single(ligue, LigueRanking.single(ligue), User(request.user)))
+      }.result
   }
 
   /**
@@ -28,10 +31,11 @@ object Classements extends Controller {
    * @param ligueShortName ligue
    * @return feminine ranking
    */
-  def ligueFeminine(ligueShortName: String) = Action {
-    LigueAction(ligueShortName) {
-      ligue => Ok(views.html.ligue.feminine(ligue, LigueRanking.feminine(ligue)))
-    }.result
+  def ligueFeminine(ligueShortName: String) = SecuredAction {
+    implicit request =>
+      LigueAction(ligueShortName) {
+        ligue => Ok(views.html.ligue.feminine(ligue, LigueRanking.feminine(ligue), User(request.user)))
+      }.result
   }
 
   /**
@@ -39,10 +43,11 @@ object Classements extends Controller {
    * @param ligueShortName ligue
    * @return junior ranking
    */
-  def ligueJunior(ligueShortName: String) = Action {
-    LigueAction(ligueShortName) {
-      ligue => Ok(views.html.ligue.junior(ligue, LigueRanking.junior(ligue)))
-    }.result
+  def ligueJunior(ligueShortName: String) = SecuredAction {
+    implicit request =>
+      LigueAction(ligueShortName) {
+        ligue => Ok(views.html.ligue.junior(ligue, LigueRanking.junior(ligue), User(request.user)))
+      }.result
   }
 
   /**
@@ -50,10 +55,11 @@ object Classements extends Controller {
    * @param ligueShortName ligue
    * @return double ranking
    */
-  def ligueDoublette(ligueShortName: String) = Action {
-    LigueAction(ligueShortName) {
-      ligue=> Ok(views.html.ligue.double(ligue, LigueRanking.double(ligue)))
-    }.result
+  def ligueDoublette(ligueShortName: String) = SecuredAction {
+    implicit request =>
+      LigueAction(ligueShortName) {
+        ligue => Ok(views.html.ligue.double(ligue, LigueRanking.double(ligue), User(request.user)))
+      }.result
   }
 
   /**
@@ -61,10 +67,11 @@ object Classements extends Controller {
    * @param ligueShortName ligue
    * @return team ranking
    */
-  def ligueTeam(ligueShortName: String) = Action {
-    LigueAction(ligueShortName) {
-      ligue=> Ok(views.html.ligue.team(ligue, LigueRanking.team(ligue)))
-    }.result
+  def ligueTeam(ligueShortName: String) = SecuredAction {
+    implicit request =>
+      LigueAction(ligueShortName) {
+        ligue => Ok(views.html.ligue.team(ligue, LigueRanking.team(ligue), User(request.user)))
+      }.result
   }
 
 
@@ -74,10 +81,11 @@ object Classements extends Controller {
    * @param comiteShortName comite
    * @return single ranking
    */
-  def comiteSingle(ligueShortName: String, comiteShortName: String) = Action {
-    ComiteAction(ligueShortName, comiteShortName) {
-      comite=> Ok(views.html.comite.single(comite, ComiteRanking.single(comite)))
-    }.result
+  def comiteSingle(ligueShortName: String, comiteShortName: String) = SecuredAction {
+    implicit request =>
+      ComiteAction(ligueShortName, comiteShortName) {
+        comite => Ok(views.html.comite.single(comite, ComiteRanking.single(comite), User(request.user)))
+      }.result
   }
 
   /**
@@ -86,10 +94,11 @@ object Classements extends Controller {
    * @param comiteShortName comite
    * @return feminine ranking
    */
-  def comiteFeminine(ligueShortName: String, comiteShortName: String) = Action {
-    ComiteAction(ligueShortName, comiteShortName) {
-      comite => Ok(views.html.comite.feminine(comite, ComiteRanking.feminine(comite)))
-    }.result
+  def comiteFeminine(ligueShortName: String, comiteShortName: String) = SecuredAction {
+    implicit request =>
+      ComiteAction(ligueShortName, comiteShortName) {
+        comite => Ok(views.html.comite.feminine(comite, ComiteRanking.feminine(comite), User(request.user)))
+      }.result
   }
 
   /**
@@ -98,10 +107,11 @@ object Classements extends Controller {
    * @param comiteShortName comite
    * @return junior ranking
    */
-  def comiteJunior(ligueShortName: String, comiteShortName: String) = Action {
-    ComiteAction(ligueShortName, comiteShortName) {
-      comite => Ok(views.html.comite.junior(comite, ComiteRanking.junior(comite)))
-    }.result
+  def comiteJunior(ligueShortName: String, comiteShortName: String) = SecuredAction {
+    implicit request =>
+      ComiteAction(ligueShortName, comiteShortName) {
+        comite => Ok(views.html.comite.junior(comite, ComiteRanking.junior(comite), User(request.user)))
+      }.result
   }
 
   /**
@@ -110,10 +120,11 @@ object Classements extends Controller {
    * @param comiteShortName comite
    * @return doublette ranking
    */
-  def comiteDoublette(ligueShortName: String, comiteShortName: String) = Action {
-    ComiteAction(ligueShortName, comiteShortName) {
-      comite => Ok(views.html.comite.double(comite, ComiteRanking.double(comite)))
-    }.result
+  def comiteDoublette(ligueShortName: String, comiteShortName: String) = SecuredAction {
+    implicit request =>
+      ComiteAction(ligueShortName, comiteShortName) {
+        comite => Ok(views.html.comite.double(comite, ComiteRanking.double(comite), User(request.user)))
+      }.result
   }
 
   /**
@@ -122,9 +133,10 @@ object Classements extends Controller {
    * @param comiteShortName comite
    * @return team ranking
    */
-  def comiteTeam(ligueShortName: String, comiteShortName: String) = Action {
-    ComiteAction(ligueShortName, comiteShortName) {
-      comite => Ok(views.html.comite.team(comite, ComiteRanking.team(comite)))
-    }.result
+  def comiteTeam(ligueShortName: String, comiteShortName: String) = SecuredAction {
+    implicit request =>
+      ComiteAction(ligueShortName, comiteShortName) {
+        comite => Ok(views.html.comite.team(comite, ComiteRanking.team(comite), User(request.user)))
+      }.result
   }
 }

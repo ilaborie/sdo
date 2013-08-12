@@ -1,0 +1,56 @@
+@(user:model.user.User)
+@import model.user._
+@import securesocial.core.providers.utils.RoutesHelper
+
+<li class="dropdown">
+    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+        @if(user.id.avatarUrl.isDefined) {
+            <img class="avatar" src="@user.id.avatarUrl" alt="@user.id.fullName"/>
+        }
+        @user.id.fullName
+        <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+        @user match {
+            case LocalUser(id, player) => {
+                <li>
+                    @if(player.feminine) {
+                    <a tabindex="-1" href="@routes.Orga.comite(player.ligue.shortName, player.comite.shortName)#women">
+                    @Messages("menu.rank.indiv")
+                    </a>
+                    } else {
+                        @if(player.junior) {
+                    <a tabindex="-1" href="@routes.Orga.comite(player.ligue.shortName, player.comite.shortName)#junior">
+                    @Messages("menu.rank.indiv")
+                    </a>
+                        } else {
+                    <a tabindex="-1" href="@routes.Orga.comite(player.ligue.shortName, player.comite.shortName)#single">
+                    @Messages("menu.rank.indiv")
+                    </a>
+                        }
+                    }
+                </li>
+                <li>
+                    <a tabindex="-1" href="@routes.Orga.comite(player.ligue.shortName, player.comite.shortName)#pair">
+                    @Messages("menu.rank.double")
+                    </a>
+                </li>
+                <li>
+                    <a tabindex="-1" href="@routes.Orga.ligue(player.ligue.shortName)#team">
+                    @Messages("menu.rank.team")
+                    </a>
+                </li>
+            }
+            case Guest(_) => {
+                @* Maybe a link to mail *@
+            }
+        }
+        <li class="divider"></li>
+        <li>
+            <a href="@RoutesHelper.logout()">
+                <i class="glyphicons exit"></i>
+                @Messages("securesocial.logout.title")
+            </a>
+        </li>
+    </ul>
+</li>

@@ -1,4 +1,4 @@
-@(title: String = "")
+@(title: String = "", user: Option[model.user.User]=None)
 
-@navbar.default(title) {
+@navbar.default(title, user=user) {
 }

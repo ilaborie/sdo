@@ -3,14 +3,9 @@ package model.orga
 import java.util.{List => JavaList, Map => JavaMap}
 import scala.collection.JavaConversions._
 
-import play.Play
 import play.api.Logger
 
-import com.google.common.io.{ByteStreams, CharStreams}
-import com.google.common.base.Charsets
-import util.YamlParser
-import org.joda.time.format.DateTimeFormat
-import org.joda.time.LocalDate
+import util.{EMail, YamlParser}
 
 /**
  * Data helpers
@@ -18,10 +13,6 @@ import org.joda.time.LocalDate
 object Data {
 
   private val logger = Logger("data")
-
-  def readDate(date: String): LocalDate = {
-    DateTimeFormat.forPattern("dd-MM-yyyy").parseDateTime(date).toLocalDate
-  }
 
   /**
    * Read all not licensied players
@@ -48,7 +39,13 @@ object Data {
     val isFeminine = data.contains("feminine")
     val isJunior = data.contains("junior")
 
-    NotLicensedPlayer(s"$lastName $firstName", feminine = isFeminine, junior = isJunior)
+    val emails: Set[EMail] = readEmails(data)
+    val twitter: Option[String] = data.get("twitter")
+    val facebook: Option[String] = data.get("facebook")
+    val google: Option[String] = data.get("google")
+
+    NotLicensedPlayer(s"$lastName $firstName", feminine = isFeminine, junior = isJunior,
+      emails = emails, twitter = twitter, facebook = facebook, google = google)
   }
 
   /**
@@ -82,17 +79,17 @@ object Data {
     val comitesList = info("comites").asInstanceOf[JavaList[String]].toList
     val comites = for (comite <- comitesList) yield readComite(season, ligue, comite)
 
-    val openList = info("opens").asInstanceOf[JavaList[JavaMap[String,String]]].toList
-    val opens = for (open <- openList) yield OpenLigue(readDate(open.get("date")), open.get("location"))
+    val openList = info("opens").asInstanceOf[JavaList[JavaMap[String, String]]].toList
+    val opens = for (open <- openList) yield OpenLigue(YamlParser.readDate(open.get("date")), open.get("location"))
 
-    val coupeMap = info("coupe").asInstanceOf[JavaMap[String,String]]
-    val coupe = CoupeLigue(readDate(coupeMap.get("date")), coupeMap.get("location"))
+    val coupeMap = info("coupe").asInstanceOf[JavaMap[String, String]]
+    val coupe = CoupeLigue(YamlParser.readDate(coupeMap.get("date")), coupeMap.get("location"))
 
-    val masterMap = info("master").asInstanceOf[JavaMap[String,String]]
-    val master = MasterLigue(readDate(masterMap.get("date")), masterMap.get("location"))
+    val masterMap = info("master").asInstanceOf[JavaMap[String, String]]
+    val master = MasterLigue(YamlParser.readDate(masterMap.get("date")), masterMap.get("location"))
 
-    val teamMaster = info("team-master").asInstanceOf[JavaMap[String,String]]
-    val masterTeam = MasterLigueTeam(readDate(teamMaster.get("date")), teamMaster.get("location"))
+    val teamMaster = info("team-master").asInstanceOf[JavaMap[String, String]]
+    val masterTeam = MasterLigueTeam(YamlParser.readDate(teamMaster.get("date")), teamMaster.get("location"))
 
     val information = YamlParser.readInfo(s"s$season/$ligue/info.html")
 
@@ -117,9 +114,9 @@ object Data {
     val clubList = info("clubs").asInstanceOf[JavaList[String]].toList
 
     val clubs = for (club <- clubList) yield readClub(season, ligue, comite, club)
-    val coupeMap = info("coupe").asInstanceOf[JavaMap[String,String]]
+    val coupeMap = info("coupe").asInstanceOf[JavaMap[String, String]]
 
-    val coupe = CoupeComite(readDate(coupeMap.get("date")), coupeMap.get("location"))
+    val coupe = CoupeComite(YamlParser.readDate(coupeMap.get("date")), coupeMap.get("location"))
     val information = YamlParser.readInfo(s"s$season/$ligue/$comite/info.html")
 
     Comite(name, shortName, clubs, coupe, information)
@@ -142,7 +139,7 @@ object Data {
     val shortName = info("shortname").asInstanceOf[String]
     val opens = if (info.contains("opens")) {
       val openList = info("opens").asInstanceOf[JavaList[String]].toList
-     for (open <- openList) yield OpenClub(readDate(open))
+      for (open <- openList) yield OpenClub(YamlParser.readDate(open))
     } else Nil
     val teamList = info("teams").asInstanceOf[JavaList[String]].toList
     val teams = for (team <- teamList) yield readTeam(season, ligue, comite, club, team)
@@ -179,18 +176,36 @@ object Data {
    * @param data data
    * @return player
    */
-  def createLicensedPlayer(data: Map[String, String]): LicensedPlayer = {
-    val license = data.getOrElse("license", "license ###")
-    val firstName = data.getOrElse("firstname", "???")
-    val lastName = data.getOrElse("lastname", "???")
-    val surname = if (data.contains("surename")) data.get("surname") else data.get("commonname")
+  def createLicensedPlayer(data: Map[String, Any]): LicensedPlayer = {
+    val license = data.getOrElse("license", "license ###").asInstanceOf[String]
+    val firstName = data.getOrElse("firstname", "???").asInstanceOf[String]
+    val lastName = data.getOrElse("lastname", "???").asInstanceOf[String]
+    val surname: Option[String] = {
+      if (data.contains("surename")) YamlParser.toOption(data, "surename")
+      else if (data.contains("commonname")) YamlParser.toOption(data, "commonname")
+      else None
+    }
     val isFeminine = data.contains("feminine")
     val isJunior = data.contains("junior")
 
-    LicensedPlayer(license, s"$lastName $firstName", surname, feminine = isFeminine, junior = isJunior)
+    val emails: Set[EMail] = readEmails(data)
+    val twitter: Option[String] = YamlParser.toOption(data, "twitter")
+    val facebook: Option[String] = YamlParser.toOption(data, "facebook")
+    val google: Option[String] = YamlParser.toOption(data, "google")
+
+    LicensedPlayer(license, s"$lastName $firstName", surname, feminine = isFeminine, junior = isJunior,
+      emails = emails, twitter = twitter, facebook = facebook, google = google)
   }
 
-
+  /**
+   * Read emails
+   * @param data data
+   * @return email
+   */
+  private def readEmails(data: Map[String, Any]): Set[EMail] = data.get("email") match {
+    case None => Set()
+    case Some(x) =>
+      var result = for (email <- x.asInstanceOf[String].split(",")) yield EMail(email.trim)
+      result.toSet
+  }
 }
-
-case class ParseDataException(message: String) extends RuntimeException(message)

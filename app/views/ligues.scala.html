@@ -1,7 +1,7 @@
-@(ligues: Seq[model.orga.Ligue])
-@import model.orga.Season
+@(ligues: Seq[model.orga.Ligue], user:model.user.User)
 
-@layout.main(Messages("title.ligues")) {
+@layout.main(Messages("title.ligues"), user=Some(user)) {
+
     <div class="container well well-small">
         <div class="page-header">
             <h1>@Messages("title.ligues")</h1>
@@ -15,7 +15,7 @@
         <ul class="thumbnails">
             <li class="span6">
                 <div class="homelink">
-                    <a href="@routes.Application.event()#calendar">
+                    <a href="@routes.Event.event()#calendar">
                         <div class="row-fluid">
                             <div class="span2"><i class="glyphicons calendar"></i></div>
                             <div class="span10">@Messages("title.events")</div>
@@ -25,7 +25,7 @@
             </li>
             <li class="span6">
                 <div class="homelink">
-                    <a href="@routes.Application.contact()">
+                    <a href="@routes.Contact.contact()">
                         <div class="row-fluid">
                             <div class="span2"><i class="glyphicons envelope"></i></div>
                             <div class="span10">@Messages("title.contacts")</div>
@@ -36,7 +36,7 @@
         @for(ligue <- ligues) {
             <li class="span6">
                 <div class="homelink">
-                    <a href="@routes.Application.ligue(ligue.shortName)">
+                    <a href="@routes.Orga.ligue(ligue.shortName)">
                         <div class="row-fluid">
                             <div class="span2"><img src="@routes.Assets.at(s"images/${ligue.shortName}.png")" alt="@ligue.shortName"></div>
                             <div class="span10">@ligue.name</div>
@@ -46,7 +46,7 @@
             </li>
             <li class="span6">
                 <div class="homelink">
-                    <a href="@routes.Application.ligue(ligue.shortName)#team">
+                    <a href="@routes.Orga.ligue(ligue.shortName)#team">
                         <div class="row-fluid">
                             <div class="span2"><i class="glyphicons group"></i></div>
                             <div class="span10">@ligue.shortName - @Messages("menu.rank.team")</div>
@@ -56,7 +56,7 @@
             </li>
             <li class="span6">
                 <div class="homelink">
-                    <a href="@routes.Application.ligue(ligue.shortName)#single">
+                    <a href="@routes.Orga.ligue(ligue.shortName)#single">
                         <div class="row-fluid">
                             <div class="span2"><i class="glyphicons cup"></i></div>
                             <div class="span10">@ligue.shortName - @Messages("menu.rank.men")</div>
@@ -66,7 +66,7 @@
             </li>
             <li class="span6">
                 <div class="homelink">
-                    <a href="@routes.Application.ligue(ligue.shortName)#women">
+                    <a href="@routes.Orga.ligue(ligue.shortName)#women">
                         <div class="row-fluid">
                             <div class="span2"><i class="glyphicons cup"></i></div>
                             <div class="span10">@ligue.shortName - @Messages("menu.rank.women")</div>
@@ -77,43 +77,13 @@
                 @for(comite <- ligue.comites) {
             <li class="span6">
                     <div class="homelink">
-                        <a href="@routes.Application.comite(ligue.shortName, comite.shortName)">
+                        <a href="@routes.Orga.comite(ligue.shortName, comite.shortName)">
                             <div class="row-fluid">
                                 <div class="span2"><img src="@routes.Assets.at(s"images/${comite.shortName}.png")" alt="@comite.shortName"></div>
                                 <div class="span10">@comite.name</div>
                             </div>
                         </a>
                     </div >
-            </li>
-            <li class="span6">
-                <div class="homelink">
-                    <a href="@routes.Application.comite(ligue.shortName, comite.shortName)#single">
-                        <div class="row-fluid">
-                            <div class="span2"><i class="glyphicons cup"></i></div>
-                            <div class="span10">@comite.shortName - @Messages("menu.rank.men")</div>
-                        </div>
-                    </a>
-                </div >
-            </li>
-            <li class="span6">
-                <div class="homelink">
-                    <a href="@routes.Application.comite(ligue.shortName, comite.shortName)#women">
-                        <div class="row-fluid">
-                            <div class="span2"><i class="glyphicons cup"></i></div>
-                            <div class="span10">@comite.shortName - @Messages("menu.rank.women")</div>
-                        </div>
-                    </a>
-                </div >
-            </li>
-            <li class="span6">
-                <div class="homelink">
-                    <a href="@routes.Application.comite(ligue.shortName, comite.shortName)#pair">
-                        <div class="row-fluid">
-                            <div class="span2"><i class="glyphicons cup"></i></div>
-                            <div class="span10">@comite.shortName - @Messages("menu.rank.double")</div>
-                        </div>
-                    </a>
-                </div >
             </li>
                 }
             }

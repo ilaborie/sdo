@@ -1,9 +1,8 @@
 # Ligues
 title.ligues=Accueil
-menu.ligues=Ligues
+menu.ligues=Ligue Sud Ouest Fléchettes
 warn=Attention
 home.mention=Ce site est encore en construction, n'hésitez pas à suggérer des évolutions ou des corrections.<br>Pour me <a class="mailto" href="#" data-name="ilaborie" data-server="gmail.com"><i class="glyphicons envelope"></i> contacter</a>.
-
 
 # Ligue
 menu.comite=Comités
@@ -11,6 +10,7 @@ menu.comite=Comités
 # Comite
 menu.rank=Classements
 menu.rank.team=Équipes
+menu.rank.indiv=Individuel
 menu.rank.men=Masculins
 menu.rank.women=Féminines
 menu.rank.junior=Juniors
@@ -131,3 +131,100 @@ team.detail.capitain=Capitaines
 
 # Club
 club.oneteam=Équipe
+
+# Secure Social
+# ~~~~~~~~~~~~~
+
+# App name
+securesocial.appName=Ligue Sud Ouest Fléchettes
+
+# Login page
+securesocial.login.title=Authentification
+securesocial.login.instructions=Par Facebook, Twitter ou Google+
+securesocial.login.accessDenied=Vous avez refuser l'accès à votre compte. Veuillez nous l'accorder pour vous connecter.
+securesocial.login.errorLoggingIn=Une erreur s'est produite pendant la connection. S'il vous plaît essayer à nouveau.
+securesocial.login.useEmailAndPassword=Ou par e-mail / mot de passe
+securesocial.login.useEmailAndPasswordOnly=Connection avec un nom et mot de passe.
+securesocial.login.signUp=Si vous n''avez pas encore un compte vous pouvez vous inscrire
+securesocial.login.here=ici
+securesocial.login.signup.here=Je m'inscris
+securesocial.login.invalidCredentials=Les informations d'identification ne sont pas valides
+securesocial.login.forgotPassword=J'ai oublié mon mot de passe !
+securesocial.logout.title=Déconnexion
+
+# Sign up page
+securesocial.signup.title=Inscrivez-vous
+securesocial.signup.username=Nom d'utilisateur
+securesocial.signup.firstName=Prénom
+securesocial.signup.lastName=Nom
+securesocial.signup.email1=E-mail
+securesocial.signup.email2=Confirmation d'e-mail
+securesocial.signup.password1=Mot de passe
+securesocial.signup.password2=Confirmation du mot de passe
+securesocial.signup.createAccount=Créer un compte
+securesocial.signup.cancel=Annuler
+securesocial.signup.userNameAlreadyTaken=Nom d'utilisateur déjà pris
+securesocial.signup.passwordsDoNotMatch=Les mots de passe ne correspond pas
+securesocial.signup.thankYouCheckEmail=Consulter vos e-mail pour trouver les instrcutions d'inscription.
+securesocial.signup.invalidLink=Le lien que vous avez choisi est invalide
+securesocial.signup.signUpDone=Merci pour l'inscription. Vous pouvez maintenant vous connecter
+securesocial.signup.invalidPassword=Au moins {0} caractères requis
+
+# Password reset
+securesocial.password.title=Réinitialiser le mot de passe
+securesocial.password.passwordUpdated=Le mot de passe a été réinitialiser
+securesocial.password.reset=Réinitialiser
+securesocial.password.error=Un problème est survenu durant la réinitialisation. S'il vous plaît essayer à nouveau.
+
+# Password change
+securesocial.passwordChange.title=Modifier le mot de passe
+securesocial.passwordChange.currentPassword=Mot de passe actuel
+securesocial.passwordChange.newPassword1=Nouveau mot de passe
+securesocial.passwordChange.newPassword2=Confirmation du nouveau mot de passe
+securesocial.passwordChange.changeButton=Modifier
+securesocial.passwordChange.invalidPassword=Mot de passe invalid
+securesocial.passwordChange.ok=Votre mot de passe a été modifié
+securesocial.passwordChange.okButton=Ok
+
+# Not authorized page
+securesocial.notAuthorized.title=Non authoriser
+securesocial.notAuthorized.message=Vous n'avez pas l'autorisation suffisante pour accéder à cette page
+
+#
+securesocial.loginRequired=Vous devez vous authentifier pour accéder à cette page.
+
+# Mails
+#
+mails.sendAlreadyRegisteredEmail.subject=Instruction pour la création du compte
+mails.sendSignUpEmail.subject=Instruction pour la création du compte
+mails.welcomeEmail.subject=Bienvenue
+mails.passwordResetEmail.subject=Instruction pour la réinitialisation du mot de passe
+mails.unknownEmail.subject=Demande de réinitialisation du mot de passe
+mails.passwordResetOk.subject=Confirmation de la modification du mot de passe
+
+
+# --- Constraints
+constraint.required=Obligatoire
+constraint.min=Valeur minimale: {0}
+constraint.max=Valeur maximale: {0}
+constraint.minLength=Longueur minimale: {0}
+constraint.maxLength=Longueur maximale: {0}
+constraint.email=Email
+
+# --- Formats
+format.date=Date (''{0}'')
+format.numeric=Numérique
+format.real=Réel
+
+# --- Errors
+error.invalid=Valeur non autorisée
+error.required=Champ obligatoire
+error.number=Seul les valeurs numériques sont autorisées
+error.real=Seul les valeurs réelles sont autorisées
+error.min=Doit être plus grand ou égal à {0}
+error.max=Doit être plus petit ou égal à 0}
+error.minLength=Longueur minimale: {0}
+error.maxLength=Longueur maximale: {0}
+error.email=Un email valide est obligatoire
+error.pattern=Doit satisfaire: {0}
+
