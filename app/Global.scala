@@ -45,19 +45,23 @@ object Global extends GlobalSettings {
     }
   }
 
-  private def registerUser(firstName: String, lastName: String, email: String) = {
+  private def registerUser(firstName: String, lastName: String, email: String): Identity = {
     val identityId = IdentityId(email, "userpass")
-    val password = "plop"
-    val user = SocialUser(
-      identityId,
-      firstName,
-      lastName,
-      s"$firstName $lastName",
-      Some(email),
-      GravatarHelper.avatarFor(email),
-      AuthenticationMethod.UserPassword,
-      passwordInfo = Some(Registry.hashers.currentHasher.hash(password))
-    )
-    UserService.save(user)
+    UserService.find(identityId) match {
+      case Some(u) => u
+      case None =>
+        val password = "plop"
+        val user = SocialUser(
+          identityId,
+          firstName,
+          lastName,
+          s"$firstName $lastName",
+          Some(email),
+          GravatarHelper.avatarFor(email),
+          AuthenticationMethod.UserPassword,
+          passwordInfo = Some(Registry.hashers.currentHasher.hash(password))
+        )
+        UserService.save(user)
+    }
   }
 }
