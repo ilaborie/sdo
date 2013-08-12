@@ -3,6 +3,7 @@ package model.orga
 import play.api.cache.Cache
 import play.api.Play.current
 import model.event.Event
+import util.Location
 
 /**
  * Ligue
@@ -56,7 +57,7 @@ case class Ligue(name: String,
 
   lazy val tournaments: List[LigueTournament] = {
     val dateRanking = master.date.plusDays(-1)
-    val comiteRankings = for(comite <- comites) yield ComiteRank(comite, dateRanking)
+    val comiteRankings = for (comite <- comites) yield ComiteRank(comite, dateRanking)
 
     val list = (coupe :: master :: masterTeam :: opens.toList) ::: comiteRankings.toList
     list.sortBy(_.date)
@@ -159,6 +160,7 @@ case class Comite(name: String,
   } yield Event(this, tournament)
 }
 
+
 /**
  * Club
  * @param name name
@@ -167,9 +169,8 @@ case class Comite(name: String,
  * @param teams teams
  * @param info information
  */
-case class Club(name: String, shortName: String, opens: Seq[OpenClub], teams: Seq[Team], info: Option[Info]) {
+case class Club(name: String, shortName: String, location: Location, opens: Seq[OpenClub], teams: Seq[Team], info: Option[Info]) {
   lazy val fullName = s"[$shortName] $name"
-
   override def toString = fullName
 
   def findTeamByShortName(teamShortName: String): Option[Team] = teams.find(_.shortName == teamShortName)
@@ -190,6 +191,7 @@ case class Club(name: String, shortName: String, opens: Seq[OpenClub], teams: Se
   }
 
   lazy val events = for (open <- opens) yield Event(comite, open)
+
 }
 
 

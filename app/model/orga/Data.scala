@@ -1,11 +1,12 @@
 package model.orga
 
 import java.util.{List => JavaList, Map => JavaMap}
+
 import scala.collection.JavaConversions._
 
 import play.api.Logger
 
-import util.{EMail, YamlParser}
+import util._
 
 /**
  * Data helpers
@@ -53,13 +54,8 @@ object Data {
    * @return all ligues
    */
   def readLigues(season: Season) = {
-    val liguesFile = s"s$season/ligues.yml"
-    logger.info(s"Read ligues information in $liguesFile")
-
-    val liguesList = YamlParser.parseFile(liguesFile).asInstanceOf[JavaList[String]]
-    logger.trace(s"Read $liguesList")
-
-    for (ligue <- liguesList.toList) yield readLigue(season, ligue)
+    val sdo = readLigue(season,"sdo")
+    List(sdo)
   }
 
   /**
@@ -79,17 +75,25 @@ object Data {
     val comitesList = info("comites").asInstanceOf[JavaList[String]].toList
     val comites = for (comite <- comitesList) yield readComite(season, ligue, comite)
 
-    val openList = info("opens").asInstanceOf[JavaList[JavaMap[String, String]]].toList
-    val opens = for (open <- openList) yield OpenLigue(YamlParser.readDate(open.get("date")), open.get("location"))
+    val openList = info("opens").asInstanceOf[JavaList[JavaMap[String, Any]]].toList
+    val opens = for (open <- openList) yield OpenLigue(
+      YamlParser.readDate(open.get("date").asInstanceOf[String]),
+      YamlParser.readLocation(open.toMap).get)
 
-    val coupeMap = info("coupe").asInstanceOf[JavaMap[String, String]]
-    val coupe = CoupeLigue(YamlParser.readDate(coupeMap.get("date")), coupeMap.get("location"))
+    val coupeMap = info("coupe").asInstanceOf[JavaMap[String, Any]]
+    val coupe = CoupeLigue(
+      YamlParser.readDate(coupeMap.get("date").asInstanceOf[String]),
+      YamlParser.readLocation(coupeMap.toMap).get)
 
-    val masterMap = info("master").asInstanceOf[JavaMap[String, String]]
-    val master = MasterLigue(YamlParser.readDate(masterMap.get("date")), masterMap.get("location"))
+    val masterMap = info("master").asInstanceOf[JavaMap[String, Any]]
+    val master = MasterLigue(
+      YamlParser.readDate(masterMap.get("date").asInstanceOf[String]),
+      YamlParser.readLocation(masterMap.toMap).get)
 
-    val teamMaster = info("team-master").asInstanceOf[JavaMap[String, String]]
-    val masterTeam = MasterLigueTeam(YamlParser.readDate(teamMaster.get("date")), teamMaster.get("location"))
+    val teamMaster = info("team-master").asInstanceOf[JavaMap[String, Any]]
+    val masterTeam = MasterLigueTeam(
+      YamlParser.readDate(teamMaster.get("date").asInstanceOf[String]),
+      YamlParser.readLocation(teamMaster.toMap).get)
 
     val information = YamlParser.readInfo(s"s$season/$ligue/info.html")
 
@@ -114,9 +118,11 @@ object Data {
     val clubList = info("clubs").asInstanceOf[JavaList[String]].toList
 
     val clubs = for (club <- clubList) yield readClub(season, ligue, comite, club)
-    val coupeMap = info("coupe").asInstanceOf[JavaMap[String, String]]
+    val coupeMap = info("coupe").asInstanceOf[JavaMap[String, Any]]
 
-    val coupe = CoupeComite(YamlParser.readDate(coupeMap.get("date")), coupeMap.get("location"))
+    val coupe = CoupeComite(
+      YamlParser.readDate(coupeMap.get("date").asInstanceOf[String]),
+      YamlParser.readLocation(coupeMap.toMap).get)
     val information = YamlParser.readInfo(s"s$season/$ligue/$comite/info.html")
 
     Comite(name, shortName, clubs, coupe, information)
@@ -138,14 +144,20 @@ object Data {
     val name = info("name").asInstanceOf[String]
     val shortName = info("shortname").asInstanceOf[String]
     val opens = if (info.contains("opens")) {
-      val openList = info("opens").asInstanceOf[JavaList[String]].toList
-      for (open <- openList) yield OpenClub(YamlParser.readDate(open))
+      val openList = info("opens").asInstanceOf[JavaList[JavaMap[String,Any]]].toList
+      for (open <- openList) yield {
+        println(open)
+        OpenClub(
+          YamlParser.readDate(open.get("date").asInstanceOf[String]),
+          YamlParser.readLocation(open.asInstanceOf[JavaMap[String,String]].toMap).get)
+      }
     } else Nil
     val teamList = info("teams").asInstanceOf[JavaList[String]].toList
     val teams = for (team <- teamList) yield readTeam(season, ligue, comite, club, team)
     val information = YamlParser.readInfo(s"s$season/$ligue/$comite/$club/info.html")
+    val location = YamlParser.readLocation(info).get
 
-    Club(name, shortName, opens, teams, information)
+    Club(name, shortName, location, opens, teams, information)
   }
 
   /**

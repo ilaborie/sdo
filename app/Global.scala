@@ -31,6 +31,7 @@ object Global extends GlobalSettings {
       logger.info("[Done]")
     }
 
+
     // Info for authentication
     val confKey = List(
       "securesocial.facebook.clientId",

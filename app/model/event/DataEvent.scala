@@ -1,12 +1,11 @@
 package model.event
 
-import model.orga._
-import play.api.Logger
 import java.util.{List => JavaList, Map => JavaMap}
-
 import scala.collection.JavaConversions._
-import scala.Predef._
-import util.{EMail, YamlParser}
+import play.api.Logger
+
+import model.orga._
+import util._
 
 /**
  * Event reader
@@ -37,7 +36,7 @@ object DataEvent {
     val to = YamlParser.readDate(data("to").asInstanceOf[String])
     val location = {
       if (!data.contains("location")) None
-      else readLocation(data("location").asInstanceOf[JavaMap[String, String]].toMap)
+      else YamlParser.readLocation(data)
     }
     val email = YamlParser.toOption(data, "email") match {
       case Some(em) => Some(EMail(em))
@@ -50,17 +49,5 @@ object DataEvent {
     }
 
     Event(name, EventType(eventType), from, to, location, email, url, information)
-  }
-
-  /**
-   * Read Location
-   * @param map data
-   * @return the location or none
-   */
-  def readLocation(map: Map[String, String]): Option[Location] = {
-    YamlParser.toOption(map, "name") match {
-      case Some(name) => Some(Location(name, YamlParser.toOption(map, "venue")))
-      case None => None
-    }
   }
 }

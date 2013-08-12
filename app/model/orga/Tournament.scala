@@ -3,6 +3,7 @@ package model.orga
 import play.api.i18n.Messages
 import org.joda.time.LocalDate
 import org.joda.time.format.DateTimeFormat
+import util.Location
 
 /**
  * Tournament
@@ -13,6 +14,8 @@ sealed abstract class Tournament {
   def getPoint(position: TournamentResult): Int
 
   def shortName: String
+
+  def place: Option[Location]
 }
 
 object Tournament {
@@ -33,9 +36,11 @@ sealed abstract class LigueTournament extends Tournament {
 /**
  * Open Ligue
  */
-case class OpenLigue(date: LocalDate, location: String) extends LigueTournament {
+case class OpenLigue(date: LocalDate, location: Location) extends LigueTournament {
 
   override def toString = Messages("rank.ligue.open.title", ligue.name)
+
+  val place= Some(location)
 
   lazy val ligue = Ligue.ligues.find(_.opens.contains(this)).get
 
@@ -54,9 +59,11 @@ case class OpenLigue(date: LocalDate, location: String) extends LigueTournament 
 /**
  * Coupe Ligue
  */
-case class CoupeLigue(date: LocalDate, location: String) extends LigueTournament {
+case class CoupeLigue(date: LocalDate, location: Location) extends LigueTournament {
 
   override def toString = Messages("rank.ligue.coupe.title", ligue.name)
+
+  val place = Some(location)
 
   val shortName = "CL"
 
@@ -77,9 +84,11 @@ case class CoupeLigue(date: LocalDate, location: String) extends LigueTournament
 /**
  * Master Ligue
  */
-case class MasterLigue(date: LocalDate, location: String) extends LigueTournament {
+case class MasterLigue(date: LocalDate, location: Location) extends LigueTournament {
 
   override def toString = Messages("rank.ligue.master.title")
+
+  val place = Some(location)
 
   val shortName = "Mast"
 
@@ -98,10 +107,11 @@ case class MasterLigue(date: LocalDate, location: String) extends LigueTournamen
 /**
  * Master Ligue Team
  */
-case class MasterLigueTeam(date: LocalDate, location: String) extends LigueTournament {
+case class MasterLigueTeam(date: LocalDate, location: Location) extends LigueTournament {
   override val isTeam: Boolean = true
   val shortName = "MastTeam"
   lazy val ligue = Ligue.ligues.find(_.masterTeam == this).get
+  val place = Some(location)
 
   override def toString = Messages("rank.ligue.master.team.title")
 
@@ -114,6 +124,8 @@ case class MasterLigueTeam(date: LocalDate, location: String) extends LigueTourn
 case class ComiteRank(comite: Comite, date: LocalDate) extends LigueTournament {
 
   override def toString = Messages("rank.ligue.comite.rank.title", comite.name)
+
+  val place = None
 
   lazy val ligue = comite.ligue
 
@@ -144,6 +156,7 @@ case class ComiteCoupeLigue(comite: Comite) extends LigueTournament {
   override def toString = Messages("rank.ligue.comite.coupe.title", comite.name)
 
   val shortName = "LCC"
+  val place = None
 
   lazy val ligue = comite.ligue
 
@@ -175,10 +188,11 @@ sealed abstract class ComiteTournament extends Tournament {
 /**
  * Coupe Comite
  */
-case class CoupeComite(date: LocalDate, location: String) extends ComiteTournament {
+case class CoupeComite(date: LocalDate, location: Location) extends ComiteTournament {
   override def toString = Messages("rank.comite.coupe.title", comite.name)
 
   val shortName = "CC"
+  val place = Some(location)
 
   lazy val comite: Comite = Ligue.comites.find(_.coupe == this).get
 
@@ -195,9 +209,10 @@ case class CoupeComite(date: LocalDate, location: String) extends ComiteTourname
 /**
  * Open Club
  */
-case class OpenClub(date: LocalDate) extends ComiteTournament {
+case class OpenClub(date: LocalDate, location: Location) extends ComiteTournament {
   override def toString = Messages("rank.comite.open.title", club.name)
 
+  val place = Some(location)
   val shortName = s"OC-${DateTimeFormat.forPattern("yyyyMMdd").print(date)}"
 
   lazy val club: Club = Ligue.clubs.find(_.opens.contains(this)).get

@@ -1,15 +1,19 @@
 package util
 
-import play.Play
-import com.google.common.io.Files
-import com.google.common.base.Charsets
-import play.api.Logger
-import org.yaml.snakeyaml.Yaml
-import org.yaml.snakeyaml.constructor.CustomClassLoaderConstructor
-import play.api.Application
 import java.io.File
+import java.util.{Map => JavaMap}
+import scala.collection.JavaConversions._
+
+import play.Play
+import play.api.Logger
+import play.api.Application
+
 import org.joda.time.LocalDate
 import org.joda.time.format.DateTimeFormat
+import org.yaml.snakeyaml.Yaml
+import org.yaml.snakeyaml.constructor.CustomClassLoaderConstructor
+import com.google.common.base.Charsets
+import com.google.common.io.Files
 
 /**
  * A YAML Parser
@@ -32,6 +36,7 @@ case class YamlParser(app: Application) {
 
 object YamlParser {
   var parser: YamlParser = null
+  private val dateParser = DateTimeFormat.forPattern("dd-MM-yyyy")
 
   private def getFile(path: String): File = {
     val parent = new File(parser.app.configuration.getString("file.data").getOrElse("conf"))
@@ -50,9 +55,11 @@ object YamlParser {
   def tryParseFile(path: String): Option[Any] = try {
     Some(parseFile(path))
   } catch {
-    case _: Throwable => None
+    case t: Throwable => {
+      t.printStackTrace()
+      None
+    }
   }
-
 
   /**
    * Read info file
@@ -83,8 +90,34 @@ object YamlParser {
     }
   }
 
+  /**
+   * Read a date
+   * @param date the date as string
+   * @return a local date
+   */
   def readDate(date: String): LocalDate = {
-    DateTimeFormat.forPattern("dd-MM-yyyy").parseDateTime(date).toLocalDate
+    dateParser.parseDateTime(date).toLocalDate
+  }
+
+  /**
+   * Read Location
+   * @param data data
+   * @return the location or none
+   */
+  def readLocation(data: Map[String, Any]): Option[Location] = {
+    val oLocation = data.get("location")
+    oLocation match {
+      case None => None
+      case Some(x) => {
+        x match {
+          case s: String => Some(Location(s))
+          case _ => {
+            val map = data("location").asInstanceOf[JavaMap[String, String]].toMap
+            Some(Location(map("name"), toOption(map, "venue")))
+          }
+        }
+      }
+    }
   }
 }
 

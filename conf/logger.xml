@@ -19,7 +19,7 @@
     <logger name="application" level="INFO"/>
 
     <logger name="loading" level="TRACE"/>
-    <logger name="YAML" level="DEBUG"/>
+    <logger name="YAML" level="INFO"/>
     <logger name="data" level="DEBUG"/>
 
     <logger name="UserService" level="TRACE"/>

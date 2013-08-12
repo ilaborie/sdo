@@ -1,13 +1,12 @@
 package model.event
 
-import model.contact._
+
 import model.orga._
 import model.team._
 import play.api.i18n.Messages
 import org.joda.time.{Interval, LocalDate}
 
-import play.Play
-import util.EMail
+import util._
 
 /**
  * Event
@@ -84,20 +83,13 @@ object Event {
     val name = tournament.toString
     val url = controllers.routes.Orga.ligue(ligue.shortName).url + "#" + tournament.shortName
 
-    Event(name, LigueEvent, tournament.date, tournament.date, url=Some(url))
+    Event(name, LigueEvent, tournament.date, tournament.date, url=Some(url), location = tournament.place)
   }
 
   def apply(comite: Comite, tournament: ComiteTournament): Event = {
     val name = tournament.toString
     val url = controllers.routes.Orga.comite(comite.ligue.shortName, comite.shortName).url+ "#" + tournament.shortName
 
-    Event(name, ComiteEvent, tournament.date, tournament.date, url=Some(url))
+    Event(name, ComiteEvent, tournament.date, tournament.date, url=Some(url), location = tournament.place)
   }
 }
-
-/**
- * Location
- * @param name name
- * @param venue venue
- */
-case class Location(name: String, venue: Option[String])
