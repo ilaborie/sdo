@@ -22,6 +22,10 @@
     <logger name="YAML" level="DEBUG"/>
     <logger name="data" level="DEBUG"/>
 
+    <logger name="UserService" level="TRACE"/>
+    <logger name="user" level="DEBUG"/>
+    <logger name="AuthEventListener" level="TRACE"/>
+
     <root level="ERROR">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE"/>

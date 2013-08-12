@@ -1,21 +1,21 @@
 # Home page
-GET        /                                                 controllers.Application.index
-GET        /ligues                                           controllers.Application.ligues
+GET        /                                                 controllers.Orga.index
+GET        /ligues                                           controllers.Orga.ligues
 
 # Contact
-GET        /contacts                                         controllers.Application.contact
+GET        /contacts                                         controllers.Contact.contact
 
 # Event
-GET        /events                                           controllers.Application.event
-GET        /eventsList                                       controllers.Application.eventsList
-GET        /eventsCal                                        controllers.Application.eventsCalendar
+GET        /events                                           controllers.Event.event
+GET        /eventsList                                       controllers.Event.eventsList
+GET        /eventsCal                                        controllers.Event.eventsCalendar
 
 # Ligue, Comite, Club
-GET        /ligues/:ligue                                    controllers.Application.ligue(ligue)
-GET        /ligues/:ligue/body                               controllers.Application.ligueBody(ligue)
-GET        /ligues/:ligue/comites/:comite                    controllers.Application.comite(ligue,comite )
-GET        /ligues/:ligue/comites/:comite/body               controllers.Application.comiteBody(ligue,comite )
-GET        /ligues/:ligue/comites/:comite/clubs/:club        controllers.Application.club(ligue, comite, club)
+GET        /ligues/:ligue                                    controllers.Orga.ligue(ligue)
+GET        /ligues/:ligue/body                               controllers.Orga.ligueBody(ligue)
+GET        /ligues/:ligue/comites/:comite                    controllers.Orga.comite(ligue,comite )
+GET        /ligues/:ligue/comites/:comite/body               controllers.Orga.comiteBody(ligue,comite )
+GET        /ligues/:ligue/comites/:comite/clubs/:club        controllers.Orga.club(ligue, comite, club)
 
 # Ligue Rank
 GET        /ligues/:ligue/single                             controllers.Classements.ligueSingle(ligue)
@@ -32,11 +32,35 @@ GET        /ligues/:ligue/comites/:comite/double             controllers.Classem
 GET        /ligues/:ligue/comites/:comite/team               controllers.Classements.comiteTeam(ligue, comite)
 
 # Tournament
-GET        /ligues/:ligue/tour/:tour                         controllers.Application.ligueTournament(ligue, tour)
-GET        /ligues/:ligue/comites/:comite/tour/:tour         controllers.Application.comiteTournament(ligue, comite, tour)
+GET        /ligues/:ligue/tour/:tour                         controllers.Orga.ligueTournament(ligue, tour)
+GET        /ligues/:ligue/comites/:comite/tour/:tour         controllers.Orga.comiteTournament(ligue, comite, tour)
 
 # Detail
 GET        /ligues/:ligue/team/day/:day/:team1/:team2        controllers.Detail.team(ligue,day:Int,team1,team2)
 
 # Map static resources from the /public folder to the /assets URL path
 GET        /assets/*file                                     controllers.Assets.at(path="/public", file)
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Authentication Secure Social
+
+# Login page
+GET     /login                      securesocial.controllers.LoginPage.login
+GET     /logout                     securesocial.controllers.LoginPage.logout
+
+# User Registration and password handling
+GET     /signup                     securesocial.controllers.Registration.startSignUp
+POST    /signup                     securesocial.controllers.Registration.handleStartSignUp
+GET     /signup/:token              securesocial.controllers.Registration.signUp(token)
+POST    /signup/:token              securesocial.controllers.Registration.handleSignUp(token)
+GET     /reset                      securesocial.controllers.Registration.startResetPassword
+POST    /reset                      securesocial.controllers.Registration.handleStartResetPassword
+GET     /reset/:token               securesocial.controllers.Registration.resetPassword(token)
+POST    /reset/:token               securesocial.controllers.Registration.handleResetPassword(token)
+GET     /password                   securesocial.controllers.PasswordChange.page
+POST    /password                   securesocial.controllers.PasswordChange.handlePasswordChange
+
+# Providers entry points
+GET     /authenticate/:provider     securesocial.controllers.ProviderController.authenticate(provider)
+POST    /authenticate/:provider     securesocial.controllers.ProviderController.authenticateByPost(provider)
+GET     /not-authorized             securesocial.controllers.ProviderController.notAuthorized

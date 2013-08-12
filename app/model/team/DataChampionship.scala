@@ -10,7 +10,7 @@ import scala.Predef._
 import scala.Some
 
 import model.orga._
-import util.YamlParser
+import util.{ParseDataException, YamlParser}
 
 /**
  * DataChampionship
@@ -28,12 +28,12 @@ object DataChampionship {
    */
   private def shouldFindTeam(ligue: Ligue, shortName: String): Team = ligue.findTeamByShortName(shortName) match {
     case Some(team) => team
-    case None => throw ParseDataException(s"Cannot find team $shortName in $ligue")
+    case None => throw ParseDataException(s"Cannot find team $shortName inputFieldConstructor $ligue")
   }
 
   /**
    * Find a Licensied Player
-   * @param name the player full name (lastname, firstname)
+   * @param name the player full name (lastName, firstName)
    * @return the player
    * @throws ParseDataException if not found
    */
@@ -67,8 +67,8 @@ object DataChampionship {
    */
   private def readChampionshipDay(season: Season, ligue: Ligue, dayMap: Map[Any, Any]): TeamChampionshipDay = {
     val day: Int = dayMap("day").asInstanceOf[Integer]
-    val from = Data.readDate(dayMap("from").asInstanceOf[String])
-    val to = Data.readDate(dayMap("to").asInstanceOf[String])
+    val from = YamlParser.readDate(dayMap("from").asInstanceOf[String])
+    val to = YamlParser.readDate(dayMap("to").asInstanceOf[String])
     val matchList = dayMap("matches").asInstanceOf[JavaList[JavaMap[String, String]]]
     logger.trace(s"Read $matchList")
     val matches = for (m <- matchList.toList) yield readPlannedTeamMatch(season, ligue, day, m.toMap)
@@ -108,7 +108,7 @@ object DataChampionship {
         val detail: JavaMap[String, Any] = detailM.asInstanceOf[JavaMap[String, Any]]
         logger.trace(s"Read $detail")
 
-        val date = Data.readDate(detail.get("date").asInstanceOf[String])
+        val date = YamlParser.readDate(detail.get("date").asInstanceOf[String])
         val location = detail.get("location").asInstanceOf[String]
 
         val t1: TeamMatchDetail = readTeamMatchDetail(team1, detail.get("team1")

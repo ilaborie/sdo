@@ -5,7 +5,6 @@ import play.api.Logger
 import java.util.{List => JavaList, Map => JavaMap}
 
 import scala.collection.JavaConversions._
-import scala.Predef._
 import util.YamlParser
 
 /**
@@ -25,10 +24,9 @@ object DataContact {
   }
 
   def readContact(season: Season, data: Map[String, String]): Contact = {
-
     val name = data("name").asInstanceOf[String]
     val email = toOption(data, "email") match {
-      case Some(em) => Some(EMail(em))
+      case Some(em) => Some(util.EMail(em))
       case None => None
     }
     val url = toOption(data, "url")

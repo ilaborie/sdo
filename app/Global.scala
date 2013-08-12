@@ -4,6 +4,8 @@ import model.contact.Contact
 import model.event.Event
 import model.orga.{Ligue, Season}
 import model.team.TeamChampionship
+import securesocial.core.providers.utils.GravatarHelper
+import securesocial.core._
 import util.YamlParser
 
 
@@ -14,7 +16,7 @@ object Global extends GlobalSettings {
   private val logger = Logger("loading")
 
   override def onStart(app: Application) {
-    // Load and trace
+    // Load Yaml data
     YamlParser.parser = YamlParser(app)
     if (logger.isInfoEnabled) {
       logger.info("Loading ...")
@@ -27,6 +29,39 @@ object Global extends GlobalSettings {
           logger.info(s"TeamChampionship: $champ")
       }
       logger.info("[Done]")
+    }
+
+    // Info for authentication
+    val confKey = List(
+      "securesocial.facebook.clientId",
+      "securesocial.facebook.clientSecret",
+      "securesocial.google.clientId",
+      "securesocial.google.clientSecret")
+    confKey.foreach(key => logger.warn( s"""$key: ${app.configuration.getString(key)}"""))
+
+    if (app.mode == Mode.Dev) {
+      registerUser("Igor", "Laborie", "ilaborie@gmail.com")
+      registerUser("Paulo", "", "paulo@gmail.com")
+    }
+  }
+
+  private def registerUser(firstName: String, lastName: String, email: String): Identity = {
+    val identityId = IdentityId(email, "userpass")
+    UserService.find(identityId) match {
+      case Some(u) => u
+      case None =>
+        val password = "plop"
+        val user = SocialUser(
+          identityId,
+          firstName,
+          lastName,
+          s"$firstName $lastName",
+          Some(email),
+          GravatarHelper.avatarFor(email),
+          AuthenticationMethod.UserPassword,
+          passwordInfo = Some(Registry.hashers.currentHasher.hash(password))
+        )
+        UserService.save(user)
     }
   }
 }

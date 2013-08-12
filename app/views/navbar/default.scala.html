@@ -1,5 +1,7 @@
-@(title: String = "")(content: Html)
+@(title: String = "", user: Option[model.user.User] = None)(content: Html)
 @import model.orga._
+@import model.user._
+@import securesocial.core.providers.utils.RoutesHelper
 
 <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
@@ -9,20 +11,31 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </a>
-            <a class="brand" href="/sdo/"><i class="glyphicons home"></i></a>
+            <a class="brand" href="@routes.Orga.index()"><i class="glyphicons home"></i></a>
             <a class="brand" href="#">@title</a>
             <div class="nav-collapse collapse">
                 <ul class="nav">
                 @for(ligue <- Ligue.ligues) {
-                    <li><a href="@routes.Application.ligue(ligue.shortName)"> @ligue.shortName</a></li>
+                    <li><a href="@routes.Orga.ligue(ligue.shortName)"> @ligue.shortName</a></li>
                     @for(comite <- ligue.comites) {
-                        <li><a href="@routes.Application.comite(ligue.shortName, comite.shortName)"> @comite.shortName</a></li>
+                        <li><a href="@routes.Orga.comite(ligue.shortName, comite.shortName)"> @comite.shortName</a></li>
                     }
                 }
                 </ul>
                 <ul class="nav pull-right">
-                    <li><a href="@routes.Application.event"><i class="glyphicons calendar"></i> @Messages("title.events")</a></li>
-                    <li><a href="@routes.Application.contact"><i class="glyphicons envelope"></i> @Messages("title.contacts")</a></li>
+                    <li>
+                        <a href="@routes.Event.event()">
+                            <i class="glyphicons calendar"></i>
+                            @Messages("title.events")
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@routes.Contact.contact()">
+                            <i class="glyphicons envelope"></i>
+                            @Messages("title.contacts")
+                        </a>
+                    </li>
+                    @user.map(u => navbar.user(u))
                 </ul>
             </div>
         </div>
