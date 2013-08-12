@@ -9,20 +9,20 @@ object ApplicationBuild extends Build {
   val appVersion = "1.0-SNAPSHOT"
 
   val secureSocial = "securesocial" %% "securesocial" % "master-SNAPSHOT"
+  val reactiveMongo = "org.reactivemongo" %% "reactivemongo" % "0.9"
 
   val appDependencies = Seq(
-    // Add your project dependencies here,
-    jdbc,
-    anorm,
-    secureSocial
+    jdbc, // FIXME remove
+    secureSocial,
+    reactiveMongo
   )
 
   // Only compile main.less
   def customLessEntryPoints(base: File): PathFinder = base / "app" / "assets" / "style" * "*.less"
 
-  val defaultSettings =  Project.defaultSettings ++ org.scalastyle.sbt.ScalastylePlugin.Settings
+  val defaultSettings = Project.defaultSettings ++ org.scalastyle.sbt.ScalastylePlugin.Settings
 
-  val main = play.Project(appName, appVersion, appDependencies, settings= defaultSettings).settings(
+  val main = play.Project(appName, appVersion, appDependencies, settings = defaultSettings).settings(
     // Add your own project settings here
     lessEntryPoints <<= baseDirectory(customLessEntryPoints),
     resolvers += Resolver.url("sbt-plugin-snapshots", new URL("http://repo.scala-sbt.org/scalasbt/sbt-plugin-snapshots/"))(Resolver.ivyStylePatterns)
