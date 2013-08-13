@@ -43,6 +43,21 @@ event.type.team=Équipes
 event.type.default=ø
 link.internal=Voir détail
 
+day.monday=L
+day.monday.title=Lundi
+day.tuesday=Ma
+day.tuesday.title=Mardi
+day.wednesday=Me
+day.wednesday.title=Mercredi
+day.thrusday=J
+day.thrusday.title=Jeudi
+day.friday=V
+day.friday.title=Vendredi
+day.saturday=S
+day.saturday.title=Samedi
+day.sunday=D
+day.sunday.title=Dimanche
+
 # Rank
 rank.point=Pts.
 rank.point.title=Points

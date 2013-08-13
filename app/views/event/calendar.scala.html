@@ -63,6 +63,15 @@
                 <tr>
                     <th colspan="7">@month - @year</th>
                 </tr>
+                <tr>
+                    <th>@tags.abbr("day.monday")</th>
+                    <th>@tags.abbr("day.tuesday")</th>
+                    <th>@tags.abbr("day.wednesday")</th>
+                    <th>@tags.abbr("day.thrusday")</th>
+                    <th>@tags.abbr("day.friday")</th>
+                    <th>@tags.abbr("day.saturday")</th>
+                    <th>@tags.abbr("day.sunday")</th>
+                </tr>
             </thead>
             <tbody>
             @for(week <- month.weeks) {
