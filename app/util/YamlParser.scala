@@ -55,10 +55,7 @@ object YamlParser {
   def tryParseFile(path: String): Option[Any] = try {
     Some(parseFile(path))
   } catch {
-    case t: Throwable => {
-      t.printStackTrace()
-      None
-    }
+    case _: Throwable => None
   }
 
   /**

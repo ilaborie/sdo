@@ -28,7 +28,7 @@ object EventYear {
       val months = for (month <- startMonth to endMonth) yield {
         val ym = new YearMonth(year, month)
 
-        val monthEvents: Seq[Event] = events.filter(_.applyTo(ym.toInterval))
+        val monthEvents: Seq[Event] = events.filter(_.applyTo(ym))
         EventMonth(ym, monthEvents)
       }
       EventYear(year, months.toList)
@@ -48,7 +48,7 @@ object EventMonth {
   def apply(yearMonth: YearMonth, events: Seq[Event]): EventMonth = {
     val interval = yearMonth.toInterval
     val monthStart = interval.getStart.toLocalDate
-    val monthEnd = interval.getEnd.toLocalDate.plusDays(-1)
+    val monthEnd = interval.getEnd.toLocalDate.minusDays(1)
 
     // From create Days event
     val days = for (d <- monthStart.getDayOfMonth to monthEnd.getDayOfMonth) yield {
@@ -61,7 +61,7 @@ object EventMonth {
       //  group by week
       val weeksDays: List[(Int, Seq[MonthDay])] = days.groupBy(_.date.getWeekOfWeekyear)
         .toList
-        .sorted(Ordering.by((x: (Int, Seq[MonthDay])) => x._1))
+        .sorted(Ordering.by((x: (Int, Seq[MonthDay])) => x._2.head.date))
       // build week
       for ((w, md) <- weeksDays) yield {
         EventWeek(yearMonth, w, md)

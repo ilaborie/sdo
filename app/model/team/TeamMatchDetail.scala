@@ -189,6 +189,8 @@ case class PlannedTeamMatch(day: Int, team1: Team, team2: Team, detail: Option[M
 
   override val toString = s"[J$day] ${team1.shortName} - ${team2.shortName}"
 
+  val teamsAsList: List[Team] = List(team1, team2)
+
   def applyTo(team: Team): Boolean = (team1 == team || team2 == team) && !team.omit
 
   def applyTo(comite: Comite): Boolean = team1.comite == comite && team2.comite == comite

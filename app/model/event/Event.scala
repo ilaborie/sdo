@@ -4,7 +4,7 @@ package model.event
 import model.orga._
 import model.team._
 import play.api.i18n.Messages
-import org.joda.time.{Interval, LocalDate}
+import org.joda.time.{YearMonth, LocalDate}
 
 import util._
 
@@ -30,9 +30,16 @@ case class Event(name: String,
 
   override val toString = name
 
-  private val interval: Interval = new Interval(from.toDate.getTime, to.toDate.getTime)
+  def applyTo(yearMonth: YearMonth): Boolean = {
+    val d0 = yearMonth.toInterval.getStart.toLocalDate
+    val d1 = yearMonth.toInterval.getEnd.toLocalDate
 
-  def applyTo(anotherInterval: Interval): Boolean = interval overlaps anotherInterval
+    def isInclude(date: LocalDate) = {
+      (date.isEqual(d0) || date.isAfter(d0)) && (date.isEqual(d1) || date.isBefore(d1))
+    }
+
+    isInclude(from) || isInclude(to) || (from.isBefore(d0) && to.isAfter(d1))
+  }
 
   def applyTo(date: LocalDate): Boolean =
     (from.isEqual(date) || to.isEqual(date)) || (from.isBefore(date) && to.isAfter(date))
@@ -70,12 +77,23 @@ object Event {
 
   def apply(ligue: Ligue, day: TeamChampionshipDay): Event = {
     val name = Messages("team.championship.day", day.day)
-    val url =  controllers.routes.Orga.ligue(ligue.shortName).url + "#team"
-    val info = {
+    val url = controllers.routes.Orga.ligue(ligue.shortName).url + "#team"
+    val matches = {
       for (ma <- day.matches)
-      yield s"""<div>${ma.team1.name} - ${ma.team2.name}</div>"""
-    }.mkString("")
-    Event(name, TeamEvent, day.from, day.to, url=Some(url), info = Some(info))
+      yield s"""
+<div class="row-fluid">
+  <div class="span5">${ma.team1.shortName}</div>
+  <div class="span2">-</div>
+  <div class="span5">${ma.team2.shortName}</div>
+</div>"""
+    }.mkString("\n")
+
+    val exempted = day.teamExempted
+    val info =
+      if (exempted.isEmpty) matches
+      else matches + Messages("team.exempted", exempted.map(_.shortName).mkString(", "))
+
+    Event(name, TeamEvent, day.from, day.to, url = Some(url), info = Some(info))
   }
 
 
@@ -83,13 +101,13 @@ object Event {
     val name = tournament.toString
     val url = controllers.routes.Orga.ligue(ligue.shortName).url + "#" + tournament.shortName
 
-    Event(name, LigueEvent, tournament.date, tournament.date, url=Some(url), location = tournament.place)
+    Event(name, LigueEvent, tournament.date, tournament.date, url = Some(url), location = tournament.place)
   }
 
   def apply(comite: Comite, tournament: ComiteTournament): Event = {
     val name = tournament.toString
-    val url = controllers.routes.Orga.comite(comite.ligue.shortName, comite.shortName).url+ "#" + tournament.shortName
+    val url = controllers.routes.Orga.comite(comite.ligue.shortName, comite.shortName).url + "#" + tournament.shortName
 
-    Event(name, ComiteEvent, tournament.date, tournament.date, url=Some(url), location = tournament.place)
+    Event(name, ComiteEvent, tournament.date, tournament.date, url = Some(url), location = tournament.place)
   }
 }

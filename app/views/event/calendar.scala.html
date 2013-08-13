@@ -12,7 +12,7 @@
             @event.info.map(tags.info(_))
         </div>
     @if(event.location.isDefined) {
-        <div>@tags.location(event.location.get)</div>
+        @tags.location(event.location.get)
     }
     }
 

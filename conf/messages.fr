@@ -41,6 +41,7 @@ event.type.ligue=Ligue
 event.type.comite=Comité
 event.type.team=Équipes
 event.type.default=ø
+link.internal=Voir détail
 
 # Rank
 rank.point=Pts.
@@ -109,6 +110,7 @@ rank.team.diff.title=Différence
 # Championsihp
 championship.day.caption=Journée n°{0}
 team.championship.day=Championat par équipe - Journée n°{0}
+team.exempted=<em>Exempt:</em> {0}
 
 # Detail
 team.detail.title=Détail du match {0}

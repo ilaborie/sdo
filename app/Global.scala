@@ -31,7 +31,6 @@ object Global extends GlobalSettings {
       logger.info("[Done]")
     }
 
-
     // Info for authentication
     val confKey = List(
       "securesocial.facebook.clientId",
@@ -65,4 +64,10 @@ object Global extends GlobalSettings {
         UserService.save(user)
     }
   }
+
+  override def onStop(app: Application) = {
+    // FIXME Close Mongo Connection
+    // UserService.delegate
+  }
+
 }
