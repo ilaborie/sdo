@@ -54,8 +54,13 @@ object Data {
    * @return all ligues
    */
   def readLigues(season: Season) = {
-    val sdo = readLigue(season,"sdo")
-    List(sdo)
+    val liguesFile = s"s$season/ligues.yml"
+    logger.info(s"Read ligues information in $liguesFile")
+
+    val liguesList = YamlParser.parseFile(liguesFile).asInstanceOf[JavaList[String]]
+    logger.trace(s"Read $liguesList")
+
+    for (ligue <- liguesList.toList) yield readLigue(season, ligue)
   }
 
   /**
