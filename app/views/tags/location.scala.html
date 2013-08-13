@@ -1,8 +1,10 @@
 @(location: util.Location)
 
+<div class="location">
 <i class="glyphicons google_maps"></i>
 @if(location.venue.isDefined) {
     @location.name - <em>@location.venue</em>
 } else {
     @location.name
 }
+</div>

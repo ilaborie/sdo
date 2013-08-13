@@ -16,6 +16,9 @@ sealed abstract class Tournament {
   def shortName: String
 
   def place: Option[Location]
+
+  def ligue: Ligue
+  def maybyComite: Option[Comite]
 }
 
 object Tournament {
@@ -29,8 +32,7 @@ object Tournament {
 sealed abstract class LigueTournament extends Tournament {
   val isEvent: Boolean = true
   val isTeam: Boolean = false
-
-  def ligue: Ligue
+  val maybyComite = None
 }
 
 /**
@@ -183,6 +185,8 @@ sealed abstract class ComiteTournament extends Tournament {
   def shortName: String
 
   def comite: Comite
+  lazy val ligue = comite.ligue
+  lazy val maybyComite = Some(comite)
 }
 
 /**

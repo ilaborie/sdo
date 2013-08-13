@@ -1,6 +1,6 @@
 @(caption: String, day: model.team.TeamChampionshipDay)
-@import model.orga.Team
-@import model.team.MatchDetail
+    @import model.orga.Team
+    @import model.team.MatchDetail
 
     @teamClass(t: Team, d: MatchDetail) = {
     @if(d.winner.isDefined) {
@@ -8,39 +8,51 @@
     }
     }
 
-<table class="table table-bordered journee">
-    <caption>
-        <div class="pull-left">@caption</div>
-        <small class="pull-right">@tags.date(day.from) - @tags.date(day.to)</small>
-    </caption>
-    @for(m <- day.matches) {
-        @m.detail match {
-            case None => {
-                <tr>
-                    <td>
-                        <a href="@routes.Detail.team(day.ligue.shortName, day.day, m.team1.shortName, m.team2.shortName)" class="btn btn-primary">
+    <table class="table table-bordered journee">
+        <caption>
+            <div class="pull-left">@caption</div>
+            <small class="pull-right">@tags.date(day.from) - @tags.date(day.to)</small>
+        </caption>
+        <tbody>
+        @for(m <- day.matches) {
+            @m.detail match {
+                case None => {
+                    <tr>
+                        <td>
+                            @*
+                            <a href="@routes.Detail.team(day.ligue.shortName, day.day, m.team1.shortName, m.team2.shortName)" class="btn btn-primary">
                             <i class="glyphicons white play"></i>
-                        </a>
-                    </td>
-                    <td>@m.team1.name</td>
-                    <td> - </td>
-                    <td> - </td>
-                    <td>@m.team2.name</td>
-                </tr>
-            }
-            case Some(detail) => {
-                <tr>
-                    <td>
-                        <a href="@routes.Detail.team(day.ligue.shortName, day.day, m.team1.shortName, m.team2.shortName)" class="btn">
-                            <i class="glyphicons search"></i>
-                        </a>
-                    </td>
-                    <td>@m.team1.name</td>
-                    <td class="@teamClass(m.team1, detail)">@detail.plus(m.team1)</td>
-                    <td class="@teamClass(m.team2, detail)">@detail.plus(m.team2)</td>
-                    <td>@m.team2.name</td>
-                </tr>
+                            </a>
+                            *@
+                        </td>
+
+                        <td>@m.team1.name</td>
+                        <td> - </td>
+                        <td> - </td>
+                        <td>@m.team2.name</td>
+                    </tr>
+                }
+                case Some(detail) => {
+                    <tr>
+                        <td>
+                            <a href="@routes.Detail.team(day.ligue.shortName, day.day, m.team1.shortName, m.team2.shortName)" class="btn">
+                                <i class="glyphicons search"></i>
+                            </a>
+                        </td>
+                        <td>@m.team1.name</td>
+                        <td class="@teamClass(m.team1, detail)">@detail.plus(m.team1)</td>
+                        <td class="@teamClass(m.team2, detail)">@detail.plus(m.team2)</td>
+                        <td>@m.team2.name</td>
+                    </tr>
+                }
             }
         }
-    }
-</table>
+        </tbody>
+        @if(!day.teamExempted.isEmpty) {
+            <tfoot>
+                <tr>
+                    <td colspan="5">@Html(Messages("team.exempted", day.teamExempted.map(_.name).mkString(", ")))</td>
+                </tr>
+            </tfoot>
+        }
+        </table>

@@ -38,4 +38,13 @@ case class TeamChampionshipDay(ligue: Ligue, day: Int, from: LocalDate, to: Loca
   def findMatch(team1: Team, team2: Team): Option[PlannedTeamMatch] =
     matches.find(m => m.applyTo(team1) && m.applyTo(team2))
 
+
+  lazy val teamExempted: Seq[Team] = {
+    val teams = for {
+      ptm <- matches
+      team <- ptm.teamsAsList
+    } yield team
+
+    ligue.teams.filter(team => !team.omit && !teams.contains(team))
+  }
 }

@@ -11,7 +11,7 @@
             @event.url.map(tags.site(_))
             @event.email.map(tags.email(_))
         </div>
-        <div>@event.location.map(tags.location(_))</div>
+        @event.location.map(tags.location(_))
         @event.info.map(tags.info(_))
     </div>
 </div>

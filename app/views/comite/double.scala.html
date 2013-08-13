@@ -11,7 +11,11 @@
             @for(tournament <- ranking.tournaments) {
                 @tournament match {
                     case CoupeComite(_,_) => {
-                        <th>@tags.abbr("rank.comite.coupe")</th>
+                        <th>
+                            <abbr title="@Messages("rank.comite.coupe.title", tournament.maybyComite.get.name)">
+                            @Messages("rank.comite.coupe")
+                            </abbr>
+                        </th>
                     }
                     case oc: OpenClub => {
                         <th>
