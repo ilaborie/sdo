@@ -49,16 +49,39 @@ class UserService(application: Application) extends UserServicePlugin(applicatio
     val email: Option[String] = document.getAs[String]("email")
     val avatarUrl: Option[String] = document.getAs[String]("avatarUrl")
     val authMethod: AuthenticationMethod = AuthenticationMethod(document.getAs[String]("method").get)
-
     val fullName: String = s"$lastName $firstName"
 
-    val passwordDoc: BSONDocument = document.getAs[BSONDocument]("passwordInfo").get
-    val hasher = passwordDoc.getAs[String]("hasher").get
-    val password = passwordDoc.getAs[String]("password").get
-    val salt = passwordDoc.getAs[String]("salt")
-    val passwordInfo = PasswordInfo(hasher, password, salt)
+    // Password Info
+    val passwordInfo = document.getAs[BSONDocument]("passwordInfo") map {
+      passwordDoc =>
+        val hasher = passwordDoc.getAs[String]("hasher").get
+        val password = passwordDoc.getAs[String]("password").get
+        val salt = passwordDoc.getAs[String]("salt")
+        PasswordInfo(hasher, password, salt)
+    }
 
-    LocalUser(id, firstName, lastName, fullName, email, avatarUrl, authMethod, Some(passwordInfo))
+    // oAuth1Info
+    val oAuth1Info = document.getAs[BSONDocument]("oAuth1Info") map {
+      info =>
+        val token = info.getAs[String]("token").get
+        val secret = info.getAs[String]("secret").get
+        OAuth1Info(token, secret)
+    }
+
+    // oAuth2Info
+    val oAuth2Info = document.getAs[BSONDocument]("oAuth2Info") map {
+      info =>
+        val accessToken = info.getAs[String]("accessToken").get
+        val expiresIn = info.getAs[Int]("expiresIn")
+        val refreshToken = info.getAs[String]("refreshToken")
+        val tokenType = info.getAs[String]("tokenType")
+        OAuth2Info(accessToken, tokenType, expiresIn, refreshToken)
+    }
+
+    SocialUser(id, firstName, lastName, fullName, email, avatarUrl, authMethod,
+      oAuth1Info = oAuth1Info,
+      oAuth2Info = oAuth2Info,
+      passwordInfo = passwordInfo)
   }
 
   def find(id: IdentityId): Option[Identity] = {
@@ -90,7 +113,7 @@ class UserService(application: Application) extends UserServicePlugin(applicatio
 
   def save(user: Identity): Identity = {
     logger.trace(s"save($user)")
-    val passwordInfo = user.passwordInfo.get
+
     val doc = BSONDocument(
       "_id" -> createId(user.identityId),
       "userId" -> user.identityId.userId,
@@ -100,15 +123,28 @@ class UserService(application: Application) extends UserServicePlugin(applicatio
       "email" -> user.email,
       "firstName" -> user.firstName,
       "lastName" -> user.lastName,
-      "passwordInfo" -> BSONDocument(
-        "hasher" -> passwordInfo.hasher,
-        "password" -> passwordInfo.password,
-        "salt" -> passwordInfo.salt
-      )
+      "passwordInfo" -> user.passwordInfo.map(
+        passwordInfo => BSONDocument(
+          "hasher" -> passwordInfo.hasher,
+          "password" -> passwordInfo.password,
+          "salt" -> passwordInfo.salt)),
+      "oAuth1Info" -> user.oAuth1Info.map(
+        info => BSONDocument(
+          "secret" -> info.secret,
+          "token" -> info.token
+        )),
+      "oAuth2Info" -> user.oAuth2Info.map(
+        info => BSONDocument(
+          "accessToken" -> info.accessToken,
+          "expiresIn" -> info.expiresIn,
+          "refreshToken" -> info.refreshToken,
+          "tokenType" -> info.tokenType
+        ))
     )
     users.save(doc)
     user
   }
+
 
   // Tokens
   private def toToken(document: BSONDocument): Token = {
@@ -161,18 +197,6 @@ class UserService(application: Application) extends UserServicePlugin(applicatio
     )
     tokens remove query
   }
-}
-
-case class LocalUser(identityId: IdentityId,
-                     firstName: String,
-                     lastName: String,
-                     fullName: String,
-                     email: Option[String],
-                     avatarUrl: Option[String],
-                     authMethod: AuthenticationMethod,
-                     passwordInfo: Option[PasswordInfo]) extends Identity {
-  val oAuth1Info = None
-  val oAuth2Info = None
 }
 
 case class DatabaseException(message: String) extends RuntimeException(message)
