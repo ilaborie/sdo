@@ -105,7 +105,7 @@ table.calendar {
     }
 
     td.nope {
-      background-color: @grayLight;
+      background-color: @gray;
       cursor: not-allowed;
     }
     td.empty {
@@ -114,14 +114,23 @@ table.calendar {
       cursor: not-allowed;
     }
     td.event {
-      color: @white;
+      color: @white !important;
       cursor: pointer;
     }
 
+    td.empty.muted {
+      color: @grayLight;
+      cursor: not-allowed;
+    }
+
+    // Weekend
     td:nth-child(n+6) {
+      background-color: @grayLight;
+      color: @grayDark;
       font-weight: bold;
     }
 
+    // 2 events
     td.world.comite {
       #gradient > .directional(@world, @comite);
     }
@@ -144,6 +153,30 @@ table.calendar {
       #gradient > .directional(@team,@world);
     }
 
+    // 2 events + muted
+    td.world.comite.muted {
+      #gradient > .directional(lighten(@world,20%), lighten(@comite,20%));
+    }
+    td.world.ligue.muted {
+      #gradient > .directional(lighten(@world,20%), lighten(@ligue,20%));
+    }
+    td.world.france.muted {
+      #gradient > .directional(lighten(@world,20%), lighten(@france,20%));
+    }
+    td.team.comite.muted {
+      #gradient > .directional(lighten(@team,20%), lighten(@comite,20%));
+    }
+    td.team.france.muted {
+      #gradient > .directional(lighten(@team,20%), lighten(@france,20%));
+    }
+    td.team.ligue.muted {
+      #gradient > .directional(lighten(@team,20%), lighten(@ligue,20%));
+    }
+    td.team.world.muted {
+      #gradient > .directional(lighten(@team,20%), lighten(@world,20%));
+    }
+
+    // one event
     td.world {
       background-color: @world;
     }
@@ -167,6 +200,32 @@ table.calendar {
     }
     td.default {
       background-color: @grayDark;
+    }
+
+    // one event + muted
+    td.world.muted {
+      background-color: lighten(@world,20%);
+    }
+    td.worldfrance.muted {
+      #gradient > .directional(lighten(@world,20%), lighten(@france,20%));
+    }
+    td.fede.muted {
+      background-color: lighten(@fede,20%);
+    }
+    td.france.muted {
+      background-color: lighten(@france,20%);
+    }
+    td.ligue.muted {
+      background-color: lighten(@ligue,20%);
+    }
+    td.comite.muted {
+      background-color: lighten(@comite,20%);
+    }
+    td.team.muted {
+      background-color: lighten(@team,20%);
+    }
+    td.default.muted {
+      background-color: lighten(@grayDark,20%);
     }
   }
 }
