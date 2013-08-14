@@ -82,7 +82,6 @@ object YamlParser {
     }
   }
 
-
   /**
    * Return an optional string
    * @param data the map
@@ -120,10 +119,30 @@ object YamlParser {
           case s: String => Some(Location(s))
           case _ => {
             val map = data("location").asInstanceOf[JavaMap[String, String]].toMap
-            Some(Location(map("name"), toOption(map, "venue")))
+            val name = map("name")
+            val venue = toOption(map, "venue")
+            val address = toAddress(venue.getOrElse(name), map, "address")
+            val tel = toTelephone(map, "tel")
+            Some(Location(name, venue, address, tel))
           }
         }
       }
+    }
+  }
+
+  def toAddress(name: String, data: Map[String, Any], key: String): Option[Address] = {
+    if (!data.contains(key)) None
+    else {
+      val value = data(key)
+      if (value != null) Some(Address(name, value.asInstanceOf[String])) else None
+    }
+  }
+
+  def toTelephone(data: Map[String, Any], key: String): Option[Telephone] = {
+    if (!data.contains(key)) None
+    else {
+      val value = data(key)
+      if (value != null) Some(Telephone(value.asInstanceOf[String])) else None
     }
   }
 }
