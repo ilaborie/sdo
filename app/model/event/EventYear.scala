@@ -98,12 +98,51 @@ object EventWeek {
 /**
  * Day Event
  */
-abstract sealed class EventDay
+abstract sealed class EventDay {
+  def holiday: Boolean
+}
 
-case object Nope extends EventDay
+case object Nope extends EventDay {
+  val holiday = false
+}
 
 abstract class MonthDay extends EventDay {
   def date: LocalDate
+
+  def holiday: Boolean = {
+    (date.getDayOfMonth == 1 && date.getMonthOfYear == DateTimeConstants.JANUARY) || // Jour de l'an
+      Easter.plusDays(1).isEqual(date) || // lundi de Pâques
+      (date.getDayOfMonth == 1 && date.getMonthOfYear == DateTimeConstants.MAY) || // Fête du travail
+      (date.getDayOfMonth == 8 && date.getMonthOfYear == DateTimeConstants.MAY) || // Armistice 45
+      Ascension.isEqual(date) ||
+      Pentcôte.isEqual(date) ||
+      (date.getDayOfMonth == 14 && date.getMonthOfYear == DateTimeConstants.JULY) || // Fête National
+      (date.getDayOfMonth == 15 && date.getMonthOfYear == DateTimeConstants.AUGUST) || // Armistice 1945
+      (date.getDayOfMonth == 1 && date.getMonthOfYear == DateTimeConstants.NOVEMBER) || // Toussaint
+      (date.getDayOfMonth == 11 && date.getMonthOfYear == DateTimeConstants.NOVEMBER) || // Armistice 1918
+      (date.getDayOfMonth == 25 && date.getMonthOfYear == DateTimeConstants.DECEMBER) // Noël
+  }
+
+  private lazy val Easter: LocalDate = {
+    // Lundi de paques
+    val year = date.getYear
+    val goldNumber = year % 19
+    val yearBy100 = year / 100
+    val epacte = (yearBy100 - yearBy100 / 4 - (8 * yearBy100 + 13) / 25 + (19 * goldNumber) + 15) % 30
+    val daysEquinoxToMoonFull = epacte - (epacte / 28) * (1 - (epacte / 28) * (29 / (epacte + 1)) * ((21 - goldNumber) / 11))
+    val weekDayMoonFull = (year + year / 4 + daysEquinoxToMoonFull + 2 - yearBy100 + yearBy100 / 4) % 7
+    val daysEquinoxBeforeFullMoon = daysEquinoxToMoonFull - weekDayMoonFull
+    val month = 3 + (daysEquinoxBeforeFullMoon + 40) / 44
+    val day = daysEquinoxBeforeFullMoon + 28 - 31 * (month / 4)
+    LocalDate.now.withYear(year).withMonthOfYear(month).withDayOfMonth(day)
+
+    LocalDate.now.withYear(year).withMonthOfYear(month).withDayOfMonth(day)
+  }
+
+  private lazy val Ascension: LocalDate = Easter.plusDays(39)
+
+  private lazy val Pentcôte: LocalDate = Easter.plusDays(50)
+
 }
 
 object MonthDay {
