@@ -23,9 +23,9 @@
     }
 
     @today(date: LocalDate) = {
-    @if(date.isEqual(now)) {today} else {
-        @if(date.isBefore(now)) {muted}
-    }
+        @if(date.isEqual(now)) {today} else {
+            @if(date.isBefore(now)) {muted}
+        }
     }
 
     @displayDay(year: EventYear, month: EventMonth, day: EventDay) = {
@@ -34,7 +34,7 @@
             <td class="nope">&nbsp;</td>
         }
         case EmptyDay(d) => {
-            <td class="empty @today(d)">@d.getDayOfMonth</td>
+            <td class="empty @today(d) @if(day.holiday){holiday}">@d.getDayOfMonth</td>
         }
         case EventsDay(d, events) => {
             @if(events.size == 1) {
