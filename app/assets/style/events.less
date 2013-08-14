@@ -8,6 +8,11 @@
 @comite: #f89406;
 @team: #46a546;
 
+.event {
+  .detail {
+    margin-left: 1em;
+  }
+}
 
 .label,
 .badge {
@@ -88,6 +93,17 @@
 
 ul.calendar li {
   vertical-align: top;
+}
+
+table.team-event {
+  width: auto;
+
+  td:first-child {
+    text-align: right;
+  }
+  td:last-child {
+    text-align: left;
+  }
 }
 
 table.calendar {
@@ -204,28 +220,28 @@ table.calendar {
 
     // one event + muted
     td.world.muted {
-      background-color: lighten(@world,20%);
+      background-color: lighten(@world, 20%);
     }
     td.worldfrance.muted {
       #gradient > .directional(lighten(@world,20%), lighten(@france,20%));
     }
     td.fede.muted {
-      background-color: lighten(@fede,20%);
+      background-color: lighten(@fede, 20%);
     }
     td.france.muted {
-      background-color: lighten(@france,20%);
+      background-color: lighten(@france, 20%);
     }
     td.ligue.muted {
-      background-color: lighten(@ligue,20%);
+      background-color: lighten(@ligue, 20%);
     }
     td.comite.muted {
-      background-color: lighten(@comite,20%);
+      background-color: lighten(@comite, 20%);
     }
     td.team.muted {
-      background-color: lighten(@team,20%);
+      background-color: lighten(@team, 20%);
     }
     td.default.muted {
-      background-color: lighten(@grayDark,20%);
+      background-color: lighten(@grayDark, 20%);
     }
   }
 }

@@ -1,16 +1,19 @@
-@(ligues: Seq[model.orga.Ligue], user:model.user.User)
+@(ligues: Seq[model.orga.Ligue],events: Seq[model.event.Event])
 
-@layout.main(Messages("title.ligues"), user=Some(user)) {
+@layout.main(Messages("title.ligues")) {
 
     <div class="container well well-small">
-        <div class="page-header">
-            <h1>@Messages("title.ligues")</h1>
-        </div>
         <div class="alert alert-block">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             <strong>@Messages("warn")</strong>
             @Html(Messages("home.mention"))
         </div>
+
+
+        <h2>@Messages("event.next")</h2>
+        @for(event <- events) {
+            @tags.event(event)
+        }
 
         <ul class="thumbnails">
             <li class="span6">
@@ -44,36 +47,6 @@
                     </a>
                 </div>
             </li>
-            <li class="span6">
-                <div class="homelink">
-                    <a href="@routes.Orga.ligue(ligue.shortName)#team">
-                        <div class="row-fluid">
-                            <div class="span2"><i class="glyphicons group"></i></div>
-                            <div class="span10">@ligue.shortName - @Messages("menu.rank.team")</div>
-                        </div>
-                    </a>
-                </div>
-            </li>
-            <li class="span6">
-                <div class="homelink">
-                    <a href="@routes.Orga.ligue(ligue.shortName)#single">
-                        <div class="row-fluid">
-                            <div class="span2"><i class="glyphicons cup"></i></div>
-                            <div class="span10">@ligue.shortName - @Messages("menu.rank.men")</div>
-                        </div>
-                    </a>
-                </div>
-            </li>
-            <li class="span6">
-                <div class="homelink">
-                    <a href="@routes.Orga.ligue(ligue.shortName)#women">
-                        <div class="row-fluid">
-                            <div class="span2"><i class="glyphicons cup"></i></div>
-                            <div class="span10">@ligue.shortName - @Messages("menu.rank.women")</div>
-                        </div>
-                    </a>
-                </div>
-            </li>
                 @for(comite <- ligue.comites) {
             <li class="span6">
                     <div class="homelink">
@@ -87,5 +60,7 @@
             </li>
                 }
             }
+        </ul>
+
     </div>
 }

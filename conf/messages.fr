@@ -42,6 +42,7 @@ event.type.comite=Comité
 event.type.team=Équipes
 event.type.default=ø
 link.internal=Voir détail
+event.next=Prochain événements
 
 day.monday=L
 day.monday.title=Lundi

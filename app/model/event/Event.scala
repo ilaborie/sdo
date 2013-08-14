@@ -80,19 +80,20 @@ object Event {
     val url = controllers.routes.Orga.ligue(ligue.shortName).url + "#team"
     val matches = {
       for (ma <- day.matches)
-      yield s"""
-<div class="row-fluid">
-  <div class="span5">${ma.team1.shortName}</div>
-  <div class="span2">-</div>
-  <div class="span5">${ma.team2.shortName}</div>
-</div>"""
-    }.mkString("\n")
+      yield s"<tr><td>${ma.team1.name}</td><td>-</td><td>${ma.team2.name}</td</tr>"
+    }.mkString("<tbody>","","</tbody>")
 
     val exempted = day.teamExempted
-    val info =
-      if (exempted.isEmpty) matches
-      else matches + Messages("team.exempted", exempted.map(_.shortName).mkString(", "))
+    val foot =
+      if (exempted.isEmpty) ""
+      else s"""<tfoot><tr><td colspan="2">${Messages("team.exempted", exempted.map(_.name).mkString(", "))}</td></tr></tfoot>"""
 
+    val info = s"""
+<table class="table table-striped table-condensed team-event">
+$matches
+$foot
+</table>
+"""
     Event(name, TeamEvent, day.from, day.to, url = Some(url), info = Some(info))
   }
 

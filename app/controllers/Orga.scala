@@ -1,10 +1,12 @@
 package controllers
 
 import play.mvc.Controller
-import securesocial.core.SecureSocial
+import play.api.mvc.Action
+
 import model.orga._
 import model.user.User
 
+import securesocial.core.SecureSocial
 /**
  * Mains pages
  */
@@ -22,9 +24,8 @@ object Orga extends Controller with SecureSocial {
    * Ligues Pages
    * @return ligues page
    */
-  def ligues = SecuredAction {
-    implicit request =>
-      Ok(views.html.ligues(Ligue.ligues, User(request.user)))
+  def ligues = Action {
+      Ok(views.html.ligues(Ligue.ligues, model.event.Event.events.take(3)))
   }
 
   /**
