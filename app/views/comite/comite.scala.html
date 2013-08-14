@@ -39,7 +39,7 @@
                     <li class="nav-header">@Messages("menu.club")</li>
                     @for(club <- comite.clubs) {
                         <li>
-                            <a href="@routes.Orga.club(comite.ligue.shortName, comite.shortName, club.shortName)" data-target="#bodyComite">
+                            <a data-href="@routes.Orga.club(comite.ligue.shortName, comite.shortName, club.shortName)" data-target="#bodyComite">
                             @club.name
                             </a>
                         </li>

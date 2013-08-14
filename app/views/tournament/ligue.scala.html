@@ -2,6 +2,16 @@
 
 <div class="well well-small">
     <div class="page-header">
-        <h1>@tournament</h1>
+        <h1>
+            @tournament
+            <small>@tags.date(tournament.date)</small>
+        </h1>
+        @tournament.place.map(tags.location(_))
+
+
+        <em>
+            Si le tournoi n'a pas encore eu lieu => Formulaire d'inscription<br>
+            Sinon tableau des résultats
+        </em>
     </div>
 </div>
