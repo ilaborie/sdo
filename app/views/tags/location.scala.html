@@ -1,10 +1,25 @@
 @(location: util.Location)
 
 <div class="location">
-<i class="glyphicons google_maps"></i>
-@if(location.venue.isDefined) {
-    @location.name - <em>@location.venue</em>
-} else {
-    @location.name
-}
+    <i class="glyphicons google_maps"></i>
+    @if(location.venue.isDefined) {
+        @location.name - <em>@location.venue</em>
+    } else {
+        @location.name
+    }
+    @if(location.address.isDefined) {
+        <div class="address">
+            <blockquote>
+                @location.address.get.name<br>
+                @Html(location.address.get.lines.mkString("<br>"))<br>
+                @location.address.get.city
+                @if(location.tel.isDefined) {
+                    <div class="phone">
+                        <i class="glyphicons phone_alt"></i>
+                        @location.tel.get.tel
+                    </div>
+                }
+            </blockquote>
+        </div>
+    }
 </div>

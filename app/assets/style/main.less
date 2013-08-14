@@ -1,6 +1,7 @@
 // Main Style
 
 // Imports
+@import "bootstrap/mixins";
 @import "bootstrap/bootstrap.less";
 @import "bootstrap/responsive.less";
 @import "glyphicons/glyphicons-boostrap.less";
@@ -40,6 +41,10 @@ dl {
   font-family: "Ubuntu Mono", monaco, monospace;
 }
 
+.page-header {
+  margin-bottom: 0;
+}
+
 .win {
   color: @green;
 }
@@ -61,6 +66,12 @@ dl {
 
 .location {
   margin-top: 0.5em;
+}
+
+.info {
+  font-size: 80%;
+  padding-left: 1em;
+  background-color: @white !important;
 }
 
 // MenuBar
