@@ -1,17 +1,17 @@
-@(event: model.event.Event, now: org.joda.time.LocalDate = org.joda.time.LocalDate.now)
+@(event: model.event.Event, now: org.joda.time.LocalDate=org.joda.time.LocalDate.now)
 
-<div class="event @event.eventType.styles @if(event.to.isBefore(now)) {now}">
+<div class="event @event.eventType.styles @if(event.to.isBefore(now)) {muted}">
     <h2>
         <span class="label label-@event.eventType.style">@Messages(s"event.type.${event.eventType.style}")</span>
         @event.name
         <small>@tags.date(event.from) - @tags.date(event.to)</small>
     </h2>
     <div class="detail">
+        @event.location.map(tags.location(_))
         <div class="links">
             @event.url.map(tags.site(_))
             @event.email.map(tags.email(_))
         </div>
-        @event.location.map(tags.location(_))
         @event.info.map(tags.info(_))
     </div>
 </div>
