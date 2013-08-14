@@ -7,6 +7,8 @@ import model.orga._
 import model.user.User
 
 import securesocial.core.SecureSocial
+import org.joda.time.LocalDate
+
 /**
  * Mains pages
  */
@@ -25,7 +27,9 @@ object Orga extends Controller with SecureSocial {
    * @return ligues page
    */
   def ligues = Action {
-      Ok(views.html.ligues(Ligue.ligues, model.event.Event.events.take(3)))
+    val today = LocalDate.now
+    val events = model.event.Event.events.filter(_.to.isAfter(today)).take(3)
+    Ok(views.html.ligues(Ligue.ligues, events))
   }
 
   /**
