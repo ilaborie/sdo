@@ -2,7 +2,9 @@ package util
 
 import java.io.File
 import java.util.{Map => JavaMap}
+
 import scala.collection.JavaConversions._
+import scala.io.{Source, Codec}
 
 import play.Play
 import play.api.Logger
@@ -12,13 +14,13 @@ import org.joda.time.LocalDate
 import org.joda.time.format.DateTimeFormat
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.CustomClassLoaderConstructor
-import com.google.common.base.Charsets
-import com.google.common.io.Files
+
 
 /**
  * A YAML Parser
  */
 case class YamlParser(app: Application) {
+  implicit val codec = Codec.UTF8
 
   private val logger = Logger("YAML")
   private val yaml = new Yaml(new CustomClassLoaderConstructor(Play.application.classloader))
@@ -26,9 +28,12 @@ case class YamlParser(app: Application) {
   def parseFile(file: File): Any =
     try {
       logger.debug(s"Parse file: $file")
-      val data = Files.toString(file, Charsets.UTF_8)
-      logger.trace(s"$file content: $data")
-      yaml.load(data)
+      val source = Source.fromFile(file)
+      try {
+        yaml.load(source.reader())
+      } finally {
+        source.close()
+      }
     } catch {
       case t: Throwable => throw new IllegalStateException(s"Fail to parse $file", t)
     }
@@ -66,7 +71,12 @@ object YamlParser {
   def readInfo(infoFile: String): Option[String] = {
     val file = getFile(infoFile)
     if (file.exists && file.isFile) {
-      Some(Files.toString(file, Charsets.UTF_8))
+      val source = Source.fromFile(file)
+      try {
+        Some(source.mkString)
+      } finally {
+        source.close()
+      }
     } else {
       None
     }
