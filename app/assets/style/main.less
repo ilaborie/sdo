@@ -117,3 +117,28 @@ table.table {
 
 // Auth
 @import "auth.less";
+
+// Footer
+
+.footer {
+  text-align: center;
+  margin-top: 70px;
+  border-top: 2px solid @grayLight;
+  background-color: @grayLighter;
+
+  .footer-links {
+    margin: 10px 0;
+    li {
+      display: inline;
+      padding: 0 30px;
+
+      &:first-child {
+        padding-left: 0;
+      }
+
+      a img {
+        height: 48px;
+      }
+    }
+  }
+}
