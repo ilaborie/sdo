@@ -1,0 +1,35 @@
+@()
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>@Messages("error.invalid.title")</title>
+        <link rel="stylesheet" href="@routes.Assets.at("style/main.min.css")">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("ico/favicon.png")">
+    </head>
+
+    <body>
+        <div class="container">
+            <noscript>@Messages("error.no.script")</noscript>
+
+            <div class="alert alert-danger" style="font-size: 150%; line-height: 30px">
+                <strong>@Messages("error")</strong> <br>
+                @Html(Messages("error.modern"))
+                <ul>
+                    <li style="line-height: 30px">
+                        <strong>
+                            <a href="http://whatbrowser.org/" target="_blank">http://whatbrowser.org/</a>
+                        </strong>
+                    </li>
+                    <li style="line-height: 30px">
+                        <strong>
+                            <a href="http://browsehappy.com/" target="_blank">http://browsehappy.com/</a>
+                        </strong>
+                    </li>
+                </ul>
+                <p>@Html(Messages("contact.support"))</p>
+            </div>
+
+        </div>
+    </body>
+</html>

@@ -1,12 +1,15 @@
-import play.api._
 
+import play.api.{Application, Logger, GlobalSettings, Mode}
+import play.api.mvc._
+
+import securesocial.core.providers.utils.GravatarHelper
+import securesocial.core._
+
+import util.YamlParser
 import model.contact.Contact
 import model.event.Event
 import model.orga.{Ligue, Season}
 import model.team.TeamChampionship
-import securesocial.core.providers.utils.GravatarHelper
-import securesocial.core._
-import util.YamlParser
 
 
 object Global extends GlobalSettings {
@@ -14,6 +17,10 @@ object Global extends GlobalSettings {
   private val season: Season = Season.currentSeason
 
   private val logger = Logger("loading")
+
+  private val invalidAction = Action {
+    request => Results.Ok(views.html.invalid())
+  }
 
   override def onStart(app: Application) {
     // Load Yaml data
@@ -42,6 +49,24 @@ object Global extends GlobalSettings {
     if (app.mode == Mode.Dev) {
       registerUser("Igor", "Laborie", "ilaborie@gmail.com")
       registerUser("Paulo", "", "paulo@gmail.com")
+    }
+  }
+
+  /**
+   * Filter invalid browser
+   * @param action the action
+   * @return the action or an invalid action
+   */
+  override def doFilter(action: EssentialAction): EssentialAction = new EssentialAction {
+    def apply(request: RequestHeader) = {
+      val accept = request.headers("Accept")
+      if (!accept.contains("text/html")) action.apply(request)
+      else {
+        val userAgent = request.headers("user-agent")
+        val obsolete = for (version <- 6 to 9) yield s"msie $version."
+        if (obsolete.filter(_.contains(userAgent)).isEmpty) action.apply(request)
+        else invalidAction.apply(request)
+      }
     }
   }
 
