@@ -1,16 +1,18 @@
 @(club: model.orga.Club, user: model.user.User)(implicit request: RequestHeader)
+@import model.orga._
 
-    @displayPlayer(player: model.orga.LicensedPlayer) = {
+    @displayPlayer(player: LicensedPlayer, capitain:Boolean) = {
         @if(player.feminine) { <i class="glyphicons female"></i> } else { <i class="glyphicons male"></i> }
         @if(player.junior) { <i class="glyphicons soccer_ball"></i>}
+        @if(capitain) { <i class="glyphicons sheriffs_star"></i>}
         @if(player.surname.isDefined) {«<em>@player.surname</em>»}
         @player.name
     }
 
-    @displayTeam(team: model.orga.Team) = {
+    @displayTeam(team: Team) = {
         <ul class="unstyled">
         @for(player <- team.players) {
-            <li>@displayPlayer(player)</li>
+            <li>@displayPlayer(player, team.capitain==player)</li>
         }
         </ul>
     }

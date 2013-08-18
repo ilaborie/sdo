@@ -149,12 +149,12 @@ object Data {
     val name = info("name").asInstanceOf[String]
     val shortName = info("shortname").asInstanceOf[String]
     val opens = if (info.contains("opens")) {
-      val openList = info("opens").asInstanceOf[JavaList[JavaMap[String,Any]]].toList
+      val openList = info("opens").asInstanceOf[JavaList[JavaMap[String, Any]]].toList
       for (open <- openList) yield {
         println(open)
         OpenClub(
           YamlParser.readDate(open.get("date").asInstanceOf[String]),
-          YamlParser.readLocation(open.asInstanceOf[JavaMap[String,String]].toMap).get)
+          YamlParser.readLocation(open.asInstanceOf[JavaMap[String, String]].toMap).get)
       }
     } else Nil
     val teamList = info("teams").asInstanceOf[JavaList[String]].toList
@@ -181,11 +181,12 @@ object Data {
 
     val name = info("name").asInstanceOf[String]
     val shortname = info("shortname").asInstanceOf[String]
+    val capitain = info("capitain").asInstanceOf[String]
     val playerList = info("players").asInstanceOf[JavaList[JavaMap[String, String]]].toList
     val players = for (player <- playerList) yield createLicensedPlayer(player.toMap)
     val omit = info.contains("omit")
 
-    Team(name, shortname, players, omit)
+    Team(name, shortname, capitain, players, omit)
   }
 
   /**

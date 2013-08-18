@@ -171,6 +171,7 @@ case class Comite(name: String,
  */
 case class Club(name: String, shortName: String, location: Location, opens: Seq[OpenClub], teams: Seq[Team], info: Option[Info]) {
   lazy val fullName = s"[$shortName] $name"
+
   override def toString = fullName
 
   def findTeamByShortName(teamShortName: String): Option[Team] = teams.find(_.shortName == teamShortName)
@@ -202,19 +203,15 @@ case class Club(name: String, shortName: String, location: Location, opens: Seq[
  * @param players team players
  * @param omit if not playing the team championship
  */
-case class Team(name: String, shortName: String, players: Seq[LicensedPlayer], omit: Boolean = false) {
+case class Team(name: String, shortName: String, capitainName: String, players: Seq[LicensedPlayer], omit: Boolean = false) {
   override val toString = name
 
-  def ligue: Ligue = Cache.getOrElse[Ligue](s"team.$name.ligue") {
-    Ligue.ligues.find(_.teams.contains(this)).get
-  }
+  lazy val capitain: LicensedPlayer = club.players.find(_.name == capitainName).get
 
-  def comite: Comite = Cache.getOrElse[Comite](s"team.$name.comite") {
-    ligue.comites.find(_.teams.contains(this)).get
-  }
+  lazy val ligue: Ligue = Ligue.ligues.find(_.teams.contains(this)).get
 
-  def club: Club = Cache.getOrElse[Club](s"team.$name.club") {
-    comite.clubs.find(_.teams.contains(this)).get
-  }
+  lazy val comite: Comite = ligue.comites.find(_.teams.contains(this)).get
+
+  lazy val club: Club = comite.clubs.find(_.teams.contains(this)).get
 
 }
