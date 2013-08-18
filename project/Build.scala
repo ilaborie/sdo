@@ -18,7 +18,7 @@ object ApplicationBuild extends Build {
   )
 
   // Only compile main.less
-  def customLessEntryPoints(base: File): PathFinder = base / "app" / "assets" / "style" * "*.less"
+  def customLessEntryPoints(base: File): PathFinder = base / "app" / "assets" / "style" / "main.less"
 
   val defaultSettings = Project.defaultSettings ++ org.scalastyle.sbt.ScalastylePlugin.Settings
 
