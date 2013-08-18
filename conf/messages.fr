@@ -246,3 +246,14 @@ error.maxLength=Longueur maximale: {0}
 error.email=Un email valide est obligatoire
 error.pattern=Doit satisfaire: {0}
 
+
+## Custom Error
+error=Erreur
+error.invalid.title=Erreur navigateur non compatible
+error.no.script=Ce site nécessite l'utilisation du Javascript, veuillez configurer votre navigateur pour utiliser ce site.
+error.modern=Ce site utilise des foncationalités standards avancés (HTML 5, CSS 3) qui ne sont supportées par votre navigateur. \
+  Il est nécessaire d''utiliser un navigateur moderne pour accéder à ce site. <br/> Pour récupérer un navigateur moderne vous pouvez consulter:
+
+contact.support=Si besoin, contactez moi <a href="mailto:ilaborie@gmail.com"><i class="glyphicons envelope"></i> par e-mail</a>
+
+
