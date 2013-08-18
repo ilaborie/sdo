@@ -60,11 +60,12 @@ object Global extends GlobalSettings {
   override def doFilter(action: EssentialAction): EssentialAction = new EssentialAction {
     def apply(request: RequestHeader) = {
       val accept = request.headers("Accept")
+      val userAgent = request.headers("user-agent")
       if (!accept.contains("text/html")) action.apply(request)
       else {
-        val userAgent = request.headers("user-agent")
-        val obsolete = for (version <- 6 to 9) yield s"msie $version."
-        if (obsolete.filter(_.contains(userAgent)).isEmpty) action.apply(request)
+        logger.trace(s"uri: ${request.uri}, accept: $accept, user-agent: $userAgent")
+        val obsolete = for (version <- 6 to 9) yield s"MSIE $version."
+        if (obsolete.filter(userAgent.contains(_)).isEmpty) action.apply(request)
         else invalidAction.apply(request)
       }
     }
