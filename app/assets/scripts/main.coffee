@@ -1,16 +1,7 @@
 # Basic script
 $ ->
   # Ajax list navitation
-  $(".nav-list a[data-target]").click (event) ->
-    $this = $(this)
-    target = $this.attr "data-target"
-    $(".nav-list li").removeClass "active"
-    url = $this.attr "data-href"
-    $(target).load url, () ->
-      $this.parent().addClass "active"
-      $(target).trigger("postLoad")
-    event.preventDefault
-    false
+  $(".nav-list a[data-target]").click doNavigation
 
   # Handle Mailto
   $("a.mailto").each (index, link) ->
@@ -31,3 +22,16 @@ $ ->
     window.scrollTo(0, 0);
   else
     $("a.autoClick").click()
+
+# Click on Internal link
+doNavigation = (event) ->
+  $this = $(this)
+  target = $this.attr "data-target"
+  $(".nav-list li").removeClass "active"
+  url = $this.attr "data-href"
+  $(target).load url, () ->
+    $this.parent().addClass "active"
+    $(target).trigger("postLoad")
+  event.preventDefault
+  false
+

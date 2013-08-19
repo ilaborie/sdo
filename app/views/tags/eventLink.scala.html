@@ -1,0 +1,16 @@
+@(event: model.event.Event, now: org.joda.time.LocalDate=org.joda.time.LocalDate.now)(links: Html)
+
+<div class="event @event.eventType.styles @if(event.to.isBefore(now)) {muted}">
+    <h2>
+        <span class="label label-@event.eventType.style">@Messages(s"event.type.${event.eventType.style}")</span>
+        @event.name
+        <small>@tags.date(event.from) - @tags.date(event.to)</small>
+    </h2>
+    <div class="detail">
+        @event.location.map(tags.location(_))
+        <div class="links">
+            @links
+        </div>
+        @event.info.map(tags.info(_))
+    </div>
+</div>
