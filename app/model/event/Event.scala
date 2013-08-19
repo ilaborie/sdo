@@ -77,11 +77,11 @@ object Event {
 
   def apply(ligue: Ligue, day: TeamChampionshipDay): Event = {
     val name = Messages("team.championship.day", day.day)
-    val url = controllers.routes.Orga.ligue(ligue.shortName).url + "#team"
+    val url = s"/sdo/ligues/${ligue.shortName}#team"
     val matches = {
       for (ma <- day.matches)
       yield s"<tr><td>${ma.team1.name}</td><td>-</td><td>${ma.team2.name}</td</tr>"
-    }.mkString("<tbody>","","</tbody>")
+    }.mkString("<tbody>", "", "</tbody>")
 
     val exempted = day.teamExempted
     val foot =
@@ -100,14 +100,13 @@ $foot
 
   def apply(ligue: Ligue, tournament: LigueTournament): Event = {
     val name = tournament.toString
-    val url = controllers.routes.Orga.ligue(ligue.shortName).url + "#" + tournament.shortName
-
+    val url = s"/sdo/ligues/${ligue.shortName}#${tournament.shortName}"
     Event(name, LigueEvent, tournament.date, tournament.date, url = Some(url), location = tournament.place)
   }
 
   def apply(comite: Comite, tournament: ComiteTournament): Event = {
     val name = tournament.toString
-    val url = controllers.routes.Orga.comite(comite.ligue.shortName, comite.shortName).url + "#" + tournament.shortName
+    val url = s"/sdo/ligues/${comite.ligue.shortName}/${comite.shortName}#${tournament.shortName}"
 
     Event(name, ComiteEvent, tournament.date, tournament.date, url = Some(url), location = tournament.place)
   }
