@@ -1,48 +1,26 @@
 package util.yaml
 
-/**
- * Tag
- */
-abstract class YamlTag {
-  def name: String
 
-  def kind: String
-}
-
-case class ScalarTag(name: String, kind: String, format: String) extends YamlTag
-
-case class NoneSpecificTag(name: String, kind: String) extends YamlTag
+case class ScalarTag(name: String, kind: YamlKind, cannonicalFormat: Any) extends YamlTag
 
 /**
- * Node
+ * Nodes
  */
-sealed abstract class YamlValue {
-  def anchor: Any = ???
-
-  def style: Any = ???
-
-  def spacing: Any = ???
-
-  def lineWrapping: Any = ???
-}
+sealed abstract class YamlValue
 
 case class YamlArray(values: Seq[YamlValue] = List()) extends YamlValue
 
-case class YamlScalar(value: String, formatted: Option[String] = None) extends YamlValue
+abstract class YamlScalar extends YamlValue {
+  def valueAsString: String
+}
+
+case class YamlNumber(value: BigDecimal) extends YamlScalar {
+  lazy val valueAsString = value.toString()
+}
+
+case class YamlString(value: String) extends YamlScalar {
+  lazy val valueAsString = value
+}
 
 case class YamlObject(fields: Seq[(YamlValue, YamlValue)]) extends YamlValue
 
-case class YamlAlias(alias: Any) extends YamlValue
-
-/**
- * Comments
- * @param comment comments
- */
-case class YamlComment(comment: String)
-
-/**
- * Directive
- * @param name name
- * @param parameters parameters
- */
-case class YamlDirective(name: String, parameters: Any)
