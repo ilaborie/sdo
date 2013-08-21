@@ -1,8 +1,8 @@
 @()
-@import play.api.Play.current
+
 @script = {
     @layout.script()
-    <script src="@routes.Assets.at("scripts/events.min.js")"></script>
+    @tags.javascript("events")
 }
 @layout.main(Messages("title.events"), scripts = script) {
     <div class="container">
@@ -16,7 +16,7 @@
                         </a>
                     </li>
                     <li>
-                        <a id="calendar" href="#calendar" data-href="@routes.Event.eventsCalendar" data-target="#bodyEvents">
+                        <a id="calendar" href="#calendar" data-href="@routes.Event.eventsCalendar()" data-target="#bodyEvents">
                         @Messages("menu.event.calendar")
                         </a>
                     </li>
