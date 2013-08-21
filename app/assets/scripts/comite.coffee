@@ -1,21 +1,20 @@
-# Ligue
+# Comite
 class Ligue
   constructor: (@path) ->
     # Data
     self = @
     self.path = @path
     self.samPath = ko.observable()
-
     # Behavior
     self.loadBody = (url, path) ->
-      $("#bodyLigue").load url, () ->
+      $("#bodyComite").load url, () ->
       self.samPath(path)
 
     # Routes
     Sammy(->
-      @get "#ligue", () ->
+      @get "#comite", () ->
         url = self.path + "/body"
-        self.loadBody url, "#ligue"
+        self.loadBody url, "#comite"
         @
       @get "#single", () ->
         url = self.path + "/single"
@@ -43,13 +42,14 @@ class Ligue
         path = "#tour/" + name
         self.loadBody url, path
         @
-      @get "comites/:name", () ->
+      @get "#club/:name", () ->
         name = this.params.name
-        url = self.path + "/comites/" + name
-        window.location = url
+        url = self.path + "/clubs/" + name
+        path = "#club/" + name
+        self.loadBody url, path
         @
       @.get "", () ->
-        @.app.runRoute("get", "#ligue")
+        @.app.runRoute("get", "#comite")
         @
     ).run()
 

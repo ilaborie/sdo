@@ -2,12 +2,12 @@
     @import model.orga.Team
     @import model.team.MatchDetail
 
-    @teamClass(t: Team, d: MatchDetail) = {
+@teamClass(t: Team, d: MatchDetail) = {
     @if(d.winner.isDefined) {
         @if(d.winner.get == t) {win} else {loose}
     }
-    }
-
+}
+@if(!day.matches.isEmpty) {
     <table class="table table-bordered journee">
         <caption>
             <div class="pull-left">@caption</div>
@@ -55,4 +55,5 @@
                 </tr>
             </tfoot>
         }
-        </table>
+    </table>
+}
