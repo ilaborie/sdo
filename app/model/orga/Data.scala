@@ -100,9 +100,19 @@ object Data {
       YamlParser.readDate(teamMaster.get("date").asInstanceOf[String]),
       YamlParser.readLocation(teamMaster.toMap).get)
 
+    val teamCoupe = {
+      if (!info.contains("team-coupe")) None
+      else {
+        val coupeTeam = info("team-coupe").asInstanceOf[JavaMap[String, Any]]
+        Some(CoupeLigueTeam(
+          YamlParser.readDate(coupeTeam.get("date").asInstanceOf[String]),
+          YamlParser.readLocation(coupeTeam.toMap).get))
+      }
+    }
+
     val information = YamlParser.readInfo(s"s$season/$ligue/info.html")
 
-    Ligue(name, shortName, comites, opens, coupe, master, masterTeam, information)
+    Ligue(name, shortName, comites, opens, coupe, master, masterTeam, teamCoupe, information)
   }
 
 
@@ -151,7 +161,6 @@ object Data {
     val opens = if (info.contains("opens")) {
       val openList = info("opens").asInstanceOf[JavaList[JavaMap[String, Any]]].toList
       for (open <- openList) yield {
-        println(open)
         OpenClub(
           YamlParser.readDate(open.get("date").asInstanceOf[String]),
           YamlParser.readLocation(open.asInstanceOf[JavaMap[String, String]].toMap).get)

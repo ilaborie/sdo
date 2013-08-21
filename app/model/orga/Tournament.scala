@@ -119,6 +119,19 @@ case class MasterLigueTeam(date: LocalDate, location: Location) extends LigueTou
 
   def getPoint(position: TournamentResult): Int = 0
 }
+/**
+ * Coupe Ligue Team
+ */
+case class CoupeLigueTeam(date: LocalDate, location: Location) extends LigueTournament {
+  override val isTeam: Boolean = true
+  val shortName = "CLTeam"
+  lazy val ligue = Ligue.ligues.find(_.masterTeam == this).get
+  val place = Some(location)
+
+  override def toString = Messages("rank.ligue.coupe.team.title")
+
+  def getPoint(position: TournamentResult): Int = 0
+}
 
 /**
  * Comite Ranking

@@ -4,7 +4,11 @@
     <h2>
         <span class="label label-@event.eventType.style">@Messages(s"event.type.${event.eventType.style}")</span>
         @event.name
-        <small>@tags.date(event.from) - @tags.date(event.to)</small>
+        @if(event.from == event.to) {
+            <small>@tags.date(event.from)</small>
+        } else {
+            <small>@tags.date(event.from) - @tags.date(event.to)</small>
+        }
     </h2>
     <div class="detail">
         @event.location.map(tags.location(_))

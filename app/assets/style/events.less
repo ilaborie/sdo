@@ -131,6 +131,10 @@ table.calendar {
       cursor: pointer;
     }
 
+    td.muted {
+      text-decoration: line-through;
+    }
+
     td.empty.muted {
       color: @grayLight;
       cursor: not-allowed;
@@ -141,6 +145,10 @@ table.calendar {
       background-color: @grayLight;
       color: @grayDark;
       font-weight: bold;
+    }
+
+    td.muted:nth-child(n+6), td.holiday.muted {
+      color: @grayLighter;
     }
 
     // 2 events

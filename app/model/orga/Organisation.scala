@@ -21,7 +21,8 @@ case class Ligue(name: String,
                  coupe: CoupeLigue,
                  master: MasterLigue,
                  masterTeam: MasterLigueTeam,
-                 info: Option[Info]) {
+                 coupeTeam: Option[CoupeLigueTeam] = None,
+                 info: Option[Info] = None) {
 
   lazy val fullName = s"[$shortName] $name"
 
@@ -59,7 +60,9 @@ case class Ligue(name: String,
     val dateRanking = master.date.plusDays(-1)
     val comiteRankings = for (comite <- comites) yield ComiteRank(comite, dateRanking)
 
-    val list = (coupe :: master :: masterTeam :: opens.toList) ::: comiteRankings.toList
+    val clTeam = coupeTeam.toList
+
+    val list = (coupe :: master :: masterTeam :: opens.toList) ::: comiteRankings.toList ::: clTeam
     list.sortBy(_.date)
   }
 
