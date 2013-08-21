@@ -12,7 +12,7 @@ class Ligue
       self.samPath(path)
 
     # Routes
-    Sammy(->
+    Sammy("#leftMenu",->
       @get "#ligue", () ->
         url = self.path + "/body"
         self.loadBody url, "#ligue"
@@ -46,6 +46,11 @@ class Ligue
       @get "comites/:name", () ->
         name = this.params.name
         url = self.path + "/comites/" + name
+        window.location = url
+        @
+      @get "/sdo/:name", () ->
+        name = this.params.name
+        url = "/sdo/" + name
         window.location = url
         @
       @.get "", () ->
