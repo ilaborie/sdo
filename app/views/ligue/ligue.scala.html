@@ -1,39 +1,35 @@
 @(ligue: model.orga.Ligue, user: model.user.User)(implicit request: RequestHeader)
 
-@layout.main(ligue.name, user = Some(user)) {
+@script = {
+    @layout.script()
+    @tags.javascript("sammy")
+    @tags.javascript("knockout")
+    @tags.javascript("ligue")
+}
+
+@layout.main(ligue.name, user = Some(user),  scripts = script) {
     <div class="container">
         <div class="row-fluid">
             <div class="span3 well well-small">
-                <ul class="nav nav-list">
-                    <li>
-                        <a href="#" data-href="@routes.Orga.ligueBody(ligue.shortName)" data-target="#bodyLigue" class="autoClick">
-                        @ligue.name
-                        </a>
+                <ul id="leftMenu" class="nav nav-list">
+                    <li data-bind="css: { active: samPath() == '#ligue'}">
+                        <a href="#ligue">@ligue.name</a>
                     </li>
                     <li class="nav-header">@Messages("menu.rank")</li>
-                    <li>
-                        <a id="single" href="#single" data-href="@routes.Classements.ligueSingle(ligue.shortName)" data-target="#bodyLigue">
-                        @Messages("menu.rank.men")
-                        </a>
+                    <li data-bind="css: { active: samPath() == '#single'}">
+                        <a href="#single">@Messages("menu.rank.men")</a>
                     </li>
-                    <li>
-                        <a id="women" href="#women" data-href="@routes.Classements.ligueFeminine(ligue.shortName)" data-target="#bodyLigue">
-                        @Messages("menu.rank.women")
-                        </a>
+                    <li data-bind="css: { active: samPath() == '#women'}">
+                        <a href="#women">@Messages("menu.rank.women")</a>
                     </li>
-                    <li>
-                        <a id="junior" href="#junior" data-href="@routes.Classements.ligueJunior(ligue.shortName)" data-target="#bodyLigue">
-                        @Messages("menu.rank.junior")
-                        </a>
+                    <li data-bind="css: { active: samPath() == '#junior'}">
+                        <a href="#junior">@Messages("menu.rank.junior")</a>
                     </li>
-                    <li>
-                        <a id="pair" href="#pair" data-href="@routes.Classements.ligueDoublette(ligue.shortName)" data-target="#bodyLigue">
-                        @Messages("menu.rank.double")
-                        </a>
+                    <li data-bind="css: { active: samPath() == '#pair'}">
+                        <a href="#pair">@Messages("menu.rank.double")</a>
                     </li>
-                    <li>
-                        <a id="team" href="#team" data-href="@routes.Classements.ligueTeam(ligue.shortName)" data-target="#bodyLigue">
-                        @Messages("menu.rank.team")
+                    <li data-bind="css: { active: samPath() == '#team'}">
+                        <a href="#team" >@Messages("menu.rank.team")
                         </a>
                     </li>
                     <li class="nav-header">@Messages("menu.comite")</li>
@@ -44,10 +40,8 @@
                     }
                     <li class="nav-header">@Messages("menu.tournaments")</li>
                     @for(tournament <- ligue.tournaments; if tournament.isEvent) {
-                        <li>
-                            <a id="@tournament.shortName" id="#@tournament.shortName" data-href="@routes.Orga.ligueTournament(ligue.shortName, tournament.shortName)" data-target="#bodyLigue">
-                                @tournament
-                            </a>
+                        <li data-bind="css: { active: samPath() == '#tour/@tournament.shortName'}">
+                            <a href="#tour/@tournament.shortName">@tournament</a>
                         </li>
                     }
                 </ul>

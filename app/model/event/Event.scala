@@ -100,13 +100,13 @@ $foot
 
   def apply(ligue: Ligue, tournament: LigueTournament): Event = {
     val name = tournament.toString
-    val url = s"/sdo/ligues/${ligue.shortName}#${tournament.shortName}"
+    val url = s"/sdo/ligues/${ligue.shortName}#tour/${tournament.shortName}"
     Event(name, LigueEvent, tournament.date, tournament.date, url = Some(url), location = tournament.place)
   }
 
   def apply(comite: Comite, tournament: ComiteTournament): Event = {
     val name = tournament.toString
-    val url = s"/sdo/ligues/${comite.ligue.shortName}/${comite.shortName}#${tournament.shortName}"
+    val url = s"/sdo/ligues/${comite.ligue.shortName}/comites/${comite.shortName}#tour/${tournament.shortName}"
 
     Event(name, ComiteEvent, tournament.date, tournament.date, url = Some(url), location = tournament.place)
   }

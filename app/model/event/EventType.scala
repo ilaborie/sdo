@@ -9,7 +9,7 @@ sealed abstract class EventType {
 
 object EventType {
 
-  val all: List[EventType] = List(WorldEvent, FederationEvent, FranceEvent, LigueEvent, ComiteEvent, TeamEvent)
+  val all: List[EventType] = List(WorldEvent, FranceEvent, LigueEvent, ComiteEvent, TeamEvent)
 
   def apply(evtType: String): EventType = {
     evtType match {

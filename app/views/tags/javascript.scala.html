@@ -1,0 +1,8 @@
+@(script: String)
+@import play.api.Play.current
+
+@if(play.Play.isDev) {
+    <script src="@routes.Assets.at(s"scripts/$script.js")"></script>
+} else {
+    <script src="@routes.Assets.at(s"scripts/$script.min.js")"></script>
+}

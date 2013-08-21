@@ -1,53 +1,45 @@
 @(comite: model.orga.Comite, user: model.user.User)
 
-@layout.main(comite.name, user=Some(user)) {
+@script = {
+    @layout.script()
+    @tags.javascript("sammy")
+    @tags.javascript("knockout")
+    @tags.javascript("comite")
+}
+@layout.main(comite.name, user=Some(user), scripts=script) {
     <div class="container">
         <div class="row-fluid">
             <div class="span3 well well-small">
-                <ul class="nav nav-list">
-                    <li>
-                        <a href="#" data-href="@routes.Orga.comiteBody(comite.ligue.shortName, comite.shortName)" data-target="#bodyComite" class="autoClick">
-                            @comite.name
-                        </a>
+                <ul id="leftMenu" class="nav nav-list">
+                    <li data-bind="css: { active: samPath() == '#comite'}">
+                        <a href="#comite">@comite.name</a>
                     </li>
                     <li class="nav-header">@Messages("menu.rank")</li>
-                    <li>
-                        <a id="single" href="#single" data-href="@routes.Classements.comiteSingle(comite.ligue.shortName, comite.shortName)" data-target="#bodyComite">
-                        @Messages("menu.rank.men")
-                        </a>
+                    <li data-bind="css: { active: samPath() == '#single'}">
+                        <a href="#single">@Messages("menu.rank.men")</a>
                     </li>
-                    <li>
-                        <a id="women"  href="#women" data-href="@routes.Classements.comiteFeminine(comite.ligue.shortName, comite.shortName)" data-target="#bodyComite">
-                        @Messages("menu.rank.women")
-                        </a>
+                    <li data-bind="css: { active: samPath() == '#women'}">
+                        <a href="#women">@Messages("menu.rank.women")</a>
                     </li>
-                    <li>
-                        <a id="junior" href="#junior" data-href="@routes.Classements.comiteJunior(comite.ligue.shortName, comite.shortName)" data-target="#bodyComite">
-                        @Messages("menu.rank.junior")
-                        </a>
+                    <li data-bind="css: { active: samPath() == '#junior'}">
+                        <a href="#junior">@Messages("menu.rank.junior")</a>
                     </li>
-                    <li>
-                        <a id="pair" href="#pair" data-href="@routes.Classements.comiteDoublette(comite.ligue.shortName, comite.shortName)" data-target="#bodyComite">
-                        @Messages("menu.rank.double")
-                        </a>
+                    <li data-bind="css: { active: samPath() == '#double'}">
+                        <a href="#pair">@Messages("menu.rank.double")</a>
                     </li>
-                    <li>
-                        <a id="team"  href="#team" data-href="@routes.Classements.comiteTeam(comite.ligue.shortName, comite.shortName)" data-target="#bodyComite">
-                        @Messages("menu.rank.team")
-                        </a>
+                    <li data-bind="css: { active: samPath() == '#team'}">
+                        <a href="#team">@Messages("menu.rank.team")</a>
                     </li>
                     <li class="nav-header">@Messages("menu.club")</li>
                     @for(club <- comite.clubs) {
-                        <li>
-                            <a data-href="@routes.Orga.club(comite.ligue.shortName, comite.shortName, club.shortName)" data-target="#bodyComite">
-                            @club.name
-                            </a>
+                        <li data-bind="css: { active: samPath() == '#club/@club.shortName'}">
+                            <a href="#club/@club.shortName">@club.name</a>
                         </li>
                     }
                     <li class="nav-header">@Messages("menu.tournaments")</li>
                     @for(tournament <- comite.tournaments) {
-                        <li>
-                            <a id="@tournament.shortName" href="#@tournament.shortName" data-href="@routes.Orga.comiteTournament(comite.ligue.shortName, comite.shortName, tournament.shortName)" data-target="#bodyComite">
+                        <li data-bind="css: { active: samPath() == '#tour/@tournament.shortName'}">
+                            <a href="#tour/@tournament.shortName">
                             @tournament
                             </a>
                         </li>
