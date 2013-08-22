@@ -9,7 +9,7 @@
         <div class="controls">
             <div class="input-prepend input-append">
                 <span class="add-on">@i</span>
-                <input type="text" id="p@i-@team.shortName" class="span4" value="">
+                <input type="text" id="p@i-@team.shortName" class="input-large" value="">
                 <span class="add-on"></span>
             </div>
         </div>
@@ -19,13 +19,13 @@
         <div class="controls">
             <div class="input-prepend">
                 <span class="add-on">1</span>
-                <input type="text" id="d1-@team.shortName" class="span5" value="">
+                <input type="text" id="d1-@team.shortName" class="input-xlarge" value="">
             </div>
         </div>
         <div class="controls">
             <div class="input-prepend">
                 <span class="add-on">2</span>
-                <input type="text" id="d2-@team.shortName" class="span5" value="">
+                <input type="text" id="d2-@team.shortName" class="input-xlarge" value="">
             </div>
         </div>
 
@@ -33,7 +33,7 @@
         <label class="block">@Messages("team.detail.substitute")</label>
         <div class="controls">
             <div class="input-append">
-                <input type="text" id="psubs-@team.name" class="span4" value="">
+                <input type="text" id="psubs-@team.name" class="input-large" value="">
                 <span class="add-on"></span>
             </div>
         </div>
@@ -41,13 +41,13 @@
         <label>@Messages("team.detail.substitute.who")</label>
         <div class="controls">
             <div class="input-append">
-                <input type="text" id="psubs-who-@team.shortName" class="span4" value="">
+                <input type="text" id="psubs-who-@team.shortName" class="input-large" value="">
                 <span class="add-on"></span>
             </div>
         </div>
         <div class="controls">
             <label class="span3">@Messages("team.detail.substitute.after")</label>
-            <input type="text" id="psubs-when-@team.shortName" class="span1" value="">
+            <input type="text" id="psubs-when-@team.shortName" class="input-mini" value="">
         </div>
     }
 
@@ -83,8 +83,20 @@
         </div>
     }
 
-@layout.main(Messages("team.detail.title", m)) {
-    <div class="container well well-small">
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>@Messages("team.detail.title", m)</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="@routes.Assets.at("style/main.css")">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("ico/favicon.png")">
+
+        <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono|Ubuntu:400,700' rel='stylesheet' type='text/css'>
+    </head>
+
+    <body>
+        <div class="container well well-small">
             <h1>
                 @Messages("championship.day.caption",m.day) -
                 <span>@m.team1</span>
@@ -148,7 +160,7 @@
 
                 <fieldset>
                     <div class="row-fluid">
-                        <div class="span8">
+                        <div class="span7">
                             <table class="table table-bordered table-striped table-condensed result">
                                 <caption>@Messages("team.detail.result")</caption>
                                 <thead>
@@ -177,23 +189,23 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="span4 capitain">
+                        <div class="span5 capitain">
                             <div class="head">
-                                @Messages("team.detail.capitain")
+                            @Messages("team.detail.capitain")
                             </div>
                             <br>
                             <div class="row-fluid">
                                 <div class="controls controls-row">
                                     <label class="span5" for="t1-capitain">@m.team1</label>
                                     <div class="input-append span4">
-                                        <input type="text" id="t1-capitain" class="span2" value="">
+                                        <input type="text" id="t1-capitain" class="input-large" value="">
                                         <span class="add-on"><i class="glyphicons ok_2"></i></span>
                                     </div>
                                 </div>
                                 <div class="controls controls-row">
                                     <label class="span5" for="t2-capitain">@m.team2</label>
                                     <div class="input-append span4">
-                                        <input type="text" id="t2-capitain" class="span2" value="">
+                                        <input type="text" id="t2-capitain" class="input-large" value="">
                                         <span class="add-on"><i class="glyphicons ok_2"></i></span>
                                     </div>
                                 </div>
@@ -202,6 +214,13 @@
                     </div>
                 </fieldset>
             </form>
-    </div>
-}
+        </div>
+
+        @layout.script()
+        @tags.javascript("sammy")
+        @tags.javascript("knockout")
+        @tags.javascript("team")
+    </body>
+</html>
+
 

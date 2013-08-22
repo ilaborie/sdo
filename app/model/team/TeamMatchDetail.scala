@@ -196,6 +196,7 @@ case class PlannedTeamMatch(day: Int, team1: Team, team2: Team, detail: Option[M
   def applyTo(comite: Comite): Boolean = team1.comite == comite && team2.comite == comite
 
   def applyTo(comite: Comite, team: Team): Boolean = applyTo(comite) && applyTo(team)
+
 }
 
 /**
