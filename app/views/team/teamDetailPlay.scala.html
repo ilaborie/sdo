@@ -52,20 +52,6 @@
                         </button>
                     </div>
                 </div>
-                <div data-bind="visible: isSubst">
-                    <label>@Messages("team.detail.substitute.who")</label>
-                    <div class="controls">
-                        <div class="input-append">
-                            <span id="psubs-who-@team.shortName" class="input-large uneditable-input"
-                                data-bind="text: psubsWho"></span>
-                        </div>
-                    </div>
-                    <div class="controls">
-                        <label class="span3">@Messages("team.detail.substitute.after")</label>
-                        <span id="psubs-when-@team.shortName" class="input-mini uneditable-input"
-                            data-bind="text : psubsWhen"></span>
-                    </div>
-                </div>
             </div>
         </div>
     }
@@ -246,7 +232,8 @@
                                     </div>
                                 </div>
                                 <div class="row-fluid">
-                                    <button type="submit" class="btn btn-large btn-block btn-primary span10 offset1">
+                                    <button type="submit" class="btn btn-large btn-block btn-primary span10 offset1"
+                                        data-bind="enable: finished() && team1().canSend() && team2().canSend() ">
                                         @Messages("team.detail.send")
                                     </button>
                                 </div>

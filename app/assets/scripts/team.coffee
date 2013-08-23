@@ -40,6 +40,9 @@ class Team
     self.capitain = ko.observable()
     self.signed = ko.observable(false)
 
+    self.canSend = ko.computed () ->
+      self.signed() and !! self.capitain()
+
     # Behavior
     self.register = (data, event) ->
       player = $(event.target).val()
@@ -82,9 +85,16 @@ class ChampionshipDay
     self.started = ko.observable(false)
     self.matches = ko.observableArray([])
 
+    self.finished = ko.computed () ->
+      # FIXME Check with matches
+      true
+
+    self.canStart = ko.computed () ->
+      # FIXME Check can start
+      true
+
     # Behavior
     self.start = () ->
-      # FIXME Check can start
       self.started(true)
     self.send = () ->
       json =
@@ -105,4 +115,3 @@ class ChampionshipDay
 $ ->
   champDay = new ChampionshipDay();
   ko.applyBindings(champDay)
-# FIXME typeahead
