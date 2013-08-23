@@ -1,4 +1,3 @@
-
 .match {
   margin-top: 1em;
   border: thin solid @gray;
@@ -103,5 +102,12 @@ table.result {
     background-color: @gray;
     color: @grayLighter;
     font-weight: bold;
+  }
+
+  .btn-block {
+    margin: .5em;
+  }
+  .btn.sign.active {
+    .buttonBackground(@btnSuccessBackground, @btnSuccessBackgroundHighlight);
   }
 }

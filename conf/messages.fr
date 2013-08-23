@@ -131,7 +131,7 @@ team.championship.day=Championat par équipe - Journée n°{0}
 team.exempted=<em>Exempt:</em> {0}
 
 # Detail
-team.detail.title=Détail du match {0}
+team.detail.title={0}
 team.detail.fail=Forfait de {0}
 team.detail.day=Journée
 team.detail.date=Date
@@ -148,6 +148,8 @@ team.detail.legs=Manches
 team.detail.points=Points
 team.detail.result=Résultat
 team.detail.capitain=Capitaines
+team.detail.send=Envoyer
+team.detail.run=Démarrer
 
 # Club
 club.oneteam=Équipe
