@@ -144,14 +144,36 @@
                                     <div class="legs">
                                         <table class="table table-bordered match">
                                             <tr>
-                                                <td class="active"></td>
-                                                <td class="inactive"></td>
-                                                <td class="inactive"></td>
+                                                <td class="active">
+                                                    <input type="radio" value="1" name="m@index-leg1"
+                                                        data-bind="click: function(data,event) {nextLeg($(event.target).val());}">
+                                                </td>
+                                                <td data-bind="css: {active: visibleLeg2(), inactive: !visibleLeg2()}">
+                                                    <input type="radio" value="1" name="m@index-leg2"
+                                                        data-bind="click: function(data,event) {nextLeg($(event.target).val());},
+                                                                   visible: visibleLeg2()">
+                                                </td>
+                                                <td data-bind="css: {active: visibleLeg3() , inactive: !visibleLeg3()}">
+                                                    <input type="radio" value="1" name="m@index-leg3"
+                                                        data-bind="click: function(data,event) {nextLeg($(event.target).val());},
+                                                                visible: visibleLeg3()">
+                                                </td>
                                             </tr>
                                             <tr>
-                                                <td class="active"></td>
-                                                <td class="inactive"></td>
-                                                <td class="inactive"></td>
+                                                <td class="active">
+                                                    <input type="radio" value="2" name="m@index-leg1"
+                                                    data-bind="click: function(data,event) {nextLeg($(event.target).val());}">
+                                                </td>
+                                                <td data-bind="css: {active: visibleLeg2(), inactive: !visibleLeg2()}">
+                                                    <input type="radio" value="2" name="m@index-leg2"
+                                                    data-bind="click: function(data,event) {nextLeg($(event.target).val());},
+                                                                   visible: visibleLeg2()">
+                                                </td>
+                                                <td data-bind="css: {active: visibleLeg3() , inactive: !visibleLeg3()}">
+                                                    <input type="radio" value="2" name="m@index-leg3"
+                                                    data-bind="click: function(data,event) {nextLeg($(event.target).val());},
+                                                                visible: visibleLeg3()">
+                                                </td>
                                             </tr>
                                         </table>
                                     </div>
@@ -171,13 +193,13 @@
                         @for(i <- 1 to 20) {
                             <div class="row-fluid" data-bind="with: matches()[@{i-1}]">
                                 <div class="span4">
-                                    <i class="glyphicons unchecked" data-bind="if: team1Win()"></i>
-                                    <i class="glyphicons checked" data-bind="ifnot: team1Win()"></i>
+                                    <i class="glyphicons unchecked" data-bind="visible: !team1Win()"></i>
+                                    <i class="glyphicons check" data-bind="visible: team1Win()"></i>
                                 </div>
                                 <div class="span4 elt">@i</div>
                                 <div class="span4">
-                                    <i class="glyphicons unchecked" data-bind="if: team2Win()"></i>
-                                    <i class="glyphicons checked" data-bind="ifnot: team2Win()"></i>
+                                    <i class="glyphicons unchecked" data-bind="visible: !team2Win()"></i>
+                                    <i class="glyphicons check" data-bind="visible: team2Win()"></i>
                                 </div>
                             </div>
                         }

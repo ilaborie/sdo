@@ -32,7 +32,6 @@ class Team
     self.psubsWhen = ko.observable()
     self.capitain = ko.observable()
     self.signed = ko.observable false
-
     self.canSend = ko.computed () ->
       self.signed() and !!self.capitain()
 
@@ -85,15 +84,18 @@ class Match
     self.team2 = @team2
     self.player1 = ko.observable @team1
     self.player2 = ko.observable @team2
-    self.leg1 = ko.observable()
-    self.leg2 = ko.observable()
-    self.leg3 = ko.observable()
+    self.leg1 = ko.observable 0
     self.team1Win = ko.observable false
     self.team2Win = ko.observable false
     self.team1Leg = ko.observable 0
-    self.team1Leg = ko.observable 0
-    self.finished = ko.computed () ->
-      false
+    self.team2Leg = ko.observable 0
+    self.finished = ko.observable false
+    self.leg3 = ko.observable 0
+    self.leg2 = ko.observable 0
+    self.visibleLeg2 = ko.computed () ->
+      self.leg1() > 0
+    self.visibleLeg3 = ko.computed () ->
+      (!self.finished() and self.leg2() > 0) or (self.finished() and self.leg3() > 0)
 
     # Behavior
     self.updateTeam1 = (team) ->
@@ -104,7 +106,8 @@ class Match
         when "p4" then self.player1 team.player4()
         when "d1" then self.player1 team.d1().fullName()
         when "d2" then self.player1 team.d2().fullName()
-        else self.team1
+        else
+          self.team1
     self.updateTeam2 = (team) ->
       switch self.team2
         when "p1" then self.player2 team.player1()
@@ -113,10 +116,34 @@ class Match
         when "p4" then self.player2 team.player4()
         when "d1" then self.player2 team.d1().fullName()
         when "d2" then self.player2 team.d2().fullName()
-        else self.team2
-    self.nextLeg = (winner) ->
-      # FIXME compute
-      false
+        else
+          self.team2
+    self.nextLeg = (win) ->
+      winner = parseInt win, 10
+      if (self.leg2() > 0) # leg3
+        self.leg3 winner
+        self.addLegWin winner
+      else if (self.leg1() > 0) # leg 2
+        self.leg2 winner
+        self.addLegWin winner
+      else # leg 1
+        self.leg1 winner
+        self.addLegWin winner
+    self.addLegWin = (winner) ->
+      if (winner is 1)
+        self.team1Leg (self.team1Leg() + 1)
+        if(self.team1Leg() is 2)
+          self.team1Win true
+          self.finished true
+      else
+        self.team2Leg (self.team2Leg() + 1)
+        if(self.team2Leg() is 2)
+          self.team2Win true
+          self.finished true
+    self.toJson = () ->
+      leg1: self.leg1(),
+      leg2: self.leg2(),
+      leg3: self.leg3()
 
 # ChampionshipDay
 class ChampionshipDay
@@ -136,6 +163,7 @@ class ChampionshipDay
     self.canStart = ko.computed () ->
       # FIXME Check can start
       true
+    # FIXME compute legs, match, points
 
     # Behavior
     self.start = () ->
@@ -150,7 +178,8 @@ class ChampionshipDay
         location: self.location(),
         team1: self.team1().toJson(),
         team2: self.team1().toJson(),
-        matches: self.matches()
+        matches: for m in self.matches()
+          m.toJson()
       console.log json
 
     # Run
@@ -164,3 +193,24 @@ $ ->
   team2 = new Team team2Name, players2
   champDay = new ChampionshipDay day, team1, team2, matches
   ko.applyBindings champDay
+  # FIXME dev
+  team1.player1 "Reno"
+  team1.player2 "Yo"
+  team1.player3 "Seb"
+  team1.player4 "Kaï"
+  team1.d1().j1 "Reno"
+  team1.d1().j2 "Seb"
+  team1.d2().j1 "Yo"
+  team1.d2().j2 "Kai"
+  team1.capitain "Kai"
+
+  team2.player1 "Martin"
+  team2.player2 "Ted"
+  team2.player3 "Lolo"
+  team2.player4 "Dom"
+  team2.d1().j1 "Martin"
+  team2.d1().j2 "Ted"
+  team2.d2().j1 "Lolo"
+  team2.d2().j2 "Dom"
+  team2.capitain "Did"
+  champDay.start()
