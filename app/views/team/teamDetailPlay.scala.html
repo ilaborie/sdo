@@ -4,32 +4,34 @@
 <!DOCTYPE html>
 
     @displayTeam(team: Team, num:Int) = {
-        <label class="block">@Messages("team.detail.players")</label>
-        <div  data-bind="with: team@{num}">
-            @for(i <- 1 to 4) {
-            <div class="controls">
-                <div class="input-prepend input-append">
-                    <span class="add-on">@i</span>
-                    <input type="text" id="p@i-@team.shortName" class="input-large"
-                        data-bind="value: player@i, disable: $root.started">
-                    <span class="add-on"></span>
+        <div data-bind="with: team@{num}">
+            <div data-bind="visible: ! $root.started()">
+                <label class="block">@Messages("team.detail.players")</label>
+                @for(i <- 1 to 4) {
+                <div class="controls">
+                    <div class="input-prepend input-append">
+                        <span class="add-on">@i</span>
+                        <input type="text" id="p@i-@team.shortName" class="input-large"
+                            data-bind="value: player@i, disable: $root.started">
+                        <span class="add-on"></span>
+                    </div>
                 </div>
-            </div>
-            }
+                }
 
-            <label class="block">@Messages("team.detail.doublettes")</label>
-            <div class="controls">
-                <div class="input-prepend">
-                    <span class="add-on">1</span>
-                    <input type="text" id="d1-@team.shortName" class="input-xlarge"
-                        data-bind="value: d1, disable: $root.started">
+                <label class="block">@Messages("team.detail.doublettes")</label>
+                <div class="controls">
+                    <div class="input-prepend">
+                        <span class="add-on">1</span>
+                        <input type="text" id="d1-@team.shortName" class="input-xlarge"
+                            data-bind="value: d1, disable: $root.started">
+                    </div>
                 </div>
-            </div>
-            <div class="controls">
-                <div class="input-prepend">
-                    <span class="add-on">2</span>
-                    <input type="text" id="d2-@team.shortName" class="input-xlarge"
-                        data-bind="value: d2, disable: $root.started">
+                <div class="controls">
+                    <div class="input-prepend">
+                        <span class="add-on">2</span>
+                        <input type="text" id="d2-@team.shortName" class="input-xlarge"
+                            data-bind="value: d2, disable: $root.started">
+                    </div>
                 </div>
             </div>
 
@@ -40,6 +42,10 @@
                         <input type="text" id="psubs-@team.name" class="input-large"
                             data-bind="value: psubs, disable: $root.started">
                         <span class="add-on"></span>
+                        <button class="btn susbtitue" type="button"
+                            data-bind="click:substitue, visible: psubs() && $root.started">
+                            <i class="glyphicons refresh"></i>
+                        </button>
                     </div>
                 </div>
                 <div data-bind="visible: isSubst">
@@ -132,7 +138,7 @@
                         <div class="span2">
                             <button class="btn btn-large btn-block btn-success" type="button"
                                 data-bind="disable: started(), click: start">
-                                <i class="glyphicons white play_button"></i>
+                                <i class="glyphicons white play"></i>
                                 @Messages("team.detail.run")
                             </button>
                         </div>
@@ -251,6 +257,7 @@
         @layout.script()
         @tags.javascript("sammy")
         @tags.javascript("knockout")
+        @tags.javascript("knockout-bootstrap")
         @tags.javascript("team")
     </body>
 </html>
