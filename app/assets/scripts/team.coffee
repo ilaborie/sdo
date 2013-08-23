@@ -1,9 +1,13 @@
 # Pair
 class Pair
   constructor: ->
+    # Data
     self = @
     self.j1 = ko.observable()
     self.j2 = ko.observable()
+    self.fullName = ko.computed () ->
+      "#{self.j1()} / #{self.j2()}"
+    # Behavior
     self.toJson = () ->
       [self.j1(), self.j2() ]
 
@@ -13,7 +17,8 @@ class Team
     # Data
     self = @
     self.name = @name
-    self.remainingPlayers = ko.observableArray @players
+    self.players = @players
+    self.remainingPlayers = ko.observableArray []
     self.registeredPlayers = ko.observableArray []
     self.player1 = ko.observable()
     self.player2 = ko.observable()
@@ -51,6 +56,7 @@ class Team
     self.substitue = () ->
       self.isSubst(true)
     # FIXME get last finished match
+    # FIXME Update match ...
     # FIXME open dialog for Who
     self.toJson = () ->
       name: self.name,
@@ -65,6 +71,9 @@ class Team
       "psubs-who": self.psubsWho(),
       "psubs-when": self.psubsWhen(),
       capitain: self.capitain()
+    # Run
+    for p in self.players
+      self.remainingPlayers.push(p)
 
 # Match
 class Match
@@ -83,16 +92,28 @@ class Match
     self.team2Win = ko.observable false
     self.team1Leg = ko.observable 0
     self.team1Leg = ko.observable 0
-    self.isFinished = ko.computed () ->
+    self.finished = ko.computed () ->
       false
 
     # Behavior
     self.updateTeam1 = (team) ->
-      # FIXME set player1
-      false
+      switch self.team1
+        when "p1" then self.player1 team.player1()
+        when "p2" then self.player1 team.player2()
+        when "p3" then self.player1 team.player3()
+        when "p4" then self.player1 team.player4()
+        when "d1" then self.player1 team.d1().fullName()
+        when "d2" then self.player1 team.d2().fullName()
+        else self.team1
     self.updateTeam2 = (team) ->
-      # FIXME set player1
-      false
+      switch self.team2
+        when "p1" then self.player2 team.player1()
+        when "p2" then self.player2 team.player2()
+        when "p3" then self.player2 team.player3()
+        when "p4" then self.player2 team.player4()
+        when "d1" then self.player2 team.d1().fullName()
+        when "d2" then self.player2 team.d2().fullName()
+        else self.team2
     self.nextLeg = (winner) ->
       # FIXME compute
       false
@@ -118,7 +139,9 @@ class ChampionshipDay
 
     # Behavior
     self.start = () ->
-      # FIXME update matches
+      for m in self.matches()
+        m.updateTeam1 self.team1()
+        m.updateTeam2 self.team2()
       self.started(true)
     self.send = () ->
       json =
