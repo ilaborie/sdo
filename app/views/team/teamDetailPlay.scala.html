@@ -9,11 +9,13 @@
                 <label class="block">@Messages("team.detail.players")</label>
                 @for(i <- 1 to 4) {
                 <div class="controls">
-                    <div class="input-prepend input-append">
+                    <div class="input-prepend">
                         <span class="add-on">@i</span>
                         <input type="text" id="p@i-@team.shortName" class="input-large"
-                            data-bind="value: player@i, disable: $root.started">
-                        <span class="add-on"></span>
+                            data-bind="value: player@i,
+                                       disable: $root.started,
+                                       typeahead: remainingPlayers,
+                                       event: {focus: unregister, blur: register}">
                     </div>
                 </div>
                 }
@@ -35,15 +37,17 @@
                 </div>
             </div>
 
-            <div id="team@num-subst">
+            <div id="team@num-subst" data-bind="visible: !$root.started() || psubs() ">
                 <label class="block">@Messages("team.detail.substitute")</label>
                 <div class="controls">
                     <div class="input-append">
                         <input type="text" id="psubs-@team.name" class="input-large"
-                            data-bind="value: psubs, disable: $root.started">
-                        <span class="add-on"></span>
+                            data-bind="value: psubs,
+                                       disable: $root.started,
+                                       typeahead: remainingPlayers,
+                                       event: {focus: unregister, blur: register}">
                         <button class="btn susbtitue" type="button"
-                            data-bind="click:substitue, visible: psubs() && $root.started">
+                            data-bind="click: substitue, visible: $root.started() && psubs() ">
                             <i class="glyphicons refresh"></i>
                         </button>
                     </div>
@@ -54,7 +58,6 @@
                         <div class="input-append">
                             <span id="psubs-who-@team.shortName" class="input-large uneditable-input"
                                 data-bind="text: psubsWho"></span>
-                            <span class="add-on"></span>
                         </div>
                     </div>
                     <div class="controls">
@@ -224,7 +227,7 @@
                                     <label class="span5" for="t1-capitain">@m.team1</label>
                                     <div class="input-append span4">
                                         <input type="text" id="t1-capitain" class="input-large"
-                                            data-bind="value: capitain">
+                                            data-bind="value: capitain, typeahead: players">
                                         <button class="btn sign" type="button"
                                             data-bind="click:sign, css:{active: signed}">
                                             <i class="glyphicons ok_2"></i>
@@ -235,7 +238,7 @@
                                     <label class="span5" for="t2-capitain">@m.team2</label>
                                     <div class="input-append span4" >
                                         <input type="text" id="t2-capitain" class="input-large"
-                                            data-bind="value: capitain">
+                                            data-bind="value: capitain, typeahead: players">
                                         <button class="btn sign" type="button"
                                             data-bind="click:sign, css:{active: signed}">
                                             <i class="glyphicons ok_2"></i>
@@ -259,6 +262,13 @@
         @tags.javascript("knockout")
         @tags.javascript("knockout-bootstrap")
         @tags.javascript("team")
+        <script>
+var today = "@org.joda.time.format.DateTimeFormat.fullDate().print(org.joda.time.LocalDate.now)";
+var team1Name="@m.team1.name";
+var team2Name="@m.team2.name";
+var players1 = [@for(player <- m.team1.club.players) {"@player.name",}];
+var players2 = [@for(player <- m.team2.club.players) {"@player.name",}];
+        </script>
     </body>
 </html>
 

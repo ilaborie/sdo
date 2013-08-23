@@ -1,3 +1,3 @@
-@(date: org.joda.time.LocalDate)
+@(date: org.joda.time.LocalDate= org.joda.time.LocalDate.now)
 @org.joda.time.format.DateTimeFormat.longDate().print(date)
 

@@ -21,10 +21,12 @@ class Pair
 
 # Team
 class Team
-  constructor: (@name) ->
+  constructor: (@name, @players) ->
     # Data
     self = @
     self.name = @name
+    self.remainingPlayers = ko.observableArray(@players)
+    self.registeredPlayers = ko.observableArray([])
     self.player1 = ko.observable()
     self.player2 = ko.observable()
     self.player3 = ko.observable()
@@ -39,12 +41,20 @@ class Team
     self.signed = ko.observable(false)
 
     # Behavior
+    self.register = (data, event) ->
+      player = $(event.target).val()
+      self.remainingPlayers.remove(player)
+      self.registeredPlayers.push(player)
+    self.unregister = (data, event) ->
+      player = $(event.target).val()
+      self.remainingPlayers.push(player)
+      self.registeredPlayers.remove(player)
     self.sign = () ->
-     self.signed(!self.signed())
+      self.signed(!self.signed())
     self.substitue = () ->
       self.isSubst(true)
-      # FIXME get last finished match
-      # FIXME open dialog for Who
+    # FIXME get last finished match
+    # FIXME open dialog for Who
     self.toJson = () ->
       name: self.name,
       players: [
@@ -87,15 +97,12 @@ class ChampionshipDay
       console.log json
 
     # Run
-    self.team1Players = []
-    self.team2Players = []
-    # FIXME current Date...
-    # TODO Load Teams...
-    self.team1(new Team("team1"))
-    self.team2(new Team("team2"))
+    self.date(today)
+    self.team1(new Team(team1Name, players1))
+    self.team2(new Team(team2Name, players2))
 
 # Run on Ready
 $ ->
   champDay = new ChampionshipDay();
   ko.applyBindings(champDay)
-  # FIXME typeahead
+# FIXME typeahead
