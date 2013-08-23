@@ -10,7 +10,7 @@ class Player
       license: self.license
       }
 
-# Pair
+# FIXME Pair
 class Pair
   constructor: ->
     self = @
@@ -41,17 +41,19 @@ class Team
     self.signed = ko.observable(false)
 
     self.canSend = ko.computed () ->
-      self.signed() and !! self.capitain()
+      self.signed() and !!self.capitain()
 
     # Behavior
     self.register = (data, event) ->
       player = $(event.target).val()
       self.remainingPlayers.remove(player)
       self.registeredPlayers.push(player)
+    # FIXME update matches
     self.unregister = (data, event) ->
       player = $(event.target).val()
       self.remainingPlayers.push(player)
       self.registeredPlayers.remove(player)
+    # FIXME update matches
     self.sign = () ->
       self.signed(!self.signed())
     self.substitue = () ->
@@ -73,22 +75,51 @@ class Team
       capitain: self.capitain()
 
 # Match
-class ChampionshipDay
-  constructor: ->
+class Match
+  constructor: (@start, @team1, @team2)->
     # Data
     self = @
-    self.day = $("#day").val()
+    self.team1Start = ko.observable(@start)
+    self.team1 = @team1
+    self.team2 = @team2
+    self.player1 = ko.observable(@team1)
+    self.player2 = ko.observable(@team2)
+    self.leg1 = ko.observable()
+    self.leg2 = ko.observable()
+    self.leg3 = ko.observable()
+    self.team1Win = ko.observable(false)
+    self.team2Win = ko.observable(false)
+    self.team1Leg = ko.observable(0)
+    self.team1Leg = ko.observable(0)
+    self.isFinished = ko.computed () ->
+      false
+
+    # Behavior
+    self.updateTeam1 = (team) ->
+      # FIXME set player1
+      false
+    self.updateTeam2 = (team) ->
+      # FIXME set player1
+      false
+    self.nextLeg = (winner) ->
+      # FIXME compute
+      false
+
+# ChampionshipDay
+class ChampionshipDay
+  constructor: (@day, @team1, @team2, @matches)->
+    # Data
+    self = @
+    self.day = @day
     self.date = ko.observable()
     self.location = ko.observable()
-    self.team1 = ko.observable()
-    self.team2 = ko.observable()
+    self.team1 = ko.observable(@team1)
+    self.team2 = ko.observable(@team2)
     self.started = ko.observable(false)
-    self.matches = ko.observableArray([])
-
+    self.matches = ko.observableArray(@matches)
     self.finished = ko.computed () ->
       # FIXME Check with matches
       true
-
     self.canStart = ko.computed () ->
       # FIXME Check can start
       true
@@ -108,10 +139,12 @@ class ChampionshipDay
 
     # Run
     self.date(today)
-    self.team1(new Team(team1Name, players1))
-    self.team2(new Team(team2Name, players2))
 
 # Run on Ready
 $ ->
-  champDay = new ChampionshipDay();
+  matches = for m in allMatches
+    new Match m.team1Start, m.team1, m.team2
+  team1 = new Team(team1Name, players1)
+  team2 = new Team(team2Name, players2)
+  champDay = new ChampionshipDay(day, team1, team2, matches)
   ko.applyBindings(champDay)

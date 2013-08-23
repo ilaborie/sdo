@@ -56,38 +56,6 @@
         </div>
     }
 
-    @displayMatch(i: Int) = {
-        <div class="match">
-            <div class="head">@Messages("team.detail.match", i)</div>
-            <div class="player">
-                @if(TeamMatchDetail.isPlayer1Start(i)) {
-                    <i class="glyphicons asterisk"></i>
-                }
-                <span id="t1-p@TeamMatchDetail.getPlayer1Index(i)"></span>
-            </div>
-            <div class="legs">
-                <table class="table table-bordered match">
-                    <tr>
-                        <td class="active"></td>
-                        <td class="inactive"></td>
-                        <td class="inactive"></td>
-                    </tr>
-                    <tr>
-                        <td class="active"></td>
-                        <td class="inactive"></td>
-                        <td class="inactive"></td>
-                    </tr>
-                </table>
-            </div>
-            <div class="player">
-                @if(!TeamMatchDetail.isPlayer1Start(i)) {
-                    <i class="glyphicons asterisk"></i>
-                }
-                <span id="t1-p@TeamMatchDetail.getPlayer1Index(i)"></span>
-            </div>
-        </div>
-    }
-
 
 <html>
     <head>
@@ -149,12 +117,40 @@
                         </fieldset>
                     </div>
                 </div>
-                <div id="matches" class="row-fluid" data-bind="visible: started">
+                <div id="matches" class="row-fluid" data-bind="visible: true/*started*/">
                     <div class="span10">
                     @for(i <- 0 to 4) {
                         <div class="row-fluid">
                         @for(j <- 0 to 3) {
-                            <div class="span3">@displayMatch((4 * i) + j + 1)</div>
+                            @defining((4 * i) + j + 1) { index =>
+                            <div class="span3" data-bind="with: matches()[@{index-1}]">
+                                <div class="match">
+                                    <div class="head">@Messages("team.detail.match", index)</div>
+                                    <div class="player">
+                                        <i class="glyphicons asterisk" data-bind="visible: team1Start()"></i>
+                                        <span data-bind="text: player1"></span>
+                                    </div>
+                                    <div class="legs">
+                                        <table class="table table-bordered match">
+                                            <tr>
+                                                <td class="active"></td>
+                                                <td class="inactive"></td>
+                                                <td class="inactive"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="active"></td>
+                                                <td class="inactive"></td>
+                                                <td class="inactive"></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="player">
+                                        <i class="glyphicons asterisk" data-bind="visible: !team1Start()"></i>
+                                        <span data-bind="text: player2"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            }
                         }
                         </div>
                     }
@@ -162,13 +158,15 @@
                     <div class="span2 score hidden-phone">
                         <div class="head">@Messages("team.detail.score")</div>
                         @for(i <- 1 to 20) {
-                            <div class="row-fluid">
+                            <div class="row-fluid" data-bind="with: matches()[@{i-1}]">
                                 <div class="span4">
-                                    <i class="glyphicons unchecked"></i>
+                                    <i class="glyphicons unchecked" data-bind="if: team1Win()"></i>
+                                    <i class="glyphicons checked" data-bind="ifnot: team1Win()"></i>
                                 </div>
                                 <div class="span4 elt">@i</div>
                                 <div class="span4">
-                                    <i class="glyphicons unchecked"></i>
+                                    <i class="glyphicons unchecked" data-bind="if: team2Win()"></i>
+                                    <i class="glyphicons checked" data-bind="ifnot: team2Win()"></i>
                                 </div>
                             </div>
                         }
@@ -250,11 +248,21 @@
         @tags.javascript("knockout-bootstrap")
         @tags.javascript("team")
         <script>
+var day = @m.day;
 var today = "@org.joda.time.format.DateTimeFormat.fullDate().print(org.joda.time.LocalDate.now)";
 var team1Name="@m.team1.name";
 var team2Name="@m.team2.name";
 var players1 = [@for(player <- m.team1.club.players) {"@player.name",}];
 var players2 = [@for(player <- m.team2.club.players) {"@player.name",}];
+
+var allMatches = [];
+@for(index <- 1 to 20) {
+allMatches.push({
+    team1Start: @TeamMatchDetail.isPlayer1Start(index),
+    team1: "@TeamMatchDetail.getPlayer1Index(index)",
+    team2: "@TeamMatchDetail.getPlayer2Index(index)"
+});
+}
         </script>
     </body>
 </html>
