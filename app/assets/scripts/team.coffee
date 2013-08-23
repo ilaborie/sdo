@@ -1,16 +1,4 @@
-# Player
-class Player
-  constructor: (@name, @license) ->
-    self = @
-    self.name = @name
-    self.license = @license
-    self.toJson = () ->
-      {
-      name: self.name,
-      license: self.license
-      }
-
-# FIXME Pair
+# Pair
 class Pair
   constructor: ->
     self = @
@@ -25,20 +13,20 @@ class Team
     # Data
     self = @
     self.name = @name
-    self.remainingPlayers = ko.observableArray(@players)
-    self.registeredPlayers = ko.observableArray([])
+    self.remainingPlayers = ko.observableArray @players
+    self.registeredPlayers = ko.observableArray []
     self.player1 = ko.observable()
     self.player2 = ko.observable()
     self.player3 = ko.observable()
     self.player4 = ko.observable()
-    self.d1 = ko.observable()
-    self.d2 = ko.observable()
+    self.d1 = ko.observable new Pair()
+    self.d2 = ko.observable new Pair()
     self.psubs = ko.observable()
-    self.isSubst = ko.observable(false)
+    self.isSubst = ko.observable false
     self.psubsWho = ko.observable()
     self.psubsWhen = ko.observable()
     self.capitain = ko.observable()
-    self.signed = ko.observable(false)
+    self.signed = ko.observable false
 
     self.canSend = ko.computed () ->
       self.signed() and !!self.capitain()
@@ -46,14 +34,18 @@ class Team
     # Behavior
     self.register = (data, event) ->
       player = $(event.target).val()
-      self.remainingPlayers.remove(player)
-      self.registeredPlayers.push(player)
-    # FIXME update matches
+      self.remainingPlayers.remove player
+      self.registeredPlayers.push player
     self.unregister = (data, event) ->
       player = $(event.target).val()
-      self.remainingPlayers.push(player)
-      self.registeredPlayers.remove(player)
-    # FIXME update matches
+      self.remainingPlayers.push player
+      self.registeredPlayers.remove player
+    self.registerPair = (data, event) ->
+      player = $(event.target).val()
+      self.registeredPlayers.remove player
+    self.unregisterPair = (data, event) ->
+      player = $(event.target).val()
+      self.registeredPlayers.push player
     self.sign = () ->
       self.signed(!self.signed())
     self.substitue = () ->
@@ -82,15 +74,15 @@ class Match
     self.team1Start = ko.observable(@start)
     self.team1 = @team1
     self.team2 = @team2
-    self.player1 = ko.observable(@team1)
-    self.player2 = ko.observable(@team2)
+    self.player1 = ko.observable @team1
+    self.player2 = ko.observable @team2
     self.leg1 = ko.observable()
     self.leg2 = ko.observable()
     self.leg3 = ko.observable()
-    self.team1Win = ko.observable(false)
-    self.team2Win = ko.observable(false)
-    self.team1Leg = ko.observable(0)
-    self.team1Leg = ko.observable(0)
+    self.team1Win = ko.observable false
+    self.team2Win = ko.observable false
+    self.team1Leg = ko.observable 0
+    self.team1Leg = ko.observable 0
     self.isFinished = ko.computed () ->
       false
 
@@ -113,10 +105,10 @@ class ChampionshipDay
     self.day = @day
     self.date = ko.observable()
     self.location = ko.observable()
-    self.team1 = ko.observable(@team1)
-    self.team2 = ko.observable(@team2)
-    self.started = ko.observable(false)
-    self.matches = ko.observableArray(@matches)
+    self.team1 = ko.observable @team1
+    self.team2 = ko.observable @team2
+    self.started = ko.observable false
+    self.matches = ko.observableArray @matches
     self.finished = ko.computed () ->
       # FIXME Check with matches
       true
@@ -126,6 +118,7 @@ class ChampionshipDay
 
     # Behavior
     self.start = () ->
+      # FIXME update matches
       self.started(true)
     self.send = () ->
       json =
@@ -144,7 +137,7 @@ class ChampionshipDay
 $ ->
   matches = for m in allMatches
     new Match m.team1Start, m.team1, m.team2
-  team1 = new Team(team1Name, players1)
-  team2 = new Team(team2Name, players2)
-  champDay = new ChampionshipDay(day, team1, team2, matches)
-  ko.applyBindings(champDay)
+  team1 = new Team team1Name, players1
+  team2 = new Team team2Name, players2
+  champDay = new ChampionshipDay day, team1, team2, matches
+  ko.applyBindings champDay

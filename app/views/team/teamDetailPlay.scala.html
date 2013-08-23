@@ -11,7 +11,7 @@
                 <div class="controls">
                     <div class="input-prepend">
                         <span class="add-on">@i</span>
-                        <input type="text" id="p@i-@team.shortName" class="input-large"
+                        <input type="text" class="input-large"
                             data-bind="value: player@i,
                                        disable: $root.started,
                                        typeahead: remainingPlayers,
@@ -21,18 +21,36 @@
                 }
 
                 <label class="block">@Messages("team.detail.doublettes")</label>
-                <div class="controls">
+                <div class="controls" data-bind="with: d1">
                     <div class="input-prepend">
                         <span class="add-on">1</span>
-                        <input type="text" id="d1-@team.shortName" class="input-xlarge"
-                            data-bind="value: d1, disable: $root.started">
+                        <input type="text" class="input-large"
+                            data-bind="value: j1,
+                                       typeahead: $parent.registeredPlayers,
+                                       event: {focus: $parent.unregisterPair, blur: $parent.registerPair},
+                                       disable: $root.started">
+                        <span class="add-on">/</span>
+                        <input type="text" class="input-large"
+                            data-bind="value: j2,
+                                       typeahead: $parent.registeredPlayers,
+                                       event: {focus: $parent.unregisterPair, blur: $parent.registerPair},
+                                        disable: $root.started">
                     </div>
                 </div>
-                <div class="controls">
+                <div class="controls" data-bind="with: d2">
                     <div class="input-prepend">
                         <span class="add-on">2</span>
-                        <input type="text" id="d2-@team.shortName" class="input-xlarge"
-                            data-bind="value: d2, disable: $root.started">
+                        <input type="text" class="input-large"
+                            data-bind="value: j1,
+                                       typeahead: $parent.registeredPlayers,
+                                       event: {focus: $parent.unregisterPair, blur: $parent.registerPair},
+                                       disable: $root.started">
+                        <span class="add-on">/</span>
+                        <input type="text" class="input-large"
+                            data-bind="value: j2,
+                                       typeahead: $parent.registeredPlayers,
+                                       event: {focus: $parent.unregisterPair, blur: $parent.registerPair},
+                                       disable: $root.started">
                     </div>
                 </div>
             </div>
