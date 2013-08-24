@@ -157,13 +157,48 @@ class ChampionshipDay
     self.team2 = ko.observable @team2
     self.started = ko.observable false
     self.matches = ko.observableArray @matches
+    self.team1MatchesWin =ko.computed () ->
+      count = 0
+      for m in self.matches()
+        if (m.team1Win())
+          count++
+      count
+    self.team2MatchesWin =ko.computed () ->
+      count = 0
+      for m in self.matches()
+        if (m.team2Win())
+          count++
+      count
+    self.team1LegsWin =ko.computed () ->
+      count = 0
+      for m in self.matches()
+        count+= m.team1Leg()
+      count
+    self.team2LegsWin =ko.computed () ->
+      count = 0
+      for m in self.matches()
+          count+= m.team2Leg()
+      count
+    self.team1PointsWin =ko.computed () ->
+      legs = self.team1MatchesWin()
+      switch
+        when legs < 10  then 1
+        when legs is 10 then 2
+        when legs > 10  then 3
+    self.team2PointsWin =ko.computed () ->
+      legs = self.team2MatchesWin()
+      switch
+        when legs < 10  then 1
+        when legs is 10 then 2
+        when legs > 10  then 3
     self.finished = ko.computed () ->
-      # FIXME Check with matches
-      true
+      result = true
+      for m in self.matches()
+        result = result && m.finished()
+      result
     self.canStart = ko.computed () ->
       # FIXME Check can start
       true
-    # FIXME compute legs, match, points
 
     # Behavior
     self.start = () ->

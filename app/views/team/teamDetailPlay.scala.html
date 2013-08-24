@@ -88,9 +88,9 @@
     <body>
         <div class="container well well-small">
             <h1>
-                @Messages("championship.day.caption",m.day) -
+                <small>@Messages("championship.day.caption",m.day)</small>
                 <span>@m.team1</span>
-                vs.
+                <small>vs.</small>
                 <span>@m.team2</span>
             </h1>
             <form data-bind="submit: send">
@@ -220,19 +220,19 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td data-bind="text: team1.matchesWin"></td>
+                                        <td data-bind="text: team1MatchesWin"></td>
                                         <th>@Messages("team.detail.matches")</th>
-                                        <td data-bind="text: team2.matchesWin"></td>
+                                        <td data-bind="text: team2MatchesWin"></td>
                                     </tr>
                                     <tr>
-                                        <td data-bind="text: team1.legsWin"></td>
+                                        <td data-bind="text: team1LegsWin"></td>
                                         <th>@Messages("team.detail.legs")</th>
-                                        <td data-bind="text: team2.legsWin"></td>
+                                        <td data-bind="text: team2LegsWin"></td>
                                     </tr>
                                     <tr data-bind="visible: finished()">
-                                        <td data-bind="text: team1.pointsWin"></td>
+                                        <td data-bind="text: team1PointsWin"></td>
                                         <th>@Messages("team.detail.points")</th>
-                                        <td data-bind="text: team2.pointsWin"></td>
+                                        <td data-bind="text: team2PointsWin"></td>
                                     </tr>
                                 </tbody>
                             </table>
