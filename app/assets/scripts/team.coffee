@@ -85,13 +85,26 @@ class Match
     self.player1 = ko.observable @team1
     self.player2 = ko.observable @team2
     self.leg1 = ko.observable 0
-    self.team1Win = ko.observable false
-    self.team2Win = ko.observable false
-    self.team1Leg = ko.observable 0
-    self.team2Leg = ko.observable 0
-    self.finished = ko.observable false
-    self.leg3 = ko.observable 0
     self.leg2 = ko.observable 0
+    self.leg3 = ko.observable 0
+    self.team1Leg = ko.computed () ->
+      result = 0;
+      if (self.leg1() is 1) then result++
+      if (self.leg2() is 1) then result++
+      if (self.leg3() is 1) then result++
+      result
+    self.team2Leg = ko.computed () ->
+      result = 0;
+      if (self.leg1() is 2) then result++
+      if (self.leg2() is 2) then result++
+      if (self.leg3() is 2) then result++
+      result
+    self.team1Win = ko.computed () ->
+      self.team1Leg() is 2
+    self.team2Win = ko.computed () ->
+      self.team2Leg() is 2
+    self.finished = ko.computed () ->
+      self.team1Win() or self.team2Win()
     self.visibleLeg2 = ko.computed () ->
       self.leg1() > 0
     self.visibleLeg3 = ko.computed () ->
@@ -122,24 +135,10 @@ class Match
       winner = parseInt win, 10
       if (self.leg2() > 0) # leg3
         self.leg3 winner
-        self.addLegWin winner
       else if (self.leg1() > 0) # leg 2
         self.leg2 winner
-        self.addLegWin winner
       else # leg 1
         self.leg1 winner
-        self.addLegWin winner
-    self.addLegWin = (winner) ->
-      if (winner is 1)
-        self.team1Leg (self.team1Leg() + 1)
-        if(self.team1Leg() is 2)
-          self.team1Win true
-          self.finished true
-      else
-        self.team2Leg (self.team2Leg() + 1)
-        if(self.team2Leg() is 2)
-          self.team2Win true
-          self.finished true
     self.toJson = () ->
       leg1: self.leg1(),
       leg2: self.leg2(),
@@ -248,4 +247,5 @@ $ ->
   team2.d2().j1 "Lolo"
   team2.d2().j2 "Dom"
   team2.capitain "Did"
+  team2.psubs "Did"
   champDay.start()
