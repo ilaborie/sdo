@@ -156,7 +156,7 @@ team.detail.subst.cancel=Annuler
 team.detail.subst.action=Remplacer
 team.detail.send.title=Envoyer le résultat
 team.detail.subst.close=Fermer
-team.detail.send.succes=<span class="label label-success">OK</span> Envoie réussit.
+team.detail.send.success=<span class="label label-success">OK</span><br> Envoie réussit.
 
 # Club
 club.oneteam=Équipe

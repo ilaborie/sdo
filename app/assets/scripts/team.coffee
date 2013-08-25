@@ -273,10 +273,9 @@ class ChampionshipDay
         type: "POST",
         contentType: "application/json",
         url: "/sdo/ligues/SDO/team/result",
-        dataType: "json",
         data: data,
-        success: () ->
-          $("#diaSendOk").modal()
+      post.success = (data, status, jqXHR) ->
+        $("#diaSendOk").modal()
       $.ajax post
     # Run
     self.date(today)

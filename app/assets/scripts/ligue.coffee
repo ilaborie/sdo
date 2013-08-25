@@ -66,9 +66,9 @@ class Ligue
         url = context.path
         window.location = url
         window.location.reload()
-      @get "/sdo/ligues/:ligue/team/day/:day/:team1:team2", (context) ->
+      @get "/sdo/ligues/:ligue/team/day/:day/:team1/:team2", (context) ->
         url = context.path
-        window.open(url)
+        window.open(url, "_blank")
       # Default
       @.get "", () ->
         @.app.runRoute("get", "#ligue")

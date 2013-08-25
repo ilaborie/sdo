@@ -106,7 +106,7 @@ matches: ${matches.mkString("  ")}
 """
             mail.send(body, "")
           }
-          Ok("")
+          Ok("""{ok:true}""")
       }.getOrElse {
         BadRequest("Expecting Json data")
       }
