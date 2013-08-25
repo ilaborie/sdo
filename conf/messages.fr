@@ -148,11 +148,15 @@ team.detail.legs=Manches
 team.detail.points=Points
 team.detail.result=Résultat
 team.detail.capitain=Capitaines
+team.detail.comment=Commentaires (facultatif)
 team.detail.send=Envoyer
 team.detail.run=Démarrer
 team.detail.subst.player=Joueur sortant ?
 team.detail.subst.cancel=Annuler
 team.detail.subst.action=Remplacer
+team.detail.send.title=Envoyer le résultat
+team.detail.subst.close=Fermer
+team.detail.send.succes=<span class="label label-success">OK</span> Envoie réussit.
 
 # Club
 club.oneteam=Équipe
@@ -213,7 +217,7 @@ securesocial.passwordChange.okButton=Ok
 
 # Not authorized page
 securesocial.notAuthorized.title=Non authoriser
-securesocial.notAuthorized.message=Vous n'avez pas l'autorisation suffisante pour accéder à cette page
+securesocial.notAuthorized.message=Vous n''avez pas l'autorisation suffisante pour accéder à cette page
 
 #
 securesocial.loginRequired=Vous devez vous authentifier pour accéder à cette page.

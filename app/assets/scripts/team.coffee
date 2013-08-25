@@ -40,8 +40,6 @@ class Team
       hasPairs = !!self.d1().canStart() and !!self.d2().canStart()
       hasCapitain = !!self.capitain()
       hasPlayers and hasPairs and hasCapitain
-    self.canSend = ko.computed () ->
-      self.signed() and !!self.capitain()
     self.player1Subst = ko.computed () ->
       if (self.isSubst() and (self.player1() is self.psubsWho()))
       then self.psubs()
@@ -97,8 +95,8 @@ class Team
         self.player2(),
         self.player3(),
         self.player4()],
-      d1: self.d1(),
-      d2: self.d2(),
+      d1: self.d1().toJson(),
+      d2: self.d2().toJson(),
       psubs: self.psubs(),
       "psubs-who": self.psubsWho(),
       "psubs-when": self.psubsWhen(),
@@ -188,6 +186,7 @@ class ChampionshipDay
     self.team1 = ko.observable @team1
     self.team2 = ko.observable @team2
     self.started = ko.observable false
+    self.comment = ko.observable ""
     self.matches = ko.observableArray @matches
     self.team1MatchesWin = ko.computed () ->
       count = 0
@@ -232,6 +231,8 @@ class ChampionshipDay
       result
     self.canStart = ko.computed () ->
       self.team1().canStart() and self.team2().canStart()
+    self.canSend = ko.computed () ->
+      self.finished() and self.team1().signed() and self.team2().signed()
 
     # Behavior
     self.start = () ->
@@ -255,17 +256,19 @@ class ChampionshipDay
         then m.updateTeam1 team
         else m.updateTeam2 team
     self.send = () ->
-      # FIXME Dialog send..
       json =
-        day: self.day,
-        date: self.date(),
-        location: self.location(),
-        team1: self.team1().toJson(),
-        team2: self.team1().toJson(),
-        matches: for m in self.matches()
-          m.toJson()
-      console.log json
-
+        comment: self.comment()
+        result:
+          day: self.day,
+          date: self.date(),
+          location: self.location(),
+          team1: self.team1().toJson(),
+          team2: self.team2().toJson(),
+          matches: for m in self.matches()
+            m.toJson()
+      data = JSON.stringify json
+      $.post "https://ilaborie.org/sdo/ligues/SDO/team/result", data, () ->
+        $("#diaSendOk").modal()
     # Run
     self.date(today)
 
