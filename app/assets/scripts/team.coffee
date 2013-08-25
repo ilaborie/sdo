@@ -11,7 +11,8 @@ class Pair
     self.canStart = ko.computed () ->
       !!self.j1() and !!self.j2()
     self.toJson = () ->
-      [self.j1(), self.j2() ]
+      j1: self.j1(),
+      j2: self.j2()
 
 # Team
 class Team
@@ -97,9 +98,10 @@ class Team
         self.player4()],
       d1: self.d1().toJson(),
       d2: self.d2().toJson(),
-      psubs: self.psubs(),
-      "psubs-who": self.psubsWho(),
-      "psubs-when": self.psubsWhen(),
+      substitute:
+        j: self.psubs(),
+        out: self.psubsWho(),
+        match: self.psubsWhen(),
       capitain: self.capitain()
     # Run
     for p in self.players
@@ -258,19 +260,27 @@ class ChampionshipDay
     self.send = () ->
       json =
         comment: self.comment()
+        day: self.day,
         result:
-          day: self.day,
           date: self.date(),
           location: self.location(),
           team1: self.team1().toJson(),
           team2: self.team2().toJson(),
           matches: for m in self.matches()
             m.toJson()
-      data = JSON.stringify json
-      $.post "https://ilaborie.org/sdo/ligues/SDO/team/result", data, () ->
-        $("#diaSendOk").modal()
+      data = JSON.stringify(json)
+      post =
+        type: "POST",
+        contentType: "application/json",
+        url: "/sdo/ligues/SDO/team/result",
+        dataType: "json",
+        data: data,
+        success: () ->
+          $("#diaSendOk").modal()
+      $.ajax post
     # Run
     self.date(today)
+
 
 # Run on Ready
 $ ->

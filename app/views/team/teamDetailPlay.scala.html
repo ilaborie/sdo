@@ -396,7 +396,7 @@
         @tags.javascript("team")
         <script>
 var day = @m.day;
-var today = "@org.joda.time.format.DateTimeFormat.fullDate().print(org.joda.time.LocalDate.now)";
+var today = "@org.joda.time.format.DateTimeFormat.forPattern("dd-MM-yyyy").print(org.joda.time.LocalDate.now)";
 var team1Name="@m.team1.name";
 var team2Name="@m.team2.name";
 var players1 = [@for(player <- m.team1.club.players) {"@player.name",}];

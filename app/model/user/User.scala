@@ -4,7 +4,9 @@ import play.api.Logger
 import play.api.cache.Cache
 import play.api.Play.current
 import play.libs.Akka
+
 import securesocial.core._
+
 import model.orga.{Ligue, LicensedPlayer}
 import util.EMail
 

@@ -48,6 +48,6 @@ case class TeamChampionshipDay(ligue: Ligue, day: Int, from: LocalDate, to: Loca
     ligue.teams.filter(team => !team.omit && !teams.contains(team))
   }
 
-  def canBeingPlay(date:LocalDate):Boolean = true
+  def canBeingPlay(date:LocalDate):Boolean = day == 1
     // FIXME (date.isEqual(from) ||date.isAfter(from)) && (date.isEqual(to) ||date.isBefore(to))
 }
