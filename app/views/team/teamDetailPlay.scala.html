@@ -1,131 +1,256 @@
 @(ligue: model.orga.Ligue, m: model.team.PlannedTeamMatch, user: model.user.User)
 @import model.team._
 @import model.orga._
+<!DOCTYPE html>
 
-
-    @displayTeam(team: Team) = {
-        <label class="block">@Messages("team.detail.players")</label>
-    @for(i <- 1 to 4) {
-        <div class="controls">
-            <div class="input-prepend input-append">
-                <span class="add-on">@i</span>
-                <input type="text" id="p@i-@team.shortName" class="span4" value="">
-                <span class="add-on"></span>
-            </div>
-        </div>
-    }
-
-        <label class="block">@Messages("team.detail.doublettes")</label>
-        <div class="controls">
-            <div class="input-prepend">
-                <span class="add-on">1</span>
-                <input type="text" id="d1-@team.shortName" class="span5" value="">
-            </div>
-        </div>
-        <div class="controls">
-            <div class="input-prepend">
-                <span class="add-on">2</span>
-                <input type="text" id="d2-@team.shortName" class="span5" value="">
-            </div>
-        </div>
-
-
-        <label class="block">@Messages("team.detail.substitute")</label>
-        <div class="controls">
-            <div class="input-append">
-                <input type="text" id="psubs-@team.name" class="span4" value="">
-                <span class="add-on"></span>
-            </div>
-        </div>
-
-        <label>@Messages("team.detail.substitute.who")</label>
-        <div class="controls">
-            <div class="input-append">
-                <input type="text" id="psubs-who-@team.shortName" class="span4" value="">
-                <span class="add-on"></span>
-            </div>
-        </div>
-        <div class="controls">
-            <label class="span3">@Messages("team.detail.substitute.after")</label>
-            <input type="text" id="psubs-when-@team.shortName" class="span1" value="">
-        </div>
-    }
-
-    @displayMatch(i: Int) = {
-        <div class="match">
-            <div class="head">@Messages("team.detail.match", i)</div>
-            <div class="player">
-                @if(TeamMatchDetail.isPlayer1Start(i)) {
-                    <i class="glyphicons asterisk"></i>
+    @displayTeam(team: Team, num:Int) = {
+        <div data-bind="with: team@{num}">
+            <div data-bind="visible: ! $root.started()">
+                <label class="block">@Messages("team.detail.players")</label>
+                @for(i <- 1 to 4) {
+                <div class="controls">
+                    <div class="input-prepend">
+                        <span class="add-on">@i</span>
+                        <input type="text" class="input-large"
+                            data-bind="value: player@i,
+                                       disable: $root.started,
+                                       typeahead: remainingPlayers,
+                                       event: {focus: unregister, blur: register}">
+                    </div>
+                </div>
                 }
-                <span id="t1-p@TeamMatchDetail.getPlayer1Index(i)"></span>
+
+                <label class="block">@Messages("team.detail.doublettes")</label>
+                <div class="controls" data-bind="with: d1">
+                    <div class="input-prepend">
+                        <span class="add-on">1</span>
+                        <input type="text" class="input-large"
+                            data-bind="value: j1,
+                                       typeahead: $parent.registeredPlayers,
+                                       event: {focus: $parent.unregisterPair, blur: $parent.registerPair},
+                                       disable: $root.started">
+                        <span class="add-on">/</span>
+                        <input type="text" class="input-large"
+                            data-bind="value: j2,
+                                       typeahead: $parent.registeredPlayers,
+                                       event: {focus: $parent.unregisterPair, blur: $parent.registerPair},
+                                        disable: $root.started">
+                    </div>
+                </div>
+                <div class="controls" data-bind="with: d2">
+                    <div class="input-prepend">
+                        <span class="add-on">2</span>
+                        <input type="text" class="input-large"
+                            data-bind="value: j1,
+                                       typeahead: $parent.registeredPlayers,
+                                       event: {focus: $parent.unregisterPair, blur: $parent.registerPair},
+                                       disable: $root.started">
+                        <span class="add-on">/</span>
+                        <input type="text" class="input-large"
+                            data-bind="value: j2,
+                                       typeahead: $parent.registeredPlayers,
+                                       event: {focus: $parent.unregisterPair, blur: $parent.registerPair},
+                                       disable: $root.started">
+                    </div>
+                </div>
             </div>
-            <div class="legs">
-                <table class="table table-bordered match">
-                    <tr>
-                        <td class="active"></td>
-                        <td class="inactive"></td>
-                        <td class="inactive"></td>
-                    </tr>
-                    <tr>
-                        <td class="active"></td>
-                        <td class="inactive"></td>
-                        <td class="inactive"></td>
-                    </tr>
-                </table>
-            </div>
-            <div class="player">
-                @if(!TeamMatchDetail.isPlayer1Start(i)) {
-                    <i class="glyphicons asterisk"></i>
-                }
-                <span id="t1-p@TeamMatchDetail.getPlayer1Index(i)"></span>
+
+            <div id="team@num-subst" data-bind="visible: !$root.started() || psubs() ">
+                <label class="block">@Messages("team.detail.substitute")</label>
+                <div class="controls">
+                    <div class="input-append">
+                        <input type="text" class="input-large"
+                            data-bind="value: psubs,
+                                       disable: $root.started,
+                                       typeahead: remainingPlayers,
+                                       css: {in: isSubst()},
+                                       event: {focus: unregister, blur: register}">
+                        <button class="btn susbtitue"
+                            data-bind="visible: $root.started() && psubs() && !isSubst() && !$root.finished(),
+                                       click: function() {$('#team@{num}Substitute').modal();}">
+                            <i class="glyphicons retweet"></i>
+                        </button>
+                        <span class="add-on" data-bind="visible: isSubst()">
+                            <span class="badge" data-bind="text: psubsWhen"></span>
+                        </span>
+                        <input type="text" class="input-large out"
+                            data-bind="value: psubsWho, enable: !isSubst(), visible: isSubst()">
+                    </div>
+                </div>
             </div>
         </div>
     }
 
-@layout.main(Messages("team.detail.title", m)) {
-    <div class="container well well-small">
+    @substitueModal(num:Int) = {
+        <div id="team@{num}Substitute" class="modal hide fade" data-bind="with: team@num">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3>@Messages("team.detail.subst.player")</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row-fluid">
+                    <div class="span12 btn-group btn-group-vertical">
+                        <button class="btn btn-block" data-bind="text: player1,
+                                                           click: function(data) {data.psubsSelection(player1());},
+                                                           css: {active: psubsSelection() === player1()}"></button>
+                        <button class="btn btn-block" data-bind="text: player2,
+                                                           click: function(data) {data.psubsSelection(player2());},
+                                                           css: {active: psubsSelection() === player2()}"></button>
+                        <button class="btn btn-block" data-bind="text: player3,
+                                                           click: function(data) {data.psubsSelection(player3());},
+                                                           css: {active: psubsSelection() === player3()}"></button>
+                        <button class="btn btn-block" data-bind="text: player4,
+                                                           click: function(data) {data.psubsSelection(player4());},
+                                                           css: {active: psubsSelection() === player4()}"></button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">@Messages("team.detail.subst.cancel")</button>
+                <button class="btn btn-primary" data-dismiss="modal"
+                    data-bind="click: function(data) {$root.substitue(data);},
+                               enable: !!psubsSelection()">
+                    <i class="glyphicons white retweet"></i>
+                    @Messages("team.detail.subst.action")
+                </button>
+            </div>
+        </div>
+    }
+
+
+<html>
+    <head>
+        <title>@Messages("team.detail.title", m)</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="@routes.Assets.at("style/main.css")">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("ico/favicon.png")">
+
+        <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono|Ubuntu:400,700' rel='stylesheet' type='text/css'>
+    </head>
+
+    <body>
+        <div class="container well well-small">
             <h1>
-                @Messages("championship.day.caption",m.day) -
+                <small>@Messages("championship.day.caption",m.day)</small>
                 <span>@m.team1</span>
-                vs.
+                <small>vs.</small>
                 <span>@m.team2</span>
             </h1>
-            <form>
+            <form data-bind="submit: send">
                 <fieldset>
-                    <div class="controls controls-row">
-                        <label class="span1" for="day">@Messages("team.detail.day")</label>
-                        <input type="text" id="day" class="span1 uneditable-input" value="@m.day">
-                        <label class="span2 offset1" for="date">@Messages("team.detail.date")</label>
-                        <input type="date" id="date" class=" span7" value="">
-                    </div>
-                    <div class="controls controls-row">
-                        <label class="span1" for="location">@Messages("team.detail.location")</label>
-                        <input type="text" id="location" class="span10" value="">
+                    <div class="row-fluid">
+                        <div class="span12">
+                            <div class="controls controls-row">
+                                <label class="span1" for="day">@Messages("team.detail.day")</label>
+                                <span type="text" class="span1 uneditable-input">@m.day</span>
+                                <label class="span2 offset1" for="date">@Messages("team.detail.date")</label>
+                                <input type="text" class="span7"
+                                    data-bind="value:date, disable: started">
+                            </div>
+                            <div class="controls controls-row">
+                                <label class="span1" for="location">@Messages("team.detail.location")</label>
+                                <input type="text" class="span10" autofocus="true"
+                                    data-bind="value:location, disable: started">
+                            </div>
+                        </div>
                     </div>
                 </fieldset>
 
-                <div class="row-fluid">
+                <div id="teams" class="row-fluid">
                     <div class="span6">
                         <fieldset>
                             <legend>@m.team1</legend>
-                            @displayTeam(m.team1)
+                            @displayTeam(m.team1, 1)
                         </fieldset>
                     </div>
 
                     <div class="span6">
                         <fieldset>
                             <legend>@m.team2</legend>
-                            @displayTeam(m.team2)
+                            @displayTeam(m.team2, 2)
                         </fieldset>
                     </div>
                 </div>
-                <div class="row-fluid">
+                <div id="matches" class="row-fluid" data-bind="visible: started">
                     <div class="span10">
                     @for(i <- 0 to 4) {
                         <div class="row-fluid">
                         @for(j <- 0 to 3) {
-                            <div class="span3">@displayMatch((4 * i) + j + 1)</div>
+                            @defining((4 * i) + j + 1) { index =>
+                            <div class="span3" data-bind="with: matches()[@{index-1}]">
+                                <div class="match">
+                                    <div class="head">@Messages("team.detail.match", index)</div>
+                                    <div class="player">
+                                        <i class="glyphicons asterisk" data-bind="visible: team1Start()"></i>
+                                        <span data-bind="text: player1"></span>
+                                    </div>
+                                    <div class="legs">
+                                        <table class="table table-bordered match">
+                                            <tr>
+                                                <td class="active">
+                                                    <button class="btn btn-block"
+                                                        data-bind="click: function(data,event){data.leg1(1);},
+                                                                   css: {active: leg1()==1}">
+                                                        <i class="glyphicons unchecked" data-bind="visible: leg1()!=1"></i>
+                                                        <i class="glyphicons check" data-bind="visible: leg1()==1"></i>
+                                                    </button>
+                                                </td>
+                                                <td data-bind="css: {active: visibleLeg2(), inactive: !visibleLeg2()}">
+                                                    <button class="btn btn-block"
+                                                        data-bind="click: function(data,event){data.leg2(1);},
+                                                                   visible: visibleLeg2(),
+                                                                   css: {active: leg2()==1}">
+                                                        <i class="glyphicons unchecked" data-bind="visible: visibleLeg2() && leg2()!=1"></i>
+                                                        <i class="glyphicons check" data-bind="visible: visibleLeg2() && leg2()==1"></i>
+                                                    </button>
+                                                </td>
+                                                <td data-bind="css: {active: visibleLeg3() , inactive: !visibleLeg3()}">
+                                                    <button class="btn btn-block"
+                                                        data-bind="click: function(data,event){data.leg3(1);},
+                                                                   visible: visibleLeg3(),
+                                                                   css: {active: leg3()==1}">
+                                                        <i class="glyphicons unchecked" data-bind="visible: visibleLeg3() && leg3()!=1"></i>
+                                                        <i class="glyphicons check" data-bind="visible: visibleLeg3() && leg3()==1"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="active">
+                                                    <button class="btn btn-block"
+                                                        data-bind="click: function(data,event){data.leg1(2);},
+                                                                   css: {active: leg1()==2}">
+                                                        <i class="glyphicons unchecked" data-bind="visible: leg1()!=2"></i>
+                                                        <i class="glyphicons check" data-bind="visible: leg1()==2"></i>
+                                                    </button>
+                                                </td>
+                                                <td data-bind="css: {active: visibleLeg2(), inactive: !visibleLeg2()}">
+                                                    <button class="btn btn-block"
+                                                        data-bind="click: function(data,event){data.leg2(2);},
+                                                                   visible: visibleLeg2(),
+                                                                   css: {active: leg2()==2}">
+                                                        <i class="glyphicons unchecked" data-bind="visible: visibleLeg2() && leg2()!=2"></i>
+                                                        <i class="glyphicons check" data-bind="visible: visibleLeg2() && leg2()==2"></i>
+                                                    </button>
+                                                </td>
+                                                <td data-bind="css: {active: visibleLeg3() , inactive: !visibleLeg3()}">
+                                                    <button class="btn btn-block"
+                                                        data-bind="click: function(data,event){data.leg3(2);},
+                                                                   visible: visibleLeg3(),
+                                                                   css: {active: leg3()==2}">
+                                                        <i class="glyphicons unchecked" data-bind="visible: visibleLeg3() && leg3()!=2"></i>
+                                                        <i class="glyphicons check" data-bind="visible: visibleLeg3() && leg3()==2"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="player">
+                                        <i class="glyphicons asterisk" data-bind="visible: !team1Start()"></i>
+                                        <span data-bind="text: player2"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            }
                         }
                         </div>
                     }
@@ -133,22 +258,24 @@
                     <div class="span2 score hidden-phone">
                         <div class="head">@Messages("team.detail.score")</div>
                         @for(i <- 1 to 20) {
-                            <div class="row-fluid">
+                            <div class="row-fluid" data-bind="with: matches()[@{i-1}]">
                                 <div class="span4">
-                                    <i class="glyphicons unchecked"></i>
+                                    <i class="glyphicons unchecked" data-bind="visible: !team1Win()"></i>
+                                    <i class="glyphicons check" data-bind="visible: team1Win()"></i>
                                 </div>
                                 <div class="span4 elt">@i</div>
                                 <div class="span4">
-                                    <i class="glyphicons unchecked"></i>
+                                    <i class="glyphicons unchecked" data-bind="visible: !team2Win()"></i>
+                                    <i class="glyphicons check" data-bind="visible: team2Win()"></i>
                                 </div>
                             </div>
                         }
                     </div>
                 </div>
 
-                <fieldset>
+                <fieldset id="results">
                     <div class="row-fluid">
-                        <div class="span8">
+                        <div class="span7" data-bind="visible: started()">
                             <table class="table table-bordered table-striped table-condensed result">
                                 <caption>@Messages("team.detail.result")</caption>
                                 <thead>
@@ -160,48 +287,125 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td> </td>
+                                        <td data-bind="text: team1MatchesWin"></td>
                                         <th>@Messages("team.detail.matches")</th>
-                                        <td></td>
+                                        <td data-bind="text: team2MatchesWin"></td>
                                     </tr>
                                     <tr>
-                                        <td></td>
+                                        <td data-bind="text: team1LegsWin"></td>
                                         <th>@Messages("team.detail.legs")</th>
-                                        <td></td>
+                                        <td data-bind="text: team2LegsWin"></td>
                                     </tr>
-                                    <tr>
-                                        <td></td>
+                                    <tr data-bind="visible: finished()">
+                                        <td data-bind="text: team1PointsWin"></td>
                                         <th>@Messages("team.detail.points")</th>
-                                        <td></td>
+                                        <td data-bind="text: team2PointsWin"></td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
-                        <div class="span4 capitain">
-                            <div class="head">
-                                @Messages("team.detail.capitain")
-                            </div>
-                            <br>
+                        <div class="span5 capitain">
+                            <div class="head">@Messages("team.detail.capitain")</div><br>
                             <div class="row-fluid">
-                                <div class="controls controls-row">
+                                <div class="controls controls-row" data-bind="with: team1">
                                     <label class="span5" for="t1-capitain">@m.team1</label>
                                     <div class="input-append span4">
-                                        <input type="text" id="t1-capitain" class="span2" value="">
-                                        <span class="add-on"><i class="glyphicons ok_2"></i></span>
+                                        <input type="text" class="input-large"
+                                            data-bind="value: capitain,
+                                                       disable: $root.started,
+                                                       typeahead: players">
+                                        <button class="btn sign" type="button"
+                                            data-bind="click:sign,
+                                                       visible: $root.started(),
+                                                       css:{active: signed}">
+                                            <i class="glyphicons ok_2"></i>
+                                        </button>
                                     </div>
                                 </div>
-                                <div class="controls controls-row">
+                                <div class="controls controls-row" data-bind="with: team2">
                                     <label class="span5" for="t2-capitain">@m.team2</label>
-                                    <div class="input-append span4">
-                                        <input type="text" id="t2-capitain" class="span2" value="">
-                                        <span class="add-on"><i class="glyphicons ok_2"></i></span>
+                                    <div class="input-append span4" >
+                                        <input type="text" class="input-large"
+                                            data-bind="value: capitain,
+                                                       disable: $root.started,
+                                                       typeahead: players">
+                                        <button class="btn sign" type="button"
+                                            data-bind="click:sign,
+                                                       visible: $root.started(),
+                                                       css:{active: signed}">
+                                            <i class="glyphicons ok_2"></i>
+                                        </button>
                                     </div>
+                                </div>
+                                <div class="row-fluid" data-bind="visible: $root.started()">
+                                    <button type="submit" class="btn btn-large btn-block btn-primary span10 offset1"
+                                        data-bind="enable: finished() && canSend(),
+                                                   click: function(){$('#diaSend').modal()}">
+                                        @Messages("team.detail.send")
+                                    </button>
+                                </div>
+                                <div class="row-fluid" data-bind="visible: !$root.started()">
+                                    <button class="btn btn-large btn-block btn-success span10 offset1" type="button"
+                                        data-bind="enable: !started() && canStart(), click: start">
+                                        <i class="glyphicons white play"></i>
+                                        @Messages("team.detail.run")
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </fieldset>
             </form>
-    </div>
-}
+        </div>
+        @substitueModal(1)
+        @substitueModal(2)
+        <div id="diaSend" class="modal hide fade">
+            <form data-bind="submit: send">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h3>@Messages("team.detail.send.title")</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="row-fluid">
+                            <label>@Messages("team.detail.comment")</label>
+                            <textarea rows="5" class="span12" data-bind="text: comment"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">@Messages("team.detail.subst.cancel")</button>
+                    <button type="submit" class="btn btn-primary" data-dismiss="modal" data-bind="click: function(data) {data.send();}">
+                        <i class="glyphicons white envelope"></i>
+                        @Messages("team.detail.send")
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div id="diaSendOk" class="modal hide fade">
+            <div class="modal-body">
+                <p>@Html(Messages("team.detail.send.success"))</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">@Messages("team.detail.subst.close")</button>
+            </div>
+        </div>
+
+        @layout.script()
+        @tags.javascript("sammy")
+        @tags.javascript("knockout")
+        @tags.javascript("knockout-bootstrap")
+        @tags.javascript("team")
+        <script>
+var day = @m.day;
+var today = "@org.joda.time.format.DateTimeFormat.forPattern("dd-MM-yyyy").print(org.joda.time.LocalDate.now)";
+var team1Name="@m.team1.name";
+var team2Name="@m.team2.name";
+var players1 = [@for(player <- m.team1.club.players) {"@player.name",}];
+var players2 = [@for(player <- m.team2.club.players) {"@player.name",}];
+var allMatches = [];
+@for(index <- 1 to 20) {
+allMatches.push({team1Start: @TeamMatchDetail.isPlayer1Start(index), team1: "@TeamMatchDetail.getPlayer1Index(index)",team2: "@TeamMatchDetail.getPlayer2Index(index)"});}
+        </script>
+    </body>
+</html>
+
 

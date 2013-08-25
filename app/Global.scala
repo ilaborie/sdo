@@ -48,7 +48,6 @@ object Global extends GlobalSettings {
 
     if (app.mode == Mode.Dev) {
       registerUser("Igor", "Laborie", "ilaborie@gmail.com")
-      registerUser("Paulo", "", "paulo@gmail.com")
     }
   }
 
@@ -63,6 +62,7 @@ object Global extends GlobalSettings {
       val userAgent = request.headers("user-agent")
       if (!accept.contains("text/html")) action.apply(request)
       else {
+        // Reject IE < 10
         logger.trace(s"uri: ${request.uri}, accept: $accept, user-agent: $userAgent")
         val obsolete = for (version <- 6 to 9) yield s"MSIE $version."
         if (obsolete.filter(userAgent.contains(_)).isEmpty) action.apply(request)
@@ -92,8 +92,7 @@ object Global extends GlobalSettings {
   }
 
   override def onStop(app: Application) = {
-    // FIXME Close Mongo Connection
-    // UserService.delegate
+    // FIXME maybe Close Mongo Connection
   }
 
 }

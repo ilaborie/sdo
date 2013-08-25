@@ -35,9 +35,9 @@ object TeamChampionship {
  * @param matches matchs
  */
 case class TeamChampionshipDay(ligue: Ligue, day: Int, from: LocalDate, to: LocalDate, matches: Seq[PlannedTeamMatch]) {
+
   def findMatch(team1: Team, team2: Team): Option[PlannedTeamMatch] =
     matches.find(m => m.applyTo(team1) && m.applyTo(team2))
-
 
   lazy val teamExempted: Seq[Team] = {
     val teams = for {
@@ -47,4 +47,7 @@ case class TeamChampionshipDay(ligue: Ligue, day: Int, from: LocalDate, to: Loca
 
     ligue.teams.filter(team => !team.omit && !teams.contains(team))
   }
+
+  def canBeingPlay(date:LocalDate):Boolean = day == 1
+    // FIXME (date.isEqual(from) ||date.isAfter(from)) && (date.isEqual(to) ||date.isBefore(to))
 }

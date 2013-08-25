@@ -1,4 +1,3 @@
-
 .match {
   margin-top: 1em;
   border: thin solid @gray;
@@ -31,10 +30,10 @@
       margin-top: 0;
       td {
         width: 16px;
-        height: 16px;
-        padding: 0;
-        vertical-align: middle;
+        height: 2em;
+        vertical-align: top;
         text-align: center;
+        padding: 0;
 
         &.inactive {
           background-color: @grayLight;
@@ -76,6 +75,7 @@ table.result {
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 0;
+  margin-top: 1em;
   font-size: 1.2em;
 
   caption {
@@ -104,4 +104,33 @@ table.result {
     color: @grayLighter;
     font-weight: bold;
   }
+
+  .btn-block {
+    margin: .5em;
+  }
+  .btn.sign.active {
+    .buttonBackground(@btnSuccessBackground, @btnSuccessBackgroundHighlight);
+  }
+}
+
+.susbtitue:hover {
+  i {
+    display: inline-block;
+    text-decoration: none;
+    -moz-animation: spin 2s infinite linear;
+    -o-animation: spin 2s infinite linear;
+    -webkit-animation: spin 2s infinite linear;
+    animation: spin 2s infinite linear;
+  }
+}
+
+.modal .btn.btn-block.active {
+  .buttonBackground(@btnPrimaryBackground, @btnPrimaryBackgroundHighlight);
+}
+
+input.in {
+  color: @green;
+}
+input.out {
+  color: @red;
 }

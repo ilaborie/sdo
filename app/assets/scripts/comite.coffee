@@ -69,6 +69,9 @@ class Comite
           window.location.reload()
         else
           @.app.runRoute("get", "#comite")
+      @get "/sdo/ligues/:ligue/team/day/:day/:team1/:team2", (context) ->
+        url = context.path
+        window.open(url, "_blank")
     ).run()
 
 

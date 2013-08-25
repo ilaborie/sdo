@@ -35,8 +35,9 @@ GET         /ligues/:ligue/comites/:comite/team               controllers.Classe
 GET         /ligues/:ligue/tour/:tour                         controllers.Orga.ligueTournament(ligue, tour)
 GET         /ligues/:ligue/comites/:comite/tour/:tour         controllers.Orga.comiteTournament(ligue, comite, tour)
 
-# Detail
+# Team Championship
 GET         /ligues/:ligue/team/day/:day/:team1/:team2        controllers.Detail.team(ligue,day:Int,team1,team2)
+POST        /ligues/:ligue/team/result                        controllers.Detail.result(ligue)
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file                                     controllers.Assets.at(path="/public", file)
