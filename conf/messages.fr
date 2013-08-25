@@ -150,6 +150,9 @@ team.detail.result=Résultat
 team.detail.capitain=Capitaines
 team.detail.send=Envoyer
 team.detail.run=Démarrer
+team.detail.subst.player=Joueur sortant ?
+team.detail.subst.cancel=Annuler
+team.detail.subst.action=Remplacer
 
 # Club
 club.oneteam=Équipe
