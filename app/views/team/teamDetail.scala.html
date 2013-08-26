@@ -107,151 +107,153 @@
     }
 
 @layout.main(Messages("team.detail.title", detail)) {
-    <div class="container well well-small">
-        @detail match {
-            case MatchDetailFail(_, _, _, fails) => {
-                @Messages("team.detail.fail", fails)
-            }
-            case PlayedMatchDetail(day, date, location, team1, team2, matches) => {
-                <h1>
-                    @Messages("championship.day.caption",day) -
-                    <span class="@tags.winLooseDraw(detail.plus(team1.team),detail.plus(team2.team))">@team1.team</span>
-                    vs.
-                    <span class="@tags.winLooseDraw(detail.plus(team2.team),detail.plus(team1.team))">@team2.team</span>
-                </h1>
-                <form>
-                    <fieldset>
-                        <div class="controls controls-row">
-                            <label class="span1" for="day">@Messages("team.detail.day")</label>
-                            <input type="text" id="day" class="span1 uneditable-input" value="@detail.day">
-                            <label class="span2 offset1" for="date">@Messages("team.detail.date")</label>
-                            <input type="text" id="date" class=" span7 uneditable-input" value="@tags.date(date)">
-                        </div>
-                        <div class="controls controls-row">
-                            <label class="span1" for="location">@Messages("team.detail.location")</label>
-                            <input type="text" id="location" class="span10 uneditable-input" value="@location">
-                        </div>
-                    </fieldset>
-
-                    <div class="row-fluid">
-                        <div class="span6">
-                            <fieldset>
-                                <legend>@team1.team</legend>
-                                @displayTeam(team1)
-                            </fieldset>
-                        </div>
-
-                        <div class="span6">
-                            <fieldset>
-                                <legend>@team2.team</legend>
-                                @displayTeam(team2)
-                            </fieldset>
-                        </div>
-                    </div>
-                    <div class="row-fluid">
-                        <div class="span10">
-                        @for(i <- 0 to 4) {
-                            <div class="row-fluid">
-                            @for(j <- 0 to 3) {
-                                <div class="span3">@displayMatch((4 * i) + j + 1, matches((4 * i) + j))</div>
-                            }
+    <div class="container">
+        <div class="well well-small">
+            @detail match {
+                case MatchDetailFail(_, _, _, fails) => {
+                    @Messages("team.detail.fail", fails)
+                }
+                case PlayedMatchDetail(day, date, location, team1, team2, matches) => {
+                    <h1>
+                        @Messages("championship.day.caption",day) -
+                        <span class="@tags.winLooseDraw(detail.plus(team1.team),detail.plus(team2.team))">@team1.team</span>
+                        vs.
+                        <span class="@tags.winLooseDraw(detail.plus(team2.team),detail.plus(team1.team))">@team2.team</span>
+                    </h1>
+                    <form>
+                        <fieldset>
+                            <div class="controls controls-row">
+                                <label class="span1" for="day">@Messages("team.detail.day")</label>
+                                <input type="text" id="day" class="span1 uneditable-input" value="@detail.day">
+                                <label class="span2 offset1" for="date">@Messages("team.detail.date")</label>
+                                <input type="text" id="date" class=" span7 uneditable-input" value="@tags.date(date)">
                             </div>
-                        }
-                        </div>
-                        <div class="span2 score hidden-phone">
-                            <div class="head">@Messages("team.detail.score")</div>
-                            @for(i <- 1 to 20) {
-                                <div class="row-fluid">
-                                    <div class="span4">
-                                    @if(matches(i - 1).teamWinner == team1.team) {
-                                        <i class="glyphicons check"></i>
-                                    } else {
-                                        <i class="glyphicons unchecked"></i>
-                                    }
-                                    </div>
-                                    <div class="span4 elt">@i</div>
-                                    <div class="span4">
-                                    @if(matches(i - 1).teamWinner == team2.team) {
-                                        <i class="glyphicons check"></i>
-                                    } else {
-                                        <i class="glyphicons unchecked"></i>
-                                    }
+                            <div class="controls controls-row">
+                                <label class="span1" for="location">@Messages("team.detail.location")</label>
+                                <input type="text" id="location" class="span10 uneditable-input" value="@location">
+                            </div>
+                        </fieldset>
 
-                                    </div>
-                                </div>
-                            }
-                        </div>
-                    </div>
-
-                    <fieldset>
                         <div class="row-fluid">
-                            <div class="span8">
-                                <table class="table table-bordered table-striped table-condensed result">
-                                    <caption>@Messages("team.detail.result")</caption>
-                                    <thead>
-                                        <tr>
-                                            <th>@team1.team.name</th>
-                                            <th></th>
-                                            <th>@team2.team.name</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="@tags.winLooseDraw(detail.plus(team1.team),detail.plus(team2.team))">
-                                            @detail.plus(team1.team)
-                                            </td>
-                                            <th>@Messages("team.detail.matches")</th>
-                                            <td class="@tags.winLooseDraw(detail.plus(team2.team),detail.plus(team1.team))">
-                                            @detail.plus(team2.team)
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="@tags.winLooseDraw(detail.legs(team1.team),detail.legs(team2.team))">
-                                            @detail.legs(team1.team)
-                                            </td>
-                                            <th>@Messages("team.detail.legs")</th>
-                                            <td class="@tags.winLooseDraw(detail.legs(team2.team),detail.legs(team1.team))">
-                                            @detail.legs(team2.team)
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="@tags.winLooseDraw(detail.points(team1.team),detail.points(team2.team))">
-                                            @detail.points(team1.team)
-                                            </td>
-                                            <th>@Messages("team.detail.points")</th>
-                                            <td class="@tags.winLooseDraw(detail.points(team2.team),detail.points(team1.team))">
-                                            @detail.points(team2.team)
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            <div class="span6">
+                                <fieldset>
+                                    <legend>@team1.team</legend>
+                                    @displayTeam(team1)
+                                </fieldset>
                             </div>
-                            <div class="span4 capitain">
-                                <div class="head">
-                                    @Messages("team.detail.capitain")
-                                </div>
-                                <br>
-                                <div class="row-fluid">
-                                    <div class="controls controls-row">
-                                        <label class="span5" for="t1-capitain">@team1.team</label>
-                                        <div class="input-append span4">
-                                            <input type="text" id="t1-capitain" class="span2 uneditable-input" value="@team1.capitain.name">
-                                            <span class="add-on"><i class="glyphicons ok_2"></i></span>
-                                        </div>
-                                    </div>
-                                    <div class="controls controls-row">
-                                        <label class="span5" for="t2-capitain">@team2.team</label>
-                                        <div class="input-append span4">
-                                            <input type="text" id="t2-capitain" class="span2 uneditable-input" value="@team2.capitain.name">
-                                            <span class="add-on"><i class="glyphicons ok_2"></i></span>
-                                        </div>
-                                    </div>
-                                </div>
+
+                            <div class="span6">
+                                <fieldset>
+                                    <legend>@team2.team</legend>
+                                    @displayTeam(team2)
+                                </fieldset>
                             </div>
                         </div>
-                    </fieldset>
-                </form>
+                        <div class="row-fluid">
+                            <div class="span10">
+                            @for(i <- 0 to 4) {
+                                <div class="row-fluid">
+                                @for(j <- 0 to 3) {
+                                    <div class="span3">@displayMatch((4 * i) + j + 1, matches((4 * i) + j))</div>
+                                }
+                                </div>
+                            }
+                            </div>
+                            <div class="span2 score hidden-phone">
+                                <div class="head">@Messages("team.detail.score")</div>
+                                @for(i <- 1 to 20) {
+                                    <div class="row-fluid">
+                                        <div class="span4">
+                                        @if(matches(i - 1).teamWinner == team1.team) {
+                                            <i class="glyphicons check"></i>
+                                        } else {
+                                            <i class="glyphicons unchecked"></i>
+                                        }
+                                        </div>
+                                        <div class="span4 elt">@i</div>
+                                        <div class="span4">
+                                        @if(matches(i - 1).teamWinner == team2.team) {
+                                            <i class="glyphicons check"></i>
+                                        } else {
+                                            <i class="glyphicons unchecked"></i>
+                                        }
+
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        <fieldset>
+                            <div class="row-fluid">
+                                <div class="span8">
+                                    <table class="table table-bordered table-striped table-condensed result">
+                                        <caption>@Messages("team.detail.result")</caption>
+                                        <thead>
+                                            <tr>
+                                                <th>@team1.team.name</th>
+                                                <th></th>
+                                                <th>@team2.team.name</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="@tags.winLooseDraw(detail.plus(team1.team),detail.plus(team2.team))">
+                                                @detail.plus(team1.team)
+                                                </td>
+                                                <th>@Messages("team.detail.matches")</th>
+                                                <td class="@tags.winLooseDraw(detail.plus(team2.team),detail.plus(team1.team))">
+                                                @detail.plus(team2.team)
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="@tags.winLooseDraw(detail.legs(team1.team),detail.legs(team2.team))">
+                                                @detail.legs(team1.team)
+                                                </td>
+                                                <th>@Messages("team.detail.legs")</th>
+                                                <td class="@tags.winLooseDraw(detail.legs(team2.team),detail.legs(team1.team))">
+                                                @detail.legs(team2.team)
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="@tags.winLooseDraw(detail.points(team1.team),detail.points(team2.team))">
+                                                @detail.points(team1.team)
+                                                </td>
+                                                <th>@Messages("team.detail.points")</th>
+                                                <td class="@tags.winLooseDraw(detail.points(team2.team),detail.points(team1.team))">
+                                                @detail.points(team2.team)
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="span4 capitain">
+                                    <div class="head">
+                                        @Messages("team.detail.capitain")
+                                    </div>
+                                    <br>
+                                    <div class="row-fluid">
+                                        <div class="controls controls-row">
+                                            <label class="span5" for="t1-capitain">@team1.team</label>
+                                            <div class="input-append span4">
+                                                <input type="text" id="t1-capitain" class="span2 uneditable-input" value="@team1.capitain.name">
+                                                <span class="add-on"><i class="glyphicons ok_2"></i></span>
+                                            </div>
+                                        </div>
+                                        <div class="controls controls-row">
+                                            <label class="span5" for="t2-capitain">@team2.team</label>
+                                            <div class="input-append span4">
+                                                <input type="text" id="t2-capitain" class="span2 uneditable-input" value="@team2.capitain.name">
+                                                <span class="add-on"><i class="glyphicons ok_2"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                }
             }
-        }
+        </div>
     </div>
 }

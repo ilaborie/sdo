@@ -4,25 +4,27 @@
 @import securesocial.core.providers.utils.RoutesHelper
 
 @layout.main( Messages("securesocial.signup.title") ) {
-    <div class="container well well-small">
-        @request.flash.get("error").map(msg => tags.alert()(Html(msg)))
+    <div class="container">
+        <div class="well well-small">
+            @request.flash.get("error").map(msg => tags.alert()(Html(msg)))
 
-        <form action="@RoutesHelper.handleStartSignUp().absoluteURL(IdentityProvider.sslEnabled)"
-              class="form" method="post">
-            <fieldset>
-                <legend>@Messages("securesocial.signup.title")</legend>
+            <form action="@RoutesHelper.handleStartSignUp().absoluteURL(IdentityProvider.sslEnabled)"
+                  class="form" method="post">
+                <fieldset>
+                    <legend>@Messages("securesocial.signup.title")</legend>
 
-                <div class="controls mandatory">
-                    <div class="input-prepend">
-                        <span class="add-on"><i class="glyphicons envelope"></i></span>
-                        <input type="email" id="email" name="email" value="@startForm("email").value.map(v => v)" class="input-xlarge" placeholder="@Messages("securesocial.signup.email1")">
+                    <div class="controls mandatory">
+                        <div class="input-prepend">
+                            <span class="add-on"><i class="glyphicons envelope"></i></span>
+                            <input type="email" id="email" name="email" value="@startForm("email").value.map(v => v)" class="input-xlarge" placeholder="@Messages("securesocial.signup.email1")">
+                        </div>
                     </div>
-                </div>
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">@Messages("securesocial.signup.createAccount")</button>
-                    <a class="btn" href="@RoutesHelper.login()">@Messages("securesocial.signup.cancel")</a>
-                </div>
-            </fieldset>
-        </form>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">@Messages("securesocial.signup.createAccount")</button>
+                        <a class="btn" href="@RoutesHelper.login()">@Messages("securesocial.signup.cancel")</a>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
     </div>
 }

@@ -5,29 +5,31 @@
 @import securesocial.core.providers.UsernamePasswordProvider.UsernamePassword
 
 @layout.main(Messages("securesocial.login.title")) {
-    <div class="container well well-small">
-        <div class="page-header">
-            <h1>@Messages("securesocial.login.title")</h1>
-        </div>
-        @errorMsg.map(msg => tags.alert()(Html(Messages(msg))))
-        @request.flash.get("error").map(msg => tags.alert()(Html(msg)))
-        @request.flash.get("success").map(msg => tags.alert("info")(Html(msg)))
-
-        <div class="row">
-            <div class="span6">
-                <form>
-                    <fieldset>
-                        <legend>@Messages("securesocial.login.instructions")</legend>
-                        @for(provider <- Registry.providers.all().values.filter(_.id != UsernamePassword)) {
-                            <a class="auth" href="@provider.authenticationUrl">
-                                <img src="@RoutesHelper.at(s"images/${provider.id}.png")"/>
-                            </a>
-                        }
-                    </fieldset>
-                </form>
+    <div class="container">
+        <div class="well well-small">
+            <div class="page-header">
+                <h1>@Messages("securesocial.login.title")</h1>
             </div>
-            <div class="span6">
-                @custom.userPassword(loginForm)
+            @errorMsg.map(msg => tags.alert()(Html(Messages(msg))))
+            @request.flash.get("error").map(msg => tags.alert()(Html(msg)))
+            @request.flash.get("success").map(msg => tags.alert("info")(Html(msg)))
+
+            <div class="row-fluid">
+                <div class="span6">
+                    <form>
+                        <fieldset>
+                            <legend>@Messages("securesocial.login.instructions")</legend>
+                            @for(provider <- Registry.providers.all().values.filter(_.id != UsernamePassword)) {
+                                <a class="auth" href="@provider.authenticationUrl">
+                                    <img src="@RoutesHelper.at(s"images/${provider.id}.png")"/>
+                                </a>
+                            }
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="span6">
+                    @custom.userPassword(loginForm)
+                </div>
             </div>
         </div>
     </div>

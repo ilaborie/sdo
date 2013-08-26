@@ -12,30 +12,33 @@
     </head>
 
     <body>
-        @navbar.empty(title, user)
-        @content
-
-    <footer class="footer">
-        <div class="container">
-            <ul class="footer-links">
-                <li>
-                    <a href="http://www.ffdarts.com/" target="_blank">
-                        <img src="@routes.Assets.at("images/FFD.png")" alt="FFD"/>
-                    </a>
-                </li>
-                <li>
-                    <a href="http://www.bdodarts.com/" target="_blank">
-                        <img src="@routes.Assets.at("images/BDO.png")" alt="BDO">
-                    </a>
-                </li>
-                <li>
-                    <a href="http://www.dartswdf.com/" target="_blank">
-                        <img src="@routes.Assets.at("images/WDF.png")" alt="WDF"/>
-                    </a>
-                </li>
-            </ul>
+        <div id="wrap">
+            @navbar.empty(title, user)
+            @content
+            <div id="push"></div>
         </div>
-    </footer>
+
+        <div id="footer">
+            <div class="container">
+                <ul class="footer-links">
+                    <li>
+                        <a href="http://www.ffdarts.com/" target="_blank">
+                            <img src="@routes.Assets.at("images/FFD.png")" alt="FFD"/>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://www.bdodarts.com/" target="_blank">
+                            <img src="@routes.Assets.at("images/BDO.png")" alt="BDO">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://www.dartswdf.com/" target="_blank">
+                            <img src="@routes.Assets.at("images/WDF.png")" alt="WDF"/>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
         @scripts
     </body>
 </html>

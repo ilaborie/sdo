@@ -1,21 +1,23 @@
 @(contacts: Seq[model.contact.Contact])
 
 @layout.main(Messages("title.contacts")) {
-    <div class="container well well-small">
-        <div class="page-header">
-            <h1>@Messages("title.contacts")</h1>
-        </div>
-        <p class="lead">@Html(Messages("contacts.mention"))</p>
-
-        @for(contact <- contacts) {
-            <h2>@contact.name</h2>
-            <div class="contact">
-                <div class="links">
-                    @contact.url.map(tags.site(_))
-                    @contact.email.map(tags.email(_))
-                </div>
-                @contact.info.map(tags.info(_))
+    <div class="container">
+        <div class="well well-small">
+            <div class="page-header">
+                <h1>@Messages("title.contacts")</h1>
             </div>
-        }
+            <p class="lead">@Html(Messages("contacts.mention"))</p>
+
+            @for(contact <- contacts) {
+                <h2>@contact.name</h2>
+                <div class="contact">
+                    <div class="links">
+                        @contact.url.map(tags.site(_))
+                        @contact.email.map(tags.email(_))
+                    </div>
+                    @contact.info.map(tags.info(_))
+                </div>
+            }
+        </div>
     </div>
 }

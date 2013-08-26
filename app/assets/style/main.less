@@ -3,26 +3,68 @@
 // Imports
 @import "bootstrap/variables.less";
 @import "bootstrap/mixins.less";
-
 @import "bootstrap/bootstrap.less";
 @import "bootstrap/responsive.less";
 @import "glyphicons/glyphicons-boostrap.less";
 
 // Bases
+
+html,
 body {
   height: 100%;
-
+  /* The html and body elements cannot have any padding or margin. */
   background-image: url("../images/dartboard-1.jpg");
   font-family: 'Ubuntu', sans-serif;
-
-  margin-top: 60px;
-
 }
 
-@media (max-width: 979px) {
-  body {
-    margin-top: 0;
+/* Wrapper for page content to push down footer */
+#wrap {
+  margin: 0 auto -62px;
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+}
+
+/* Set the fixed height of the footer here */
+#push,
+#footer {
+  height: 62px;
+}
+
+#footer {
+  text-align: center;
+  border-top: 2px solid @grayLight;
+  background-color: @grayLighter;
+
+  .footer-links {
+    margin: 10px 0;
+    li {
+      display: inline;
+      padding: 0 30px;
+
+      &:first-child {
+        padding-left: 0;
+      }
+
+      a img {
+        height: 48px;
+      }
+    }
   }
+}
+
+/* Lastly, apply responsive CSS fixes as necessary */
+@media (max-width: 767px) {
+  #footer {
+    margin-left: -20px;
+    margin-right: -20px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+#wrap > .container {
+  padding-top: 60px;
 }
 
 h1 {
@@ -140,27 +182,3 @@ table.table {
 
 // Auth
 @import "auth.less";
-
-// Footer
-.footer {
-  text-align: center;
-  margin-top: 70px;
-  border-top: 2px solid @grayLight;
-  background-color: @grayLighter;
-
-  .footer-links {
-    margin: 10px 0;
-    li {
-      display: inline;
-      padding: 0 30px;
-
-      &:first-child {
-        padding-left: 0;
-      }
-
-      a img {
-        height: 48px;
-      }
-    }
-  }
-}
