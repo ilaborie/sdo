@@ -78,6 +78,14 @@ object Classements extends Controller with SecureSocial {
       }.result
   }
 
+  def ligueTeamPDF(ligueShortName: String) = Action {
+    implicit request =>
+      LigueAction(ligueShortName) {
+        ligue =>
+          PDF.ok(pdf.html.ligueTeamRanking.render(ligue, LigueRanking.team(ligue))).getWrappedResult
+      }.result
+  }
+
 
   /**
    * Comite Single
