@@ -1,14 +1,12 @@
 package model.user
 
-import play.api.Logger
 import play.api.cache.Cache
 import play.api.Play.current
-import play.libs.Akka
 
 import securesocial.core._
 
-import model.orga.{Ligue, LicensedPlayer}
-import util.EMail
+import model.orga._
+import util._
 
 /**
  * A user
@@ -18,8 +16,6 @@ sealed abstract class User {
 }
 
 object User {
-
-  private val logger = Logger("user")
 
   /**
    * Return user from identity
@@ -50,29 +46,8 @@ object User {
   }
 
   private def sendMailForGuest(id: Identity) {
-    import com.typesafe.plugin._
-    import scala.concurrent.duration._
-    import play.api.libs.concurrent.Execution.Implicits._
-
-    // Send a mail
-    Akka.system.scheduler.scheduleOnce(1 seconds) {
-      val mail = use[MailerPlugin].email
-      mail.setSubject("[SDO] newUser")
-      mail.addRecipient("ilaborie@gmail.com")
-      mail.addFrom("ilaborie@gmail.com")
-      // the mailer plugin handles null / empty string gracefully
-
-      val body = s"""
-      User Id: ${id.identityId.userId}
-      Fist name: ${id.firstName}
-      Last name: ${id.lastName}
-      Full name: ${id.fullName}
-      Logged in from: ${id.identityId.providerId}
-      Email: ${id.email.getOrElse("")}
-      Authentication method: ${id.authMethod.method}
-      """
-      mail.send(body, "")
-    }
+    val body = emails.html.newUser(id)
+    Mailer.sendEmail("[SDO] newUser", "ilaborie@gmail.com", body)
   }
 
   private def findUserBy(id: Identity)(filter: (LicensedPlayer) => Boolean): User = Ligue.players.find(filter) match {

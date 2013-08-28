@@ -17,6 +17,7 @@
     <logger name="UserService" level="INFO"/>
     <logger name="user" level="DEBUG"/>
     <logger name="AuthEventListener" level="TRACE"/>
+    <logger name="Mailer" level="TRACE"/>
 
     <root level="ERROR">
         <appender-ref ref="FILE"/>
