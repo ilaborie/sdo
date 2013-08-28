@@ -42,26 +42,26 @@ class CustomTemplatesPlugin(application: play.api.Application) extends Templates
   }
 
   def getSignUpEmail(token: String)(implicit request: RequestHeader): (Option[Txt], Option[Html]) = {
-    (None, Some(views.html.custom.mails.signUpEmail(token)))
+    (None, Some(emails.html.signUpEmail(token)))
   }
 
   def getAlreadyRegisteredEmail(user: Identity)(implicit request: RequestHeader): (Option[Txt], Option[Html]) = {
-    (None, Some(views.html.custom.mails.alreadyRegisteredEmail(user)))
+    (None, Some(emails.html.alreadyRegisteredEmail(user)))
   }
 
   def getWelcomeEmail(user: Identity)(implicit request: RequestHeader): (Option[Txt], Option[Html]) = {
-    (None, Some(views.html.custom.mails.welcomeEmail(user)))
+    (None, Some(emails.html.welcomeEmail(user)))
   }
 
   def getUnknownEmailNotice()(implicit request: RequestHeader): (Option[Txt], Option[Html]) = {
-    (None, Some(views.html.custom.mails.unknownEmailNotice(request)))
+    (None, Some(emails.html.unknownEmailNotice(request)))
   }
 
   def getSendPasswordResetEmail(user: Identity, token: String)(implicit request: RequestHeader): (Option[Txt], Option[Html]) = {
-    (None, Some(views.html.custom.mails.passwordResetEmail(user, token)))
+    (None, Some(emails.html.passwordResetEmail(user, token)))
   }
 
   def getPasswordChangedNoticeEmail(user: Identity)(implicit request: RequestHeader): (Option[Txt], Option[Html]) = {
-    (None, Some(views.html.custom.mails.passwordChangedNotice(user)))
+    (None, Some(emails.html.passwordChangedNotice(user)))
   }
 }

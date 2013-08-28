@@ -38,7 +38,7 @@ object DataEvent {
       if (!data.contains("location")) None
       else YamlParser.readLocation(data)
     }
-    val email = YamlParser.toOption(data, "email") match {
+    val email = YamlParser.toOption(data, "emails") match {
       case Some(em) => Some(EMail(em))
       case None => None
     }

@@ -229,7 +229,7 @@ object Data {
    * @param data data
    * @return email
    */
-  private def readEmails(data: Map[String, Any]): Set[EMail] = data.get("email") match {
+  private def readEmails(data: Map[String, Any]): Set[EMail] = data.get("emails") match {
     case None => Set()
     case Some(x) =>
       var result = for (email <- x.asInstanceOf[String].split(",")) yield EMail(email.trim)

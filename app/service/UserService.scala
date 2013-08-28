@@ -86,13 +86,11 @@ class UserService(application: Application) extends UserServicePlugin(applicatio
 
   def find(id: IdentityId): Option[Identity] = {
     logger.trace(s"find($id)")
-
     val query = BSONDocument(
       "userId" -> id.userId,
       "providerId" -> id.providerId
     )
     val result = users.find(query).one
-
     val res = Await.result(result, 1 seconds)
     res map toIdentity
   }
@@ -113,7 +111,6 @@ class UserService(application: Application) extends UserServicePlugin(applicatio
 
   def save(user: Identity): Identity = {
     logger.trace(s"save($user)")
-
     val doc = BSONDocument(
       "_id" -> createId(user.identityId),
       "userId" -> user.identityId.userId,
