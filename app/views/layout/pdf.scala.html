@@ -1,0 +1,32 @@
+@(title: String)(content: Html)
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>@title</title>
+        <link rel="stylesheet" href="@routes.Assets.at("style/pdf.css")">
+    </head>
+    <body>
+
+        <div style="-fs-page-sequence: start; page-break-before: auto">
+            <div style="position: running(current);">
+                <div id="page-header" class="big">
+                    <span class="align-left">@title</span>
+                    <span class="align-right">@tags.date()</span>
+                    <div class="line">&#160;</div>
+                </div>
+            </div>
+
+            <div style="position: running(footer);">
+                <div id="page-footer" class="small">
+                    <!--
+                    <div class="line">&#160;</div>
+                    <span class="align-right">@tags.date()</span>
+                    -->
+                </div>
+            </div>
+            @content
+        </div>
+    </body>
+</html>

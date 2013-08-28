@@ -1,9 +1,13 @@
 package controllers
 
 import play.api.mvc._
+
+import securesocial.core._
+
+import util.pdf.PDF
+
 import model.orga._
 import model.rank._
-import securesocial.core._
 import model.user.User
 
 
@@ -137,6 +141,14 @@ object Classements extends Controller with SecureSocial {
     implicit request =>
       ComiteAction(ligueShortName, comiteShortName) {
         comite => Ok(views.html.comite.team(comite, ComiteRanking.team(comite), User(request.user)))
+      }.result
+  }
+
+  def comiteTeamPDF(ligueShortName: String, comiteShortName: String) = Action {
+    implicit request =>
+      ComiteAction(ligueShortName, comiteShortName) {
+        comite =>
+          PDF.ok(pdf.html.comiteTeamRanking.render(comite, ComiteRanking.team(comite))).getWrappedResult
       }.result
   }
 }

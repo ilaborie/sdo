@@ -30,6 +30,7 @@ GET         /ligues/:ligue/comites/:comite/feminine           controllers.Classe
 GET         /ligues/:ligue/comites/:comite/junior             controllers.Classements.comiteJunior(ligue, comite)
 GET         /ligues/:ligue/comites/:comite/double             controllers.Classements.comiteDoublette(ligue, comite)
 GET         /ligues/:ligue/comites/:comite/team               controllers.Classements.comiteTeam(ligue, comite)
+GET         /ligues/:ligue/comites/:comite/team.pdf           controllers.Classements.comiteTeamPDF(ligue, comite)
 
 # Tournament
 GET         /ligues/:ligue/tour/:tour                         controllers.Orga.ligueTournament(ligue, tour)
