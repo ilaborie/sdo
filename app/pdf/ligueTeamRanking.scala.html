@@ -1,7 +1,7 @@
 @(ligue: model.orga.Ligue, ranking: model.rank.SeasonTeamRanking)
 
 
-@layout.pdf(Messages("rank.team.ligue.caption", ranking.champ.season, ligue.name), page = "landscapePage") {
+@layout.pdf(Messages("rank.team.ligue.caption", ranking.champ.season, ligue.name),landscape=true) {
     <table class="classement" cell>
         <thead>
             <tr>

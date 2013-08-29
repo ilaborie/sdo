@@ -10,6 +10,7 @@ import model.orga._
 import model.team._
 import util.Mailer
 import play.api.libs.json.JsString
+import util.pdf.PDF
 
 /**
  * Detail pages
@@ -49,6 +50,38 @@ object Detail extends Controller with SecureSocial {
           }
         }
       }.result
+  }
+
+  /**
+   * Team match detail (PDF)
+   * @param ligueShortName ligue
+   * @param day day
+   * @param team1Name team1
+   * @param team2Name team3
+   * @return
+   */
+  def teamPDF(ligueShortName: String, day: Int, team1Name: String, team2Name: String) = Action {
+    LigueAction(ligueShortName) {
+      ligue => TeamChampionship(season, ligue).findDay(day) match {
+        case None => BadRequest(s"Journée $day non trouvée !")
+        case Some(champDay) => {
+          val team1 = ligue.findTeamByShortName(team1Name)
+          val team2 = ligue.findTeamByShortName(team2Name)
+
+          if (team1.isDefined && team2.isDefined) {
+            val m: Option[PlannedTeamMatch] = champDay.findMatch(team1.get, team2.get)
+            if (m.isDefined) {
+              val detail: Option[MatchDetail] = m.get.detail
+              if (detail.isDefined)
+                PDF.ok(pdf.html.teamDetail(ligue, detail.get)).getWrappedResult
+              else BadRequest(s"Match $team1Name - $team2Name non joué pour la journée $day !")
+            }
+            else BadRequest(s"Match $team1Name - $team2Name non trouvée dans la journée $day !")
+          } else if (team1.isDefined) BadRequest(s"Équipe $team2Name non trouvée !")
+          else BadRequest(s"Équipe $team1Name non trouvée !")
+        }
+      }
+    }.result
   }
 
   /**

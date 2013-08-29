@@ -1,0 +1,108 @@
+@import "bootstrap/variables.less";
+
+.small {
+  font-size: xx-small;
+}
+.big {
+  font-size: larger;
+}
+
+.line {
+  border-bottom: 1px solid black
+}
+.align-left {
+  float: left;
+}
+.align-right {
+  float: right;
+}
+
+/**
+ * Specific Elements
+ */
+#page-header {
+  display: inline;
+}
+
+#page-footer {
+  text-align: right;
+}
+
+/**
+ * Flying Saucer custom stuff
+ *
+ * see https://xhtmlrenderer.dev.java.net/servlets/ReadMsg?listName=dev&msgNo=3707
+ */
+
+@page {
+  size: landscape;
+  background: @white;
+
+@top-center
+{
+  content: element(current)
+;
+}
+
+@bottom-right
+{
+  content: element(footer)
+;
+}
+  }
+
+.page-start {
+  -fs-page-sequence: start;
+  page-break-before: always;
+}
+
+table {
+  -fs-table-paginate: paginate;
+  page-break-inside: avoid;
+}
+
+/* forces a page break */
+.break {
+  page-break-after: always
+}
+
+span.page:before {
+  content: counter(page);
+}
+
+span.pagecount:before {
+  content: counter(pages);
+}
+
+/**
+ * Custom
+ */
+.classement {
+  border: 1px solid @tableBorder;
+  border-spacing: 0;
+  border-collapse: collapse;
+
+  font-size: 1.5em;
+
+  th, td {
+    padding: 0.2em;
+    text-align: center;
+    border: 1px solid @tableBorder;
+  }
+
+  th.left, td.left {
+    text-align: left !important;
+  }
+
+  tbody tr.even {
+    background-color: @tableBackgroundAccent;
+  }
+
+  td.pos {
+    color: @green;
+  }
+  td.neg {
+    color: @red;
+  }
+}
+

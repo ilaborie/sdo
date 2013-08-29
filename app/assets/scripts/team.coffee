@@ -110,9 +110,9 @@ class Team
       d1: self.d1().toJson(),
       d2: self.d2().toJson(),
       substitute:
-        j: self.psubs().trim(),
-        out: self.psubsWho().trim(),
-        match: self.psubsWhen().trim(),
+        j: $.trim(self.psubs()),
+        out: $.trim(self.psubsWho()),
+        match: $.trim(self.psubsWhen()),
       capitain: self.capitain().trim()
     # DEV
     self.devFillPlayers = () ->

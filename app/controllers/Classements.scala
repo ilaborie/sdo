@@ -78,6 +78,11 @@ object Classements extends Controller with SecureSocial {
       }.result
   }
 
+  /**
+   * Team Ligue (PDF)
+   * @param ligueShortName ligue
+   * @return PDF
+   */
   def ligueTeamPDF(ligueShortName: String) = Action {
     implicit request =>
       LigueAction(ligueShortName) {
@@ -152,6 +157,12 @@ object Classements extends Controller with SecureSocial {
       }.result
   }
 
+  /**
+   * Comite Team (PDF)
+   * @param ligueShortName ligue
+   * @param comiteShortName comite
+   * @return PDF
+   */
   def comiteTeamPDF(ligueShortName: String, comiteShortName: String) = Action {
     implicit request =>
       ComiteAction(ligueShortName, comiteShortName) {

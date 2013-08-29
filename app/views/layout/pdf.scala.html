@@ -1,13 +1,17 @@
-@(title: String, page:String="portraitPage")(content: Html)
+@(title: String, landscape:Boolean=false)(content: Html)
 
 <!DOCTYPE html>
 
 <html>
     <head>
         <title>@title</title>
-        <link rel="stylesheet" href="@routes.Assets.at("style/pdf.css")">
+        @if(landscape) {
+            <link rel="stylesheet" href="@routes.Assets.at("style/pdf-landscape.css")">
+        } else {
+            <link rel="stylesheet" href="@routes.Assets.at("style/pdf-landscape.css")">
+        }
     </head>
-    <body class="@page">
+    <body>
 
         <div style="-fs-page-sequence: start; page-break-before: auto">
             <div style="position: running(current);">
