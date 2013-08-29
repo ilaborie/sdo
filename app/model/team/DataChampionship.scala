@@ -218,16 +218,14 @@ object DataChampionship {
    */
   def readLegs(player1: TeamParticipant, player2: TeamParticipant, data: Map[String, Any]): (Leg, Leg, Option[Leg]) = {
     def int2Leg(i: Int) = i match {
-      case 1 => Leg(player1)
-      case 2 => Leg(player2)
-      case _ => throw ParseDataException(s"Unexpected leg value: $i (expected 1 or 2)")
+      case 1 => Some(Leg(player1))
+      case 2 => Some(Leg(player2))
+      case _ => None
     }
 
-    val leg1 = int2Leg(data("l1").asInstanceOf[Int])
-    val leg2 = int2Leg(data("l2").asInstanceOf[Int])
-
-    val l3 = data("l3").asInstanceOf[Integer]
-    val leg3 = if (l3 != null) Some(int2Leg(l3.toInt)) else None
+    val leg1 = int2Leg(data("l1").asInstanceOf[Int]).get
+    val leg2 = int2Leg(data("l2").asInstanceOf[Int]).get
+    val leg3 = int2Leg(data("l3").asInstanceOf[Int])
 
     (leg1, leg2, leg3)
   }

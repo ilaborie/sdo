@@ -3,6 +3,7 @@
 .small {
   font-size: xx-small;
 }
+
 .big {
   font-size: larger;
 }
@@ -10,9 +11,11 @@
 .line {
   border-bottom: 1px solid black
 }
+
 .align-left {
   float: left;
 }
+
 .align-right {
   float: right;
 }
@@ -34,22 +37,35 @@
  * see https://xhtmlrenderer.dev.java.net/servlets/ReadMsg?listName=dev&msgNo=3707
  */
 
-@page {
-  size: landscape; /*letter landscape*/
+@page land {
+  size: landscape;
+}
+
+@page port {
+  size: portrait;
+}
+
+.landscapePage {
+  page: land;
+}
+
+.portraitPage {
+  page: port;
+}
+
+.portraitPage, .landscapePage {
   background: @white;
 
-@top-center
-{
-  content: element(current)
-;
+  @top-center {
+    content: element(current);
+  }
+
+  @bottom-right{
+    content: element(footer);
+  }
 }
 
-@bottom-right
-{
-  content: element(footer)
-;
-}
-  }
+
 
 .page-start {
   -fs-page-sequence: start;

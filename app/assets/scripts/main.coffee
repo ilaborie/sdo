@@ -12,3 +12,9 @@ $ ->
     href = $(elt).attr("href")
     if (href == path)
       $(elt).parent().addClass "active"
+
+  # Auto Login
+  $("#autoLogin").click () ->
+    $("#username").val "ilaborie@gmail.com"
+    $("#password").val "plop"
+    $("form").submit

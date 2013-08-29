@@ -1,7 +1,7 @@
 @(comite: model.orga.Comite, ranking: model.rank.SeasonTeamRanking)
 
 
-@layout.pdf(Messages("rank.team.comite.caption", ranking.champ.season, comite.name)) {
+@layout.pdf(Messages("rank.team.comite.caption", ranking.champ.season, comite.name), page = "landscapePage") {
     <table class="classement" cell>
         <thead>
             <tr>

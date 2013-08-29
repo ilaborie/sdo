@@ -1,4 +1,4 @@
-@(title: String)(content: Html)
+@(title: String, page:String="portraitPage")(content: Html)
 
 <!DOCTYPE html>
 
@@ -7,7 +7,7 @@
         <title>@title</title>
         <link rel="stylesheet" href="@routes.Assets.at("style/pdf.css")">
     </head>
-    <body>
+    <body class="@page">
 
         <div style="-fs-page-sequence: start; page-break-before: auto">
             <div style="position: running(current);">

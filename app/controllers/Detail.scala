@@ -65,14 +65,15 @@ object Detail extends Controller with SecureSocial {
 
           val t1 = result \ "team1"
           val team1Name = (t1 \ "name").as[JsString].value
-          val team1 = Ligue.teams.find(_.name == team1Name).get
+          val team1 = Ligue.teams.find(_.shortName == team1Name).get
 
           val t2 = result \ "team2"
           val team2Name = (t2 \ "name").as[JsString].value
-          val team2 = Ligue.teams.find(_.name == team2Name).get
+          val team2 = Ligue.teams.find(_.shortName == team2Name).get
 
           val body = emails.html.teamResult(json, result, team1, t1, team2, t2)
           Mailer.sendEmail("[SDO] New Result", "ilaborie@gmail.com", body)
+          // FIXME return a PDF...
           Ok( """{ok:true}""")
       }.getOrElse {
         BadRequest("Expecting Json data")

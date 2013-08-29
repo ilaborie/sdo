@@ -10,35 +10,30 @@
 
 @nullableAsString(json: JsValue) = {@if(json.toString() != "null"){@Html(json.toString()) } else { }}
 
-@teamAsString(team: Team, json: JsValue, substitute: JsValue) = {team: @{team.shortName}
-capitain: @{json \ "capitain"}
-joueurs:
-  - @Html((json \ "players").as[JsArray].value.map(_.as[String]).mkString("\n    - "))
-doubles:
-  -
-    j1: @nullableAsString(json \ "d1" \ "j1")
-    j2: @nullableAsString(json \ "d1" \ "j2")
-  -
-    j1: @nullableAsString(json \ "d2" \ "j1" )
-    j2: @nullableAsString(json \ "d2" \ "j2" )
-substitute:
-  j: @nullableAsString(substitute \ "j")
-  out: @nullableAsString(substitute \ "out")
-  match: @nullableAsString(substitute \ "out")}
+@teamAsString(team: Team, json: JsValue, substitute: JsValue) = {
+  team: @{team.shortName}
+  capitain: @nullableAsString(json \ "capitain")
+  joueurs:
+    - @Html((json \ "players").as[JsArray].value.map(_.as[String]).mkString("\n    - "))
+  doubles:
+    -
+      j1: @nullableAsString(json \ "d1" \ "j1")
+      j2: @nullableAsString(json \ "d1" \ "j2")
+    -
+      j1: @nullableAsString(json \ "d2" \ "j1" )
+      j2: @nullableAsString(json \ "d2" \ "j2" )
+  substitute:
+    j: @nullableAsString(substitute \ "j")
+    out: @nullableAsString(substitute \ "out")
+    match: @nullableAsString(substitute \ "out")}
 
-@matchAsString(json: JsValue, index: Int) = {match@{index + 1}:
-    l1: @legAsString(json \ "leg1")
-    l2: @legAsString(json \ "leg2")
-    l3: @legAsString(json \ "leg3")}
+@aMatch(mi:(JsValue, Int)) = {
+  match@{mi._2 + 1}:
+    l1: @{(mi._1 \ "leg1").as[JsNumber].value.toInt}
+    l2: @{(mi._1 \ "leg2").as[JsNumber].value.toInt}
+    l3: @{(mi._1 \ "leg3").as[JsNumber].value.toInt}}
 
-@legAsString(json: JsValue) = {@json.as[JsNumber].value.toInt match {
-        case 1 => {1}
-        case 2 => {2}
-        case _ => { }}}
-
-@matches(matches: JsArray) = {@matches.value.zipWithIndex.map {
-    case (js, index) => {@matchAsString(js, index)
-}}}
+@matches(matches: JsArray) = {matches: @matches.value.zipWithIndex.map(aMatch)}
 
 <html>
     <body>
@@ -53,10 +48,10 @@ substitute:
         <label>comment</label>
         <textarea>@{json \ "comment"}</textarea>
         <br>
-<pre>date: @{result \ "date"}
-location: @{result \ "location"}
+<pre>date: @nullableAsString(result \ "date")
+location: @nullableAsString(result \ "location")
 team1: @teamAsString(team1, t1, t1 \ "substitute")
 team2: @teamAsString(team2, t2, t2 \ "substitute")
-matches: @matches((result \ "matches").as[JsArray])</pre>
+@matches((result \ "matches").as[JsArray])</pre>
     </body>
 </html>
