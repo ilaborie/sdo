@@ -12,7 +12,7 @@ object ApplicationBuild extends Build {
   val reactiveMongo = "org.reactivemongo" %% "reactivemongo" % "0.9"
 
   val appDependencies = Seq(
-    jdbc, // FIXME remove
+    jdbc, // FIXME remove ?
     secureSocial,
     reactiveMongo
   )
