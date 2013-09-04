@@ -13,7 +13,7 @@
                 <div class="controls">
                     <div class="input-prepend">
                         <span class="add-on">@i</span>
-                        <input type="text" class="input-large" @if(num==1 && i==1){autofocus="true"}
+                        <input type="text" class="input-medium" @if(num==1 && i==1){autofocus="true"}
                             data-bind="value: player@i,
                                        disable: $root.started,
                                        typeahead: remainingPlayers,
@@ -26,13 +26,13 @@
                 <div class="controls" data-bind="with: d1">
                     <div class="input-prepend">
                         <span class="add-on">1</span>
-                        <input type="text" class="input-large"
+                        <input type="text" class="input-medium"
                             data-bind="value: j1,
                                        typeahead: $parent.registeredPlayers,
                                        event: {focus: $parent.unregisterPair, blur: $parent.registerPair},
                                        disable: $root.started">
                         <span class="add-on">/</span>
-                        <input type="text" class="input-large"
+                        <input type="text" class="input-medium"
                             data-bind="value: j2,
                                        typeahead: $parent.registeredPlayers,
                                        event: {focus: $parent.unregisterPair, blur: $parent.registerPair},
@@ -42,13 +42,13 @@
                 <div class="controls" data-bind="with: d2">
                     <div class="input-prepend">
                         <span class="add-on">2</span>
-                        <input type="text" class="input-large"
+                        <input type="text" class="input-medium"
                             data-bind="value: j1,
                                        typeahead: $parent.registeredPlayers,
                                        event: {focus: $parent.unregisterPair, blur: $parent.registerPair},
                                        disable: $root.started">
                         <span class="add-on">/</span>
-                        <input type="text" class="input-large"
+                        <input type="text" class="input-medium"
                             data-bind="value: j2,
                                        typeahead: $parent.registeredPlayers,
                                        event: {focus: $parent.unregisterPair, blur: $parent.registerPair},
@@ -61,7 +61,7 @@
                 <label class="block">@Messages("team.detail.substitute")</label>
                 <div class="controls">
                     <div class="input-append">
-                        <input type="text" class="input-large"
+                        <input type="text" class="input-medium"
                             data-bind="value: psubs,
                                        disable: $root.started,
                                        typeahead: remainingPlayers,
@@ -75,7 +75,7 @@
                         <span class="add-on" data-bind="visible: isSubst()">
                             <span class="badge" data-bind="text: psubsWhen"></span>
                         </span>
-                        <input type="text" class="input-large out"
+                        <input type="text" class="input-medium out"
                             data-bind="value: psubsWho, enable: !isSubst(), visible: isSubst()">
                     </div>
                 </div>
@@ -146,12 +146,10 @@
                                 <label class="span1" for="day">@Messages("team.detail.day")</label>
                                 <span type="text" class="span1 uneditable-input">@m.day</span>
                                 <label class="span2 offset1" for="date">@Messages("team.detail.date")</label>
-                                <input type="text" class="span7"
+                                <input type="text" class="span2"
                                     data-bind="value:date, disable: started">
-                            </div>
-                            <div class="controls controls-row">
                                 <label class="span1" for="location">@Messages("team.detail.location")</label>
-                                <input type="text" class="span10"
+                                <input type="text" class="span5"
                                     data-bind="value:location, disable: started">
                             </div>
                         </div>
