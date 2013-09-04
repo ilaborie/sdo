@@ -1,9 +1,16 @@
-@(caption: String, ranking: model.rank.SeasonTeamRanking)
+@(caption: String, ranking: model.rank.SeasonTeamRanking, path:String)
 @import model.orga.Team
 @import model.team.MatchDetail
 
 <table class="table table-striped table-bordered rank">
-    <caption>@caption</caption>
+    <caption>
+        @caption
+
+        <a class="btn btn-primary pull-right" target="_blank" href="@path/team.pdf">
+            <i class="glyphicons download_alt"></i>
+            Classement PDF
+        </a>
+    </caption>
     <thead>
         <tr>
             <th></th>

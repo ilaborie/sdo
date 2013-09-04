@@ -18,13 +18,7 @@
 </ul>
 
 <hr>
-<a class="btn" target="_blank" href="./@comite.shortName/team.pdf">
-    <i class="glyphicons download_alt"></i>
-    Classement PDF
-</a>
-<br><br>
-
-@tags.rankTeamTable(Messages("rank.team.comite.caption", ranking.champ.season, comite.name), ranking)
+@tags.rankTeamTable(Messages("rank.team.comite.caption", ranking.champ.season, comite.name), ranking, "./" + comite.shortName)
 
 <hr>
 @for(day <- ranking.champ.days) {
