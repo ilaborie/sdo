@@ -3,121 +3,138 @@
 @import model.team._
 @import model.orga.TeamParticipant
 
-    @displayTeam(tmd: TeamMatchDetail) = {
-        <strong>@Messages("team.detail.players")</strong> <br/>
-    @for(i <- 1 to 4) {
-        <strong>@i</strong> @tmd.players(i - 1).name @tmd.players(i - 1).licenseNumber <br/>
-    }
-        <br/>
+@displayTeam(tmd: TeamMatchDetail) = {
+    <table class="full">
+        <caption>@tmd.team</caption>
+        <tr><th colspan="3">@Messages("team.detail.players")</th></tr>
+        @for(i <- 1 to 4) {
+        <tr>
+            <th>@i</th>
+            <td class="white">@tmd.players(i - 1).name</td>
+            <td class="license">@tmd.players(i - 1).licenseNumber</td>
+        </tr>
+        }
+    </table>
+    <table class="full">
+        <tr><th colspan="2">@Messages("team.detail.doublettes")</th></tr>
+        <tr>
+            <th>1</th>
+            <td class="white">@tmd.doublettes._1.name</td>
+        </tr>
+        <tr>
+            <th>2</th>
+            <td class="white">@tmd.doublettes._2.name</td>
+        </tr>
+    </table>
+    <table class="full">
+        <tr>
+            <th style="width: 30%">@Messages("team.detail.substitute")</th>
+            <td class="white" >@tmd.substitute.map(_.player.name)</td>
+            <td class="license">@tmd.substitute.map(_.player.licenseNumber)</td>
+        </tr>
+        <tr>
+            <th>@Messages("team.detail.substitute.who")</th>
+            <td class="white" colspan="2" width="*">@tmd.substitute.map(_.replace.map(_.name))</td>
+        </tr>
+        <tr>
+            <th>@Messages("team.detail.substitute.after")</th>
+            <td class="white" colspan="2" width="*">@tmd.substitute.map(_.afterMatch.getOrElse(""))</td>
+        </tr>
+    </table>
+}
 
-        <strong>@Messages("team.detail.doublettes")</strong> <br/>
-        <strong>1</strong> @tmd.doublettes._1.name <br/>
-        <strong>2</strong> @tmd.doublettes._2.name <br/>
-        <br/>
-
-        <strong>@Messages("team.detail.substitute")</strong>
-    @tmd.substitute.map(_.player.name) @tmd.substitute.map(_.player.licenseNumber) <br/>
-        <strong>@Messages("team.detail.substitute.who")</strong>
-    @tmd.substitute.map(_.replace.map(_.name)) <br/>
-        <strong>@Messages("team.detail.substitute.after")</strong>
-    @tmd.substitute.map(_.afterMatch.getOrElse("")) <br/>
-    }
-
-    @leg(player: TeamParticipant, leg: Leg) = {
+@leg(player: TeamParticipant, leg: Leg) = {
     @if(leg.winner == player) {
-        <i class="glyphicons ok_2"></i>
-    } else { &nbsp;}
+        <img class="white" src="@routes.Assets.at("ico/check.png")"/>
+    } else {
+        <img class="white" src="@routes.Assets.at("ico/unchecked.png")"/>
     }
+}
 
-    @displayMatch(i: Int, m: Match) = {
+@displayMatch(i: Int, m: Match) = {
+    <table class="match full">
+        <caption>@Messages("team.detail.match",i)</caption>
+        <tr>
+            <th colspan="3">
+                @if(m.player1Start) {<strong>*</strong>}
+                @m.player1.name
+            </th>
+        </tr>
+        <tr>
+            <td>@leg(m.player1, m.legs._1)</td>
+            <td>@leg(m.player1, m.legs._2)</td>
+            <td>
+                @if(m.legs._3.isDefined) {
+                    @leg(m.player1, m.legs._3.get)
+                } else {
+                    <img src="@routes.Assets.at("ico/unchecked.png")"/>
+                }
+            </td>
+        </tr>
+        <tr>
+            <td >@leg(m.player2, m.legs._1)</td>
+            <td >@leg(m.player2, m.legs._2)</td>
+            <td >
+                @if(m.legs._3.isDefined) {
+                    @leg(m.player2, m.legs._3.get)
+                } else {
+                    <img src="@routes.Assets.at("ico/unchecked.png")"/>
+                }
+            </td>
+        </tr>
+        <tr>
+            <th colspan="3">
+                @if(!m.player1Start) {<strong>*</strong>}
+                @m.player2.name
+            </th>
+        </tr>
+    </table>
+}
 
-        <table class="match">
-            <tr>
-                <th colspan="3">
-                    @if(m.player1Start) {
-                        <i class="glyphicons asterisk"></i>
-                    }
-                    @if(m.winner == m.player1) {
-                        <span class="win">@m.player1.name</span>
-                    } else {
-                        <span class="loose">@m.player1.name</span>
-                    }
-                </th>
-            </tr>
-            <tr>
-                <td>@leg(m.player1, m.legs._1)</td>
-                <td>@leg(m.player1, m.legs._2)</td>
-                @if(m.legs._3.isDefined) {
-                    <td>@leg(m.player1, m.legs._3.get)</td>
-                } else {
-                    <td class="inactive">&nbsp;</td>
-                }
-            </tr>
-            <tr>
-                <td>@leg(m.player2, m.legs._1)</td>
-                <td>@leg(m.player2, m.legs._2)</td>
-                @if(m.legs._3.isDefined) {
-                    <td>@leg(m.player2, m.legs._3.get)</td>
-                } else {
-                    <td class="inactive">&nbsp;</td>
-                }
-            </tr>
-            <tr>
-                <th colspan="3">
-                    @if(!m.player1Start) {
-                        <i class="glyphicons asterisk"></i>
-                    }
-                    @if(m.winner == m.player1) {
-                        <span class="win">@m.player2.name</span>
-                    } else {
-                        <span class="loose">@m.player2.name</span>
-                    }
-                </th>
-            </tr>
-        </table>
-    }
-@layout.pdf(Messages("team.detail.title", detail)) {
+@layout.pdf() {
     @detail match {
         case MatchDetailFail(_, _, _, fails) => {
             @Messages("team.detail.fail", fails)
         }
         case PlayedMatchDetail(day, date, location, team1, team2, matches) => {
-            <h3>
+            <h2>
                 @Messages("championship.day.caption", day) -
             <span class="@tags.winLooseDraw(detail.plus(team1.team), detail.plus(team2.team))">@team1.team</span>
                 vs.
             <span class="@tags.winLooseDraw(detail.plus(team2.team), detail.plus(team1.team))">@team2.team</span>
-            </h3>
-            <strong>@Messages("team.detail.day")</strong> @detail.day
-            <strong>@Messages("team.detail.date")</strong> @tags.date(date)
-            <strong>@Messages("team.detail.location")</strong> @location </br>
-            <!-- team -->
+            </h2>
+
             <table class="full">
                 <tr>
-                    <th>@team1.team</th>
-                    <th>@team2.team</th>
-                </tr>
-                <tr>
-                    <td>@displayTeam(team1)</td>
-                    <td>@displayTeam(team2)</td>
+                    <td><strong>@Messages("team.detail.day")</strong>: <div class="white" style="display: inline-block">@detail.day</div></td>
+                    <td><strong>@Messages("team.detail.date")</strong>: <div class="white" style="display: inline-block">@tags.date(date)</div></td>
+                    <td><strong>@Messages("team.detail.location")</strong>: <div class="white" style="display: inline-block">@location</div></td>
                 </tr>
             </table>
 
+            <!-- team -->
+            <table class="full">
+                <tr>
+                    <td class="bordered">@displayTeam(team1)</td>
+                    <td class="bordered">@displayTeam(team2)</td>
+                </tr>
+            </table>
+            <hr/>
             <table class="full">
                 <tr>
                     <td>
                             <!-- match -->
-                        <table>
+                        <table id="matches">
                         @for(i <- 0 to 3) {
                             <tr>
                             @for(j <- 0 to 4) {
-                                <td>@displayMatch((4 * i) + j + 1, matches((4 * i) + j))</td>
+                                <td valign="top">@displayMatch((4 * i) + j + 1, matches((4 * i) + j))</td>
                             }
                             </tr>
                         }
                         </table>
                     </td>
-                    <td>
+                    <td valign="top">
                             <!-- match2 -->
                         <table>
                             <caption>@Messages("team.detail.score")</caption>
@@ -125,17 +142,17 @@
                                 <tr>
                                     <td>
                                     @if(matches(i - 1).teamWinner == team1.team) {
-                                        <i class="glyphicons check"></i>
+                                        <img src="@routes.Assets.at("ico/check.png")"/>
                                     } else {
-                                        <i class="glyphicons unchecked"></i>
+                                        <img src="@routes.Assets.at("ico/unchecked.png")"/>
                                     }
                                     </td>
                                     <td><strong>@i</strong></td>
                                     <td>
                                     @if(matches(i - 1).teamWinner == team2.team) {
-                                        <i class="glyphicons check"></i>
+                                        <img src="@routes.Assets.at("ico/check.png")"/>
                                     } else {
-                                        <i class="glyphicons unchecked"></i>
+                                        <img src="@routes.Assets.at("ico/unchecked.png")"/>
                                     }
 
                                     </td>
@@ -145,11 +162,12 @@
                     </td>
                 </tr>
             </table>
+            <hr/>
             <table class="full">
                 <tr>
-                    <td>
+                    <td valign="top">
                         <!-- Results -->
-                        <table class="table table-bordered table-striped table-condensed result">
+                        <table class="bordered result full">
                             <caption>@Messages("team.detail.result")</caption>
                             <thead>
                                 <tr>
@@ -189,17 +207,17 @@
                             </tbody>
                         </table>
                     </td>
-                    <td>
+                    <td valign="top">
                             <!-- Capitain -->
-                        <table>
+                        <table class="bordered capitain full">
                             <caption>@Messages("team.detail.capitain")</caption>
                             <tr>
-                                <td>
-                                    <strong>@team1.team</strong> @team1.capitain.name <i class="glyphicons ok_2"></i>
-                                </td>
-                                <td>
-                                    <strong>@team2.team</strong> @team2.capitain.name <i class="glyphicons ok_2"></i>
-                                </td>
+                                <th>@team1.team</th>
+                                <th>@team2.team</th>
+                            </tr>
+                            <tr>
+                                <td class="white">@team1.capitain.name <img src="@routes.Assets.at("ico/ok.png")"/></td>
+                                <td class="white">@team2.capitain.name <img src="@routes.Assets.at("ico/ok.png")"/></td>
                             </tr>
                         </table>
                     </td>

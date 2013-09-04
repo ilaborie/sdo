@@ -139,7 +139,7 @@ team.detail.location=Lieu
 team.detail.players=Simples
 team.detail.doublettes=Doubles
 team.detail.substitute=Remplaçant
-team.detail.substitute.who=Remplace le joueur
+team.detail.substitute.who=Remplace
 team.detail.substitute.after=après le match
 team.detail.match=Match {0}
 team.detail.score=Score
@@ -157,6 +157,7 @@ team.detail.subst.action=Remplacer
 team.detail.send.title=Envoyer le résultat
 team.detail.subst.close=Fermer
 team.detail.send.success=<span class="label label-success">OK</span><br> Envoie réussit.
+team.detail.title.pdf=Fédération française de darts, championat par équipe
 
 # Club
 club.oneteam=Équipe
