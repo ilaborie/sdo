@@ -3,31 +3,31 @@
 <html>
     <body>
         <label>User Id:</label>
-        <input type="text" value="@id.identityId.userId"/>
+        @id.identityId.userId
         <br>
 
         <label>Fist name:</label>
-        <input type="text" value="@id.firstName"/>
+        @id.firstName
         <br>
 
         <label>Last name:</label>
-        <input type="text" value="@id.lastName"/>
+        @id.lastName
         <br>
 
         <label>Full name:</label>
-        <input type="text" value="@id.fullName"/>
+        @id.fullName
         <br>
 
         <label>Logged in from:</label>
-        <input type="text" value="@id.identityId.providerId"/>
+        @id.identityId.providerId
         <br>
 
         <label>Email:</label>
-        <input type="text" value="@id.email.getOrElse("")"/>
+        @id.email.getOrElse("")
         <br>
 
         <label>Authentication method:</label>
-        <input type="text" value="@id.authMethod.method"/>
+        @id.authMethod.method
         <br>
     </body>
 </html>

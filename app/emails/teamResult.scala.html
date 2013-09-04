@@ -38,20 +38,22 @@
 <html>
     <body>
         <label>day</label>
-        <input type="text" value="d@{json \ "day"}"/>
-        <br>
+        d@{json \ "day"}
+        <br/>
 
         <label>file</label>
-        <input type="text" value="@{team1.shortName}-@{team2.shortName}.yml"/>
-        <br>
+        @{team1.shortName}-@{team2.shortName}.yml
+        <br/>
 
         <label>comment</label>
-        <textarea>@{json \ "comment"}</textarea>
-        <br>
+        @{json \ "comment"}
+        <br/>
+        <hr/>
 <pre>date: @nullableAsString(result \ "date")
 location: @nullableAsString(result \ "location")
 team1: @teamAsString(team1, t1, t1 \ "substitute")
 team2: @teamAsString(team2, t2, t2 \ "substitute")
 @matches((result \ "matches").as[JsArray])</pre>
+        <hr/>
     </body>
 </html>
