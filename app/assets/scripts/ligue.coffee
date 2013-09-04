@@ -11,72 +11,46 @@ class Ligue
       $("#bodyLigue").load url, () ->
       self.samPath(path)
 
-    # Routes
-    Sammy("#leftMenu",->
-      # Ligue
-      @get "#ligue", () ->
-        url = self.path + "/body"
-        self.loadBody url, "#ligue"
-      @get "#single", () ->
-        url = self.path + "/single"
-        self.loadBody url, "#single"
-      @get "#women", () ->
-        url = self.path + "/feminine"
-        self.loadBody url, "#women"
-      @get "#junior", () ->
-        url = self.path + "/junior"
-        self.loadBody url, "#junior"
-      @get "#pair", () ->
-        url = self.path + "/double"
-        self.loadBody url, "#pair"
-      @get "#team", () ->
-        url = self.path + "/team"
-        self.loadBody url, "#team"
-      @get "#tour/:name", () ->
-        name = this.params.name
-        url = self.path + "/tour/" + name
-        path = "#tour/" + name
-        self.loadBody url, path
-      @get "comites/:name", () ->
-        name = this.params.name
-        url = self.path + "/comites/" + name
-        window.location = url
-      @get "/sdo/:name", () ->
-        name = this.params.name
-        url = "/sdo/" + name
-        window.location = url
-      # Basic Navigation
-      @get "/sdo/", (context) ->
-        url = context.path
-        window.location = url
-        window.location.reload()
-      @get "/sdo/contacts", (context) ->
-        url = context.path
-        window.location = url
-        window.location.reload()
-      @get "/sdo/events", (context) ->
-        url = context.path
-        window.location = url
-        window.location.reload()
-      @get "/sdo/ligues/:ligue/comites/:comite", (context) ->
-        url = context.path
-        window.location = url
-        window.location.reload()
-      @get "/sdo/ligues/:ligue/comites/:comite/:tour", (context) ->
-        url = context.path
-        window.location = url
-        window.location.reload()
-      @get "/sdo/ligues/:ligue/team/day/:day/:team1/:team2", (context) ->
-        url = context.path
-        window.open(url, "_blank")
-      # Default
-      @.get "", () ->
-        @.app.runRoute("get", "#ligue")
-    ).run()
-
-
 # Run on Ready
 $ ->
   path = window.location.pathname
   ligue = new Ligue(path);
+  # Routes
+  sammy = Sammy("#leftMenu", ->
+    # Ligue
+    @get "#ligue", () ->
+      url = ligue.path + "/body"
+      ligue.loadBody url, "#ligue"
+    @get "#single", () ->
+      url = ligue.path + "/single"
+      ligue.loadBody url, "#single"
+    @get "#women", () ->
+      url = ligue.path + "/feminine"
+      ligue.loadBody url, "#women"
+    @get "#junior", () ->
+      url = ligue.path + "/junior"
+      ligue.loadBody url, "#junior"
+    @get "#pair", () ->
+      url = ligue.path + "/double"
+      ligue.loadBody url, "#pair"
+    @get "#team", () ->
+      url = ligue.path + "/team"
+      ligue.loadBody url, "#team"
+    @get "#tour/:name", () ->
+      name = this.params.name
+      url = ligue.path + "/tour/" + name
+      path = "#tour/" + name
+      ligue.loadBody url, path
+  )
+  # Binding
   ko.applyBindings(ligue)
+
+  # Intercept internal navigation
+  $(document).delegate "a.sammy", "click", (linkElement) ->
+    path = linkElement.currentTarget.href.replace /^[^#]*/, ""
+    sammy.runRoute "get", path
+    true
+
+  # Default page
+  hash = if (window.location.hash) then window.location.hash else "#ligue"
+  sammy.runRoute "get", hash

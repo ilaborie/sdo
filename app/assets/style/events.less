@@ -16,6 +16,7 @@
 .badge {
   &-world {
     background-color: @world;
+
   }
   &-world[href] {
     background-color: darken(@world, 10%);
@@ -59,6 +60,34 @@
   &-default {
   }
   &-default[href] {
+  }
+}
+
+.event.muted .label,
+.event.muted .badge {
+  &-world {
+    background-color: lighten(@world, 20%);
+  }
+  &-worldfrance {
+    #gradient > .directional(lighten(@world,20%), lighten(@france,20%));
+  }
+  &-fede {
+    background-color: lighten(@fede, 20%);
+  }
+  &-france {
+    background-color: lighten(@france, 20%);
+  }
+  &-ligue {
+    background-color: lighten(@ligue, 20%);
+  }
+  &-comite {
+    background-color: lighten(@comite, 20%);
+  }
+  &-team {
+    background-color: lighten(@team, 20%);
+  }
+  &-default {
+    background-color: lighten(@grayDark, 20%);
   }
 }
 

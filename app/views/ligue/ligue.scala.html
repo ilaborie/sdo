@@ -13,24 +13,23 @@
             <div class="span3 well well-small">
                 <ul id="leftMenu" class="nav nav-list">
                     <li data-bind="css: { active: samPath() == '#ligue'}">
-                        <a href="#ligue">@ligue.name</a>
+                        <a class="sammy" href="#ligue">@ligue.name</a>
                     </li>
                     <li class="nav-header">@Messages("menu.rank")</li>
                     <li data-bind="css: { active: samPath() == '#single'}">
-                        <a href="#single">@Messages("menu.rank.men")</a>
+                        <a class="sammy" href="#single">@Messages("menu.rank.men")</a>
                     </li>
                     <li data-bind="css: { active: samPath() == '#women'}">
-                        <a href="#women">@Messages("menu.rank.women")</a>
+                        <a class="sammy" href="#women">@Messages("menu.rank.women")</a>
                     </li>
                     <li data-bind="css: { active: samPath() == '#junior'}">
-                        <a href="#junior">@Messages("menu.rank.junior")</a>
+                        <a class="sammy" href="#junior">@Messages("menu.rank.junior")</a>
                     </li>
                     <li data-bind="css: { active: samPath() == '#pair'}">
-                        <a href="#pair">@Messages("menu.rank.double")</a>
+                        <a class="sammy" href="#pair">@Messages("menu.rank.double")</a>
                     </li>
                     <li data-bind="css: { active: samPath() == '#team'}">
-                        <a href="#team" >@Messages("menu.rank.team")
-                        </a>
+                        <a class="sammy" href="#team" >@Messages("menu.rank.team")</a>
                     </li>
                     <li class="nav-header">@Messages("menu.comite")</li>
                     @for(comite <- ligue.comites) {
@@ -41,7 +40,7 @@
                     <li class="nav-header">@Messages("menu.tournaments")</li>
                     @for(tournament <- ligue.tournaments; if tournament.isEvent) {
                         <li data-bind="css: { active: samPath() == '#tour/@tournament.shortName'}">
-                            <a href="#tour/@tournament.shortName">@tournament</a>
+                            <a class="sammy" href="#tour/@tournament.shortName">@tournament</a>
                         </li>
                     }
                 </ul>

@@ -13,49 +13,31 @@ class Events
         registerFilter()
         registerPopover()
 
-    # Routes
-    Sammy("#leftMenu",->
-      @get "#list", () ->
-        url = self.path + "/list"
-        self.loadBody url, "#list"
-      @get "#calendar", () ->
-        url = self.path + "/calendar"
-        self.loadBody url, "#calendar"
-      # Basic Navigation
-      @get "/sdo/", (context) ->
-        url = context.path
-        window.location = url
-        window.location.reload()
-      @get "/sdo/contacts", (context) ->
-        url = context.path
-        window.location = url
-        window.location.reload()
-      @get "/sdo/ligues/:ligue", (context) ->
-        url = context.path
-        window.location = url
-        window.location.reload()
-      @get "/sdo/ligues/:ligue/:tour", (context) ->
-        url = context.path
-        window.location = url
-        window.location.reload()
-      @get "/sdo/ligues/:ligue/comites/:comite", (context) ->
-        url = context.path
-        window.location = url
-        window.location.reload()
-      @get "/sdo/ligues/:ligue/comites/:comite/:tour", (context) ->
-        url = context.path
-        window.location = url
-        window.location.reload()
-      # Default link
-      @.get "", () ->
-        @.app.runRoute("get", "#list")
-    ).run()
-
-
 # Run on Ready
 $ ->
   events = new Events();
+  # Routes
+  sammy = Sammy("#leftMenu",->
+    @get "#list", () ->
+      url = events.path + "/list"
+      events.loadBody url, "#list"
+    @get "#calendar", () ->
+      url = events.path + "/calendar"
+      events.loadBody url, "#calendar"
+  )
+  # Binding
   ko.applyBindings(events)
+
+  # Intercept internal navigation
+  $(document).delegate "a.sammy", "click", (linkElement) ->
+    path = linkElement.currentTarget.href.replace /^[^#]*/, ""
+    sammy.runRoute "get", path
+    true
+
+  # Default page
+  hash = if (window.location.hash) then window.location.hash else "#list"
+  sammy.runRoute "get", hash
+
 
 # Filtering events
 registerFilter = () ->
