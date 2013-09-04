@@ -1,0 +1,47 @@
+@(ligue: model.orga.Ligue, ranking: model.rank.SeasonTeamRanking)
+
+
+@layout.pdf(Some(Messages("rank.team.ligue.caption", ranking.champ.season, ligue.name)),landscape=true) {
+    <table class="classement" cell>
+        <thead>
+            <tr>
+                <th></th>
+                <th>@Messages("rank.team")</th>
+                <th class="left">@Messages("rank.point")</th>
+                <th>@Messages("rank.team.day")</th>
+                <th>@Messages("rank.team.win")</th>
+                <th>@Messages("rank.team.loose")</th>
+                <th>@Messages("rank.team.draw")</th>
+                <th>@Messages("rank.team.fail")</th>
+                <th>@Messages("rank.team.match.win")</th>
+                <th>@Messages("rank.team.match.loose")</th>
+                <th>@Messages("rank.team.diff")</th>
+            </tr>
+        </thead>
+        <tbody>
+        @for((teamRank, index) <- ranking.ordered.zipWithIndex) {
+            <tr class="@if(index % 2 == 0) {odd} else {even}">
+                <td>@ranking.getPosition(teamRank)</td>
+                <td class="left">@teamRank.team.name</td>
+                <td>@teamRank.points</td>
+                <td>@teamRank.days</td>
+                <td>@teamRank.win</td>
+                <td>@teamRank.loose</td>
+                <td>@teamRank.draw</td>
+                <td>@teamRank.fail</td>
+                <td>@teamRank.plus</td>
+                <td>@teamRank.minus</td>
+                @if(teamRank.diff > 0) {
+                    <td class="pos">@teamRank.diff </td>
+                } else {
+                    @if(teamRank.diff < 0) {
+                        <td class="neg">@teamRank.diff </td>
+                    } else {
+                        <td>@teamRank.diff </td>
+                    }
+                }
+            </tr>
+        }
+        </tbody>
+    </table>
+}

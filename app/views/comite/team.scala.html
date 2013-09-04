@@ -3,21 +3,27 @@
 <ul class="unstyled well well-small">
     <li>
         <a href="@routes.Assets.at("files/MATCHS_EQUIPES_2013-2014.pdf")" target="_blank">
+            <img src="@routes.Assets.at("ico/pdf.png")" alt="pdf"/>
             <i class="glyphicons download_alt"></i>
-            Matches équipes 2013-2014
-            <span class="label label-important">PDF</span>
+            Calendrier équipes 2013-2014
         </a>
     </li>
     <li>
         <a href="@routes.Assets.at("files/MATCHS_EQUIPES_2013-2014.xlsx")" target="_blank">
+            <img src="@routes.Assets.at("ico/xlsx.png")" alt="xlsx"/>
             <i class="glyphicons download_alt"></i>
-            Matches équipes 2013-2014
-            <span class="label label-success">Excel</span>
+            Calendrier équipes 2013-2014
         </a>
     </li>
 </ul>
 
 <hr>
+<a class="btn" target="_blank" href="./@comite.shortName/team.pdf">
+    <i class="glyphicons download_alt"></i>
+    Classement PDF
+</a>
+<br><br>
+
 @tags.rankTeamTable(Messages("rank.team.comite.caption", ranking.champ.season, comite.name), ranking)
 
 <hr>

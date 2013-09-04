@@ -35,7 +35,11 @@
             @if(teamRank.diff > 0) {
                 <td class="pos">@teamRank.diff </td>
             } else {
+                @if(teamRank.diff < 0) {
                 <td class="neg">@teamRank.diff </td>
+                } else {
+                <td>@teamRank.diff </td>
+                }
             }
         </tr>
     }

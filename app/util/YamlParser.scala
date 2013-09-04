@@ -1,6 +1,6 @@
 package util
 
-import java.io.File
+import java.io.{FileNotFoundException, File}
 import java.util.{Map => JavaMap}
 
 import scala.collection.JavaConversions._
@@ -40,6 +40,7 @@ case class YamlParser(app: Application) {
 }
 
 object YamlParser {
+  private val logger = Logger("YAML")
   var parser: YamlParser = null
   private val dateParser = DateTimeFormat.forPattern("dd-MM-yyyy")
 
@@ -53,14 +54,21 @@ object YamlParser {
     if (file.exists && file.isFile) {
       parser.parseFile(file)
     } else {
-      throw new IllegalArgumentException(s"File ${file.getAbsolutePath} not found")
+      throw new FileNotFoundException(s"File ${file.getAbsolutePath} not found")
     }
   }
 
   def tryParseFile(path: String): Option[Any] = try {
     Some(parseFile(path))
   } catch {
-    case _: Throwable => None
+    case _: FileNotFoundException => {
+      logger.debug(s"File not found: $path")
+      None
+    }
+    case e: Throwable => {
+      logger.error(s"Fail reading $path", e)
+      None
+    }
   }
 
   /**

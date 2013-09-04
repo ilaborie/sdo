@@ -9,10 +9,12 @@ class Pair
       "#{self.j1()} / #{self.j2()}"
     # Behavior
     self.canStart = ko.computed () ->
-      !!self.j1() and !!self.j2()
+      j1 = $.trim self.j1()
+      j2 = $.trim self.j2()
+      !!j1 and !!j2
     self.toJson = () ->
-      j1: self.j1(),
-      j2: self.j2()
+      j1: self.j1().trim(),
+      j2: self.j2().trim()
 
 # Team
 class Team
@@ -37,9 +39,14 @@ class Team
     self.capitain = ko.observable()
     self.signed = ko.observable false
     self.canStart = ko.computed () ->
-      hasPlayers = !!self.player1() and !!self.player2() and !!self.player3() and !!self.player4()
+      p1 = $.trim self.player1()
+      p2 = $.trim self.player2()
+      p3 = $.trim self.player3()
+      p4 = $.trim self.player4()
+      cap = $.trim self.capitain()
+      hasPlayers = !!p1 and !!p2 and !!p3 and !!p4
       hasPairs = !!self.d1().canStart() and !!self.d2().canStart()
-      hasCapitain = !!self.capitain()
+      hasCapitain = !!cap
       hasPlayers and hasPairs and hasCapitain
     self.player1Subst = ko.computed () ->
       if (self.isSubst() and (self.player1() is self.psubsWho()))
@@ -75,34 +82,48 @@ class Team
     # Behavior
     self.register = (data, event) ->
       player = $(event.target).val()
-      self.remainingPlayers.remove player
-      self.registeredPlayers.push player
+      p = $.trim player
+      self.remainingPlayers.remove p
+      self.registeredPlayers.push p
     self.unregister = (data, event) ->
       player = $(event.target).val()
-      self.remainingPlayers.push player
-      self.registeredPlayers.remove player
+      p = $.trim player
+      self.remainingPlayers.push p
+      self.registeredPlayers.remove p
     self.registerPair = (data, event) ->
       player = $(event.target).val()
-      self.registeredPlayers.remove player
+      p = $.trim player
+      self.registeredPlayers.remove p
     self.unregisterPair = (data, event) ->
       player = $(event.target).val()
-      self.registeredPlayers.push player
+      p = $.trim player
+      self.registeredPlayers.push p
     self.sign = () ->
       self.signed(!self.signed())
     self.toJson = () ->
       name: self.name,
       players: [
-        self.player1(),
-        self.player2(),
-        self.player3(),
-        self.player4()],
+        self.player1().trim(),
+        self.player2().trim(),
+        self.player3().trim(),
+        self.player4().trim()],
       d1: self.d1().toJson(),
       d2: self.d2().toJson(),
       substitute:
-        j: self.psubs(),
-        out: self.psubsWho(),
-        match: self.psubsWhen(),
-      capitain: self.capitain()
+        j: $.trim(self.psubs()),
+        out: $.trim(self.psubsWho()),
+        match: $.trim(self.psubsWhen()),
+      capitain: self.capitain().trim()
+    # DEV
+    self.devFillPlayers = () ->
+      self.player1 self.players[0]
+      self.player2 self.players[1]
+      self.player3 self.players[2]
+      self.player4 self.players[3]
+      self.d1().j1 self.players[0]
+      self.d1().j2 self.players[3]
+      self.d2().j1 self.players[1]
+      self.d2().j2 self.players[2]
     # Run
     for p in self.players
       self.remainingPlayers.push(p)
@@ -176,6 +197,14 @@ class Match
       leg1: self.leg1(),
       leg2: self.leg2(),
       leg3: self.leg3()
+    # DEV
+    self.randomLeg = () ->
+      Math.floor(Math.random()*2)+1
+    self.devFillMatch = () ->
+      self.leg1 self.randomLeg()
+      self.leg2 self.randomLeg()
+      if (self.leg1()!=self.leg2())
+        self.leg3 self.randomLeg()
 
 # ChampionshipDay
 class ChampionshipDay
@@ -242,6 +271,7 @@ class ChampionshipDay
         m.updateTeam1 self.team1()
         m.updateTeam2 self.team2()
       self.started(true)
+      $("button[tabindex=111]").focus()
     self.lastFinishedMatch = () ->
       last = 0
       for i in [1..20]
@@ -262,8 +292,8 @@ class ChampionshipDay
         comment: self.comment()
         day: self.day,
         result:
-          date: self.date(),
-          location: self.location(),
+          date: self.date().trim(),
+          location: self.location().trim(),
           team1: self.team1().toJson(),
           team2: self.team2().toJson(),
           matches: for m in self.matches()
@@ -275,17 +305,29 @@ class ChampionshipDay
         url: "/sdo/ligues/SDO/team/result",
         data: data,
       post.success = (data, status, jqXHR) ->
-        $("#diaSendOk").modal()
+        $("#diaSendOk").modal().on "shown", () ->
+          $("#btnSend").focus()
       $.ajax post
+    # DEV function
+    self.devFillPlayers = () ->
+      self.team1().devFillPlayers()
+      self.team2().devFillPlayers()
+    self.devFillMatches = () ->
+      for m in self.matches()
+        m.devFillMatch()
     # Run
     self.date(today)
-
 
 # Run on Ready
 $ ->
   matches = for m in allMatches
     new Match m.team1Start, m.team1, m.team2
   team1 = new Team team1Name, players1
+  team1.capitain(team1Captitain)
   team2 = new Team team2Name, players2
+  team2.capitain(team2Captitain)
   champDay = new ChampionshipDay day, team1, team2, matches
+  champDay.location team1Location
   ko.applyBindings champDay
+
+

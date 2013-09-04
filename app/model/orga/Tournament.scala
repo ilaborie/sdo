@@ -125,7 +125,7 @@ case class MasterLigueTeam(date: LocalDate, location: Location) extends LigueTou
 case class CoupeLigueTeam(date: LocalDate, location: Location) extends LigueTournament {
   override val isTeam: Boolean = true
   val shortName = "CLTeam"
-  lazy val ligue = Ligue.ligues.find(_.masterTeam == this).get
+  lazy val ligue = Ligue.ligues.find(_.coupeTeam == Some(this)).get
   val place = Some(location)
 
   override def toString = Messages("rank.ligue.coupe.team.title")

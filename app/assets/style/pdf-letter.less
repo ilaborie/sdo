@@ -1,0 +1,138 @@
+@import "bootstrap/variables.less";
+
+.small {
+  font-size: xx-small;
+}
+.big {
+  font-size: larger;
+}
+
+.line {
+  border-bottom: 1px solid black
+}
+.align-left {
+  float: left;
+}
+.align-right {
+  float: right;
+}
+
+/**
+ * Specific Elements
+ */
+#page-header {
+  display: inline;
+}
+
+#page-footer {
+  text-align: right;
+}
+
+/**
+ * Flying Saucer custom stuff
+ *
+ * see https://xhtmlrenderer.dev.java.net/servlets/ReadMsg?listName=dev&msgNo=3707
+ */
+
+@page {
+  size: letter;
+  background: @grayLighter;
+  margin: 1em;
+
+  @top-center {
+    content: element(current);
+  }
+
+  @bottom-right {
+    content: element(footer);
+  }
+}
+
+.page-start {
+  -fs-page-sequence: start;
+  page-break-before: always;
+}
+
+table {
+  -fs-table-paginate: paginate;
+  page-break-inside: avoid;
+}
+
+/* forces a page break */
+.break {
+  page-break-after: always
+}
+
+span.page:before {
+  content: counter(page);
+}
+
+span.pagecount:before {
+  content: counter(pages);
+}
+
+table caption {
+  font-weight: bold;
+}
+
+/**
+ * Custom
+ */
+table.match {
+  border: 1px solid @tableBorder;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+table.full {
+  width: 100%;
+}
+
+.win {
+  color: @green;
+}
+.loose {
+  color: @red;
+}
+.draw {
+  color: @gray;
+}
+// Teams
+.bordered {
+  border: 1px solid @tableBorder;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+// Matches
+#matches {
+  vertical-align: top;
+  text-align: center;
+
+  table.match {
+    font-size: small;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+//
+table.result, table.capitain {
+  text-align: center;
+}
+
+//
+.white {
+  background-color: @white;
+  border: 1px solid @tableBorder;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+.license {
+  font-size: small;
+}
+
+caption, .header {
+  background-color: @grayLight;
+}
