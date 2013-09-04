@@ -22,6 +22,7 @@ case class Ligue(name: String,
                  master: MasterLigue,
                  masterTeam: MasterLigueTeam,
                  coupeTeam: Option[CoupeLigueTeam] = None,
+                 nationalTournaments: Seq[NationalTournament] = Nil,
                  info: Option[Info] = None) {
 
   lazy val fullName = s"[$shortName] $name"
@@ -62,7 +63,7 @@ case class Ligue(name: String,
 
     val clTeam = coupeTeam.toList
 
-    val list = (coupe :: master :: masterTeam :: opens.toList) ::: comiteRankings.toList ::: clTeam
+    val list = (coupe :: master :: masterTeam :: opens.toList) ::: comiteRankings.toList ::: clTeam ::: nationalTournaments.toList
     list.sortBy(_.date)
   }
 

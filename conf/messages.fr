@@ -86,6 +86,14 @@ rank.ligue.comite.coupe=CC {0}
 rank.ligue.comite.coupe.title=Coupe du {0}
 rank.ligue.comite.rank=Class. {0}
 rank.ligue.comite.rank.title=Classsement du {0}
+rank.ligue.national.of=OF
+rank.ligue.national.of.title=Open de France
+rank.ligue.national.cf=CF
+rank.ligue.national.cf.title=Coupe de France
+rank.ligue.national.ofe=OFe
+rank.ligue.national.ofe.title=Open Fédéral
+rank.ligue.national.on=ON
+rank.ligue.national.on.title=Open National
 
 # Single Rank
 rank.single.ligue.caption=Classement {0} - Simple {1}

@@ -80,6 +80,7 @@ object Data {
     val comitesList = info("comites").asInstanceOf[JavaList[String]].toList
     val comites = for (comite <- comitesList) yield readComite(season, ligue, comite)
 
+    // Ligue Tournament
     val openList = info("opens").asInstanceOf[JavaList[JavaMap[String, Any]]].toList
     val opens = for (open <- openList) yield OpenLigue(
       YamlParser.readDate(open.get("date").asInstanceOf[String]),
@@ -109,10 +110,31 @@ object Data {
           YamlParser.readLocation(coupeTeam.toMap).get))
       }
     }
-
+    // National Tournament
+    val tournamentList = List("open-france", "coupe-france", "open-national", "open-fede")
+    val natTournaments = for (tournament <- tournamentList) yield readNationalTournament(season, ligue, tournament)
     val information = YamlParser.readInfo(s"s$season/$ligue/info.html")
 
-    Ligue(name, shortName, comites, opens, coupe, master, masterTeam, teamCoupe, information)
+    Ligue(name, shortName, comites, opens, coupe, master, masterTeam, teamCoupe, natTournaments, information)
+  }
+
+  /**
+   * Read national tournament
+   * @param season season
+   * @param ligue ligue
+   * @param tournament tournament
+   * @return tournament
+   */
+  def readNationalTournament(season: Season, ligue: String, tournament: String): NationalTournament = {
+    val tournamentFile = s"s$season/$ligue/championship/$tournament.yml"
+    logger.info(s"Read tournament information in $tournamentFile")
+    val info = YamlParser.parseFile(tournamentFile).asInstanceOf[JavaMap[String, Any]].toMap
+    logger.trace(s"Read $info")
+
+    val shortName = info("shortname").asInstanceOf[String]
+    val date = YamlParser.readDate(info("date").asInstanceOf[String])
+
+    NationalTournament(shortName, date)
   }
 
 

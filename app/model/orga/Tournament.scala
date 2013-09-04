@@ -165,31 +165,24 @@ case class ComiteRank(comite: Comite, date: LocalDate) extends LigueTournament {
 }
 
 /**
- * Coupe Comite
+ * National Tournament
+ * @param shortName shortName
+ * @param date date
  */
-case class ComiteCoupeLigue(comite: Comite) extends LigueTournament {
-  override def toString = Messages("rank.ligue.comite.coupe.title", comite.name)
+case class NationalTournament(shortName:String,date: LocalDate) extends LigueTournament {
+  override def toString = Messages(s"rank.ligue.national.${shortName.toLowerCase}.title")
 
-  val shortName = "LCC"
   val place = None
 
-  lazy val ligue = comite.ligue
+  lazy val ligue: Ligue = Ligue.ligues.find(_.nationalTournaments.contains(this)).get
 
   override val isEvent: Boolean = false
 
-  val date: LocalDate = comite.coupe.date
-
   def getPoint(position: TournamentResult): Int = position match {
-    case Winner => 29
-    case RunnerUp => 22
-    case SemiFinal => 16
-    case QuarterFinal => 11
-    case RoundRobin(pos) => if (pos == 3) 4 else 2
+    case WinningMatch(win) => 1 + win
     case _ => 0
   }
-
 }
-
 
 /**
  * Comite Tournament
