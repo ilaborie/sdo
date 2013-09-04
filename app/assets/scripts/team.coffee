@@ -165,6 +165,23 @@ class Match
       (!self.finished() and self.leg2() > 0) or (self.finished() and self.leg3() > 0)
 
     # Behavior
+    self.updateLeg1 = (winner, index) ->
+      self.leg1(winner)
+      if (self.leg1() == self.leg2()) # Winner
+        self.leg3(0)
+        $('.leg[tabindex='+(index+1)+'11]').focus()
+      else
+        $('.leg[tabindex='+index+'21]').focus()
+    self.updateLeg2 = (winner, index) ->
+      self.leg2(winner)
+      if (self.leg1() == self.leg2()) # Winner
+        self.leg3(0)
+        $('.leg[tabindex='+(index+1)+'11]').focus()
+      else
+        $('.leg[tabindex='+index+'31]').focus()
+    self.updateLeg3 = (winner, index) ->
+      self.leg3(winner)
+      $('.leg[tabindex='+(index+1)+'11]').focus()
     self.updateTeam1 = (team) ->
       switch self.team1
         when "p1" then self.player1 team.player1Subst()

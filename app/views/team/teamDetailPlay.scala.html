@@ -189,7 +189,7 @@
                                             <tr>
                                                 <td class="active">
                                                     <button class="btn btn-block leg" tabindex="@{index}11"
-                                                        data-bind="click: function(data,event){data.leg1(1); $('.leg[tabindex=@{index}21]').focus();},
+                                                        data-bind="click: function(data,event){data.updateLeg1(1,@index);},
                                                                    css: {active: leg1()==1}">
                                                         <i class="glyphicons unchecked" data-bind="visible: leg1()!=1"></i>
                                                         <i class="glyphicons check" data-bind="visible: leg1()==1"></i>
@@ -197,7 +197,7 @@
                                                 </td>
                                                 <td data-bind="css: {active: visibleLeg2(), inactive: !visibleLeg2()}">
                                                     <button class="btn btn-block leg" tabindex="@{index}21"
-                                                        data-bind="click: function(data,event){data.leg2(1); if(data.leg1()==1) $('.leg[tabindex=@{index+1}11]').focus(); else $('.leg[tabindex=@{index}31]').focus();},
+                                                        data-bind="click: function(data,event){data.updateLeg2(1,@index);},
                                                                    visible: visibleLeg2(),
                                                                    css: {active: leg2()==1}">
                                                         <i class="glyphicons unchecked" data-bind="visible: visibleLeg2() && leg2()!=1"></i>
@@ -206,7 +206,7 @@
                                                 </td>
                                                 <td data-bind="css: {active: visibleLeg3() , inactive: !visibleLeg3()}">
                                                     <button class="btn btn-block leg" tabindex="@{index}31"
-                                                        data-bind="click: function(data,event){data.leg3(1); $('.leg[tabindex=@{index+1}11]').focus();},
+                                                        data-bind="click: function(data,event){data.updateLeg3(1,@index);},
                                                                    visible: visibleLeg3(),
                                                                    css: {active: leg3()==1}">
                                                         <i class="glyphicons unchecked" data-bind="visible: visibleLeg3() && leg3()!=1"></i>
@@ -217,7 +217,7 @@
                                             <tr>
                                                 <td class="active">
                                                     <button class="btn btn-block leg" tabindex="@{index}12"
-                                                        data-bind="click: function(data,event){data.leg1(2); $('.leg[tabindex=@{index}21]').focus();},
+                                                        data-bind="click: function(data,event){data.updateLeg1(2,@index);},
                                                                    css: {active: leg1()==2}">
                                                         <i class="glyphicons unchecked" data-bind="visible: leg1()!=2"></i>
                                                         <i class="glyphicons check" data-bind="visible: leg1()==2"></i>
@@ -225,7 +225,7 @@
                                                 </td>
                                                 <td data-bind="css: {active: visibleLeg2(), inactive: !visibleLeg2()}">
                                                     <button class="btn btn-block leg" tabindex="@{index}22"
-                                                        data-bind="click: function(data,event){data.leg2(2); if(data.leg1()==2) $('.leg[tabindex=@{index+1}11]').focus(); else $('.leg[tabindex=@{index}31]').focus();},
+                                                        data-bind="click: function(data,event){data.updateLeg2(2,@index);},
                                                                    visible: visibleLeg2(),
                                                                    css: {active: leg2()==2}">
                                                         <i class="glyphicons unchecked" data-bind="visible: visibleLeg2() && leg2()!=2"></i>
@@ -234,7 +234,7 @@
                                                 </td>
                                                 <td data-bind="css: {active: visibleLeg3() , inactive: !visibleLeg3()}">
                                                     <button class="btn btn-block leg" tabindex="@{index}32"
-                                                        data-bind="click: function(data,event){data.leg3(2); $('.leg[tabindex=@{index+1}11]').focus();},
+                                                        data-bind="click: function(data,event){data.updateLeg3(2,@index);},
                                                                    visible: visibleLeg3(),
                                                                    css: {active: leg3()==2}">
                                                         <i class="glyphicons unchecked" data-bind="visible: visibleLeg3() && leg3()!=2"></i>
