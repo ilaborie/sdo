@@ -1,8 +1,10 @@
 package model.orga
 
 import play.api.i18n.Messages
+
 import org.joda.time.LocalDate
 import org.joda.time.format.DateTimeFormat
+
 import util.Location
 
 /**
@@ -180,7 +182,43 @@ case class ComiteRank(date: LocalDate) extends LigueTournament {
  * @param shortName shortName
  * @param date date
  */
-case class NationalTournament(shortName: String, date: LocalDate) extends LigueTournament {
+case class NationalTournament(shortName: String,
+                              date: LocalDate,
+                              mensInfo: Map[Int, List[String]],
+                              ladiesInfo: Map[Int, List[String]],
+                              youthInfo: Map[Int, List[String]],
+                              pairsInfo: Map[Int, List[(String, String)]]) extends LigueTournament {
+
+  lazy val mens: Map[LicensedPlayer, Int] = {
+    for {
+      (m, lst) <- mensInfo
+      s <- lst
+      p <- LicensedPlayer.findByName(s)
+    } yield (p, m)
+  }.toMap
+  lazy val ladies: Map[LicensedPlayer, Int] = {
+    for {
+      (m, lst) <- ladiesInfo
+      s <- lst
+      p <- LicensedPlayer.findByName(s)
+    } yield (p, m)
+  }.toMap
+  lazy val youth: Map[LicensedPlayer, Int] = {
+    for {
+      (m, lst) <- youthInfo
+      s <- lst
+      p <- LicensedPlayer.findByName(s)
+    } yield (p, m)
+  }.toMap
+  lazy val pairs: Map[Doublette, Int] = {
+    for {
+      (m, lst) <- pairsInfo
+      (s1, s2) <- lst
+      p1 <- LicensedPlayer.findByName(s1)
+      p2 <- LicensedPlayer.findByName(s2)
+    } yield (Doublette(p1, p2), m)
+  }.toMap
+
   override def toString = Messages(s"rank.ligue.national.${shortName.toLowerCase}.title")
 
   val place = None
@@ -193,6 +231,10 @@ case class NationalTournament(shortName: String, date: LocalDate) extends LigueT
     case WinningMatch(win) => 1 + win
     case _ => 0
   }
+}
+
+object NationalTournament {
+  val tournamentList = List("open-france", "coupe-france", "open-national", "open-fede")
 }
 
 /**

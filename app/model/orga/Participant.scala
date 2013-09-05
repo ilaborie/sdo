@@ -18,7 +18,7 @@ sealed abstract class Participant {
 /**
  * Single Player
  */
-sealed abstract class Player extends Participant {
+sealed trait Player extends Participant {
   def junior: Boolean
 
   def feminine: Boolean
@@ -64,13 +64,13 @@ sealed abstract class TeamParticipant extends Participant {
  */
 case class LicensedPlayer(licenseNumber: LicenseNumber,
                           name: String,
-                          surname: Option[String],
+                          surname: Option[String]=None,
                           junior: Boolean = false,
                           feminine: Boolean = false,
                           emails: Set[EMail] = Set(),
                           twitter: Option[String] = None,
                           facebook: Option[String] = None,
-                          google: Option[String] = None) extends TeamParticipant {
+                          google: Option[String] = None) extends TeamParticipant with Player {
 
   override def toString = surname match {
     case Some(sn) => s"«$sn»"

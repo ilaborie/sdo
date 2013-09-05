@@ -111,8 +111,7 @@ object Data {
       }
     }
     // National Tournament
-    val tournamentList = List("open-france", "coupe-france", "open-national", "open-fede")
-    val natTournaments = for (tournament <- tournamentList) yield readNationalTournament(season, ligue, tournament)
+    val natTournaments = for (tournament <- NationalTournament.tournamentList) yield readNationalTournament(season, ligue, tournament)
     val information = YamlParser.readInfo(s"s$season/$ligue/info.html")
 
     Ligue(name, shortName, comites, opens, coupe, master, masterTeam, teamCoupe, natTournaments, information)
@@ -128,13 +127,40 @@ object Data {
   def readNationalTournament(season: Season, ligue: String, tournament: String): NationalTournament = {
     val tournamentFile = s"s$season/$ligue/championship/$tournament.yml"
     logger.info(s"Read tournament information in $tournamentFile")
-    val info = YamlParser.parseFile(tournamentFile).asInstanceOf[JavaMap[String, Any]].toMap
+    val info: Map[String, Any] = YamlParser.parseFile(tournamentFile).asInstanceOf[JavaMap[String, Any]].toMap
     logger.trace(s"Read $info")
 
     val shortName = info("shortname").asInstanceOf[String]
     val date = YamlParser.readDate(info("date").asInstanceOf[String])
 
-    NationalTournament(shortName, date)
+    def toMapIntStrings(key: String, info: Map[String, Any]): Map[Int, List[String]] = {
+      if (info.contains(key)) {
+        val value = info(key)
+        if (value==null) Map()
+        else value.asInstanceOf[JavaMap[Int, JavaList[String]]].toMap.mapValues(_.toList)
+      }
+      else Map()
+    }
+    def toMapIntStringsPair(key: String, info: Map[String, Any]): Map[Int, List[(String,String)]] = {
+      def lstToPair(lst: JavaList[JavaList[String]]): List[(String, String)] = {
+        println("lstToPair: " + lst)
+        for (l <- lst.toList) yield (l.get(0), l.get(1))
+      }.toList
+
+      if (info.contains(key)) {
+        val value = info(key)
+        if (value==null) Map()
+        else value.asInstanceOf[JavaMap[Int, JavaList[JavaList[String]]]].toMap.mapValues(lstToPair)
+      }
+      else Map()
+    }
+
+    val mens = toMapIntStrings("mens", info)
+    val ladies = toMapIntStrings("ladies", info)
+    val youth = toMapIntStrings("youth", info)
+    val pairs = toMapIntStringsPair("pairs",info)
+
+    NationalTournament(shortName, date, mens, ladies, youth, pairs)
   }
 
 

@@ -45,7 +45,6 @@ object SeasonTeamRanking {
 
     TeamRank(team, teamMatches)
   }
-
 }
 
 
