@@ -19,9 +19,13 @@ GET         /ligues/:ligue/comites/:comite/clubs/:club            controllers.Or
 
 # Ligue Rank
 GET         /ligues/:ligue/single                                 controllers.Ranking.ligueSingle(ligue)
+GET         /ligues/:ligue/single.pdf                             controllers.Ranking.ligueSinglePDF(ligue)
 GET         /ligues/:ligue/ladies                                 controllers.Ranking.ligueLadies(ligue)
+GET         /ligues/:ligue/ladies.pdf                             controllers.Ranking.ligueLadiesPDF(ligue)
 GET         /ligues/:ligue/youth                                  controllers.Ranking.ligueYouth(ligue)
+GET         /ligues/:ligue/youth.pdf                              controllers.Ranking.ligueYouthPDF(ligue)
 GET         /ligues/:ligue/pairs                                  controllers.Ranking.liguePairs(ligue)
+GET         /ligues/:ligue/pairs.pdf                              controllers.Ranking.liguePairsPDF(ligue)
 GET         /ligues/:ligue/team                                   controllers.Ranking.ligueTeam(ligue)
 GET         /ligues/:ligue/team.pdf                               controllers.Ranking.ligueTeamPDF(ligue)
 

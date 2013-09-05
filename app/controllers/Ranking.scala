@@ -29,6 +29,17 @@ object Ranking extends Controller with SecureSocial {
         ligue => Ok(views.html.ligue.single(ligue, LigueRanking.single(ligue), User(request.user)))
       }.result
   }
+  /**
+   * Ligue Single  PDF
+   * @param ligueShortName ligue
+   * @return single ranking
+   */
+  def ligueSinglePDF(ligueShortName: String) = SecuredAction {
+    implicit request =>
+      LigueAction(ligueShortName) {
+        ligue => PDF.ok(pdf.html.ligueSingleRanking.render(ligue, LigueRanking.single(ligue))).getWrappedResult
+      }.result
+  }
 
   /**
    * Ligue Feminine
@@ -43,7 +54,19 @@ object Ranking extends Controller with SecureSocial {
   }
 
   /**
-   * Ligue Junior
+   * Ligue Ladies
+   * @param ligueShortName ligue
+   * @return ladies ranking
+   */
+  def ligueLadiesPDF(ligueShortName: String) = SecuredAction {
+    implicit request =>
+      LigueAction(ligueShortName) {
+        ligue => PDF.ok(pdf.html.ligueLadiesRanking.render(ligue, LigueRanking.ladies(ligue))).getWrappedResult
+      }.result
+  }
+
+  /**
+   * Ligue Youth
    * @param ligueShortName ligue
    * @return youth ranking
    */
@@ -55,7 +78,19 @@ object Ranking extends Controller with SecureSocial {
   }
 
   /**
-   * Ligue Double
+   * Ligue Youth PDF
+   * @param ligueShortName ligue
+   * @return youth ranking
+   */
+  def ligueYouthPDF(ligueShortName: String) = SecuredAction {
+    implicit request =>
+      LigueAction(ligueShortName) {
+        ligue => PDF.ok(pdf.html.ligueYouthRanking.render(ligue, LigueRanking.youth(ligue))).getWrappedResult
+      }.result
+  }
+
+  /**
+   * Ligue Pairs
    * @param ligueShortName ligue
    * @return pairs ranking
    */
@@ -63,6 +98,19 @@ object Ranking extends Controller with SecureSocial {
     implicit request =>
       LigueAction(ligueShortName) {
         ligue => Ok(views.html.ligue.pairs(ligue, LigueRanking.pairs(ligue), User(request.user)))
+      }.result
+  }
+
+  /**
+   * Ligue Pairs
+   * @param ligueShortName ligue
+   * @return pairs ranking
+   */
+  def liguePairsPDF(ligueShortName: String) = SecuredAction {
+    implicit request =>
+      LigueAction(ligueShortName) {
+        ligue =>
+          PDF.ok(pdf.html.liguePairsRanking.render(ligue, LigueRanking.pairs(ligue))).getWrappedResult
       }.result
   }
 
@@ -106,7 +154,7 @@ object Ranking extends Controller with SecureSocial {
   }
 
   /**
-   * Comite Feminine
+   * Comite Ladies
    * @param ligueShortName ligue
    * @param comiteShortName comite
    * @return ladies ranking
@@ -119,7 +167,7 @@ object Ranking extends Controller with SecureSocial {
   }
 
   /**
-   * Comite Junior
+   * Comite Youth
    * @param ligueShortName ligue
    * @param comiteShortName comite
    * @return youth ranking
@@ -132,7 +180,7 @@ object Ranking extends Controller with SecureSocial {
   }
 
   /**
-   * Comite Doublette
+   * Comite Pairstte
    * @param ligueShortName ligue
    * @param comiteShortName comite
    * @return doublette ranking
