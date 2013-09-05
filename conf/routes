@@ -19,17 +19,17 @@ GET         /ligues/:ligue/comites/:comite/clubs/:club            controllers.Or
 
 # Ligue Rank
 GET         /ligues/:ligue/single                                 controllers.Ranking.ligueSingle(ligue)
-GET         /ligues/:ligue/feminine                               controllers.Ranking.ligueFeminine(ligue)
-GET         /ligues/:ligue/junior                                 controllers.Ranking.ligueJunior(ligue)
-GET         /ligues/:ligue/double                                 controllers.Ranking.ligueDoublette(ligue)
+GET         /ligues/:ligue/ladies                                 controllers.Ranking.ligueLadies(ligue)
+GET         /ligues/:ligue/youth                                  controllers.Ranking.ligueYouth(ligue)
+GET         /ligues/:ligue/pairs                                  controllers.Ranking.liguePairs(ligue)
 GET         /ligues/:ligue/team                                   controllers.Ranking.ligueTeam(ligue)
 GET         /ligues/:ligue/team.pdf                               controllers.Ranking.ligueTeamPDF(ligue)
 
 # Comite Rank
 GET         /ligues/:ligue/comites/:comite/single                 controllers.Ranking.comiteSingle(ligue, comite)
-GET         /ligues/:ligue/comites/:comite/feminine               controllers.Ranking.comiteFeminine(ligue, comite)
-GET         /ligues/:ligue/comites/:comite/junior                 controllers.Ranking.comiteJunior(ligue, comite)
-GET         /ligues/:ligue/comites/:comite/double                 controllers.Ranking.comiteDoublette(ligue, comite)
+GET         /ligues/:ligue/comites/:comite/ladies                 controllers.Ranking.comiteLadies(ligue, comite)
+GET         /ligues/:ligue/comites/:comite/youth                  controllers.Ranking.comiteYouth(ligue, comite)
+GET         /ligues/:ligue/comites/:comite/pairs                  controllers.Ranking.comitePairs(ligue, comite)
 GET         /ligues/:ligue/comites/:comite/team                   controllers.Ranking.comiteTeam(ligue, comite)
 GET         /ligues/:ligue/comites/:comite/team.pdf               controllers.Ranking.comiteTeamPDF(ligue, comite)
 

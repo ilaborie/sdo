@@ -64,6 +64,7 @@ rank.point=Pts.
 rank.point.title=Points
 rank.name=Nom
 rank.club=Club
+rank.download.pdf=Classement PDF
 
 # Tournament
 rank.comite.open=OC {0}

@@ -2,8 +2,8 @@
 @import model.orga._
 
     @displayPlayer(player: LicensedPlayer, capitain:Boolean) = {
-        @if(player.feminine) { <i class="glyphicons female"></i> } else { <i class="glyphicons male"></i> }
-        @if(player.junior) { <i class="glyphicons soccer_ball"></i>}
+        @if(player.lady) { <i class="glyphicons female"></i> } else { <i class="glyphicons male"></i> }
+        @if(player.youth) { <i class="glyphicons soccer_ball"></i>}
         @if(capitain) { <i class="glyphicons sheriffs_star"></i>}
         @if(player.surname.isDefined) {«<em>@player.surname</em>»}
         @player.name

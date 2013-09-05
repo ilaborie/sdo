@@ -15,6 +15,11 @@ sealed abstract class Tournament {
 
   def getPoint(position: TournamentResult): Int
 
+  def getPointAsString(position: TournamentResult): String = {
+    val point = getPoint(position)
+    if (point == 0) "-" else point.toString
+  }
+
   def shortName: String
 
   def place: Option[Location]
@@ -211,13 +216,13 @@ case class NationalTournament(shortName: String,
       p <- LicensedPlayer.findByName(s)
     } yield (p, m)
   }.toMap
-  lazy val pairs: Map[Doublette, Int] = {
+  lazy val pairs: Map[Pair, Int] = {
     for {
       (m, lst) <- pairsInfo
       (s1, s2) <- lst
       p1 <- LicensedPlayer.findByName(s1)
       p2 <- LicensedPlayer.findByName(s2)
-    } yield (Doublette(p1, p2), m)
+    } yield (Pair(p1, p2), m)
   }.toMap
 
   override def toString = Messages(s"rank.ligue.national.${shortName.toLowerCase}.title")

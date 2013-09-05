@@ -137,7 +137,7 @@ object DataChampionship {
     val capitain = shouldFindLicensiedPlayer(map("capitain").asInstanceOf[String])
     val players = playersName map shouldFindLicensiedPlayer
     val substitute: Option[Substitute] = readSubstitute(map("substitute").asInstanceOf[JavaMap[String, Any]])
-    val doublettes: (TeamDoublette, TeamDoublette) = readDoublettes(map("doubles")
+    val doublettes: (TeamPair, TeamPair) = readDoublettes(map("doubles")
       .asInstanceOf[JavaList[JavaMap[String, String]]].toList)
 
     TeamMatchDetail(team, capitain, players.toArray, substitute, doublettes)
@@ -171,7 +171,7 @@ object DataChampionship {
    * @param list data
    * @return Doublettes
    */
-  def readDoublettes(list: List[JavaMap[String, String]]): (TeamDoublette, TeamDoublette) = {
+  def readDoublettes(list: List[JavaMap[String, String]]): (TeamPair, TeamPair) = {
     (readDoublette(list(0).toMap), readDoublette(list(1).toMap))
   }
 
@@ -180,8 +180,8 @@ object DataChampionship {
    * @param map data
    * @return the Doublette
    */
-  def readDoublette(map: Map[String, String]): TeamDoublette =
-    TeamDoublette(shouldFindLicensiedPlayer(map("j1")), shouldFindLicensiedPlayer(map("j2")))
+  def readDoublette(map: Map[String, String]): TeamPair =
+    TeamPair(shouldFindLicensiedPlayer(map("j1")), shouldFindLicensiedPlayer(map("j2")))
 
 
   /**

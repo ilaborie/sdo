@@ -1,6 +1,8 @@
-package model.orga
+package model.rank
 
 import play.api.Logger
+
+import model.orga._
 
 /**
  * Helper to read Tournament result
@@ -36,6 +38,7 @@ object TournamentResultData {
     case _ => throw new IllegalStateException(s"Cannot find result of $tournament")
   }
 
+  // FIXME Implements
   private def createOpenLigueResult(player: Participant, ol: OpenLigue): Option[TournamentResult] = None
   private def createCoupeLigueResult(player: Participant, cl: CoupeLigue): Option[TournamentResult] = None
   private def createMasterLigueResult(player: Participant, ml: MasterLigue): Option[TournamentResult] = None
@@ -52,11 +55,11 @@ object TournamentResultData {
   private def createNationalTournamentResult(player: Participant, tournament: NationalTournament): Option[WinningMatch] = {
     player match {
       case p: LicensedPlayer => {
-        if (!p.junior && !p.feminine) tournament.mens.get(p).map(WinningMatch)
-        else if (p.feminine && !p.junior) tournament.ladies.get(p).map(WinningMatch)
-        else /* if (p.junior ) */ tournament.youth.get(p).map(WinningMatch)
+        if (!p.youth && !p.lady) tournament.mens.get(p).map(WinningMatch)
+        else if (p.lady && !p.youth) tournament.ladies.get(p).map(WinningMatch)
+        else /* if (p.youth ) */ tournament.youth.get(p).map(WinningMatch)
       }
-      case d: Doublette => tournament.pairs.get(d).map(WinningMatch)
+      case d: Pair => tournament.pairs.get(d).map(WinningMatch)
       case _ => None
     }
   }

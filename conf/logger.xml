@@ -22,7 +22,7 @@
     <logger name="YAML" level="INFO"/>
     <logger name="data" level="DEBUG"/>
 
-    <logger name="UserService" level="TRACE"/>
+    <logger name="UserService" level="DEBUG"/>
     <logger name="user" level="DEBUG"/>
     <logger name="AuthEventListener" level="TRACE"/>
     <logger name="Mailer" level="TRACE"/>

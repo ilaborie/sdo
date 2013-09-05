@@ -45,7 +45,7 @@ object Data {
     val facebook: Option[String] = data.get("facebook")
     val google: Option[String] = data.get("google")
 
-    NotLicensedPlayer(s"$lastName $firstName", feminine = isFeminine, junior = isJunior,
+    NotLicensedPlayer(s"$lastName $firstName", lady = isFeminine, youth = isJunior,
       emails = emails, twitter = twitter, facebook = facebook, google = google)
   }
 
@@ -267,7 +267,7 @@ object Data {
     val facebook: Option[String] = YamlParser.toOption(data, "facebook")
     val google: Option[String] = YamlParser.toOption(data, "google")
 
-    LicensedPlayer(license, s"$lastName $firstName", surname, feminine = isFeminine, junior = isJunior,
+    LicensedPlayer(license, s"$lastName $firstName", surname, lady = isFeminine, youth = isJunior,
       emails = emails, twitter = twitter, facebook = facebook, google = google)
   }
 

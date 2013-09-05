@@ -2,13 +2,12 @@
 @import model.orga.Team
 @import model.team.MatchDetail
 
-<table class="table table-striped table-bordered rank">
+<table class="table table-striped table-bordered rank team">
     <caption>
         @caption
-
         <a class="btn btn-primary pull-right" target="_blank" href="@path/team.pdf">
             <i class="glyphicons download_alt"></i>
-            Classement PDF
+            @Messages("rank.download.pdf")
         </a>
     </caption>
     <thead>

@@ -11,7 +11,7 @@ case class TeamMatchDetail(team: Team,
                            capitain: LicensedPlayer,
                            players: Array[LicensedPlayer],
                            substitute: Option[Substitute],
-                           doublettes: (TeamDoublette, TeamDoublette)) {
+                           doublettes: (TeamPair, TeamPair)) {
   require(players.size == 4)
   // Check Club
   require(players(0).club == team.club)
@@ -33,9 +33,9 @@ case class TeamMatchDetail(team: Team,
     participant match {
       case LicensedPlayer(_, _, _, _, _, _, _, _, _) =>
         if (participant == replace) replaceBy else participant
-      case TeamDoublette(p1, p2) =>
-        if (p1 == replace) TeamDoublette(replaceBy, p2)
-        else if (p2 == replace) TeamDoublette(p1, replaceBy)
+      case TeamPair(p1, p2) =>
+        if (p1 == replace) TeamPair(replaceBy, p2)
+        else if (p2 == replace) TeamPair(p1, replaceBy)
         else participant
       case _ => participant
     }
