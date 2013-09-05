@@ -22,8 +22,20 @@ sealed abstract class SeasonParticipantRanking[T <: Participant](season: Season,
  * @param season season
  * @param ranks ranks
  */
-case class SeasonSingleRanking(season: Season, tournaments: List[Tournament], ranks: Seq[ParticipantRank[Player]])
-  extends SeasonParticipantRanking[Player](season, tournaments, ranks)
+case class SeasonSingleRanking[T <: Player](season: Season, tournaments: List[Tournament], ranks: Seq[ParticipantRank[T]])
+  extends SeasonParticipantRanking[T](season, tournaments, ranks)
+
+object SeasonSingleRanking {
+  def apply(season: Season, ligue:Ligue): SeasonSingleRanking[LicensedPlayer] = {
+    val tournaments = ligue.tournaments.filter(!_.isTeam)
+    val ranks = for {
+      player <- ligue.players
+      // if player.men
+    } yield ParticipantRank(player, TournamentResultData.createResult(player, tournaments))
+
+    SeasonSingleRanking(season,tournaments,ranks)
+  }
+}
 
 /**
  * Feminine
@@ -70,7 +82,8 @@ case class ParticipantRank[T <: Participant](participant: T, results: Map[Tourna
     // getPositions List
     // Compare List
 
-    ??? // FIXME implements
+    // FIXME implements
+    false
   }
 
   def betterThan(other: ParticipantRank[T]): Boolean = (this.points > other.points) || (

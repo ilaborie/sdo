@@ -57,6 +57,7 @@ case class OpenLigue(date: LocalDate, location: Location) extends LigueTournamen
     case SemiFinal => 7
     case QuarterFinal => 4
     case EighthFinal => 2
+    case NoParticipation => 0
     case _ => 1
   }
 }
@@ -82,7 +83,7 @@ case class CoupeLigue(date: LocalDate, location: Location) extends LigueTourname
     case EighthFinal => 4
     case SixteenthFinal => 2
     case RoundRobin(pos) => if (pos == 3) 2 else 1
-    case _ => 1
+    case _ => 0
   }
 }
 
@@ -266,8 +267,10 @@ case class CoupeComite(date: LocalDate, location: Location) extends ComiteTourna
     case SemiFinal => 16
     case QuarterFinal => 11
     case EighthFinal => 7
+    case SixteenthFinal => 4
+    case ThirtySecondFinal => 2
     case RoundRobin(pos) => if (pos == 3) 4 else if (pos == 4) 2 else 1
-    case _ => 1
+    case _ => 0
   }
 }
 
@@ -289,8 +292,10 @@ case class OpenClub(date: LocalDate, location: Location) extends ComiteTournamen
     case SemiFinal => 11
     case QuarterFinal => 7
     case EighthFinal => 4
+    case SixteenthFinal => 2
+    case ThirtySecondFinal => 1
     case RoundRobin(pos) => if (pos == 3) 2 else 1
-    case _ => 1
+    case _ => 0
   }
 }
 

@@ -143,7 +143,6 @@ object Data {
     }
     def toMapIntStringsPair(key: String, info: Map[String, Any]): Map[Int, List[(String,String)]] = {
       def lstToPair(lst: JavaList[JavaList[String]]): List[(String, String)] = {
-        println("lstToPair: " + lst)
         for (l <- lst.toList) yield (l.get(0), l.get(1))
       }.toList
 

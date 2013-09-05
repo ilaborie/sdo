@@ -14,7 +14,7 @@ import model.user.User
 /**
  * Classements pages
  */
-object Classements extends Controller with SecureSocial {
+object Ranking extends Controller with SecureSocial {
 
   private val season: Season = Season.currentSeason
 

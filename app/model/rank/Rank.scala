@@ -8,7 +8,7 @@ object ComiteRanking {
 
   val season = Season.currentSeason
 
-  def single(comite: Comite) = SeasonSingleRanking(season, comite.tournaments, Nil)
+  def single(comite: Comite) = SeasonSingleRanking[Player](season, comite.tournaments, Nil)
 
   def feminine(comite: Comite) = SeasonFeminineRanking(season, comite.tournaments, Nil)
 
@@ -47,7 +47,7 @@ object LigueRanking {
 
   val season = Season.currentSeason
 
-  def single(ligue: Ligue) = SeasonSingleRanking(season, ligue.tournaments.filter(!_.isTeam), Nil)
+  def single(ligue: Ligue) = SeasonSingleRanking(season, ligue)
 
   def feminine(ligue: Ligue) = SeasonFeminineRanking(season, ligue.tournaments.filter(!_.isTeam), Nil)
 

@@ -72,10 +72,9 @@ case class LicensedPlayer(licenseNumber: LicenseNumber,
                           facebook: Option[String] = None,
                           google: Option[String] = None) extends TeamParticipant with Player {
 
-  override def toString = surname match {
-    case Some(sn) => s"«$sn»"
-    case _ => name
-  }
+  val men: Boolean = !feminine
+
+  override val toString = name
 
   lazy val ligue: Ligue = Ligue.ligues.find(_.players.contains(this)).get
 
@@ -85,7 +84,7 @@ case class LicensedPlayer(licenseNumber: LicenseNumber,
 
   lazy val team: Team = club.teams.find(_.players.contains(this)).get
 
-  def clubAsString = club.name
+  def clubAsString = club.shortName
 }
 
 object LicensedPlayer {
@@ -106,7 +105,7 @@ case class TeamDoublette(player1: LicensedPlayer, player2: LicensedPlayer) exten
   val name = s"${player1.name} / ${player2.name}"
   val club = player1.club
 
-  val clubAsString = club.name
+  val clubAsString = club.shortName
 }
 
 /**
@@ -122,7 +121,7 @@ case class Doublette(player1: Player, player2: Player) extends Participant {
   def clubAsString: String = {
     val club1 = player1.clubAsString
     val club2 = player2.clubAsString
-    if (club1 == club2) club1 else s"$club1 - $club2"
+    if (club1 == club2) club1 else s"$club1 / $club2"
   }
 }
 
