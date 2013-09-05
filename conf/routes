@@ -18,20 +18,24 @@ GET         /ligues/:ligue/comites/:comite/body                   controllers.Or
 GET         /ligues/:ligue/comites/:comite/clubs/:club            controllers.Orga.club(ligue, comite, club)
 
 # Ligue Rank
-GET         /ligues/:ligue/single                                 controllers.Classements.ligueSingle(ligue)
-GET         /ligues/:ligue/feminine                               controllers.Classements.ligueFeminine(ligue)
-GET         /ligues/:ligue/junior                                 controllers.Classements.ligueJunior(ligue)
-GET         /ligues/:ligue/double                                 controllers.Classements.ligueDoublette(ligue)
-GET         /ligues/:ligue/team                                   controllers.Classements.ligueTeam(ligue)
-GET         /ligues/:ligue/team.pdf                               controllers.Classements.ligueTeamPDF(ligue)
+GET         /ligues/:ligue/single                                 controllers.Ranking.ligueSingle(ligue)
+GET         /ligues/:ligue/single.pdf                             controllers.Ranking.ligueSinglePDF(ligue)
+GET         /ligues/:ligue/ladies                                 controllers.Ranking.ligueLadies(ligue)
+GET         /ligues/:ligue/ladies.pdf                             controllers.Ranking.ligueLadiesPDF(ligue)
+GET         /ligues/:ligue/youth                                  controllers.Ranking.ligueYouth(ligue)
+GET         /ligues/:ligue/youth.pdf                              controllers.Ranking.ligueYouthPDF(ligue)
+GET         /ligues/:ligue/pairs                                  controllers.Ranking.liguePairs(ligue)
+GET         /ligues/:ligue/pairs.pdf                              controllers.Ranking.liguePairsPDF(ligue)
+GET         /ligues/:ligue/team                                   controllers.Ranking.ligueTeam(ligue)
+GET         /ligues/:ligue/team.pdf                               controllers.Ranking.ligueTeamPDF(ligue)
 
 # Comite Rank
-GET         /ligues/:ligue/comites/:comite/single                 controllers.Classements.comiteSingle(ligue, comite)
-GET         /ligues/:ligue/comites/:comite/feminine               controllers.Classements.comiteFeminine(ligue, comite)
-GET         /ligues/:ligue/comites/:comite/junior                 controllers.Classements.comiteJunior(ligue, comite)
-GET         /ligues/:ligue/comites/:comite/double                 controllers.Classements.comiteDoublette(ligue, comite)
-GET         /ligues/:ligue/comites/:comite/team                   controllers.Classements.comiteTeam(ligue, comite)
-GET         /ligues/:ligue/comites/:comite/team.pdf               controllers.Classements.comiteTeamPDF(ligue, comite)
+GET         /ligues/:ligue/comites/:comite/single                 controllers.Ranking.comiteSingle(ligue, comite)
+GET         /ligues/:ligue/comites/:comite/ladies                 controllers.Ranking.comiteLadies(ligue, comite)
+GET         /ligues/:ligue/comites/:comite/youth                  controllers.Ranking.comiteYouth(ligue, comite)
+GET         /ligues/:ligue/comites/:comite/pairs                  controllers.Ranking.comitePairs(ligue, comite)
+GET         /ligues/:ligue/comites/:comite/team                   controllers.Ranking.comiteTeam(ligue, comite)
+GET         /ligues/:ligue/comites/:comite/team.pdf               controllers.Ranking.comiteTeamPDF(ligue, comite)
 
 # Tournament
 GET         /ligues/:ligue/tour/:tour                             controllers.Orga.ligueTournament(ligue, tour)

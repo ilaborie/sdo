@@ -14,12 +14,12 @@
         @user match {
             case LocalUser(id, player) => {
                 <li>
-                    @if(player.feminine) {
+                    @if(player.lady) {
                     <a tabindex="-1" href="@routes.Orga.comite(player.ligue.shortName, player.comite.shortName)#women">
                     @Messages("menu.rank.indiv")
                     </a>
                     } else {
-                        @if(player.junior) {
+                        @if(player.youth) {
                     <a tabindex="-1" href="@routes.Orga.comite(player.ligue.shortName, player.comite.shortName)#junior">
                     @Messages("menu.rank.indiv")
                     </a>

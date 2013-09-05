@@ -45,7 +45,7 @@ object Data {
     val facebook: Option[String] = data.get("facebook")
     val google: Option[String] = data.get("google")
 
-    NotLicensedPlayer(s"$lastName $firstName", feminine = isFeminine, junior = isJunior,
+    NotLicensedPlayer(s"$lastName $firstName", lady = isFeminine, youth = isJunior,
       emails = emails, twitter = twitter, facebook = facebook, google = google)
   }
 
@@ -80,6 +80,7 @@ object Data {
     val comitesList = info("comites").asInstanceOf[JavaList[String]].toList
     val comites = for (comite <- comitesList) yield readComite(season, ligue, comite)
 
+    // Ligue Tournament
     val openList = info("opens").asInstanceOf[JavaList[JavaMap[String, Any]]].toList
     val opens = for (open <- openList) yield OpenLigue(
       YamlParser.readDate(open.get("date").asInstanceOf[String]),
@@ -109,10 +110,59 @@ object Data {
           YamlParser.readLocation(coupeTeam.toMap).get))
       }
     }
-
+    // National Tournament
+    val natTournaments = for (tournament <- NationalTournament.tournamentList) yield readNationalTournament(season, ligue, tournament)
     val information = YamlParser.readInfo(s"s$season/$ligue/info.html")
 
-    Ligue(name, shortName, comites, opens, coupe, master, masterTeam, teamCoupe, information)
+    Ligue(name, shortName, comites, opens, coupe, master, masterTeam, teamCoupe, natTournaments, information)
+  }
+
+  /**
+   * Read national tournament
+   * @param season season
+   * @param ligue ligue
+   * @param tournament tournament
+   * @return tournament
+   */
+  def readNationalTournament(season: Season, ligue: String, tournament: String): NationalTournament = {
+    val tournamentFile = s"s$season/$ligue/championship/$tournament.yml"
+    logger.info(s"Read tournament information in $tournamentFile")
+    val info: Map[String, Any] = YamlParser.parseFile(tournamentFile).asInstanceOf[JavaMap[String, Any]].toMap
+    logger.trace(s"Read $info")
+
+    val shortName = info("shortname").asInstanceOf[String]
+    val date = YamlParser.readDate(info("date").asInstanceOf[String])
+
+    def toMapIntStrings(key: String, info: Map[String, Any]): Map[Int, List[String]] = {
+      if (info.contains(key)) {
+        val value = info(key)
+        if (value==null) Map()
+        else value.asInstanceOf[JavaMap[Int, JavaList[String]]].toMap.mapValues(_.toList)
+      }
+      else Map()
+    }
+    def toMapIntStringsPair(key: String, info: Map[String, Any]): Map[Int, List[(String,String)]] = {
+      def lstToPair(lst: JavaList[JavaList[String]]): List[(String, String)] = {
+        for (l <- lst.toList) yield {
+          val ordered = l.sorted
+          (ordered.get(0), ordered.get(1))
+        }
+      }.toList
+
+      if (info.contains(key)) {
+        val value = info(key)
+        if (value==null) Map()
+        else value.asInstanceOf[JavaMap[Int, JavaList[JavaList[String]]]].toMap.mapValues(lstToPair)
+      }
+      else Map()
+    }
+
+    val mens = toMapIntStrings("mens", info)
+    val ladies = toMapIntStrings("ladies", info)
+    val youth = toMapIntStrings("youth", info)
+    val pairs = toMapIntStringsPair("pairs",info)
+
+    NationalTournament(shortName, date, mens, ladies, youth, pairs)
   }
 
 
@@ -220,7 +270,7 @@ object Data {
     val facebook: Option[String] = YamlParser.toOption(data, "facebook")
     val google: Option[String] = YamlParser.toOption(data, "google")
 
-    LicensedPlayer(license, s"$lastName $firstName", surname, feminine = isFeminine, junior = isJunior,
+    LicensedPlayer(license, s"$lastName $firstName", surname, lady = isFeminine, youth = isJunior,
       emails = emails, twitter = twitter, facebook = facebook, google = google)
   }
 

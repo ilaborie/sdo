@@ -2,7 +2,7 @@
 
 
 @layout.pdf(Some(Messages("rank.team.ligue.caption", ranking.champ.season, ligue.name)),landscape=true) {
-    <table class="classement" cell>
+    <table class="ranking">
         <thead>
             <tr>
                 <th></th>
@@ -21,7 +21,7 @@
         <tbody>
         @for((teamRank, index) <- ranking.ordered.zipWithIndex) {
             <tr class="@if(index % 2 == 0) {odd} else {even}">
-                <td>@ranking.getPosition(teamRank)</td>
+                <td><strong>@ranking.getPosition(teamRank)</strong></td>
                 <td class="left">@teamRank.team.name</td>
                 <td>@teamRank.points</td>
                 <td>@teamRank.days</td>

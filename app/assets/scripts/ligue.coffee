@@ -24,15 +24,15 @@ $ ->
     @get "#single", () ->
       url = ligue.path + "/single"
       ligue.loadBody url, "#single"
-    @get "#women", () ->
-      url = ligue.path + "/feminine"
-      ligue.loadBody url, "#women"
-    @get "#junior", () ->
-      url = ligue.path + "/junior"
-      ligue.loadBody url, "#junior"
-    @get "#pair", () ->
-      url = ligue.path + "/double"
-      ligue.loadBody url, "#pair"
+    @get "#ladies", () ->
+      url = ligue.path + "/ladies"
+      ligue.loadBody url, "#ladies"
+    @get "#youth", () ->
+      url = ligue.path + "/youth"
+      ligue.loadBody url, "#youth"
+    @get "#pairs", () ->
+      url = ligue.path + "/pairs"
+      ligue.loadBody url, "#pairs"
     @get "#team", () ->
       url = ligue.path + "/team"
       ligue.loadBody url, "#team"

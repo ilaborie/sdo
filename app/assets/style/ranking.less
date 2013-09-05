@@ -1,5 +1,3 @@
-
-
 // Rank
 table.table.rank {
   thead th {
@@ -13,8 +11,11 @@ table.table.rank {
   tbody tr td:nth-child(2) {
     text-align: left;
   }
-  td:nth-child(n+3) {
+  td:nth-child(n+4) {
     font-family: "Ubuntu Mono", monaco, monospace;
+  }
+  tbody tr td:last-child {
+    font-weight: large;
   }
 
   td.pos {
@@ -34,29 +35,38 @@ table.table.rank {
   //  }
 }
 
+table.table.rank.team td:nth-child(n+3) {
+  font-family: "Ubuntu Mono", monaco, monospace;
+}
+
 // Journee
 table.table.journee td:first-child {
   width: 16px;
 }
-table.table.journee td:nth-child(2){
+
+table.table.journee td:nth-child(2) {
   text-align: right;
   vertical-align: middle;
   width: 35%;
 }
+
 table.table.journee td:nth-child(3),
 table.table.journee td:nth-child(4) {
   font-family: "UbuntuMono", monaco, monospace;
   vertical-align: middle;
   width: 15%;
 }
+
 table.table.journee td:last-child {
   text-align: left;
   vertical-align: middle;
   width: 35%;
 }
+
 table.table.journee td.win {
   color: @green;
 }
+
 table.table.journee td.loose {
   color: @red;
 }

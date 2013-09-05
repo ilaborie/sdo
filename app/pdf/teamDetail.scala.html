@@ -4,7 +4,7 @@
 @import model.orga.TeamParticipant
 
 @displayTeam(tmd: TeamMatchDetail) = {
-    <table class="full">
+    <table class="full grey">
         <caption>@tmd.team</caption>
         <tr><th colspan="3">@Messages("team.detail.players")</th></tr>
         @for(i <- 1 to 4) {
@@ -15,7 +15,7 @@
         </tr>
         }
     </table>
-    <table class="full">
+    <table class="full grey">
         <tr><th colspan="2">@Messages("team.detail.doublettes")</th></tr>
         <tr>
             <th>1</th>
@@ -26,7 +26,7 @@
             <td class="white">@tmd.doublettes._2.name</td>
         </tr>
     </table>
-    <table class="full">
+    <table class="full grey">
         <tr>
             <th style="width: 30%">@Messages("team.detail.substitute")</th>
             <td class="white" >@tmd.substitute.map(_.player.name)</td>
@@ -52,7 +52,7 @@
 }
 
 @displayMatch(i: Int, m: Match) = {
-    <table class="match full">
+    <table class="match full grey">
         <caption>@Messages("team.detail.match",i)</caption>
         <tr>
             <th colspan="3">
@@ -136,7 +136,7 @@
                     </td>
                     <td valign="top">
                             <!-- match2 -->
-                        <table>
+                        <table class="grey">
                             <caption>@Messages("team.detail.score")</caption>
                             @for(i <- 1 to 20) {
                                 <tr>
@@ -167,7 +167,7 @@
                 <tr>
                     <td valign="top">
                         <!-- Results -->
-                        <table class="bordered result full">
+                        <table class="bordered result full grey">
                             <caption>@Messages("team.detail.result")</caption>
                             <thead>
                                 <tr>
@@ -209,7 +209,7 @@
                     </td>
                     <td valign="top">
                             <!-- Capitain -->
-                        <table class="bordered capitain full">
+                        <table class="bordered capitain full grey">
                             <caption>@Messages("team.detail.capitain")</caption>
                             <tr>
                                 <th>@team1.team</th>

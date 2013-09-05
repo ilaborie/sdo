@@ -1,8 +1,10 @@
 package model.orga
 
 import play.api.i18n.Messages
+
 import org.joda.time.LocalDate
 import org.joda.time.format.DateTimeFormat
+
 import util.Location
 
 /**
@@ -11,14 +13,22 @@ import util.Location
 sealed abstract class Tournament {
   def date: LocalDate
 
-  def getPoint(position: TournamentResult): Int
-
   def shortName: String
 
   def place: Option[Location]
 
   def ligue: Ligue
+
   def maybyComite: Option[Comite]
+
+  def getPoint(position: TournamentResult): Int
+
+  def getPointAsString(position: TournamentResult): String = {
+    val point = getPoint(position)
+    if (point == 0) "-" else point.toString
+  }
+
+  def getPairs: Seq[Pair]
 }
 
 object Tournament {
@@ -42,7 +52,7 @@ case class OpenLigue(date: LocalDate, location: Location) extends LigueTournamen
 
   override def toString = Messages("rank.ligue.open.title", ligue.name)
 
-  val place= Some(location)
+  val place = Some(location)
 
   lazy val ligue = Ligue.ligues.find(_.opens.contains(this)).get
 
@@ -54,8 +64,11 @@ case class OpenLigue(date: LocalDate, location: Location) extends LigueTournamen
     case SemiFinal => 7
     case QuarterFinal => 4
     case EighthFinal => 2
+    case NoParticipation => 0
     case _ => 1
   }
+
+  lazy val getPairs: Seq[Pair] = Nil // FIXME Implements
 }
 
 /**
@@ -78,9 +91,10 @@ case class CoupeLigue(date: LocalDate, location: Location) extends LigueTourname
     case QuarterFinal => 7
     case EighthFinal => 4
     case SixteenthFinal => 2
-    case ThirtySecondFinal => 1
+    case RoundRobin(pos) => if (pos == 3) 2 else 1
     case _ => 0
   }
+  lazy val getPairs: Seq[Pair] = Nil // FIXME Implements
 }
 
 /**
@@ -101,9 +115,11 @@ case class MasterLigue(date: LocalDate, location: Location) extends LigueTournam
     case RunnerUp => 22
     case SemiFinal => 16
     case QuarterFinal => 11
-    case RoundRobin(pos) => if (pos == 3) 4 else 2
+    case EighthFinal => 7
+    case RoundRobin(pos) => if (pos == 3) 4 else if (pos == 4) 2 else 0
     case _ => 0
   }
+  lazy val getPairs: Seq[Pair] = Nil // FIXME Implements
 }
 
 /**
@@ -118,7 +134,9 @@ case class MasterLigueTeam(date: LocalDate, location: Location) extends LigueTou
   override def toString = Messages("rank.ligue.master.team.title")
 
   def getPoint(position: TournamentResult): Int = 0
+  lazy val getPairs: Seq[Pair] = Nil // FIXME Implements
 }
+
 /**
  * Coupe Ligue Team
  */
@@ -131,65 +149,109 @@ case class CoupeLigueTeam(date: LocalDate, location: Location) extends LigueTour
   override def toString = Messages("rank.ligue.coupe.team.title")
 
   def getPoint(position: TournamentResult): Int = 0
+  lazy val getPairs: Seq[Pair] = Nil // FIXME Implements
 }
 
 /**
- * Comite Ranking
+ * Inter-Comite Ranking
  */
-case class ComiteRank(comite: Comite, date: LocalDate) extends LigueTournament {
+case class ComiteRank(date: LocalDate) extends LigueTournament {
 
-  override def toString = Messages("rank.ligue.comite.rank.title", comite.name)
+  override def toString = Messages("rank.ligue.comite.rank.title")
 
   val place = None
 
-  lazy val ligue = comite.ligue
+  lazy val ligue = Ligue.ligues.find(_.tournaments.contains(this)).get
 
-  val shortName = "LCR"
+  val shortName = "IC"
 
   override val isEvent: Boolean = false
 
   def getPoint(position: TournamentResult): Int = position match {
     case RoundRobin(pos) => pos match {
-      case 1 => 8
-      case 2 => 7
-      case 3 => 6
-      case 4 => 5
-      case 5 => 4
-      case 6 => 3
-      case 7 => 2
-      case 8 => 1
+      case 1 => 22
+      case 2 => 18
+      case 3 => 15
+      case 4 => 13
+      case 5 => 12
+      case 6 => 11
+      case 7 => 10
+      case 8 => 9
+      case 9 => 8
+      case 10 => 7
+      case 11 => 6
+      case 12 => 5
+      case 13 => 4
+      case 14 => 3
+      case 15 => 2
+      case 16 => 1
       case _ => 0
     }
     case _ => 0
   }
+  lazy val getPairs: Seq[Pair] = Nil // FIXME Implements
 }
 
 /**
- * Coupe Comite
+ * National Tournament
+ * @param shortName shortName
+ * @param date date
  */
-case class ComiteCoupeLigue(comite: Comite) extends LigueTournament {
-  override def toString = Messages("rank.ligue.comite.coupe.title", comite.name)
+case class NationalTournament(shortName: String,
+                              date: LocalDate,
+                              mensInfo: Map[Int, List[String]],
+                              ladiesInfo: Map[Int, List[String]],
+                              youthInfo: Map[Int, List[String]],
+                              pairsInfo: Map[Int, List[(String, String)]]) extends LigueTournament {
 
-  val shortName = "LCC"
+  lazy val mens: Map[LicensedPlayer, Int] = {
+    for {
+      (m, lst) <- mensInfo
+      s <- lst
+      p <- LicensedPlayer.findByName(s)
+    } yield (p, m)
+  }.toMap
+  lazy val ladies: Map[LicensedPlayer, Int] = {
+    for {
+      (m, lst) <- ladiesInfo
+      s <- lst
+      p <- LicensedPlayer.findByName(s)
+    } yield (p, m)
+  }.toMap
+  lazy val youth: Map[LicensedPlayer, Int] = {
+    for {
+      (m, lst) <- youthInfo
+      s <- lst
+      p <- LicensedPlayer.findByName(s)
+    } yield (p, m)
+  }.toMap
+  lazy val pairs: Map[Pair, Int] = {
+    for {
+      (m, lst) <- pairsInfo
+      (s1, s2) <- lst
+      p1 <- LicensedPlayer.findByName(s1)
+      p2 <- LicensedPlayer.findByName(s2)
+    } yield (Pair(p1, p2), m)
+  }.toMap
+
+  override def toString = Messages(s"rank.ligue.national.${shortName.toLowerCase}.title")
+
   val place = None
 
-  lazy val ligue = comite.ligue
+  lazy val ligue: Ligue = Ligue.ligues.find(_.nationalTournaments.contains(this)).get
 
   override val isEvent: Boolean = false
 
-  val date: LocalDate = comite.coupe.date
-
   def getPoint(position: TournamentResult): Int = position match {
-    case Winner => 29
-    case RunnerUp => 22
-    case SemiFinal => 16
-    case QuarterFinal => 11
-    case RoundRobin(pos) => if (pos == 3) 4 else 2
+    case WinningMatch(win) => 1 + win
     case _ => 0
   }
-
+  lazy val getPairs: Seq[Pair] = pairs.keySet.toSeq
 }
 
+object NationalTournament {
+  val tournamentList = List("open-france", "coupe-france", "open-national", "open-fede")
+}
 
 /**
  * Comite Tournament
@@ -198,6 +260,7 @@ sealed abstract class ComiteTournament extends Tournament {
   def shortName: String
 
   def comite: Comite
+
   lazy val ligue = comite.ligue
   lazy val maybyComite = Some(comite)
 }
@@ -218,9 +281,13 @@ case class CoupeComite(date: LocalDate, location: Location) extends ComiteTourna
     case RunnerUp => 22
     case SemiFinal => 16
     case QuarterFinal => 11
-    case RoundRobin(pos) => if (pos == 3) 4 else 2
+    case EighthFinal => 7
+    case SixteenthFinal => 4
+    case ThirtySecondFinal => 2
+    case RoundRobin(pos) => if (pos == 3) 4 else if (pos == 4) 2 else 1
     case _ => 0
   }
+  lazy val getPairs: Seq[Pair] = Nil // FIXME Implements
 }
 
 /**
@@ -236,13 +303,17 @@ case class OpenClub(date: LocalDate, location: Location) extends ComiteTournamen
   lazy val comite = club.comite
 
   def getPoint(position: TournamentResult): Int = position match {
-    case Winner => 16
-    case RunnerUp => 11
-    case SemiFinal => 7
-    case QuarterFinal => 4
-    case EighthFinal => 2
-    case _ => 1
+    case Winner => 22
+    case RunnerUp => 16
+    case SemiFinal => 11
+    case QuarterFinal => 7
+    case EighthFinal => 4
+    case SixteenthFinal => 2
+    case ThirtySecondFinal => 1
+    case RoundRobin(pos) => if (pos == 3) 2 else 1
+    case _ => 0
   }
+  lazy val getPairs: Seq[Pair] = Nil // FIXME Implements
 }
 
 

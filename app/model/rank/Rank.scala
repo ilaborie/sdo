@@ -4,34 +4,72 @@ import model.orga._
 
 
 object ComiteRanking {
-  // FIXME dummy data
 
   val season = Season.currentSeason
 
-  def single(comite: Comite) = SeasonSingleRanking(season, comite.tournaments, Nil)
+  def qualifyForMasterSingle(position: Int) = position <= 6
 
-  def feminine(comite: Comite) = SeasonFeminineRanking(season, comite.tournaments, Nil)
+  def qualifyForMasterLadies(position: Int) = position <= 3
 
-  def junior(comite: Comite) = SeasonJuniorRanking(season, comite.tournaments, Nil)
+  def qualifyForMasterYouth(position: Int) = position <= 3
 
-  def double(comite: Comite) = SeasonDoubleRanking(season, comite.tournaments, Nil)
+  def qualifyForMasterPairs(position: Int) = position <= 3
+
+
+  // FIXME dummy data
+  def single(comite: Comite) = SeasonSingleRanking[Player](season, comite.tournaments, Nil)
+
+  def ladies(comite: Comite) = SeasonLadiesRanking[Player](season, comite.tournaments, Nil)
+
+  def youth(comite: Comite) = SeasonYouthRanking[Player](season, comite.tournaments, Nil)
+
+  def pairs(comite: Comite) = SeasonPairsRanking(season, comite.tournaments, Nil)
 
   def team(comite: Comite) = SeasonTeamRanking(season, comite)
 
 }
 
-object LigueRanking {
+object InterComiteRanking {
   // FIXME dummy data
 
   val season = Season.currentSeason
 
-  def single(ligue: Ligue) = SeasonSingleRanking(season, ligue.tournaments.filter(!_.isTeam), Nil)
+  private def getInterComiteTournaments(ligue: Ligue) = {
+    for {
+      comite <- ligue.comites
+      tournament <- comite.tournaments
+    } yield tournament
+  }.toList
 
-  def feminine(ligue: Ligue) = SeasonFeminineRanking(season, ligue.tournaments.filter(!_.isTeam), Nil)
+  def single(ligue: Ligue) = SeasonSingleRanking[LicensedPlayer](season, getInterComiteTournaments(ligue), Nil)
 
-  def junior(ligue: Ligue) = SeasonJuniorRanking(season, ligue.tournaments.filter(!_.isTeam), Nil)
+  def ladies(ligue: Ligue) = SeasonLadiesRanking[LicensedPlayer](season, getInterComiteTournaments(ligue), Nil)
 
-  def double(ligue: Ligue) = SeasonDoubleRanking(season, ligue.tournaments.filter(!_.isTeam), Nil)
+  def youth(ligue: Ligue) = SeasonYouthRanking[LicensedPlayer](season, getInterComiteTournaments(ligue), Nil)
+
+  def pairs(ligue: Ligue) = SeasonPairsRanking(season, getInterComiteTournaments(ligue), Nil)
+
+}
+
+object LigueRanking {
+
+  val season = Season.currentSeason
+
+  def qualifyForMasterSingle(position: Int) = position <= 4
+
+  def qualifyForMasterLadies(position: Int) = position <= 2
+
+  def qualifyForMasterYouth(position: Int) = position <= 2
+
+  def qualifyForMasterPairs(position: Int) = position <= 2
+
+  def single(ligue: Ligue) = SeasonSingleRanking(season, ligue)
+
+  def ladies(ligue: Ligue) = SeasonLadiesRanking(season, ligue)
+
+  def youth(ligue: Ligue) = SeasonYouthRanking(season, ligue)
+
+  def pairs(ligue: Ligue) = SeasonPairsRanking(season, ligue)
 
   def team(ligue: Ligue) = SeasonTeamRanking(season, ligue)
 

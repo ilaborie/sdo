@@ -2,13 +2,12 @@
 @import model.orga.Team
 @import model.team.MatchDetail
 
-<table class="table table-striped table-bordered rank">
+<table class="table table-striped table-bordered rank team">
     <caption>
         @caption
-
         <a class="btn btn-primary pull-right" target="_blank" href="@path/team.pdf">
             <i class="glyphicons download_alt"></i>
-            Classement PDF
+            @Messages("rank.download.pdf")
         </a>
     </caption>
     <thead>
@@ -29,7 +28,7 @@
     <tbody>
     @for(teamRank <- ranking.ordered) {
         <tr>
-            <td><span class="badge">@ranking.getPosition(teamRank)</span></td>
+            <td><span class="badge badge-info">@ranking.getPosition(teamRank)</span></td>
             <td>@teamRank.team.name</td>
             <td>@teamRank.points</td>
             <td class="hidden-phone">@teamRank.days</td>

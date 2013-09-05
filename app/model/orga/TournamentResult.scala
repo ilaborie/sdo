@@ -5,6 +5,8 @@ package model.orga
  */
 sealed abstract class TournamentResult
 
+object NoParticipation extends TournamentResult
+
 object Winner extends TournamentResult
 
 object RunnerUp extends TournamentResult
@@ -20,4 +22,6 @@ object SixteenthFinal extends TournamentResult
 object ThirtySecondFinal extends TournamentResult
 
 case class RoundRobin(position: Int) extends TournamentResult
+
+case class WinningMatch(winning: Int) extends TournamentResult
 

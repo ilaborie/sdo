@@ -36,7 +36,6 @@
 
 @page {
   size: letter;
-  background: @grayLighter;
   margin: 1em;
 
   @top-center {
@@ -128,6 +127,9 @@ table.result, table.capitain {
   border-spacing: 0;
   border-collapse: collapse;
 }
+.grey {
+  background-color: @grayLighter
+}
 
 .license {
   font-size: small;
@@ -135,4 +137,28 @@ table.result, table.capitain {
 
 caption, .header {
   background-color: @grayLight;
+}
+
+/**
+ * Custom
+ */
+.ranking {
+  border: 1px solid @tableBorder;
+  border-spacing: 0;
+  border-collapse: collapse;
+
+  font-size: 1em;
+
+  th, td {
+    text-align: center;
+    border: 1px solid @tableBorder;
+  }
+
+  th.left, td.left {
+    text-align: left !important;
+  }
+
+  tbody tr.even {
+    background-color: @tableBackgroundAccent;
+  }
 }

@@ -1,9 +1,5 @@
 package model.orga
 
-import play.api.cache.Cache
-import play.api.Play.current
-import scala.Predef._
-import scala.Some
 import util.EMail
 
 /**
@@ -18,21 +14,23 @@ sealed abstract class Participant {
 /**
  * Single Player
  */
-sealed abstract class Player extends Participant {
-  def junior: Boolean
+sealed trait Player extends Participant {
+  def youth: Boolean
 
-  def feminine: Boolean
+  def lady: Boolean
+
+  lazy val men: Boolean = !lady
 }
 
 /**
  * Not Licensed player
  * @param name name
- * @param junior is junior
- * @param feminine is feminine
+ * @param youth is youth
+ * @param lady is ladies
  */
 case class NotLicensedPlayer(name: String,
-                             junior: Boolean = false,
-                             feminine: Boolean = false,
+                             youth: Boolean = false,
+                             lady: Boolean = false,
                              emails: Set[EMail] = Set(),
                              twitter: Option[String] = None,
                              facebook: Option[String] = None,
@@ -59,23 +57,21 @@ sealed abstract class TeamParticipant extends Participant {
  * @param licenseNumber license
  * @param name name
  * @param surname surname
- * @param junior junior
- * @param feminine feminine
+ * @param youth youth
+ * @param lady ladies
  */
 case class LicensedPlayer(licenseNumber: LicenseNumber,
                           name: String,
-                          surname: Option[String],
-                          junior: Boolean = false,
-                          feminine: Boolean = false,
+                          surname: Option[String] = None,
+                          youth: Boolean = false,
+                          lady: Boolean = false,
                           emails: Set[EMail] = Set(),
                           twitter: Option[String] = None,
                           facebook: Option[String] = None,
-                          google: Option[String] = None) extends TeamParticipant {
+                          google: Option[String] = None) extends TeamParticipant with Player {
 
-  override def toString = surname match {
-    case Some(sn) => s"«$sn»"
-    case _ => name
-  }
+
+  override val toString = name
 
   lazy val ligue: Ligue = Ligue.ligues.find(_.players.contains(this)).get
 
@@ -85,7 +81,7 @@ case class LicensedPlayer(licenseNumber: LicenseNumber,
 
   lazy val team: Team = club.teams.find(_.players.contains(this)).get
 
-  def clubAsString = club.name
+  def clubAsString = club.shortName
 }
 
 object LicensedPlayer {
@@ -98,15 +94,15 @@ object LicensedPlayer {
  * @param player1 first player
  * @param player2 second player
  */
-case class TeamDoublette(player1: LicensedPlayer, player2: LicensedPlayer) extends TeamParticipant {
-  require(player1 != player2, "Deux joueurs différent dans une doublette")
-  require(player1.club == player2.club, "Deux joureurs dans le même club")
+case class TeamPair(player1: LicensedPlayer, player2: LicensedPlayer) extends TeamParticipant {
+  require(player1 != player2, "Two different player")
+  require(player1.club == player2.club, "Same club")
 
-  override val toString = name
   val name = s"${player1.name} / ${player2.name}"
+  override val toString = name
   val club = player1.club
 
-  val clubAsString = club.name
+  val clubAsString = club.shortName
 }
 
 /**
@@ -114,15 +110,17 @@ case class TeamDoublette(player1: LicensedPlayer, player2: LicensedPlayer) exten
  * @param player1 first player
  * @param player2 second player
  */
-case class Doublette(player1: Player, player2: Player) extends Participant {
-  require(player1 != player2, "Deux joueurs différent dans une doublette")
+case class Pair(player1: Player, player2: Player) extends Participant {
+  require(player1 != player2, "Two different player")
 
   val name = s"${player1.name} / ${player2.name}"
+
+  override val toString = name
 
   def clubAsString: String = {
     val club1 = player1.clubAsString
     val club2 = player2.clubAsString
-    if (club1 == club2) club1 else s"$club1 - $club2"
+    if (club1 == club2) club1 else s"$club1 / $club2"
   }
 }
 
