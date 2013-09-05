@@ -7,10 +7,13 @@ object ComiteRanking {
 
   val season = Season.currentSeason
 
-  def qualifyForMasterSingle(position:Int) = position<=6
-  def qualifyForMasterLadies(position:Int) = position<=3
-  def qualifyForMasterYouth(position:Int) = position<=3
-  def qualifyForMasterPairs(position:Int) = position<=3
+  def qualifyForMasterSingle(position: Int) = position <= 6
+
+  def qualifyForMasterLadies(position: Int) = position <= 3
+
+  def qualifyForMasterYouth(position: Int) = position <= 3
+
+  def qualifyForMasterPairs(position: Int) = position <= 3
 
 
   // FIXME dummy data
@@ -52,10 +55,13 @@ object LigueRanking {
 
   val season = Season.currentSeason
 
-  def qualifyForMasterSingle(position:Int) = position<=4
-  def qualifyForMasterLadies(position:Int) = position<=2
-  def qualifyForMasterYouth(position:Int) = position<=2
-  def qualifyForMasterPairs(position:Int) = position<=2
+  def qualifyForMasterSingle(position: Int) = position <= 4
+
+  def qualifyForMasterLadies(position: Int) = position <= 2
+
+  def qualifyForMasterYouth(position: Int) = position <= 2
+
+  def qualifyForMasterPairs(position: Int) = position <= 2
 
   def single(ligue: Ligue) = SeasonSingleRanking(season, ligue)
 
@@ -63,10 +69,9 @@ object LigueRanking {
 
   def youth(ligue: Ligue) = SeasonYouthRanking(season, ligue)
 
-  // FIXME
-  def pairs(ligue: Ligue) = SeasonPairsRanking(season, ligue.tournaments.filter(!_.isTeam), Nil)
+  def pairs(ligue: Ligue) = SeasonPairsRanking(season, ligue)
 
-  def team(ligue: Ligue) =    SeasonTeamRanking(season, ligue)
+  def team(ligue: Ligue) = SeasonTeamRanking(season, ligue)
 
 }
 

@@ -47,6 +47,7 @@ case class SeasonLadiesRanking[T <: Player](season: Season, tournaments: List[To
   extends SeasonParticipantRanking[T](season, tournaments, ranks) {
   require(ranks.filter(!_.participant.lady).isEmpty, "Only Ladies")
 }
+
 object SeasonLadiesRanking {
   def apply(season: Season, ligue: Ligue): SeasonLadiesRanking[LicensedPlayer] = {
     val tournaments = ligue.tournaments.filter(!_.isTeam)
@@ -54,7 +55,6 @@ object SeasonLadiesRanking {
       player <- ligue.players
       if player.lady
     } yield ParticipantRank(player, TournamentResultData.createResult(player, tournaments))
-    println(ranks)
     SeasonLadiesRanking(season, tournaments, ranks.filter(_.points > 0))
   }
 }
@@ -92,7 +92,14 @@ case class SeasonPairsRanking(season: Season, tournaments: List[Tournament], ran
 object SeasonPairsRanking {
   def apply(season: Season, ligue: Ligue): SeasonPairsRanking = {
     val tournaments = ligue.tournaments.filter(!_.isTeam)
-    val ranks :Seq[ParticipantRank[Pair]] = ??? // FIXME
+    val pairs = for {
+      tour <- tournaments
+      pair <- tour.getPairs
+    } yield pair
+
+    val ranks: Seq[ParticipantRank[Pair]] = for {
+      pair <- pairs
+    } yield ParticipantRank(pair, TournamentResultData.createResult(pair, tournaments))
     SeasonPairsRanking(season, tournaments, ranks.filter(_.points > 0))
   }
 }

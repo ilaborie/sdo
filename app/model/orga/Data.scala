@@ -143,7 +143,10 @@ object Data {
     }
     def toMapIntStringsPair(key: String, info: Map[String, Any]): Map[Int, List[(String,String)]] = {
       def lstToPair(lst: JavaList[JavaList[String]]): List[(String, String)] = {
-        for (l <- lst.toList) yield (l.get(0), l.get(1))
+        for (l <- lst.toList) yield {
+          val ordered = l.sorted
+          (ordered.get(0), ordered.get(1))
+        }
       }.toList
 
       if (info.contains(key)) {

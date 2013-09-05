@@ -62,7 +62,7 @@ sealed abstract class TeamParticipant extends Participant {
  */
 case class LicensedPlayer(licenseNumber: LicenseNumber,
                           name: String,
-                          surname: Option[String]=None,
+                          surname: Option[String] = None,
                           youth: Boolean = false,
                           lady: Boolean = false,
                           emails: Set[EMail] = Set(),
@@ -114,6 +114,8 @@ case class Pair(player1: Player, player2: Player) extends Participant {
   require(player1 != player2, "Two different player")
 
   val name = s"${player1.name} / ${player2.name}"
+
+  override val toString = name
 
   def clubAsString: String = {
     val club1 = player1.clubAsString

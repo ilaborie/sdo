@@ -17,7 +17,7 @@ object TournamentResultData {
    * @param tournaments tournaments
    * @return result
    */
-  def createResult(player: Player, tournaments: Seq[Tournament]): Map[Tournament, TournamentResult] = {
+  def createResult[T<:Participant](player: T, tournaments: Seq[Tournament]): Map[Tournament, TournamentResult] = {
     for (tournament <- tournaments) yield (tournament, createResult(player, tournament))
   }.toMap
 
@@ -27,7 +27,7 @@ object TournamentResultData {
    * @param tournament tournament
    * @return result
    */
-  def createResult(player: Player, tournament: Tournament): TournamentResult = tournament match {
+  def createResult[T<:Participant](player: T, tournament: Tournament): TournamentResult = tournament match {
     case ol: OpenLigue => createOpenLigueResult(player, ol).getOrElse(NoParticipation)
     case cl: CoupeLigue => createCoupeLigueResult(player, cl).getOrElse(NoParticipation)
     case ml: MasterLigue => createMasterLigueResult(player, ml).getOrElse(NoParticipation)
