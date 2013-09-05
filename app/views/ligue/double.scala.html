@@ -28,12 +28,8 @@
                     case MasterLigue(_,_) => {
                         <th>@tags.abbr("rank.ligue.master")</th>
                     }
-                    case ComiteRank(comite,_) => {
-                        <th>
-                            <abbr title="@Messages("rank.ligue.comite.rank.title", comite.name)">
-                            @Messages("rank.ligue.comite.rank", comite.shortName)
-                            </abbr>
-                        </th>
+                    case ComiteRank(_) => {
+                        <th>@tags.abbr("rank.ligue.comite.rank")</th>
                     }
                     case NationalTournament(shortName,_) => {
                         <th>@tags.abbr(s"rank.ligue.national.${shortName.toLowerCase}")</th>

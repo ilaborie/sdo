@@ -27,6 +27,11 @@ case class Ligue(name: String,
 
   lazy val fullName = s"[$shortName] $name"
 
+  val comiteRankings = {
+    val dateRanking = master.date.plusDays(-1)
+    ComiteRank(dateRanking)
+  }
+
   override def toString = fullName
 
   def findTournamentByShortName(sname: String): Option[LigueTournament] = tournaments.find(_.shortName == sname)
@@ -58,12 +63,8 @@ case class Ligue(name: String,
   }
 
   lazy val tournaments: List[LigueTournament] = {
-    val dateRanking = master.date.plusDays(-1)
-    val comiteRankings = for (comite <- comites) yield ComiteRank(comite, dateRanking)
-
     val clTeam = coupeTeam.toList
-
-    val list = (coupe :: master :: masterTeam :: opens.toList) ::: comiteRankings.toList ::: clTeam ::: nationalTournaments.toList
+    val list = (coupe :: master :: masterTeam :: comiteRankings :: opens.toList) ::: clTeam ::: nationalTournaments.toList
     list.sortBy(_.date)
   }
 

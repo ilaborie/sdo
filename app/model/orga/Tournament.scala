@@ -18,6 +18,7 @@ sealed abstract class Tournament {
   def place: Option[Location]
 
   def ligue: Ligue
+
   def maybyComite: Option[Comite]
 }
 
@@ -42,7 +43,7 @@ case class OpenLigue(date: LocalDate, location: Location) extends LigueTournamen
 
   override def toString = Messages("rank.ligue.open.title", ligue.name)
 
-  val place= Some(location)
+  val place = Some(location)
 
   lazy val ligue = Ligue.ligues.find(_.opens.contains(this)).get
 
@@ -78,8 +79,8 @@ case class CoupeLigue(date: LocalDate, location: Location) extends LigueTourname
     case QuarterFinal => 7
     case EighthFinal => 4
     case SixteenthFinal => 2
-    case ThirtySecondFinal => 1
-    case _ => 0
+    case RoundRobin(pos) => if (pos == 3) 2 else 1
+    case _ => 1
   }
 }
 
@@ -101,7 +102,8 @@ case class MasterLigue(date: LocalDate, location: Location) extends LigueTournam
     case RunnerUp => 22
     case SemiFinal => 16
     case QuarterFinal => 11
-    case RoundRobin(pos) => if (pos == 3) 4 else 2
+    case EighthFinal => 7
+    case RoundRobin(pos) => if (pos == 3) 4 else if (pos == 4) 2 else 0
     case _ => 0
   }
 }
@@ -119,6 +121,7 @@ case class MasterLigueTeam(date: LocalDate, location: Location) extends LigueTou
 
   def getPoint(position: TournamentResult): Int = 0
 }
+
 /**
  * Coupe Ligue Team
  */
@@ -134,30 +137,38 @@ case class CoupeLigueTeam(date: LocalDate, location: Location) extends LigueTour
 }
 
 /**
- * Comite Ranking
+ * Inter-Comite Ranking
  */
-case class ComiteRank(comite: Comite, date: LocalDate) extends LigueTournament {
+case class ComiteRank(date: LocalDate) extends LigueTournament {
 
-  override def toString = Messages("rank.ligue.comite.rank.title", comite.name)
+  override def toString = Messages("rank.ligue.comite.rank.title")
 
   val place = None
 
-  lazy val ligue = comite.ligue
+  lazy val ligue = Ligue.ligues.find(_.tournaments.contains(this)).get
 
-  val shortName = "LCR"
+  val shortName = "IC"
 
   override val isEvent: Boolean = false
 
   def getPoint(position: TournamentResult): Int = position match {
     case RoundRobin(pos) => pos match {
-      case 1 => 8
-      case 2 => 7
-      case 3 => 6
-      case 4 => 5
-      case 5 => 4
-      case 6 => 3
-      case 7 => 2
-      case 8 => 1
+      case 1 => 22
+      case 2 => 18
+      case 3 => 15
+      case 4 => 13
+      case 5 => 12
+      case 6 => 11
+      case 7 => 10
+      case 8 => 9
+      case 9 => 8
+      case 10 => 7
+      case 11 => 6
+      case 12 => 5
+      case 13 => 4
+      case 14 => 3
+      case 15 => 2
+      case 16 => 1
       case _ => 0
     }
     case _ => 0
@@ -169,7 +180,7 @@ case class ComiteRank(comite: Comite, date: LocalDate) extends LigueTournament {
  * @param shortName shortName
  * @param date date
  */
-case class NationalTournament(shortName:String,date: LocalDate) extends LigueTournament {
+case class NationalTournament(shortName: String, date: LocalDate) extends LigueTournament {
   override def toString = Messages(s"rank.ligue.national.${shortName.toLowerCase}.title")
 
   val place = None
@@ -191,6 +202,7 @@ sealed abstract class ComiteTournament extends Tournament {
   def shortName: String
 
   def comite: Comite
+
   lazy val ligue = comite.ligue
   lazy val maybyComite = Some(comite)
 }
@@ -211,8 +223,9 @@ case class CoupeComite(date: LocalDate, location: Location) extends ComiteTourna
     case RunnerUp => 22
     case SemiFinal => 16
     case QuarterFinal => 11
-    case RoundRobin(pos) => if (pos == 3) 4 else 2
-    case _ => 0
+    case EighthFinal => 7
+    case RoundRobin(pos) => if (pos == 3) 4 else if (pos == 4) 2 else 1
+    case _ => 1
   }
 }
 
@@ -229,11 +242,12 @@ case class OpenClub(date: LocalDate, location: Location) extends ComiteTournamen
   lazy val comite = club.comite
 
   def getPoint(position: TournamentResult): Int = position match {
-    case Winner => 16
-    case RunnerUp => 11
-    case SemiFinal => 7
-    case QuarterFinal => 4
-    case EighthFinal => 2
+    case Winner => 22
+    case RunnerUp => 16
+    case SemiFinal => 11
+    case QuarterFinal => 7
+    case EighthFinal => 4
+    case RoundRobin(pos) => if (pos == 3) 2 else 1
     case _ => 1
   }
 }
