@@ -28,11 +28,11 @@ case class WinningMatch(winning: Int) extends TournamentResult
 
 case class TournamentResults[T <: Participant](winner: Option[T],
                                                runnerUp: Option[T],
-                                               semiFinal: Array[T],
-                                               quarterFinal: Array[T],
-                                               eighthFinal: Array[T],
-                                               sixteenthFinal: Array[T],
-                                               thirtySecondFinal: Array[T],
+                                               semiFinal: Seq[T],
+                                               quarterFinal: Seq[T],
+                                               eighthFinal: Seq[T],
+                                               sixteenthFinal: Seq[T],
+                                               thirtySecondFinal: Seq[T],
                                                groups: Option[List[List[T]]]) {
   require(semiFinal.size <= 2)
   require(quarterFinal.size <= 4)
@@ -40,7 +40,7 @@ case class TournamentResults[T <: Participant](winner: Option[T],
   require(sixteenthFinal.size <= 16)
   require(thirtySecondFinal.size <= 32)
 
-  def getResult(player: T): Option[TournamentResult] = {
+  def getResult(player: Participant): Option[TournamentResult] = {
     if (winner.isDefined && winner.get == player) Some(Winner)
     else if (runnerUp.isDefined && runnerUp.get == player) Some(RunnerUp)
     else if (semiFinal.contains(player)) Some(SemiFinal)

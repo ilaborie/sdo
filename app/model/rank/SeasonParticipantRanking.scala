@@ -33,10 +33,22 @@ case class SeasonSingleRanking[T <: Player](season: Season, tournaments: List[To
 object SeasonSingleRanking {
   def apply(season: Season, ligue: Ligue): SeasonSingleRanking[LicensedPlayer] = {
     val tournaments = ligue.tournaments.filter(!_.isTeam)
+    val rankType = MensLicensied(ligue)
     val ranks = for {
       player <- ligue.players
-      if player.men
-    } yield ParticipantRank(player, TournamentResultData.createResult(player, tournaments))
+      if rankType.canParticipate(player)
+    } yield ParticipantRank(player, TournamentResultData.createResult(rankType, player, tournaments))
+    SeasonSingleRanking(season, tournaments, ranks.filter(_.points > 0))
+  }
+
+  def apply(season: Season, comite: Comite): SeasonSingleRanking[Player] = {
+    val tournaments = comite.tournaments
+    val players: Seq[Player] = comite.players ++ Ligue.nlPlayers
+    val rankType = Single(comite)
+    val ranks = for {
+      player <- players
+      if rankType.canParticipate(player)
+    } yield ParticipantRank(player, TournamentResultData.createResult(rankType, player, tournaments))
     SeasonSingleRanking(season, tournaments, ranks.filter(_.points > 0))
   }
 }
@@ -54,10 +66,22 @@ case class SeasonLadiesRanking[T <: Player](season: Season, tournaments: List[To
 object SeasonLadiesRanking {
   def apply(season: Season, ligue: Ligue): SeasonLadiesRanking[LicensedPlayer] = {
     val tournaments = ligue.tournaments.filter(!_.isTeam)
+    val rankType = LadiesLicensied(ligue)
     val ranks = for {
       player <- ligue.players
-      if player.lady
-    } yield ParticipantRank(player, TournamentResultData.createResult(player, tournaments))
+      if rankType.canParticipate(player)
+    } yield ParticipantRank(player, TournamentResultData.createResult(rankType, player, tournaments))
+    SeasonLadiesRanking(season, tournaments, ranks.filter(_.points > 0))
+  }
+
+  def apply(season: Season, comite: Comite): SeasonLadiesRanking[Player] = {
+    val tournaments = comite.tournaments
+    val players: Seq[Player] = comite.players ++ Ligue.nlPlayers
+    val rankType = Ladies(comite)
+    val ranks = for {
+      player <- players
+      if rankType.canParticipate(player)
+    } yield ParticipantRank(player, TournamentResultData.createResult(rankType, player, tournaments))
     SeasonLadiesRanking(season, tournaments, ranks.filter(_.points > 0))
   }
 }
@@ -75,10 +99,22 @@ case class SeasonYouthRanking[T <: Player](season: Season, tournaments: List[Tou
 object SeasonYouthRanking {
   def apply(season: Season, ligue: Ligue): SeasonYouthRanking[LicensedPlayer] = {
     val tournaments = ligue.tournaments.filter(!_.isTeam)
+    var rankType = YouthLicensied(ligue)
     val ranks = for {
       player <- ligue.players
-      if player.youth
-    } yield ParticipantRank(player, TournamentResultData.createResult(player, tournaments))
+      if rankType.canParticipate(player)
+    } yield ParticipantRank(player, TournamentResultData.createResult(rankType, player, tournaments))
+    SeasonYouthRanking(season, tournaments, ranks.filter(_.points > 0))
+  }
+
+  def apply(season: Season, comite: Comite): SeasonYouthRanking[Player] = {
+    val tournaments = comite.tournaments
+    val players: Seq[Player] = comite.players ++ Ligue.nlPlayers
+    var rankType = Youth(comite)
+    val ranks = for {
+      player <- players
+      if rankType.canParticipate(player)
+    } yield ParticipantRank(player, TournamentResultData.createResult(rankType, player, tournaments))
     SeasonYouthRanking(season, tournaments, ranks.filter(_.points > 0))
   }
 }
@@ -95,14 +131,23 @@ case class SeasonPairsRanking(season: Season, tournaments: List[Tournament], ran
 object SeasonPairsRanking {
   def apply(season: Season, ligue: Ligue): SeasonPairsRanking = {
     val tournaments = ligue.tournaments.filter(!_.isTeam)
-    val pairs = for {
+    var rankType = PairsLicensied(ligue)
+    val ranks: Seq[ParticipantRank[Pair]] = for {
       tour <- tournaments
       pair <- tour.getPairs
-    } yield pair
+      if rankType.canParticipate(pair)
+    } yield ParticipantRank(pair, TournamentResultData.createResult(rankType, pair, tournaments))
+    SeasonPairsRanking(season, tournaments, ranks.filter(_.points > 0))
+  }
 
+  def apply(season: Season, comite: Comite): SeasonPairsRanking = {
+    val tournaments = comite.tournaments
+    var rankType = Pairs(comite)
     val ranks: Seq[ParticipantRank[Pair]] = for {
-      pair <- pairs
-    } yield ParticipantRank(pair, TournamentResultData.createResult(pair, tournaments))
+      tour <- tournaments
+      pair <- tour.getPairs
+      if rankType.canParticipate(pair)
+    } yield ParticipantRank(pair, TournamentResultData.createResult(rankType, pair, tournaments))
     SeasonPairsRanking(season, tournaments, ranks.filter(_.points > 0))
   }
 }

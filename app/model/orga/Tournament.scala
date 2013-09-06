@@ -219,28 +219,28 @@ case class NationalTournament(shortName: String,
                               youthInfo: Map[Int, List[String]],
                               pairsInfo: Map[Int, List[(String, String)]]) extends LigueTournament {
 
-  lazy val mens: Map[LicensedPlayer, Int] = {
+  lazy val mens: Map[Participant, Int] = {
     for {
       (m, lst) <- mensInfo
       s <- lst
       p <- LicensedPlayer.findByName(s)
     } yield (p, m)
   }.toMap
-  lazy val ladies: Map[LicensedPlayer, Int] = {
+  lazy val ladies: Map[Participant, Int] = {
     for {
       (m, lst) <- ladiesInfo
       s <- lst
       p <- LicensedPlayer.findByName(s)
     } yield (p, m)
   }.toMap
-  lazy val youth: Map[LicensedPlayer, Int] = {
+  lazy val youth: Map[Participant, Int] = {
     for {
       (m, lst) <- youthInfo
       s <- lst
       p <- LicensedPlayer.findByName(s)
     } yield (p, m)
   }.toMap
-  lazy val pairs: Map[Pair, Int] = {
+  lazy val pairs: Map[Participant, Int] = {
     for {
       (m, lst) <- pairsInfo
       (s1, s2) <- lst
@@ -262,7 +262,7 @@ case class NationalTournament(shortName: String,
     case _ => 0
   }
 
-  lazy val getPairs: Seq[Pair] = pairs.keySet.toSeq
+  lazy val getPairs: Seq[Pair] = pairs.keySet.map(_.asInstanceOf[Pair]).toSeq
 }
 
 object NationalTournament {

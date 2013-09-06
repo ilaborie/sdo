@@ -34,12 +34,13 @@ object TournamentResultData {
 
   /**
    * Create result
+   * @param rankType ranking type
    * @param player player
    * @param tournaments tournaments
    * @return result
    */
-  def createResult[T <: Participant](player: T, tournaments: Seq[Tournament]): Map[Tournament, TournamentResult] = {
-    for (tournament <- tournaments) yield (tournament, createResult(player, tournament))
+  def createResult[T <: Participant](rankType: RankingType, player: T, tournaments: Seq[Tournament]): Map[Tournament, TournamentResult] = {
+    for (tournament <- tournaments) yield (tournament, createResult(rankType, player, tournament))
   }.toMap
 
   /**
@@ -48,27 +49,29 @@ object TournamentResultData {
    * @param tournament tournament
    * @return result
    */
-  def createResult[T <: Participant](player: T, tournament: Tournament): TournamentResult = tournament match {
-    case tour: BaseTournament => createBaseTournamentResult(player, tour).getOrElse(NoParticipation)
-    case ic: ComiteRank => createComiteRankResult(player, ic).getOrElse(NoParticipation)
-    case nt: NationalTournament => createNationalTournamentResult(player, nt).getOrElse(NoParticipation)
+  def createResult[T <: Participant](rankType: RankingType, player: T, tournament: Tournament): TournamentResult = tournament match {
+    case tour: BaseTournament => createBaseTournamentResult(rankType, player, tour).getOrElse(NoParticipation)
+    case ic: ComiteRank => createComiteRankResult(rankType, player, ic).getOrElse(NoParticipation)
+    case nt: NationalTournament => createNationalTournamentResult(rankType, player, nt).getOrElse(NoParticipation)
     case _ => throw new IllegalStateException(s"Cannot find result of $tournament")
   }
 
-  private def createBaseTournamentResult(player: Participant, tour: BaseTournament): Option[TournamentResult] = {
-    player match {
-      case p: LicensedPlayer => {
-        if (!p.youth && !p.lady && tour.mens.isDefined) tour.mens.get.getResult(p)
-        else if (p.lady && !p.youth && tour.ladies.isDefined) tour.ladies.get.getResult(p)
-        else if (p.youth && tour.youth.isDefined) tour.youth.get.getResult(p)
-        else None
-      }
-      case d: Pair => if (tour.pairs.isDefined) tour.pairs.get.getResult(d) else None
-      case _ => None
+  private def createBaseTournamentResult(rankType: RankingType, player: Participant, tour: BaseTournament): Option[TournamentResult] = {
+    rankType match {
+      case _: Single => if (tour.mens.isDefined) tour.mens.get.getResult(player) else None
+      case _: SingleLicensied  => if (tour.mens.isDefined) tour.mens.get.getResult(player) else None
+      case _: Mens => if (tour.mens.isDefined) tour.mens.get.getResult(player) else None
+      case _: MensLicensied => if (tour.mens.isDefined) tour.mens.get.getResult(player) else None
+      case _: Ladies => if (tour.ladies.isDefined) tour.ladies.get.getResult(player) else None
+      case _: LadiesLicensied => if (tour.ladies.isDefined) tour.ladies.get.getResult(player) else None
+      case _: Youth => if (tour.youth.isDefined) tour.youth.get.getResult(player) else None
+      case _: YouthLicensied => if (tour.youth.isDefined) tour.youth.get.getResult(player) else None
+      case _: Pairs => if (tour.pairs.isDefined) tour.pairs.get.getResult(player) else None
+      case _: PairsLicensied => if (tour.pairs.isDefined) tour.pairs.get.getResult(player) else None
     }
   }
 
-  private def createComiteRankResult(player: Participant, ic: ComiteRank): Option[TournamentResult] = None
+  private def createComiteRankResult(rankType: RankingType, player: Participant, ic: ComiteRank): Option[TournamentResult] = None
 
   /**
    * National result
@@ -76,16 +79,30 @@ object TournamentResultData {
    * @param player player
    * @return result
    */
-  private def createNationalTournamentResult(player: Participant, tournament: NationalTournament): Option[WinningMatch] = {
-    player match {
-      case p: LicensedPlayer => {
-        if (!p.youth && !p.lady) tournament.mens.get(p).map(WinningMatch)
-        else if (p.lady && !p.youth) tournament.ladies.get(p).map(WinningMatch)
-        else /* if (p.youth ) */ tournament.youth.get(p).map(WinningMatch)
-      }
-      case d: Pair => tournament.pairs.get(d).map(WinningMatch)
-      case _ => None
+  private def createNationalTournamentResult(rankType: RankingType, player: Participant, tournament: NationalTournament): Option[WinningMatch] = {
+    rankType match {
+      case _: Single => tournament.mens.get(player).map(WinningMatch)
+      case _: SingleLicensied => tournament.mens.get(player).map(WinningMatch)
+      case _: Mens => tournament.mens.get(player).map(WinningMatch)
+      case _: MensLicensied => tournament.mens.get(player).map(WinningMatch)
+      case _: Ladies => tournament.ladies.get(player).map(WinningMatch)
+      case _: LadiesLicensied => tournament.ladies.get(player).map(WinningMatch)
+      case _: Youth => tournament.youth.get(player).map(WinningMatch)
+      case _: YouthLicensied => tournament.youth.get(player).map(WinningMatch)
+      case _: Pairs => tournament.pairs.get(player).map(WinningMatch)
+      case _: PairsLicensied => tournament.pairs.get(player).map(WinningMatch)
     }
+  }
+
+  /**
+   * Lookup for a player
+   * @param name the player name
+   * @return an optional player
+   */
+  private def searchPlayer(name: String) = {
+    val search = Ligue.findPlayerByName(name)
+    if (search.isEmpty) logger.warn(s"Could not find player: $name")
+    search
   }
 
   /**
@@ -98,10 +115,7 @@ object TournamentResultData {
     if (info.contains(key)) {
       val value = info(key)
       if (value == null) None
-      else {
-        val name = value.asInstanceOf[String]
-        Ligue.findPlayerByName(name)
-      }
+      else searchPlayer(value.asInstanceOf[String])
     } else None
   }
 
@@ -111,19 +125,18 @@ object TournamentResultData {
    * @param key key
    * @return array of players
    */
-  def readPlayers(info: Map[String, Any], key: String): Array[Player] = {
+  def readPlayers(info: Map[String, Any], key: String): Seq[Player] = {
     if (info.contains(key)) {
       val value = info(key)
-      if (value == null) Array()
+      if (value == null) Nil
       else {
         val names = value.asInstanceOf[JavaList[String]].toList
-        val lst = for {
+        for {
           name <- names
-          player <- Ligue.findPlayerByName(name)
+          player <- searchPlayer(name)
         } yield player
-        lst.toArray
       }
-    } else Array()
+    } else Nil
   }
 
   /**
@@ -134,8 +147,8 @@ object TournamentResultData {
   def createPair(names: List[String]): Option[Pair] = {
     if (names.size != 2) None
     else {
-      val p1 = Ligue.findPlayerByName(names(1))
-      val p2 = Ligue.findPlayerByName(names(2))
+      val p1 = searchPlayer(names(0))
+      val p2 = searchPlayer(names(1))
       if (p1.isDefined && p2.isDefined) Some(Pair(p1.get, p2.get))
       else None
     }
@@ -164,19 +177,18 @@ object TournamentResultData {
    * @param key key
    * @return results
    */
-  def readPairs(info: Map[String, Any], key: String): Array[Pair] = {
+  def readPairs(info: Map[String, Any], key: String): Seq[Pair] = {
     if (info.contains(key)) {
       val value = info(key)
-      if (value == null) Array()
+      if (value == null) Nil
       else {
         val list = value.asInstanceOf[JavaList[JavaList[String]]].toList
-        val lst = for {
+        for {
           names <- list
           pair <- createPair(names.toList.sorted)
         } yield pair
-        lst.toArray
       }
-    } else Array()
+    } else Nil
   }
 
   /**
@@ -193,7 +205,7 @@ object TournamentResultData {
         val names = value.asInstanceOf[JavaList[String]].toList
         val res = for {
           name <- names
-          player <- Ligue.findPlayerByName(name)
+          player <- searchPlayer(name)
         } yield player
         if (res.isEmpty) None
         else Some(res)
