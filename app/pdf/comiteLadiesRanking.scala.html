@@ -1,8 +1,8 @@
-@(ligue: model.orga.Ligue, ranking: model.rank.SeasonYouthRanking[model.orga.LicensedPlayer])
+@(comite: model.orga.Comite, ranking: model.rank.SeasonLadiesRanking[model.orga.Player])
 @import model.orga._
 @import model.rank._
 
-@layout.pdf(Some(Messages("rank.junior.ligue.caption", ligue.name, ranking.season)),landscape=false) {
+@layout.pdf(Some(Messages("rank.feminine.comite.caption", comite.name, ranking.season)),landscape=false) {
     <table class="ranking">
         <thead>
             <tr>
@@ -11,20 +11,11 @@
                 <th>@Messages("rank.club")</th>
                 @for(tournament <- ranking.tournaments) {
                     @tournament match {
-                        case cl:CoupeLigue => {
-                            <th>@Messages("rank.ligue.coupe")</th>
+                        case cc:CoupeComite => {
+                            <th>@Messages("rank.comite.coupe")</th>
                         }
-                        case ol:OpenLigue => {
-                            <th>@Messages("rank.ligue.open")</th>
-                        }
-                        case ml:MasterLigue=> {
-                            <th>@Messages("rank.ligue.master")</th>
-                        }
-                        case cr:ComiteRank => {
-                            <th>@Messages("rank.ligue.comite.rank")</th>
-                        }
-                        case nt:NationalTournament => {
-                            <th>@Messages(s"rank.ligue.national.${nt.shortName.toLowerCase}")</th>
+                        case oc: OpenClub => {
+                            <th>@Messages("rank.comite.open", oc.club.shortName)</th>
                         }
                         case _ => {}
                     }
@@ -37,7 +28,7 @@
             <tr class="@if(index % 2 == 0) {odd} else {even}">
                 <td>
                 @defining(ranking.getPosition(rank)) { pos =>
-                    @if(LigueRanking.qualifyForMasterYouth(pos)) {
+                    @if(LigueRanking.qualifyForMasterLadies(pos)) {
                         <strong>@pos</strong>
                     } else {
                         @pos

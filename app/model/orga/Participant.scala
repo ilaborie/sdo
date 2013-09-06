@@ -47,7 +47,7 @@ object NotLicensedPlayer {
 /**
  * Team
  */
-sealed abstract class TeamParticipant extends Participant {
+sealed trait TeamParticipant extends Participant {
   def club: Club
 }
 

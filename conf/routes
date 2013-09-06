@@ -31,9 +31,13 @@ GET         /ligues/:ligue/team.pdf                               controllers.Ra
 
 # Comite Rank
 GET         /ligues/:ligue/comites/:comite/single                 controllers.Ranking.comiteSingle(ligue, comite)
+GET         /ligues/:ligue/comites/:comite/single.pdf             controllers.Ranking.comiteSinglePDF(ligue, comite)
 GET         /ligues/:ligue/comites/:comite/ladies                 controllers.Ranking.comiteLadies(ligue, comite)
+GET         /ligues/:ligue/comites/:comite/ladies.pdf             controllers.Ranking.comiteLadiesPDF(ligue, comite)
 GET         /ligues/:ligue/comites/:comite/youth                  controllers.Ranking.comiteYouth(ligue, comite)
+GET         /ligues/:ligue/comites/:comite/youth.pdf              controllers.Ranking.comiteYouthPDF(ligue, comite)
 GET         /ligues/:ligue/comites/:comite/pairs                  controllers.Ranking.comitePairs(ligue, comite)
+GET         /ligues/:ligue/comites/:comite/pairs.pdf              controllers.Ranking.comitePairsPDF(ligue, comite)
 GET         /ligues/:ligue/comites/:comite/team                   controllers.Ranking.comiteTeam(ligue, comite)
 GET         /ligues/:ligue/comites/:comite/team.pdf               controllers.Ranking.comiteTeamPDF(ligue, comite)
 

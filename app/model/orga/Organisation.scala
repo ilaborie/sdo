@@ -5,6 +5,18 @@ import play.api.Play.current
 import model.event.Event
 import util.Location
 
+
+sealed trait PlayerContainer {
+  def players: Seq[Player]
+
+  def isMember(participant: Participant): Boolean = participant match {
+    case p: Player => players.contains(p)
+    case Pair(p1, p2) => players.contains(p1) && players.contains(p2)
+    case TeamPair(p1, p2) => players.contains(p1) && players.contains(p2)
+    case _ => false
+  }
+}
+
 /**
  * Ligue
  * @param name name
@@ -23,7 +35,8 @@ case class Ligue(name: String,
                  masterTeam: MasterLigueTeam,
                  coupeTeam: Option[CoupeLigueTeam] = None,
                  nationalTournaments: Seq[NationalTournament] = Nil,
-                 info: Option[Info] = None) {
+                 info: Option[Info] = None) extends PlayerContainer {
+
 
   lazy val fullName = s"[$shortName] $name"
 
@@ -79,6 +92,8 @@ object Ligue {
 
   lazy val ligues: Seq[Ligue] = Data.readLigues(Season.currentSeason)
 
+  def findPlayerByName(name: String): Option[Player] = (players ++ nlPlayers).find(_.name == name)
+
   lazy val comites = {
     for {
       ligue <- ligues
@@ -123,7 +138,7 @@ case class Comite(name: String,
                   shortName: String,
                   clubs: Seq[Club],
                   coupe: CoupeComite,
-                  info: Option[Info]) {
+                  info: Option[Info]) extends PlayerContainer{
   lazy val fullName = s"[$shortName] $name"
 
   override def toString = fullName
@@ -174,7 +189,12 @@ case class Comite(name: String,
  * @param teams teams
  * @param info information
  */
-case class Club(name: String, shortName: String, location: Location, opens: Seq[OpenClub], teams: Seq[Team], info: Option[Info]) {
+case class Club(name: String,
+                shortName: String,
+                location: Location,
+                opens: Seq[OpenClub],
+                teams: Seq[Team],
+                info: Option[Info]) extends PlayerContainer{
   lazy val fullName = s"[$shortName] $name"
 
   override def toString = fullName

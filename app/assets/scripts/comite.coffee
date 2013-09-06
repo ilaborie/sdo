@@ -24,15 +24,15 @@ $ ->
     @get "#single", () ->
       url = comite.path + "/single"
       comite.loadBody url, "#single"
-    @get "#women", () ->
+    @get "#ladies", () ->
       url = comite.path + "/ladies"
-      comite.loadBody url, "#women"
-    @get "#junior", () ->
-      url = comite.path + "/junior"
-      comite.loadBody url, "#junior"
-    @get "#pair", () ->
-      url = comite.path + "/double"
-      comite.loadBody url, "#pair"
+      comite.loadBody url, "#ladies"
+    @get "#youth", () ->
+      url = comite.path + "/youth"
+      comite.loadBody url, "#youth"
+    @get "#pairs", () ->
+      url = comite.path + "/pairs"
+      comite.loadBody url, "#pairs"
     @get "#team", () ->
       url = comite.path + "/team"
       comite.loadBody url, "#team"

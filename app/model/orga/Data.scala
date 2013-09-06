@@ -7,6 +7,7 @@ import scala.collection.JavaConversions._
 import play.api.Logger
 
 import util._
+import model.rank.TournamentResultData
 
 /**
  * Data helpers
@@ -82,19 +83,23 @@ object Data {
 
     // Ligue Tournament
     val openList = info("opens").asInstanceOf[JavaList[JavaMap[String, Any]]].toList
-    val opens = for (open <- openList) yield OpenLigue(
+    val opens = for ((open,index) <- openList.zipWithIndex) yield OpenLigue(
       YamlParser.readDate(open.get("date").asInstanceOf[String]),
-      YamlParser.readLocation(open.toMap).get)
+      YamlParser.readLocation(open.toMap).get,
+      s"s$season/$ligue/championship/OL-${index+1}.yml"
+    )
 
     val coupeMap = info("coupe").asInstanceOf[JavaMap[String, Any]]
     val coupe = CoupeLigue(
       YamlParser.readDate(coupeMap.get("date").asInstanceOf[String]),
-      YamlParser.readLocation(coupeMap.toMap).get)
+      YamlParser.readLocation(coupeMap.toMap).get,
+      s"s$season/$ligue/championship/CL.yml")
 
     val masterMap = info("master").asInstanceOf[JavaMap[String, Any]]
     val master = MasterLigue(
       YamlParser.readDate(masterMap.get("date").asInstanceOf[String]),
-      YamlParser.readLocation(masterMap.toMap).get)
+      YamlParser.readLocation(masterMap.toMap).get,
+      s"s$season/$ligue/championship/ML.yml")
 
     val teamMaster = info("team-master").asInstanceOf[JavaMap[String, Any]]
     val masterTeam = MasterLigueTeam(
@@ -118,6 +123,44 @@ object Data {
   }
 
   /**
+   * Yaml data to Map[Int, List[String] ]
+   * @param key key
+   * @param info Yaml data
+   * @return data
+   */
+  private def toMapIntStrings(key: String, info: Map[String, Any]): Map[Int, List[String]] = {
+    if (info.contains(key)) {
+      val value = info(key)
+      if (value == null) Map()
+      else value.asInstanceOf[JavaMap[Int, JavaList[String]]].toMap.mapValues(_.toList)
+    }
+    else Map()
+  }
+
+  /**
+   * Yaml data to Map[Int, List[(String, String)]]
+   * @param key key
+   * @param info Yaml data
+   * @return data
+   */
+  private def toMapIntStringsPair(key: String, info: Map[String, Any]): Map[Int, List[(String, String)]] = {
+    def lstToPair(lst: JavaList[JavaList[String]]): List[(String, String)] = {
+      for (l <- lst.toList) yield {
+        val ordered = l.sorted
+        (ordered.get(0), ordered.get(1))
+      }
+    }.toList
+
+    if (info.contains(key)) {
+      val value = info(key)
+      if (value == null) Map()
+      else value.asInstanceOf[JavaMap[Int, JavaList[JavaList[String]]]].toMap.mapValues(lstToPair)
+    }
+    else Map()
+  }
+
+
+  /**
    * Read national tournament
    * @param season season
    * @param ligue ligue
@@ -132,39 +175,25 @@ object Data {
 
     val shortName = info("shortname").asInstanceOf[String]
     val date = YamlParser.readDate(info("date").asInstanceOf[String])
-
-    def toMapIntStrings(key: String, info: Map[String, Any]): Map[Int, List[String]] = {
-      if (info.contains(key)) {
-        val value = info(key)
-        if (value==null) Map()
-        else value.asInstanceOf[JavaMap[Int, JavaList[String]]].toMap.mapValues(_.toList)
-      }
-      else Map()
-    }
-    def toMapIntStringsPair(key: String, info: Map[String, Any]): Map[Int, List[(String,String)]] = {
-      def lstToPair(lst: JavaList[JavaList[String]]): List[(String, String)] = {
-        for (l <- lst.toList) yield {
-          val ordered = l.sorted
-          (ordered.get(0), ordered.get(1))
-        }
-      }.toList
-
-      if (info.contains(key)) {
-        val value = info(key)
-        if (value==null) Map()
-        else value.asInstanceOf[JavaMap[Int, JavaList[JavaList[String]]]].toMap.mapValues(lstToPair)
-      }
-      else Map()
-    }
-
     val mens = toMapIntStrings("mens", info)
     val ladies = toMapIntStrings("ladies", info)
     val youth = toMapIntStrings("youth", info)
-    val pairs = toMapIntStringsPair("pairs",info)
+    val pairs = toMapIntStringsPair("pairs", info)
 
     NationalTournament(shortName, date, mens, ladies, youth, pairs)
   }
 
+  /**
+   * Read Coupe Comite
+   * @param data info
+   * @param file file
+   * @return OpenClub
+   */
+  private def createCoupeComite(data: JavaMap[String, Any], file: String): CoupeComite = {
+    val date = YamlParser.readDate(data.get("date").asInstanceOf[String])
+    val location = YamlParser.readLocation(data.asInstanceOf[JavaMap[String, String]].toMap).get
+    CoupeComite(date, location, file)
+  }
 
   /**
    * Read a comite
@@ -185,9 +214,7 @@ object Data {
     val clubs = for (club <- clubList) yield readClub(season, ligue, comite, club)
     val coupeMap = info("coupe").asInstanceOf[JavaMap[String, Any]]
 
-    val coupe = CoupeComite(
-      YamlParser.readDate(coupeMap.get("date").asInstanceOf[String]),
-      YamlParser.readLocation(coupeMap.toMap).get)
+    val coupe = createCoupeComite(coupeMap,s"s$season/$ligue/championship/CC-$shortName.yml")
     val information = YamlParser.readInfo(s"s$season/$ligue/$comite/info.html")
 
     Comite(name, shortName, clubs, coupe, information)
@@ -210,11 +237,7 @@ object Data {
     val shortName = info("shortname").asInstanceOf[String]
     val opens = if (info.contains("opens")) {
       val openList = info("opens").asInstanceOf[JavaList[JavaMap[String, Any]]].toList
-      for (open <- openList) yield {
-        OpenClub(
-          YamlParser.readDate(open.get("date").asInstanceOf[String]),
-          YamlParser.readLocation(open.asInstanceOf[JavaMap[String, String]].toMap).get)
-      }
+      for ((open, index) <- openList.zipWithIndex) yield createOpenClub(open, s"s$season/$ligue/championship/OC-$shortName-${index+1}.yml")
     } else Nil
     val teamList = info("teams").asInstanceOf[JavaList[String]].toList
     val teams = for (team <- teamList) yield readTeam(season, ligue, comite, club, team)
@@ -222,6 +245,18 @@ object Data {
     val location = YamlParser.readLocation(info).get
 
     Club(name, shortName, location, opens, teams, information)
+  }
+
+  /**
+   * Read Open Club
+   * @param open info
+   * @param file file
+   * @return OpenClub
+   */
+  private def createOpenClub(open: JavaMap[String, Any], file: String): OpenClub = {
+    val date = YamlParser.readDate(open.get("date").asInstanceOf[String])
+    val location = YamlParser.readLocation(open.asInstanceOf[JavaMap[String, String]].toMap).get
+    OpenClub(date, location, file)
   }
 
   /**
