@@ -94,6 +94,7 @@ case class CoupeLigue(date: LocalDate, location: Location) extends LigueTourname
     case RoundRobin(pos) => if (pos == 3) 2 else 1
     case _ => 0
   }
+
   lazy val getPairs: Seq[Pair] = Nil // FIXME Implements
 }
 
@@ -119,6 +120,7 @@ case class MasterLigue(date: LocalDate, location: Location) extends LigueTournam
     case RoundRobin(pos) => if (pos == 3) 4 else if (pos == 4) 2 else 0
     case _ => 0
   }
+
   lazy val getPairs: Seq[Pair] = Nil // FIXME Implements
 }
 
@@ -134,6 +136,7 @@ case class MasterLigueTeam(date: LocalDate, location: Location) extends LigueTou
   override def toString = Messages("rank.ligue.master.team.title")
 
   def getPoint(position: TournamentResult): Int = 0
+
   lazy val getPairs: Seq[Pair] = Nil // FIXME Implements
 }
 
@@ -149,6 +152,7 @@ case class CoupeLigueTeam(date: LocalDate, location: Location) extends LigueTour
   override def toString = Messages("rank.ligue.coupe.team.title")
 
   def getPoint(position: TournamentResult): Int = 0
+
   lazy val getPairs: Seq[Pair] = Nil // FIXME Implements
 }
 
@@ -189,6 +193,7 @@ case class ComiteRank(date: LocalDate) extends LigueTournament {
     }
     case _ => 0
   }
+
   lazy val getPairs: Seq[Pair] = Nil // FIXME Implements
 }
 
@@ -246,6 +251,7 @@ case class NationalTournament(shortName: String,
     case WinningMatch(win) => 1 + win
     case _ => 0
   }
+
   lazy val getPairs: Seq[Pair] = pairs.keySet.toSeq
 }
 
@@ -287,13 +293,19 @@ case class CoupeComite(date: LocalDate, location: Location) extends ComiteTourna
     case RoundRobin(pos) => if (pos == 3) 4 else if (pos == 4) 2 else 1
     case _ => 0
   }
+
   lazy val getPairs: Seq[Pair] = Nil // FIXME Implements
 }
 
 /**
  * Open Club
  */
-case class OpenClub(date: LocalDate, location: Location) extends ComiteTournament {
+case class OpenClub(date: LocalDate,
+                    location: Location,
+                    mens: Option[TournamentResults[Player]],
+                    ladies: Option[TournamentResults[Player]],
+                    youth: Option[TournamentResults[Player]],
+                    pairs: Option[TournamentResults[Pair]]) extends ComiteTournament {
   override def toString = Messages("rank.comite.open.title", club.name)
 
   val place = Some(location)
@@ -313,7 +325,11 @@ case class OpenClub(date: LocalDate, location: Location) extends ComiteTournamen
     case RoundRobin(pos) => if (pos == 3) 2 else 1
     case _ => 0
   }
-  lazy val getPairs: Seq[Pair] = Nil // FIXME Implements
+
+  lazy val getPairs: Seq[Pair] = pairs match {
+    case None => Nil
+    case Some(res) => res.allParticipants
+  }
 }
 
 

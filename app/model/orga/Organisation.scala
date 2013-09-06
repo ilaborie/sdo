@@ -79,6 +79,8 @@ object Ligue {
 
   lazy val ligues: Seq[Ligue] = Data.readLigues(Season.currentSeason)
 
+  def findPlayerByName(name: String): Option[Player] = (players ++ nlPlayers).find(_.name == name)
+
   lazy val comites = {
     for {
       ligue <- ligues
