@@ -3,7 +3,13 @@
 @import model.rank._
 
 <table class="table table-striped table-bordered rank">
-    <caption>@Messages("rank.single.comite.caption", comite.name, ranking.season)</caption>
+    <caption>
+        @Messages("rank.single.comite.caption", comite.name, ranking.season)
+        <a class="btn btn-primary pull-right" target="_blank" href="./@comite.shortName/single.pdf">
+            <i class="glyphicons download_alt"></i>
+            @Messages("rank.download.pdf")
+        </a>
+    </caption>
     <thead>
         <tr>
             <th></th>

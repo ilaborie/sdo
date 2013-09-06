@@ -139,7 +139,6 @@ object Ranking extends Controller with SecureSocial {
       }.result
   }
 
-
   /**
    * Comite Single
    * @param ligueShortName ligue
@@ -150,6 +149,19 @@ object Ranking extends Controller with SecureSocial {
     implicit request =>
       ComiteAction(ligueShortName, comiteShortName) {
         comite => Ok(views.html.comite.single(comite, ComiteRanking.single(comite), User(request.user)))
+      }.result
+  }
+
+  /**
+   * Comite Single
+   * @param ligueShortName ligue
+   * @param comiteShortName comite
+   * @return single ranking
+   */
+  def comiteSinglePDF(ligueShortName: String, comiteShortName: String) = SecuredAction {
+    implicit request =>
+      ComiteAction(ligueShortName, comiteShortName) {
+        comite => PDF.ok(pdf.html.comiteSingleRanking.render(comite, ComiteRanking.single(comite))).getWrappedResult
       }.result
   }
 
@@ -167,6 +179,19 @@ object Ranking extends Controller with SecureSocial {
   }
 
   /**
+   * Comite ladies
+   * @param ligueShortName ligue
+   * @param comiteShortName comite
+   * @return single ranking
+   */
+  def comiteLadiesPDF(ligueShortName: String, comiteShortName: String) = SecuredAction {
+    implicit request =>
+      ComiteAction(ligueShortName, comiteShortName) {
+        comite => PDF.ok(pdf.html.comiteLadiesRanking.render(comite, ComiteRanking.ladies(comite))).getWrappedResult
+      }.result
+  }
+
+  /**
    * Comite Youth
    * @param ligueShortName ligue
    * @param comiteShortName comite
@@ -180,6 +205,19 @@ object Ranking extends Controller with SecureSocial {
   }
 
   /**
+   * Comite youth
+   * @param ligueShortName ligue
+   * @param comiteShortName comite
+   * @return single ranking
+   */
+  def comiteYouthPDF(ligueShortName: String, comiteShortName: String) = SecuredAction {
+    implicit request =>
+      ComiteAction(ligueShortName, comiteShortName) {
+        comite => PDF.ok(pdf.html.comiteYouthRanking.render(comite, ComiteRanking.youth(comite))).getWrappedResult
+      }.result
+  }
+
+  /**
    * Comite Pairstte
    * @param ligueShortName ligue
    * @param comiteShortName comite
@@ -189,6 +227,18 @@ object Ranking extends Controller with SecureSocial {
     implicit request =>
       ComiteAction(ligueShortName, comiteShortName) {
         comite => Ok(views.html.comite.pairs(comite, ComiteRanking.pairs(comite), User(request.user)))
+      }.result
+  }
+  /**
+   * Comite pairs
+   * @param ligueShortName ligue
+   * @param comiteShortName comite
+   * @return single ranking
+   */
+  def comitePairsPDF(ligueShortName: String, comiteShortName: String) = SecuredAction {
+    implicit request =>
+      ComiteAction(ligueShortName, comiteShortName) {
+        comite => PDF.ok(pdf.html.comitePairsRanking.render(comite, ComiteRanking.pairs(comite))).getWrappedResult
       }.result
   }
 

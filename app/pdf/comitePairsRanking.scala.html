@@ -1,0 +1,52 @@
+@(comite: model.orga.Comite, ranking: model.rank.SeasonPairsRanking)
+@import model.orga._
+@import model.rank._
+
+@layout.pdf(Some(Messages("rank.junior.comite.caption", comite.name, ranking.season)),landscape=false) {
+    <table class="ranking">
+        <thead>
+            <tr>
+                <th></th>
+                <th>@Messages("rank.name")</th>
+                <th>@Messages("rank.club")</th>
+                @for(tournament <- ranking.tournaments) {
+                    @tournament match {
+                        case cc:CoupeComite => {
+                            <th>@Messages("rank.comite.coupe")</th>
+                        }
+                        case oc: OpenClub => {
+                            <th>@Messages("rank.comite.open", oc.club.shortName)</th>
+                        }
+                        case _ => {}
+                    }
+                }
+                <th>@Messages("rank.point")</th>
+            </tr>
+        </thead>
+        <tbody>
+        @for((rank, index) <- ranking.ordered.zipWithIndex) {
+            <tr class="@if(index % 2 == 0) {odd} else {even}">
+                <td>
+                @defining(ranking.getPosition(rank)) { pos =>
+                    @if(LigueRanking.qualifyForMasterPairs(pos)) {
+                        <strong>@pos</strong>
+                    } else {
+                        @pos
+                    }
+                }
+                </td>
+                <td class="left">@rank.participant</td>
+                <td>@rank.participant.clubAsString</td>
+                @for(tournament <- ranking.tournaments) {
+                    <td>
+                    @if(rank.results.contains(tournament)) {
+                        @tournament.getPointAsString(rank.results(tournament))
+                    }
+                    </td>
+                }
+                <td>@rank.points</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
