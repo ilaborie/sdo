@@ -9,6 +9,7 @@ menu.comite=Comités
 
 # Comite
 menu.rank=Classements
+menu.intercomite=Classements Inter-comités
 menu.rank.team=Équipes
 menu.rank.indiv=Individuel
 menu.rank.men=Simple
@@ -97,23 +98,27 @@ rank.ligue.national.on=ON
 rank.ligue.national.on.title=Open National
 
 # Single Rank
-rank.single.ligue.caption=Classement {0} - Simple {1}
+rank.single.ligue.caption=Classement {0} - Masculins {1}
+rank.single.interComite.caption=Classement inter-comités - Masculins {0}
 rank.single.comite.caption=Classement {0} - Simple {1}
 
 # Feminine Rank
-rank.feminine.ligue.caption=Classement {0} - Feminine {1}
-rank.feminine.comite.caption=Classement {0} - Feminine {1}
+rank.feminine.ligue.caption=Classement {0} - Féminines {1}
+rank.feminine.interComite.caption=Classement inter-comités - Féminines {0}
+rank.feminine.comite.caption=Classement {0} - Féminines {1}
 
 # Junior Rank
-rank.junior.ligue.caption=Classement {0} - Junior {1}
-rank.junior.comite.caption=Classement {0} - Junior {1}
+rank.junior.ligue.caption=Classement {0} - Juniors {1}
+rank.junior.interComite.caption=Classement inter-comités - Juniors {0}
+rank.junior.comite.caption=Classement {0} - Juniors {1}
 
 # Double Rank
 rank.double.ligue.caption=Classement {0} - Doublettes {1}
+rank.double.interComite.caption=Classement inter-comités - Doublettes {0}
 rank.double.comite.caption=Classement {0} - Doublettes {1}
 
 # Team Rank
-rank.team.ligue.caption=Classement {0} - Équipes
+rank.team.interComite.caption=Classement inter-comités {0} - Équipes
 rank.team.comite.caption=Classement {0} - Équipes {1}
 
 rank.team=Équipes

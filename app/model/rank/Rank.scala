@@ -91,7 +91,6 @@ object ComiteRanking {
   def qualifyForMasterPairs(position: Int) = position <= 3
 
 
-  // FIXME dummy data
   def single(comite: Comite) = SeasonSingleRanking(season, comite)
 
   def ladies(comite: Comite) = SeasonLadiesRanking(season, comite)
@@ -124,6 +123,8 @@ object InterComiteRanking {
 
   def pairs(ligue: Ligue) = SeasonPairsRanking(season, getInterComiteTournaments(ligue), Nil)
 
+  def team(ligue: Ligue) = SeasonTeamRanking(season, ligue)
+
 }
 
 object LigueRanking {
@@ -145,8 +146,6 @@ object LigueRanking {
   def youth(ligue: Ligue) = SeasonYouthRanking(season, ligue)
 
   def pairs(ligue: Ligue) = SeasonPairsRanking(season, ligue)
-
-  def team(ligue: Ligue) = SeasonTeamRanking(season, ligue)
 
 }
 

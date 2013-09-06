@@ -36,6 +36,21 @@ $ ->
     @get "#team", () ->
       url = ligue.path + "/team"
       ligue.loadBody url, "#team"
+    @get "#ic-single", () ->
+      url = ligue.path + "/ic-single"
+      ligue.loadBody url, "#ic-single"
+    @get "#ic-ladies", () ->
+      url = ligue.path + "/ic-ladies"
+      ligue.loadBody url, "#ic-ladies"
+    @get "#ic-youth", () ->
+      url = ligue.path + "/ic-youth"
+      ligue.loadBody url, "#ic-youth"
+    @get "#ic-pairs", () ->
+      url = ligue.path + "/ic-pairs"
+      ligue.loadBody url, "#ic-pairs"
+    @get "#ic-team", () ->
+      url = ligue.path + "/ic-team"
+      ligue.loadBody url, "#ic-team"
     @get "#tour/:name", () ->
       name = this.params.name
       url = ligue.path + "/tour/" + name

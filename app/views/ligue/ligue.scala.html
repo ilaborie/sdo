@@ -28,8 +28,21 @@
                     <li data-bind="css: { active: samPath() == '#pairs'}">
                         <a class="sammy" href="#pairs">@Messages("menu.rank.double")</a>
                     </li>
-                    <li data-bind="css: { active: samPath() == '#team'}">
-                        <a class="sammy" href="#team" >@Messages("menu.rank.team")</a>
+                    <li class="nav-header">@Messages("menu.intercomite")</li>
+                    <li data-bind="css: { active: samPath() == '#ic-single'}">
+                        <a class="sammy" href="#ic-single">@Messages("menu.rank.men")</a>
+                    </li>
+                    <li data-bind="css: { active: samPath() == '#ic-ladies'}">
+                        <a class="sammy" href="#ic-ladies">@Messages("menu.rank.women")</a>
+                    </li>
+                    <li data-bind="css: { active: samPath() == '#ic-youth'}">
+                        <a class="sammy" href="#ic-youth">@Messages("menu.rank.junior")</a>
+                    </li>
+                    <li data-bind="css: { active: samPath() == '#ic-pairs'}">
+                        <a class="sammy" href="#ic-pairs">@Messages("menu.rank.double")</a>
+                    </li>
+                    <li data-bind="css: { active: samPath() == '#ic-team'}">
+                        <a class="sammy" href="#ic-team" >@Messages("menu.rank.team")</a>
                     </li>
                     <li class="nav-header">@Messages("menu.comite")</li>
                     @for(comite <- ligue.comites) {
