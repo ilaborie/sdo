@@ -4,13 +4,33 @@ import java.util.{List => JavaList, Map => JavaMap}
 
 import scala.collection.JavaConversions._
 
+import play.api.Logger
 
 import model.orga._
+import util.YamlParser
 
 /**
  * Helper to read Tournament result
  */
 object TournamentResultData {
+  private val logger = Logger("data")
+
+  def readBaseTournamentResult(file: String) = {
+    logger.info(s"Read result in $file")
+    YamlParser.tryParseFile(file) match {
+      case None => (None, None, None, None)
+      case Some(x) => {
+        logger.trace(s"Read $x")
+        val info: Map[String, Any] = x.asInstanceOf[JavaMap[String, Any]].toMap
+
+        val mens = TournamentResultData.toTournamentResults("mens", info)
+        val ladies = TournamentResultData.toTournamentResults("ladies", info)
+        val youth = TournamentResultData.toTournamentResults("youth", info)
+        val pairs = TournamentResultData.toTournamentPairResults("pairs", info)
+        (mens, ladies, youth, pairs)
+      }
+    }
+  }
 
   /**
    * Create result
@@ -29,34 +49,21 @@ object TournamentResultData {
    * @return result
    */
   def createResult[T <: Participant](player: T, tournament: Tournament): TournamentResult = tournament match {
-    case ol: OpenLigue => createOpenLigueResult(player, ol).getOrElse(NoParticipation)
-    case cl: CoupeLigue => createCoupeLigueResult(player, cl).getOrElse(NoParticipation)
-    case ml: MasterLigue => createMasterLigueResult(player, ml).getOrElse(NoParticipation)
-    case cc: CoupeComite => createCoupeComiteResult(player, cc).getOrElse(NoParticipation)
-    case oc: OpenClub => createOpenClubResult(player, oc).getOrElse(NoParticipation)
+    case tour: BaseTournament => createBaseTournamentResult(player, tour).getOrElse(NoParticipation)
     case ic: ComiteRank => createComiteRankResult(player, ic).getOrElse(NoParticipation)
     case nt: NationalTournament => createNationalTournamentResult(player, nt).getOrElse(NoParticipation)
     case _ => throw new IllegalStateException(s"Cannot find result of $tournament")
   }
 
-  // FIXME Implements
-  private def createOpenLigueResult(player: Participant, ol: OpenLigue): Option[TournamentResult] = None
-
-  private def createCoupeLigueResult(player: Participant, cl: CoupeLigue): Option[TournamentResult] = None
-
-  private def createMasterLigueResult(player: Participant, ml: MasterLigue): Option[TournamentResult] = None
-
-  private def createCoupeComiteResult(player: Participant, cc: CoupeComite): Option[TournamentResult] = None
-
-  private def createOpenClubResult(player: Participant, oc: OpenClub): Option[TournamentResult] = {
+  private def createBaseTournamentResult(player: Participant, tour: BaseTournament): Option[TournamentResult] = {
     player match {
       case p: LicensedPlayer => {
-        if (!p.youth && !p.lady && oc.mens.isDefined) oc.mens.get.getResult(p)
-        else if (p.lady && !p.youth && oc.ladies.isDefined) oc.ladies.get.getResult(p)
-        else if (p.youth && oc.youth.isDefined) oc.youth.get.getResult(p)
+        if (!p.youth && !p.lady && tour.mens.isDefined) tour.mens.get.getResult(p)
+        else if (p.lady && !p.youth && tour.ladies.isDefined) tour.ladies.get.getResult(p)
+        else if (p.youth && tour.youth.isDefined) tour.youth.get.getResult(p)
         else None
       }
-      case d: Pair => if (oc.pairs.isDefined) oc.pairs.get.getResult(d) else None
+      case d: Pair => if (tour.pairs.isDefined) tour.pairs.get.getResult(d) else None
       case _ => None
     }
   }

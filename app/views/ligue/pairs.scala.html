@@ -17,28 +17,28 @@
             <th>@Messages("rank.club")</th>
             @for(tournament <- ranking.tournaments) {
                 @tournament match {
-                    case CoupeLigue(_,_) => {
+                    case cc:CoupeLigue => {
                         <th>
                             <abbr title="@Messages("rank.ligue.coupe.title", tournament.ligue.name)">
                             @Messages("rank.ligue.coupe")
                             </abbr>
                         </th>
                     }
-                    case OpenLigue(_,_) => {
+                    case ol:OpenLigue => {
                         <th>
                             <abbr title="@Messages("rank.ligue.open.title", tournament.ligue.name)">
                             @Messages("rank.ligue.open")
                             </abbr>
                         </th>
                     }
-                    case MasterLigue(_,_) => {
+                    case ml:MasterLigue => {
                         <th>@tags.abbr("rank.ligue.master")</th>
                     }
-                    case ComiteRank(_) => {
+                    case cr:ComiteRank => {
                         <th>@tags.abbr("rank.ligue.comite.rank")</th>
                     }
-                    case NationalTournament(shortName,_,_,_,_,_) => {
-                        <th>@tags.abbr(s"rank.ligue.national.${shortName.toLowerCase}")</th>
+                    case nt:NationalTournament => {
+                        <th>@tags.abbr(s"rank.ligue.national.${nt.shortName.toLowerCase}")</th>
                     }
                     case _ => {}
                 }

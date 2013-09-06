@@ -83,19 +83,23 @@ object Data {
 
     // Ligue Tournament
     val openList = info("opens").asInstanceOf[JavaList[JavaMap[String, Any]]].toList
-    val opens = for (open <- openList) yield OpenLigue(
+    val opens = for ((open,index) <- openList.zipWithIndex) yield OpenLigue(
       YamlParser.readDate(open.get("date").asInstanceOf[String]),
-      YamlParser.readLocation(open.toMap).get)
+      YamlParser.readLocation(open.toMap).get,
+      s"s$season/$ligue/championship/OL-$index.yml"
+    )
 
     val coupeMap = info("coupe").asInstanceOf[JavaMap[String, Any]]
     val coupe = CoupeLigue(
       YamlParser.readDate(coupeMap.get("date").asInstanceOf[String]),
-      YamlParser.readLocation(coupeMap.toMap).get)
+      YamlParser.readLocation(coupeMap.toMap).get,
+      s"s$season/$ligue/championship/CL.yml")
 
     val masterMap = info("master").asInstanceOf[JavaMap[String, Any]]
     val master = MasterLigue(
       YamlParser.readDate(masterMap.get("date").asInstanceOf[String]),
-      YamlParser.readLocation(masterMap.toMap).get)
+      YamlParser.readLocation(masterMap.toMap).get,
+      s"s$season/$ligue/championship/ML.yml")
 
     val teamMaster = info("team-master").asInstanceOf[JavaMap[String, Any]]
     val masterTeam = MasterLigueTeam(
@@ -180,6 +184,18 @@ object Data {
   }
 
   /**
+   * Read Coupe Comite
+   * @param data info
+   * @param file file
+   * @return OpenClub
+   */
+  private def createCoupeComite(data: JavaMap[String, Any], file: String): CoupeComite = {
+    val date = YamlParser.readDate(data.get("date").asInstanceOf[String])
+    val location = YamlParser.readLocation(data.asInstanceOf[JavaMap[String, String]].toMap).get
+    CoupeComite(date, location, file)
+  }
+
+  /**
    * Read a comite
    * @param ligue the ligue prefix
    * @param comite the comite prefix
@@ -198,9 +214,7 @@ object Data {
     val clubs = for (club <- clubList) yield readClub(season, ligue, comite, club)
     val coupeMap = info("coupe").asInstanceOf[JavaMap[String, Any]]
 
-    val coupe = CoupeComite(
-      YamlParser.readDate(coupeMap.get("date").asInstanceOf[String]),
-      YamlParser.readLocation(coupeMap.toMap).get)
+    val coupe = createCoupeComite(coupeMap,s"s$season/$ligue/championship/CC-$shortName.yml")
     val information = YamlParser.readInfo(s"s$season/$ligue/$comite/info.html")
 
     Comite(name, shortName, clubs, coupe, information)
@@ -223,7 +237,7 @@ object Data {
     val shortName = info("shortname").asInstanceOf[String]
     val opens = if (info.contains("opens")) {
       val openList = info("opens").asInstanceOf[JavaList[JavaMap[String, Any]]].toList
-      for ((open, index) <- openList.zipWithIndex) yield createOpenClub(open, index, s"s$season/$ligue/championship/OC-$shortName-$index.yml")
+      for ((open, index) <- openList.zipWithIndex) yield createOpenClub(open, s"s$season/$ligue/championship/OC-$shortName-$index.yml")
     } else Nil
     val teamList = info("teams").asInstanceOf[JavaList[String]].toList
     val teams = for (team <- teamList) yield readTeam(season, ligue, comite, club, team)
@@ -236,30 +250,13 @@ object Data {
   /**
    * Read Open Club
    * @param open info
-   * @param index index
    * @param file file
    * @return OpenClub
    */
-  private def createOpenClub(open: JavaMap[String, Any], index: Int, file: String): OpenClub = {
+  private def createOpenClub(open: JavaMap[String, Any], file: String): OpenClub = {
     val date = YamlParser.readDate(open.get("date").asInstanceOf[String])
     val location = YamlParser.readLocation(open.asInstanceOf[JavaMap[String, String]].toMap).get
-
-    logger.info(s"Read OC result in $file")
-    val result = YamlParser.tryParseFile(file)
-    val (mens, ladies, youth, pairs) = result match {
-      case None => (None, None, None, None)
-      case Some(x) => {
-        logger.trace(s"Read $x")
-        val info: Map[String, Any] = x.asInstanceOf[JavaMap[String, Any]].toMap
-
-        val mens = TournamentResultData.toTournamentResults("mens", info)
-        val ladies = TournamentResultData.toTournamentResults("ladies", info)
-        val youth = TournamentResultData.toTournamentResults("youth", info)
-        val pairs = TournamentResultData.toTournamentPairResults("pairs", info)
-        (mens, ladies, youth, pairs)
-      }
-    }
-    OpenClub(date, location, mens, ladies, youth, pairs)
+    OpenClub(date, location, file)
   }
 
   /**
