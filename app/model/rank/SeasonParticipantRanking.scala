@@ -10,11 +10,14 @@ import model.orga._
 sealed abstract class SeasonParticipantRanking[T <: Participant](season: Season,
                                                                  tournaments: List[Tournament],
                                                                  ranks: Seq[ParticipantRank[T]]) {
-  lazy val ordered: Seq[ParticipantRank[T]] = ranks.sortBy(getPosition)
+  lazy val ordered: Seq[ParticipantRank[T]] = ranks.sortBy(sorter)
 
-  // FIXME Cache
+  private def sorter(rank: ParticipantRank[T]) = (getPosition(rank), rank.participant.toString)
+
+  private val cache = collection.mutable.Map[ParticipantRank[T], Int]()
+
   def getPosition(rank: ParticipantRank[T]): Int = {
-    1 + ranks.count(_.betterThan(rank))
+    cache.getOrElseUpdate(rank, 1 + ranks.count(_.betterThan(rank)))
   }
 }
 

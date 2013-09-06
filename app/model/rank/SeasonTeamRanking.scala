@@ -11,10 +11,13 @@ import model.team._
  * @param teamRanks team ranking
  */
 case class SeasonTeamRanking(champ: TeamChampionship, teamRanks: Seq[TeamRank]) {
-  lazy val ordered: Seq[TeamRank] = teamRanks.sortBy(getPosition)
+  lazy val ordered: Seq[TeamRank] = teamRanks.sortBy(sorter)
 
-  def getPosition(teamRank: TeamRank): Int = {
-    1 + teamRanks.count(_.betterThan(teamRank))
+  private def sorter(rank: TeamRank) = (getPosition(rank), rank.team.toString)
+
+  private val cache = collection.mutable.Map[TeamRank, Int]()
+  def getPosition(rank: TeamRank): Int = {
+    cache.getOrElseUpdate(rank, 1 + teamRanks.count(_.betterThan(rank)))
   }
 }
 
