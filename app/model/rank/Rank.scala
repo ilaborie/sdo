@@ -91,7 +91,6 @@ object ComiteRanking {
   def qualifyForMasterPairs(position: Int) = position <= 3
 
 
-  // FIXME dummy data
   def single(comite: Comite) = SeasonSingleRanking(season, comite)
 
   def ladies(comite: Comite) = SeasonLadiesRanking(season, comite)
@@ -105,7 +104,6 @@ object ComiteRanking {
 }
 
 object InterComiteRanking {
-  // FIXME dummy data
 
   val season = Season.currentSeason
 
@@ -116,13 +114,27 @@ object InterComiteRanking {
     } yield tournament
   }.toList
 
-  def single(ligue: Ligue) = SeasonSingleRanking[LicensedPlayer](season, getInterComiteTournaments(ligue), Nil)
+  def single(ligue: Ligue) =
+    SeasonSingleRanking(season, MensLicensied(ligue), ligue.players.toList, getInterComiteTournaments(ligue))
 
-  def ladies(ligue: Ligue) = SeasonLadiesRanking[LicensedPlayer](season, getInterComiteTournaments(ligue), Nil)
+  def ladies(ligue: Ligue) =
+    SeasonLadiesRanking(season, LadiesLicensied(ligue), ligue.players.toList, getInterComiteTournaments(ligue))
 
-  def youth(ligue: Ligue) = SeasonYouthRanking[LicensedPlayer](season, getInterComiteTournaments(ligue), Nil)
+  def youth(ligue: Ligue) =
+    SeasonYouthRanking(season, YouthLicensied(ligue), ligue.players.toList, getInterComiteTournaments(ligue))
 
-  def pairs(ligue: Ligue) = SeasonPairsRanking(season, getInterComiteTournaments(ligue), Nil)
+  def pairs(ligue: Ligue) = {
+    val tournaments = getInterComiteTournaments(ligue)
+    val pairs = {
+      for {
+        tour <- tournaments
+        pair <- tour.getPairs
+      } yield pair
+    }.toSet.toList
+    SeasonPairsRanking(season, PairsLicensied(ligue), pairs, tournaments)
+  }
+
+  def team(ligue: Ligue) = SeasonTeamRanking(season, ligue)
 
 }
 
@@ -145,8 +157,6 @@ object LigueRanking {
   def youth(ligue: Ligue) = SeasonYouthRanking(season, ligue)
 
   def pairs(ligue: Ligue) = SeasonPairsRanking(season, ligue)
-
-  def team(ligue: Ligue) = SeasonTeamRanking(season, ligue)
 
 }
 

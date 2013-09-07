@@ -2,7 +2,7 @@
 @import model.orga._
 @import model.rank._
 
-@layout.pdf(Some(Messages("rank.double.ligue.caption", ligue.name, ranking.season)),landscape=false) {
+@layout.pdf(Some(Messages("rank.double.interComite.caption", ranking.season)),landscape=false) {
     <table class="ranking">
         <thead>
             <tr>
@@ -11,20 +11,19 @@
                 <th>@Messages("rank.club")</th>
                 @for(tournament <- ranking.tournaments) {
                     @tournament match {
-                        case cl:CoupeLigue => {
-                            <th>@Messages("rank.ligue.coupe")</th>
+                        case cc:CoupeComite => {
+                            <th>
+                                <abbr title="@Messages("rank.comite.coupe.title", tournament.maybyComite.get.name)">
+                                @Messages("rank.comite.coupe")
+                                </abbr>
+                            </th>
                         }
-                        case ol:OpenLigue => {
-                            <th>@Messages("rank.ligue.open")</th>
-                        }
-                        case ml:MasterLigue => {
-                            <th>@Messages("rank.ligue.master")</th>
-                        }
-                        case cr:ComiteRank => {
-                            <th>@Messages("rank.ligue.comite.rank")</th>
-                        }
-                        case nt:NationalTournament => {
-                            <th>@Messages(s"rank.ligue.national.${nt.shortName.toLowerCase}")</th>
+                        case oc: OpenClub => {
+                            <th>
+                                <abbr title="@Messages("rank.comite.open.title", oc.club.name)">
+                                @Messages("rank.comite.open", oc.club.shortName)
+                                </abbr>
+                            </th>
                         }
                         case _ => {}
                     }

@@ -59,7 +59,7 @@ object TournamentResultData {
   private def createBaseTournamentResult(rankType: RankingType, player: Participant, tour: BaseTournament): Option[TournamentResult] = {
     rankType match {
       case _: Single => if (tour.mens.isDefined) tour.mens.get.getResult(player) else None
-      case _: SingleLicensied  => if (tour.mens.isDefined) tour.mens.get.getResult(player) else None
+      case _: SingleLicensied => if (tour.mens.isDefined) tour.mens.get.getResult(player) else None
       case _: Mens => if (tour.mens.isDefined) tour.mens.get.getResult(player) else None
       case _: MensLicensied => if (tour.mens.isDefined) tour.mens.get.getResult(player) else None
       case _: Ladies => if (tour.ladies.isDefined) tour.ladies.get.getResult(player) else None
@@ -71,7 +71,49 @@ object TournamentResultData {
     }
   }
 
-  private def createComiteRankResult(rankType: RankingType, player: Participant, ic: ComiteRank): Option[TournamentResult] = None
+  private def createComiteRankResult(rankType: RankingType, player: Participant, ic: ComiteRank): Option[TournamentResult] = {
+    val ligue = ic.ligue
+    rankType match {
+      case _: Single => createRankResult(InterComiteRanking.single(ligue), player.asInstanceOf[LicensedPlayer])
+      case _: SingleLicensied => createRankResult(InterComiteRanking.single(ligue), player.asInstanceOf[LicensedPlayer])
+      case _: Mens => createRankResult(InterComiteRanking.single(ligue), player.asInstanceOf[LicensedPlayer])
+      case _: MensLicensied => createRankResult(InterComiteRanking.single(ligue), player.asInstanceOf[LicensedPlayer])
+      case _: Ladies => createRankResult(InterComiteRanking.ladies(ligue), player.asInstanceOf[LicensedPlayer])
+      case _: LadiesLicensied => createRankResult(InterComiteRanking.ladies(ligue), player.asInstanceOf[LicensedPlayer])
+      case _: Youth => createRankResult(InterComiteRanking.youth(ligue), player.asInstanceOf[LicensedPlayer])
+      case _: YouthLicensied => createRankResult(InterComiteRanking.youth(ligue), player.asInstanceOf[LicensedPlayer])
+      case _: Pairs => createRankResult(InterComiteRanking.pairs(ligue), player.asInstanceOf[Pair])
+      case _: PairsLicensied => createRankResult(InterComiteRanking.pairs(ligue), player.asInstanceOf[Pair])
+    }
+  }
+
+  def createRankResult(ranking: SeasonSingleRanking[LicensedPlayer], player: LicensedPlayer): Option[TournamentResult] = {
+    ranking.ranks.find(_.participant==player) match {
+      case Some(pr) => Some(RoundRobin(ranking.getPosition(pr)))
+      case _ => None
+    }
+  }
+
+  def createRankResult(ranking: SeasonLadiesRanking[LicensedPlayer], player: LicensedPlayer): Option[TournamentResult] = {
+    ranking.ranks.find(_.participant==player) match {
+      case Some(pr) => Some(RoundRobin(ranking.getPosition(pr)))
+      case _ => None
+    }
+  }
+
+  def createRankResult(ranking: SeasonYouthRanking[LicensedPlayer], player: LicensedPlayer): Option[TournamentResult] = {
+    ranking.ranks.find(_.participant==player) match {
+      case Some(pr) => Some(RoundRobin(ranking.getPosition(pr)))
+      case _ => None
+    }
+  }
+
+  def createRankResult(ranking: SeasonPairsRanking, player: Pair): Option[TournamentResult] = {
+    ranking.ranks.find(_.participant==player) match {
+      case Some(pr) => Some(RoundRobin(ranking.getPosition(pr)))
+      case _ => None
+    }
+  }
 
   /**
    * National result

@@ -2,7 +2,7 @@
 @import model.orga._
 @import model.rank._
 
-@layout.pdf(Some(Messages("rank.feminine.ligue.caption", ligue.name, ranking.season)),landscape=false) {
+@layout.pdf(Some(Messages("rank.feminine.ligue.caption", ligue.name,ranking.season)),landscape=false) {
     <table class="ranking">
         <thead>
             <tr>
@@ -17,7 +17,7 @@
                         case ol:OpenLigue => {
                             <th>@Messages("rank.ligue.open")</th>
                         }
-                        case ml:MasterLigue => {
+                        case ml:MasterLigue=> {
                             <th>@Messages("rank.ligue.master")</th>
                         }
                         case cr:ComiteRank => {
