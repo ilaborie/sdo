@@ -68,12 +68,15 @@ rank.club=Club
 rank.download.pdf=Classement PDF
 
 # Tournament
+rank.comite.ranking= Classement {0} - {1}
+rank.interComite.ranking= Classement inter-comité - {0}
 rank.comite.open=OC {0}
 rank.comite.open.title=Open de Comité - {0}
 rank.comite.coupe=CC
 rank.comite.coupe.title=Coupe du {0}
 rank.comite.rank=Com.
 rank.comite.rank.title=Classement {0}
+rank.ligue.ranking= Classement {0} - {1}
 rank.ligue.coupe=CL
 rank.ligue.coupe.title=Coupe de {0}
 rank.ligue.open=OL

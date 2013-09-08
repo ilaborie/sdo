@@ -1,6 +1,7 @@
 package controllers
 
 import play.api.mvc._
+import play.api.i18n.Messages
 
 import securesocial.core._
 
@@ -15,6 +16,18 @@ import model.user.User
  * Classements pages
  */
 object RankingLigue extends Controller with SecureSocial {
+
+  /**
+   * Ligue   PDF
+   * @param ligueShortName ligue
+   * @return single ranking
+   */
+  def liguePDF(ligueShortName: String) = Action {
+    implicit request =>
+      LigueAction(ligueShortName) {
+        ligue => PDF.ok(pdf.html.ligueRanking.render(Season.currentSeason, ligue)).getWrappedResult
+      }.result
+  }
 
   /**
    * Ligue Single
@@ -36,7 +49,12 @@ object RankingLigue extends Controller with SecureSocial {
   def ligueSinglePDF(ligueShortName: String) = SecuredAction {
     implicit request =>
       LigueAction(ligueShortName) {
-        ligue => PDF.ok(pdf.html.ligueSingleRanking.render(ligue, LigueRanking.single(ligue))).getWrappedResult
+        ligue =>
+          PDF.ok(pdf.html.rankingTable.render(
+            LigueRanking.single(ligue),
+            Messages("rank.single.ligue.caption", ligue.name, Season.currentSeason),
+            LigueRanking.qualifyForMasterSingle
+          )).getWrappedResult
       }.result
   }
 
@@ -60,7 +78,12 @@ object RankingLigue extends Controller with SecureSocial {
   def ligueLadiesPDF(ligueShortName: String) = SecuredAction {
     implicit request =>
       LigueAction(ligueShortName) {
-        ligue => PDF.ok(pdf.html.ligueLadiesRanking.render(ligue, LigueRanking.ladies(ligue))).getWrappedResult
+        ligue =>
+          PDF.ok(pdf.html.rankingTable.render(
+            LigueRanking.ladies(ligue),
+            Messages("rank.feminine.ligue.caption", ligue.name, Season.currentSeason),
+            LigueRanking.qualifyForMasterLadies
+          )).getWrappedResult
       }.result
   }
 
@@ -84,7 +107,12 @@ object RankingLigue extends Controller with SecureSocial {
   def ligueYouthPDF(ligueShortName: String) = SecuredAction {
     implicit request =>
       LigueAction(ligueShortName) {
-        ligue => PDF.ok(pdf.html.ligueYouthRanking.render(ligue, LigueRanking.youth(ligue))).getWrappedResult
+        ligue =>
+          PDF.ok(pdf.html.rankingTable.render(
+            LigueRanking.youth(ligue),
+            Messages("rank.junior.ligue.caption", ligue.name, Season.currentSeason),
+            LigueRanking.qualifyForMasterYouth
+          )).getWrappedResult
       }.result
   }
 
@@ -109,7 +137,11 @@ object RankingLigue extends Controller with SecureSocial {
     implicit request =>
       LigueAction(ligueShortName) {
         ligue =>
-          PDF.ok(pdf.html.liguePairsRanking.render(ligue, LigueRanking.pairs(ligue))).getWrappedResult
+          PDF.ok(pdf.html.rankingTable.render(
+            LigueRanking.pairs(ligue),
+            Messages("rank.double.ligue.caption", ligue.name, Season.currentSeason),
+            LigueRanking.qualifyForMasterPairs
+          )).getWrappedResult
       }.result
   }
 

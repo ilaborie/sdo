@@ -1,5 +1,5 @@
 @(sdo: model.orga.Ligue, mpy: model.orga.Comite, teg: model.orga.Comite, aqu: model.orga.Comite, events: Seq[model.event.Event])
-
+@import model.orga._
 
 @layout.main(Messages("title.ligues")) {
 
@@ -51,13 +51,35 @@
                 </div>
                 <div class="span6">
                     <div class="homelink">
-                        <a href="@routes.Orga.comite(sdo.shortName, mpy.shortName)">
+                        <a href="@routes.RankingLigue.liguePDF(sdo.shortName)">
+                            <div class="row-fluid">
+                                <div class="span2"><i class="glyphicons podium"></i> </div>
+                                <div class="span10">@Messages("rank.ligue.ranking", sdo.name, Season.currentSeason)</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span6">
+                    <div class="homelink">
+                        <a href="@routes.Orga.comite(sdo.shortName, mpy.shortName)" target="_blank">
                             <div class="row-fluid">
                                 <div class="span2"><img src="@routes.Assets.at(s"images/${mpy.shortName}.png")" alt="@mpy.shortName"></div>
                                 <div class="span10">@mpy.name</div>
                             </div>
                         </a>
                     </div >
+                </div>
+                <div class="span6">
+                    <div class="homelink">
+                        <a href="@routes.RankingComite.comitePDF(sdo.shortName,mpy.shortName)" target="_blank">
+                            <div class="row-fluid">
+                                <div class="span2"><i class="glyphicons podium"></i> </div>
+                                <div class="span10">@Messages("rank.comite.ranking", mpy.name, Season.currentSeason)</div>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
             <div class="row-fluid">
@@ -73,13 +95,13 @@
                 </div>
                 <div class="span6">
                     <div class="homelink">
-                        <a href="@routes.Orga.comite(sdo.shortName, aqu.shortName)">
+                        <a href="@routes.RankingComite.comitePDF(sdo.shortName,teg.shortName)" target="_blank">
                             <div class="row-fluid">
-                                <div class="span2"><img src="@routes.Assets.at(s"images/${aqu.shortName}.png")" alt="@aqu.shortName"></div>
-                                <div class="span10">@aqu.name</div>
+                                <div class="span2"><i class="glyphicons podium"></i> </div>
+                                <div class="span10">@Messages("rank.comite.ranking", teg.name, Season.currentSeason)</div>
                             </div>
                         </a>
-                    </div >
+                    </div>
                 </div>
             </div>
         </div>

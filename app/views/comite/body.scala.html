@@ -6,6 +6,11 @@
     </div>
     @comite.info.map(tags.info(_))
 
+    <a class="btn btn-primary pull-right" target="_blank" href="./@comite.shortName/ranking.pdf">
+        <i class="glyphicons download_alt"></i>
+        @Messages("rank.download.pdf")
+    </a>
+
     @for(event <- comite.events) {
         @tags.eventLink(event) {
         }

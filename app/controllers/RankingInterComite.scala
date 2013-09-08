@@ -9,12 +9,26 @@ import util.pdf.PDF
 import model.orga._
 import model.rank._
 import model.user.User
+import play.api.i18n.Messages
 
 
 /**
  * Classements pages
  */
 object RankingInterComite extends Controller with SecureSocial {
+
+
+  /**
+   * Inter comite PDF
+   * @param ligueShortName ligue
+   * @return single ranking
+   */
+  def interComitePDF(ligueShortName: String) = Action {
+    implicit request =>
+      LigueAction(ligueShortName) {
+        ligue => PDF.ok(pdf.html.interComiteRanking.render(Season.currentSeason, ligue)).getWrappedResult
+      }.result
+  }
 
   /**
    * InterComite Single
@@ -27,6 +41,7 @@ object RankingInterComite extends Controller with SecureSocial {
         ligue => Ok(views.html.interComite.single(ligue, InterComiteRanking.single(ligue), User(request.user)))
       }.result
   }
+
   /**
    * Ligue Single  PDF
    * @param ligueShortName ligue
@@ -35,7 +50,11 @@ object RankingInterComite extends Controller with SecureSocial {
   def interComiteSinglePDF(ligueShortName: String) = SecuredAction {
     implicit request =>
       LigueAction(ligueShortName) {
-        ligue => PDF.ok(pdf.html.interComiteSingleRanking.render(ligue, InterComiteRanking.single(ligue))).getWrappedResult
+        ligue =>
+          PDF.ok(pdf.html.rankingTable.render(
+            InterComiteRanking.single(ligue),
+            Messages("rank.single.interComite.caption", Season.currentSeason),
+            (i: Int) => false)).getWrappedResult
       }.result
   }
 
@@ -59,7 +78,11 @@ object RankingInterComite extends Controller with SecureSocial {
   def interComiteLadiesPDF(ligueShortName: String) = SecuredAction {
     implicit request =>
       LigueAction(ligueShortName) {
-        ligue => PDF.ok(pdf.html.interComiteLadiesRanking.render(ligue, InterComiteRanking.ladies(ligue))).getWrappedResult
+        ligue =>
+          PDF.ok(pdf.html.rankingTable.render(
+            InterComiteRanking.ladies(ligue),
+            Messages("rank.feminine.interComite.caption", Season.currentSeason),
+            (i: Int) => false)).getWrappedResult
       }.result
   }
 
@@ -83,7 +106,11 @@ object RankingInterComite extends Controller with SecureSocial {
   def interComiteYouthPDF(ligueShortName: String) = SecuredAction {
     implicit request =>
       LigueAction(ligueShortName) {
-        ligue => PDF.ok(pdf.html.interComiteYouthRanking.render(ligue, InterComiteRanking.youth(ligue))).getWrappedResult
+        ligue =>
+          PDF.ok(pdf.html.rankingTable.render(
+            InterComiteRanking.youth(ligue),
+            Messages("rank.junior.interComite.caption", Season.currentSeason),
+            (i: Int) => false)).getWrappedResult
       }.result
   }
 
@@ -108,7 +135,10 @@ object RankingInterComite extends Controller with SecureSocial {
     implicit request =>
       LigueAction(ligueShortName) {
         ligue =>
-          PDF.ok(pdf.html.interComitePairsRanking.render(ligue, InterComiteRanking.pairs(ligue))).getWrappedResult
+          PDF.ok(pdf.html.rankingTable.render(
+            InterComiteRanking.pairs(ligue),
+            Messages("rank.double.interComite.caption", Season.currentSeason),
+            (i: Int) => false)).getWrappedResult
       }.result
   }
 

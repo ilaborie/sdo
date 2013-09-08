@@ -1,0 +1,14 @@
+@(season: model.orga.Season, ligue: model.orga.Ligue)
+@import model.rank._
+
+@defining(Messages("rank.ligue.ranking", ligue.name, season)) { title =>
+    @layout.pdf(Some(title), landscape = false) {
+        @rankingPdf(LigueRanking.single(ligue), Messages("rank.single.ligue.caption", ligue.name, season), LigueRanking.qualifyForMasterSingle)
+        <br/>
+        @rankingPdf(LigueRanking.ladies(ligue), Messages("rank.feminine.ligue.caption", ligue.name, season), LigueRanking.qualifyForMasterLadies)
+        <br/>
+        @rankingPdf(LigueRanking.youth(ligue), Messages("rank.junior.ligue.caption", ligue.name, season), LigueRanking.qualifyForMasterYouth)
+        <br/>
+        @rankingPdf(LigueRanking.pairs(ligue), Messages("rank.double.ligue.caption", ligue.name, season), LigueRanking.qualifyForMasterPairs)
+    }
+}

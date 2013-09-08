@@ -18,6 +18,7 @@ GET         /ligues/:ligue/comites/:comite/body                   controllers.Or
 GET         /ligues/:ligue/comites/:comite/clubs/:club            controllers.Orga.club(ligue, comite, club)
 
 # Ligue Rank
+GET         /ligues/:ligue/ranking.pdf                            controllers.RankingLigue.liguePDF(ligue)
 GET         /ligues/:ligue/single                                 controllers.RankingLigue.ligueSingle(ligue)
 GET         /ligues/:ligue/single.pdf                             controllers.RankingLigue.ligueSinglePDF(ligue)
 GET         /ligues/:ligue/ladies                                 controllers.RankingLigue.ligueLadies(ligue)
@@ -28,6 +29,7 @@ GET         /ligues/:ligue/pairs                                  controllers.Ra
 GET         /ligues/:ligue/pairs.pdf                              controllers.RankingLigue.liguePairsPDF(ligue)
 
 # Inter-Comite Rank
+GET         /ligues/:ligue/ic-ranking.pdf                         controllers.RankingInterComite.interComitePDF(ligue)
 GET         /ligues/:ligue/ic-single                              controllers.RankingInterComite.interComiteSingle(ligue)
 GET         /ligues/:ligue/ic-single.pdf                          controllers.RankingInterComite.interComiteSinglePDF(ligue)
 GET         /ligues/:ligue/ic-ladies                              controllers.RankingInterComite.interComiteLadies(ligue)
@@ -40,6 +42,7 @@ GET         /ligues/:ligue/ic-team                                controllers.Ra
 GET         /ligues/:ligue/team.pdf                               controllers.RankingInterComite.interComiteTeamPDF(ligue)
 
 # Comite Rank
+GET         /ligues/:ligue/comites/:comite/ranking.pdf            controllers.RankingComite.comitePDF(ligue, comite)
 GET         /ligues/:ligue/comites/:comite/single                 controllers.RankingComite.comiteSingle(ligue, comite)
 GET         /ligues/:ligue/comites/:comite/single.pdf             controllers.RankingComite.comiteSinglePDF(ligue, comite)
 GET         /ligues/:ligue/comites/:comite/ladies                 controllers.RankingComite.comiteLadies(ligue, comite)

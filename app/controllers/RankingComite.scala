@@ -9,12 +9,26 @@ import util.pdf.PDF
 import model.orga._
 import model.rank._
 import model.user.User
+import play.api.i18n.Messages
 
 
 /**
  * Classements pages
  */
 object RankingComite extends Controller with SecureSocial {
+
+  /**
+   * Comite PDF
+   * @param ligueShortName ligue
+   * @param comiteShortName comite
+   * @return single ranking
+   */
+  def comitePDF(ligueShortName: String, comiteShortName: String) = Action {
+    implicit request =>
+      ComiteAction(ligueShortName, comiteShortName) {
+        comite => PDF.ok(pdf.html.comiteRanking.render(Season.currentSeason, comite)).getWrappedResult
+      }.result
+  }
 
   /**
    * Comite Single
@@ -38,7 +52,12 @@ object RankingComite extends Controller with SecureSocial {
   def comiteSinglePDF(ligueShortName: String, comiteShortName: String) = SecuredAction {
     implicit request =>
       ComiteAction(ligueShortName, comiteShortName) {
-        comite => PDF.ok(pdf.html.comiteSingleRanking.render(comite, ComiteRanking.single(comite))).getWrappedResult
+        comite =>
+          PDF.ok(pdf.html.rankingTable.render(
+            ComiteRanking.single(comite),
+            Messages("rank.single.comite.caption", comite.name, Season.currentSeason),
+            ComiteRanking.qualifyForMasterSingle
+          )).getWrappedResult
       }.result
   }
 
@@ -64,7 +83,12 @@ object RankingComite extends Controller with SecureSocial {
   def comiteLadiesPDF(ligueShortName: String, comiteShortName: String) = SecuredAction {
     implicit request =>
       ComiteAction(ligueShortName, comiteShortName) {
-        comite => PDF.ok(pdf.html.comiteLadiesRanking.render(comite, ComiteRanking.ladies(comite))).getWrappedResult
+        comite =>
+          PDF.ok(pdf.html.rankingTable.render(
+            ComiteRanking.ladies(comite),
+            Messages("rank.feminine.comite.caption", comite.name, Season.currentSeason),
+            ComiteRanking.qualifyForMasterLadies
+          )).getWrappedResult
       }.result
   }
 
@@ -90,7 +114,12 @@ object RankingComite extends Controller with SecureSocial {
   def comiteYouthPDF(ligueShortName: String, comiteShortName: String) = SecuredAction {
     implicit request =>
       ComiteAction(ligueShortName, comiteShortName) {
-        comite => PDF.ok(pdf.html.comiteYouthRanking.render(comite, ComiteRanking.youth(comite))).getWrappedResult
+        comite =>
+          PDF.ok(pdf.html.rankingTable.render(
+            ComiteRanking.youth(comite),
+            Messages("rank.youth.comite.caption", comite.name, Season.currentSeason),
+            ComiteRanking.qualifyForMasterYouth
+          )).getWrappedResult
       }.result
   }
 
@@ -115,7 +144,12 @@ object RankingComite extends Controller with SecureSocial {
   def comitePairsPDF(ligueShortName: String, comiteShortName: String) = SecuredAction {
     implicit request =>
       ComiteAction(ligueShortName, comiteShortName) {
-        comite => PDF.ok(pdf.html.comitePairsRanking.render(comite, ComiteRanking.pairs(comite))).getWrappedResult
+        comite =>
+          PDF.ok(pdf.html.rankingTable.render(
+            ComiteRanking.pairs(comite),
+            Messages("rank.double.comite.caption", comite.name, Season.currentSeason),
+            ComiteRanking.qualifyForMasterPairs
+          )).getWrappedResult
       }.result
   }
 

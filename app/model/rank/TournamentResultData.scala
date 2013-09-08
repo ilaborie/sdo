@@ -87,21 +87,21 @@ object TournamentResultData {
     }
   }
 
-  def createRankResult(ranking: SeasonSingleRanking[LicensedPlayer], player: LicensedPlayer): Option[TournamentResult] = {
+  def createRankResult(ranking: SeasonSingleRanking, player: LicensedPlayer): Option[TournamentResult] = {
     ranking.ranks.find(_.participant==player) match {
       case Some(pr) => Some(RoundRobin(ranking.getPosition(pr)))
       case _ => None
     }
   }
 
-  def createRankResult(ranking: SeasonLadiesRanking[LicensedPlayer], player: LicensedPlayer): Option[TournamentResult] = {
+  def createRankResult(ranking: SeasonLadiesRanking, player: LicensedPlayer): Option[TournamentResult] = {
     ranking.ranks.find(_.participant==player) match {
       case Some(pr) => Some(RoundRobin(ranking.getPosition(pr)))
       case _ => None
     }
   }
 
-  def createRankResult(ranking: SeasonYouthRanking[LicensedPlayer], player: LicensedPlayer): Option[TournamentResult] = {
+  def createRankResult(ranking: SeasonYouthRanking, player: LicensedPlayer): Option[TournamentResult] = {
     ranking.ranks.find(_.participant==player) match {
       case Some(pr) => Some(RoundRobin(ranking.getPosition(pr)))
       case _ => None
