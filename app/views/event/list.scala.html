@@ -33,7 +33,7 @@
 
 <div id="eventTypeFilter" class="btn-group" data-toggle="buttons-checkbox">
     @for(eventType <- EventType.all) {
-        <button type="button" data-filter="@eventType.style" class="btn btn-@eventType.style">
+        <button type="button" data-filter="@eventType.style" class="btn btn-@eventType.style btn-mini">
             @Messages(s"event.type.${eventType.style}")
         </button>
     }

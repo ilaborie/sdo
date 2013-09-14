@@ -12,12 +12,13 @@ class Events
         self.samPath(path)
         registerFilter()
         registerPopover()
+        scrollToUnMuted()
 
 # Run on Ready
 $ ->
   events = new Events();
   # Routes
-  sammy = Sammy("#leftMenu",->
+  sammy = Sammy("#leftMenu", ->
     @get "#list", () ->
       url = events.path + "/list"
       events.loadBody url, "#list"
@@ -37,6 +38,7 @@ $ ->
   # Default page
   hash = if (window.location.hash) then window.location.hash else "#list"
   sammy.runRoute "get", hash
+  scrollToUnMuted()
 
 
 # Filtering events
@@ -58,6 +60,9 @@ registerPopover = () ->
     container: "#bodyEvents",
     content: getContent
   }
+
+scrollToUnMuted = () ->
+  window.scroll(0,$(".event.muted:last").next().offset().top)
 
 getTitle = () ->
   content = $(this).find ".title.hidden"
