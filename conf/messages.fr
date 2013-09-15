@@ -196,7 +196,7 @@ securesocial.login.signUp=Si vous n''avez pas encore un compte vous pouvez vous 
 securesocial.login.here=ici
 securesocial.login.signup.here=Je m'inscris
 securesocial.login.invalidCredentials=Les informations d'identification ne sont pas valides
-securesocial.login.forgotPassword=J'ai oublié mon mot de passe !
+securesocial.login.forgotPassword=J''ai oublié le mot de passe
 securesocial.logout.title=Déconnexion
 
 # Sign up page
