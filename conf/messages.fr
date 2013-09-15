@@ -2,7 +2,7 @@
 title.ligues=Accueil
 menu.ligues=Ligue Sud Ouest Fléchettes
 warn=Attention
-home.mention=Ce site est encore en construction, n'hésitez pas à suggérer des évolutions ou des corrections.<br>Pour me <a class="mailto" href="#" data-name="ilaborie" data-server="gmail.com"><i class="glyphicons envelope"></i> contacter</a>.
+home.mention=Ce site est encore en construction, n''hésitez pas à suggérer des évolutions ou des corrections.<br>Pour me <a class="mailto" href="#" data-name="ilaborie" data-server="gmail.com"><i class="glyphicons envelope"></i> contacter</a>.
 
 # Ligue
 menu.comite=Comités
@@ -43,7 +43,7 @@ event.type.comite=Comité
 event.type.team=Équipes
 event.type.default=ø
 link.internal=Voir détail
-event.next=Prochain événements
+event.next=Prochains événements
 
 day.monday=L
 day.monday.title=Lundi
@@ -71,7 +71,7 @@ rank.download.pdf=Classement PDF
 rank.comite.ranking= Classement {0} - {1}
 rank.interComite.ranking= Classement inter-comité - {0}
 rank.comite.open=OC {0}
-rank.comite.open.title=Open de Comité - {0}
+rank.comite.open.title=Open de comité - {0}
 rank.comite.coupe=CC
 rank.comite.coupe.title=Coupe du {0}
 rank.comite.rank=Com.
@@ -82,15 +82,15 @@ rank.ligue.coupe.title=Coupe de {0}
 rank.ligue.open=OL
 rank.ligue.open.title=Open de {0}
 rank.ligue.master=Mast.
-rank.ligue.master.title=Master individuels et doubles
-rank.ligue.master.team=Mast. Éq.
-rank.ligue.master.team.title=Master par Équipe
+rank.ligue.master.title=Masters individuels et doubles
+rank.ligue.master.team=Mast. éq.
+rank.ligue.master.team.title=Masters par équipe
 rank.ligue.coupe.team=CL. Éq.
-rank.ligue.coupe.team.title=Coupe de ligue par Équipe
+rank.ligue.coupe.team.title=Coupe de ligue par équipe
 rank.ligue.comite.coupe=CC {0}
 rank.ligue.comite.coupe.title=Coupe du {0}
 rank.ligue.comite.rank=IC
-rank.ligue.comite.rank.title=Classsement inter-comités
+rank.ligue.comite.rank.title=Classement inter-comités
 rank.ligue.national.of=OF
 rank.ligue.national.of.title=Open de France
 rank.ligue.national.cf=CF
@@ -144,7 +144,7 @@ rank.team.diff.title=Différence
 
 # Championsihp
 championship.day.caption=Journée n°{0}
-team.championship.day=Championat par équipe - Journée n°{0}
+team.championship.day=Championnat par équipe - Journée n°{0}
 team.exempted=<em>Exempt:</em> {0}
 
 # Detail
@@ -173,8 +173,8 @@ team.detail.subst.cancel=Annuler
 team.detail.subst.action=Remplacer
 team.detail.send.title=Envoyer le résultat
 team.detail.subst.close=Fermer
-team.detail.send.success=<span class="label label-success">OK</span><br> Envoie réussit.
-team.detail.title.pdf=Fédération française de darts, championat par équipe
+team.detail.send.success=<span class="label label-success">OK</span><br> Envoi réussi.
+team.detail.title.pdf=Fédération française de darts, championnat par équipe
 
 # Club
 club.oneteam=Équipe
@@ -188,40 +188,40 @@ securesocial.appName=Ligue Sud Ouest Fléchettes
 # Login page
 securesocial.login.title=Authentification
 securesocial.login.instructions=Par Facebook, Twitter ou Google+
-securesocial.login.accessDenied=Vous avez refuser l'accès à votre compte. Veuillez nous l'accorder pour vous connecter.
-securesocial.login.errorLoggingIn=Une erreur s'est produite pendant la connection. S'il vous plaît essayer à nouveau.
+securesocial.login.accessDenied=Vous avez refusé l''accès à votre compte. Veuillez nous l''accorder pour vous connecter.
+securesocial.login.errorLoggingIn=Une erreur s''est produite pendant la connection. S''il vous plaît essayez à nouveau.
 securesocial.login.useEmailAndPassword=Ou par e-mail / mot de passe
 securesocial.login.useEmailAndPasswordOnly=Connection avec un nom et mot de passe.
 securesocial.login.signUp=Si vous n''avez pas encore un compte vous pouvez vous inscrire
 securesocial.login.here=ici
-securesocial.login.signup.here=Je m'inscris
-securesocial.login.invalidCredentials=Les informations d'identification ne sont pas valides
-securesocial.login.forgotPassword=J'ai oublié mon mot de passe !
+securesocial.login.signup.here=Je m''inscris
+securesocial.login.invalidCredentials=Les informations d''identification ne sont pas valides
+securesocial.login.forgotPassword=J''ai oublié mon mot de passe !
 securesocial.logout.title=Déconnexion
 
 # Sign up page
 securesocial.signup.title=Inscrivez-vous
-securesocial.signup.username=Nom d'utilisateur
+securesocial.signup.username=Nom d''utilisateur
 securesocial.signup.firstName=Prénom
 securesocial.signup.lastName=Nom
 securesocial.signup.email1=E-mail
-securesocial.signup.email2=Confirmation d'e-mail
+securesocial.signup.email2=Confirmation d''e-mail
 securesocial.signup.password1=Mot de passe
 securesocial.signup.password2=Confirmation du mot de passe
 securesocial.signup.createAccount=Créer un compte
 securesocial.signup.cancel=Annuler
-securesocial.signup.userNameAlreadyTaken=Nom d'utilisateur déjà pris
+securesocial.signup.userNameAlreadyTaken=Nom d''utilisateur déjà pris
 securesocial.signup.passwordsDoNotMatch=Les mots de passe ne correspond pas
-securesocial.signup.thankYouCheckEmail=Consulter vos e-mail pour trouver les instrcutions d'inscription.
+securesocial.signup.thankYouCheckEmail=Consulter vos e-mail pour trouver les instructions d''inscription.
 securesocial.signup.invalidLink=Le lien que vous avez choisi est invalide
-securesocial.signup.signUpDone=Merci pour l'inscription. Vous pouvez maintenant vous connecter
+securesocial.signup.signUpDone=Merci pour l''inscription. Vous pouvez maintenant vous connecter
 securesocial.signup.invalidPassword=Au moins {0} caractères requis
 
 # Password reset
 securesocial.password.title=Réinitialiser le mot de passe
 securesocial.password.passwordUpdated=Le mot de passe a été réinitialiser
 securesocial.password.reset=Réinitialiser
-securesocial.password.error=Un problème est survenu durant la réinitialisation. S'il vous plaît essayer à nouveau.
+securesocial.password.error=Un problème est survenu durant la réinitialisation. S''il vous plaît essayez à nouveau.
 
 # Password change
 securesocial.passwordChange.title=Modifier le mot de passe
@@ -229,13 +229,13 @@ securesocial.passwordChange.currentPassword=Mot de passe actuel
 securesocial.passwordChange.newPassword1=Nouveau mot de passe
 securesocial.passwordChange.newPassword2=Confirmation du nouveau mot de passe
 securesocial.passwordChange.changeButton=Modifier
-securesocial.passwordChange.invalidPassword=Mot de passe invalid
+securesocial.passwordChange.invalidPassword=Mot de passe invalide
 securesocial.passwordChange.ok=Votre mot de passe a été modifié
 securesocial.passwordChange.okButton=Ok
 
 # Not authorized page
-securesocial.notAuthorized.title=Non authoriser
-securesocial.notAuthorized.message=Vous n''avez pas l'autorisation suffisante pour accéder à cette page
+securesocial.notAuthorized.title=Non autorisé
+securesocial.notAuthorized.message=Vous n''avez pas l''autorisation suffisante pour accéder à cette page
 
 #
 securesocial.loginRequired=Vous devez vous authentifier pour accéder à cette page.
@@ -279,8 +279,8 @@ error.pattern=Doit satisfaire: {0}
 ## Custom Error
 error=Erreur
 error.invalid.title=Erreur navigateur non compatible
-error.no.script=Ce site nécessite l'utilisation du Javascript, veuillez configurer votre navigateur pour utiliser ce site.
-error.modern=Ce site utilise des foncationalités standards avancés (HTML 5, CSS 3) qui ne sont supportées par votre navigateur. \
+error.no.script=Ce site nécessite l''utilisation du Javascript, veuillez configurer votre navigateur pour utiliser ce site.
+error.modern=Ce site utilise des fonctionnalités standards avancés (HTML 5, CSS 3) qui ne sont pas prises en compte par votre navigateur. \
   Il est nécessaire d''utiliser un navigateur moderne pour accéder à ce site. <br/> Pour récupérer un navigateur moderne vous pouvez consulter:
 
 contact.support=Si besoin, contactez moi <a href="mailto:ilaborie@gmail.com"><i class="glyphicons envelope"></i> par e-mail</a>

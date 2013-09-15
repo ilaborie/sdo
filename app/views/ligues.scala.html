@@ -51,7 +51,7 @@
                 </div>
                 <div class="span6">
                     <div class="homelink">
-                        <a href="@routes.RankingLigue.liguePDF(sdo.shortName)">
+                        <a href="@routes.RankingLigue.liguePDF(sdo.shortName)" target="_blank">
                             <div class="row-fluid">
                                 <div class="span2"><i class="glyphicons podium"></i> </div>
                                 <div class="span10">@Messages("rank.ligue.ranking", sdo.name, Season.currentSeason)</div>
@@ -63,7 +63,7 @@
             <div class="row-fluid">
                 <div class="span6">
                     <div class="homelink">
-                        <a href="@routes.Orga.comite(sdo.shortName, mpy.shortName)" target="_blank">
+                        <a href="@routes.Orga.comite(sdo.shortName, mpy.shortName)">
                             <div class="row-fluid">
                                 <div class="span2"><img src="@routes.Assets.at(s"images/${mpy.shortName}.png")" alt="@mpy.shortName"></div>
                                 <div class="span10">@mpy.name</div>
