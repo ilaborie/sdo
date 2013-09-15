@@ -4,7 +4,9 @@
     <div class="page-header">
         <h1>@ligue.name</h1>
     </div>
-    @ligue.info.map(tags.info(_))
+    <div class="hidden-phone">
+        @ligue.info.map(tags.info(_))
+    </div>
 
     <a class="btn btn-primary pull-right" target="_blank" href="./@ligue.shortName/ranking.pdf">
         <i class="glyphicons download_alt"></i>

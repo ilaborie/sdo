@@ -1,4 +1,4 @@
-@(title: String, user: Option[model.user.User] = None, scripts: Html = script())(content: Html)
+@(title: String, user: Option[model.user.User] = None, submenu:Html = Html(""), scripts: Html = script())(content: Html)
 <!DOCTYPE html>
 
 <html>
@@ -13,7 +13,7 @@
 
     <body>
         <div id="wrap">
-            @navbar.empty(title, user)
+            @navbar.empty(title, user, submenu)
             @content
             <div id="push"></div>
         </div>

@@ -1,4 +1,4 @@
-@(title: String = "", user: Option[model.user.User] = None)(content: Html)
+@(title: String = "", user: Option[model.user.User] = None, submenu:Html = Html(""))(content: Html)
 @import model.orga._
 @import model.user._
 @import securesocial.core.providers.utils.RoutesHelper
@@ -40,5 +40,6 @@
             </div>
         </div>
     </div>
+    @submenu
 </div>
 
