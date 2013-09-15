@@ -159,7 +159,7 @@ object DataChampionship {
       val out = m("out").asInstanceOf[String]
       val outPlayer = if (out != null) LicensedPlayer.findByName(out) else None
 
-      val after = m("match").asInstanceOf[Integer]
+      val after = if (m("match")!= null) m("match").toString else null
       val afterMatch = if (after != null) Some(after.toInt) else None
 
       if (inPlayer.isDefined) Some(Substitute(inPlayer.get, outPlayer, afterMatch)) else None
