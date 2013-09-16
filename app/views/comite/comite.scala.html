@@ -6,17 +6,70 @@
     @tags.javascript("knockout")
     @tags.javascript("comite")
 }
-@layout.main(comite.name, user=Some(user), scripts=script) {
+
+@submenu = {
+    <div class="navbar-inner visible-phone">
+        <ul class="nav">
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    @Messages("menu.rank.short") <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li data-bind="css: { active: samPath() == '#single'}">
+                        <a class="sammy" href="#single">@Messages("menu.rank.men")</a>
+                    </li>
+                    <li data-bind="css: { active: samPath() == '#ladies'}">
+                        <a class="sammy" href="#ladies">@Messages("menu.rank.women")</a>
+                    </li>
+                    <li data-bind="css: { active: samPath() == '#youth'}">
+                        <a class="sammy" href="#youth">@Messages("menu.rank.junior")</a>
+                    </li>
+                    <li data-bind="css: { active: samPath() == '#pairs'}">
+                        <a class="sammy" href="#pairs">@Messages("menu.rank.double")</a>
+                    </li>
+                    <li data-bind="css: { active: samPath() == '#team'}">
+                        <a class="sammy" href="#team">@Messages("menu.rank.team")</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    @Messages("menu.club") <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                @for(club <- comite.clubs) {
+                    <li data-bind="css: { active: samPath() == '#club/@club.shortName'}">
+                        <a class="sammy" href="#club/@club.shortName">@club.name</a>
+                    </li>
+                }
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    @Messages("menu.tournaments.short") <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                @for(tournament <- comite.tournaments) {
+                    <li data-bind="css: { active: samPath() == '#tour/@tournament.shortName'}">
+                        <a class="sammy" href="#tour/@tournament.shortName">@tournament</a>
+                    </li>
+                }
+                </ul>
+            </li>
+        </ul>
+    </div>
+}
+@layout.main(comite.name, user=Some(user), submenu=submenu, scripts=script) {
     <div class="container">
         <div class="row-fluid">
-            <div class="span3 well well-small affix">
+            <div class="span3 well well-small hidden-phone">
                 <ul id="leftMenu" class="nav nav-list">
                     <li data-bind="css: { active: samPath() == '#comite'}">
                         <a class="sammy" href="#comite">@comite.name</a>
                     </li>
                     <li class="nav-header">@Messages("menu.rank")</li>
                     <li data-bind="css: { active: samPath() == '#single'}">
-                        <a class="sammy" href="#single">@Messages("menu.rank.men")</a>
+                        <a class="sammy" href="#single">@Messages("menu.rank.simple")</a>
                     </li>
                     <li data-bind="css: { active: samPath() == '#ladies'}">
                         <a class="sammy" href="#ladies">@Messages("menu.rank.women")</a>

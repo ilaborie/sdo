@@ -7,10 +7,81 @@
     @tags.javascript("ligue")
 }
 
-@layout.main(ligue.name, user = Some(user),  scripts = script) {
+@submenu = {
+    <div class="navbar-inner visible-phone">
+        <ul class="nav">
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    @Messages("menu.rank.short") <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li data-bind="css: { active: samPath() == '#single'}">
+                        <a class="sammy" href="#single">@Messages("menu.rank.men")</a>
+                    </li>
+                    <li data-bind="css: { active: samPath() == '#ladies'}">
+                        <a class="sammy" href="#ladies">@Messages("menu.rank.women")</a>
+                    </li>
+                    <li data-bind="css: { active: samPath() == '#youth'}">
+                        <a class="sammy" href="#youth">@Messages("menu.rank.junior")</a>
+                    </li>
+                    <li data-bind="css: { active: samPath() == '#pairs'}">
+                        <a class="sammy" href="#pairs">@Messages("menu.rank.double")</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    @Messages("menu.intercomite.short") <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li data-bind="css: { active: samPath() == '#ic-single'}">
+                        <a class="sammy" href="#ic-single">@Messages("menu.rank.men")</a>
+                    </li>
+                    <li data-bind="css: { active: samPath() == '#ic-ladies'}">
+                        <a class="sammy" href="#ic-ladies">@Messages("menu.rank.women")</a>
+                    </li>
+                    <li data-bind="css: { active: samPath() == '#ic-youth'}">
+                        <a class="sammy" href="#ic-youth">@Messages("menu.rank.junior")</a>
+                    </li>
+                    <li data-bind="css: { active: samPath() == '#ic-pairs'}">
+                        <a class="sammy" href="#ic-pairs">@Messages("menu.rank.double")</a>
+                    </li>
+                    <li data-bind="css: { active: samPath() == '#ic-team'}">
+                        <a class="sammy" href="#ic-team" >@Messages("menu.rank.team")</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    @Messages("menu.comite.short") <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                @for(comite <- ligue.comites) {
+                    <li>
+                        <a href="@routes.Orga.comite(ligue.shortName, comite.shortName)">@comite.name</a>
+                    </li>
+                }
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    @Messages("menu.tournaments.short") <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                @for(tournament <- ligue.tournaments; if tournament.isEvent) {
+                    <li data-bind="css: { active: samPath() == '#tour/@tournament.shortName'}">
+                        <a class="sammy" href="#tour/@tournament.shortName">@tournament</a>
+                    </li>
+                }
+                </ul>
+            </li>
+        </ul>
+    </div>
+}
+@layout.main(ligue.name, user = Some(user), submenu=submenu, scripts = script) {
     <div class="container">
         <div class="row-fluid">
-            <div class="span3 well well-small affix">
+            <div class="span3 well well-small affix hidden-phone">
                 <ul id="leftMenu" class="nav nav-list">
                     <li data-bind="css: { active: samPath() == '#ligue'}">
                         <a class="sammy" href="#ligue">@ligue.name</a>

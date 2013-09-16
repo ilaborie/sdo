@@ -6,18 +6,23 @@ home.mention=Ce site est encore en construction, n''hésitez pas à suggérer de
 
 # Ligue
 menu.comite=Comités
+menu.comite.short=Com.
 
 # Comite
 menu.rank=Classements
+menu.rank.short=Class.
 menu.intercomite=Classements Inter-comités
+menu.intercomite.short=InterCom.
 menu.rank.team=Équipes
 menu.rank.indiv=Individuel
-menu.rank.men=Simple
+menu.rank.simple=Simple
+menu.rank.men=Masculins
 menu.rank.women=Féminines
 menu.rank.junior=Juniors
 menu.rank.double=Doubles
 menu.club=Clubs
 menu.tournaments=Tournois
+menu.tournaments.short=Tour.
 
 # Contacts
 title.contacts=Contacts

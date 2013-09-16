@@ -67,6 +67,12 @@ body {
   padding-top: 60px;
 }
 
+@media (max-width: 480px) {
+  #wrap > .container {
+    padding-top: 0;
+  }
+}
+
 h1 {
   font-size: 32px;
 }
@@ -122,7 +128,8 @@ dl {
 }
 
 // MenuBar
-.brand {
+.navbar a.brand {
+  font-size: 18px;
   img {
     height: 1em;
   }

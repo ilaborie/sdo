@@ -30,11 +30,16 @@
                             </div>
                             }
                         </td>
-
-                        <td>@m.team1.name</td>
+                        <td>
+                            <span class="hidden-phone">@m.team1.name</span>
+                            <span class="visible-phone">@m.team1.shortName</span>
+                        </td>
                         <td> - </td>
                         <td> - </td>
-                        <td>@m.team2.name</td>
+                        <td>
+                            <span class="hidden-phone">@m.team2.name</span>
+                            <span class="visible-phone">@m.team2.shortName</span>
+                        </td>
                     </tr>
                 }
                 case Some(detail) => {
@@ -44,10 +49,16 @@
                                 <i class="glyphicons search"></i>
                             </a>
                         </td>
-                        <td>@m.team1.name</td>
+                        <td>
+                            <span class="hidden-phone">@m.team1.name</span>
+                            <span class="visible-phone">@m.team1.shortName</span>
+                        </td>
                         <td class="@teamClass(m.team1, detail)">@detail.plus(m.team1)</td>
                         <td class="@teamClass(m.team2, detail)">@detail.plus(m.team2)</td>
-                        <td>@m.team2.name</td>
+                        <td>
+                            <span class="hidden-phone">@m.team2.name</span>
+                            <span class="visible-phone">@m.team2.shortName</span>
+                        </td>
                     </tr>
                 }
             }

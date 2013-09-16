@@ -1,65 +1,7 @@
 @(ligue: model.orga.Ligue, ranking: model.rank.SeasonSingleRanking, user: model.user.User)
-@import model.orga._
 @import model.rank._
 
-<table class="table table-striped table-bordered rank">
-    <caption>
-        @Messages("rank.single.interComite.caption", ranking.season)
-        <a class="btn btn-primary pull-right" target="_blank" href="./@ligue.shortName/ic-single.pdf">
-            <i class="glyphicons download_alt"></i>
-            @Messages("rank.download.pdf")
-        </a>
-    </caption>
-    <thead>
-        <tr>
-            <th></th>
-            <th>@Messages("rank.name")</th>
-            <th>@Messages("rank.club")</th>
-            @for(tournament <- ranking.tournaments) {
-                @tournament match {
-                    case cc:CoupeComite => {
-                        <th>
-                            <abbr title="@Messages("rank.comite.coupe.title", tournament.maybyComite.get.name)">
-                            @Messages("rank.comite.coupe")
-                            </abbr>
-                        </th>
-                    }
-                    case oc: OpenClub => {
-                        <th>
-                            <abbr title="@Messages("rank.comite.open.title", oc.club.name)">
-                            @Messages("rank.comite.open", oc.club.shortName)
-                            </abbr>
-                        </th>
-                    }
-                    case _ => {}
-                }
-            }
-            <th>@tags.abbr("rank.point")</th>
-        </tr>
-    </thead>
-    <tbody>
-    @for(rank <- ranking.ordered) {
-        <tr>
-            <td>
-                @defining(ranking.getPosition(rank)) { pos =>
-                    @if(LigueRanking.qualifyForMasterSingle(pos)) {
-                        <span class="badge badge-info">@pos</span>
-                    } else{
-                    <span class="badge">@pos</span>
-                    }
-                }
-            </td>
-            <td>@rank.participant</td>
-            <td>@rank.participant.clubAsString</td>
-            @for(tournament <- ranking.tournaments) {
-                <td>
-                @if(rank.results.contains(tournament)) {
-                    @tournament.getPointAsString(rank.results(tournament))
-                }
-                </td>
-            }
-            <td>@rank.points</td>
-        </tr>
-    }
-    </tbody>
-</table>
+@tags.ranking(ranking,
+    Messages("rank.single.interComite.caption", ligue.name,ranking.season),
+    s"./${ligue.shortName}/ic-single.pdf",
+    (pos:Int) => false)
