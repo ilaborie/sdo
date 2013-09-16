@@ -160,27 +160,38 @@ class Match
     self.finished = ko.computed () ->
       self.team1Win() or self.team2Win()
     self.visibleLeg2 = ko.computed () ->
-      self.leg1() > 0
+      self.leg2() > 0 or self.leg1() > 0
     self.visibleLeg3 = ko.computed () ->
-      (!self.finished() and self.leg2() > 0) or (self.finished() and self.leg3() > 0)
+      (!self.finished() and self.leg2() > 0 and self.leg1() > 0) or (self.finished() and self.leg3() > 0)
 
     # Behavior
     self.updateLeg1 = (winner, index) ->
-      self.leg1(winner)
+      if (self.leg1() == winner)
+        self.leg1(0)
+      else
+        self.leg1(winner)
+
       if (self.leg1() == self.leg2()) # Winner
         self.leg3(0)
         $('.leg[tabindex='+(index+1)+'11]').focus()
       else
         $('.leg[tabindex='+index+'21]').focus()
     self.updateLeg2 = (winner, index) ->
-      self.leg2(winner)
+      if (self.leg2() == winner)
+        self.leg2(0)
+      else
+        self.leg2(winner)
+
       if (self.leg1() == self.leg2()) # Winner
         self.leg3(0)
         $('.leg[tabindex='+(index+1)+'11]').focus()
       else
         $('.leg[tabindex='+index+'31]').focus()
     self.updateLeg3 = (winner, index) ->
-      self.leg3(winner)
+      if (self.leg3() == winner)
+        self.leg3(0)
+      else
+        self.leg3(winner)
       $('.leg[tabindex='+(index+1)+'11]').focus()
     self.updateTeam1 = (team) ->
       switch self.team1
