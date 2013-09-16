@@ -81,7 +81,7 @@
 @layout.main(ligue.name, user = Some(user), submenu=submenu, scripts = script) {
     <div class="container">
         <div class="row-fluid">
-            <div class="span3 well well-small affix hidden-phone">
+            <div class="span3 well well-small hidden-phone">
                 <ul id="leftMenu" class="nav nav-list">
                     <li data-bind="css: { active: samPath() == '#ligue'}">
                         <a class="sammy" href="#ligue">@ligue.name</a>
@@ -129,7 +129,7 @@
                     }
                 </ul>
             </div>
-            <div class="span9 offset3">
+            <div class="span9 ">
                 <div id="bodyLigue"></div>
             </div>
         </div>

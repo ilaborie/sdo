@@ -62,7 +62,9 @@ registerPopover = () ->
   }
 
 scrollToUnMuted = () ->
-  window.scroll(0,$(".event.muted:last").next().offset().top)
+  muted = $(".event.muted:last")
+  if muted.length > 0
+    window.scroll(0, muted.next().offset().top)
 
 getTitle = () ->
   content = $(this).find ".title.hidden"

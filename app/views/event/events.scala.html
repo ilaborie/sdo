@@ -22,7 +22,7 @@
 @layout.main(Messages("title.events"), submenu=submenu, scripts = script) {
     <div class="container">
         <div class="row-fluid">
-            <div class="span3 well well-small affix hidden-phone">
+            <div class="span3 well well-small hidden-phone">
                 <ul id="leftMenu" class="nav nav-list">
                     <li class="nav-header">@Messages("menu.event.view")</li>
                     <li data-bind="css: { active: samPath() == '#list'}">
@@ -33,7 +33,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="offset3 span9 well well-small">
+            <div class=" span9 well well-small">
                 <div id="bodyEvents"></div>
             </div>
         </div>
