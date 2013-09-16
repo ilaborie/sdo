@@ -84,7 +84,7 @@ object Event {
    */
   def apply(ligue: Ligue, day: TeamChampionshipDay): Event = {
     val name = Messages("team.championship.day", day.day)
-    val url = s"/sdo/ligues/${ligue.shortName}#team"
+    val url = s"/sdo/ligues/${ligue.shortName}#ic-team"
     val matches = {
       for (ma <- day.matches)
       yield s"<tr><td>${ma.team1.name}</td><td>-</td><td>${ma.team2.name}</td</tr>"
