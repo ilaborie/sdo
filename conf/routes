@@ -9,6 +9,7 @@ GET         /contacts                                             controllers.Co
 GET         /events                                               controllers.Event.event
 GET         /events/list                                          controllers.Event.eventsList
 GET         /events/calendar                                      controllers.Event.eventsCalendar
+GET         /events/sdo.ics                                       controllers.Event.icalendar
 
 # Ligue, Comite, Club
 GET         /ligues/:ligue                                        controllers.Orga.ligue(ligue)

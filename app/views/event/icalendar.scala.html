@@ -1,0 +1,17 @@
+@(events: Seq[model.event.Event])BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//ilaborie/sdo//calendar//NONSGML v1.0//FR
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Darts
+X-WR-TIMEZONE:Europe/Paris
+X-WR-CALDESC:
+@for(event <- events) {BEGIN:VEVENT
+DTSTART;VALUE=DATE:@org.joda.time.format.DateTimeFormat.forPattern("yyyyMMdd").print(event.from)
+DTEND;VALUE=DATE:@org.joda.time.format.DateTimeFormat.forPattern("yyyyMMdd").print(event.to)
+SUMMARY:@event.name
+CATEGORIES:@Messages(s"event.type.${event.eventType.style}") @if(event.location.isDefined) {
+LOCATION:@event.location.get}
+TRANSP:TRANSPARENT
+END:VEVENT
+}END:VCALENDAR
