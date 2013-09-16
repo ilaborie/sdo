@@ -1,6 +1,6 @@
-@(event: model.event.Event, now: org.joda.time.LocalDate=org.joda.time.LocalDate.now)
+@(event: model.event.Event, now: org.joda.time.LocalDate = org.joda.time.LocalDate.now, showInfo: Boolean = false)
 
-@tags.eventLink(event, now) {
+@tags.eventLink(event, now, showInfo = showInfo) {
     @event.url.map(tags.site(_))
     @event.email.map(tags.email(_))
 }

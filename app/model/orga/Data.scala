@@ -237,7 +237,7 @@ object Data {
     val shortName = info("shortname").asInstanceOf[String]
     val opens = if (info.contains("opens")) {
       val openList = info("opens").asInstanceOf[JavaList[JavaMap[String, Any]]].toList
-      for ((open, index) <- openList.zipWithIndex) yield createOpenClub(open, s"s$season/$ligue/championship/OC-$shortName-${index+1}.yml")
+      for ((open, index) <- openList.zipWithIndex) yield createOpenClub(season,open, s"s$season/$ligue/championship/OC-$shortName-${index+1}.yml")
     } else Nil
     val teamList = info("teams").asInstanceOf[JavaList[String]].toList
     val teams = for (team <- teamList) yield readTeam(season, ligue, comite, club, team)
@@ -249,14 +249,19 @@ object Data {
 
   /**
    * Read Open Club
+   * @param season season
    * @param open info
    * @param file file
    * @return OpenClub
    */
-  private def createOpenClub(open: JavaMap[String, Any], file: String): OpenClub = {
+  private def createOpenClub(season:Season, open: JavaMap[String, Any], file: String): OpenClub = {
     val date = YamlParser.readDate(open.get("date").asInstanceOf[String])
     val location = YamlParser.readLocation(open.asInstanceOf[JavaMap[String, String]].toMap).get
-    OpenClub(date, location, file)
+    val information = YamlParser.toOption(open.toMap, "info") match {
+      case Some(info) => YamlParser.readInfo(s"s$season/$info")
+      case None => None
+    }
+    OpenClub(date, location, file, information)
   }
 
   /**

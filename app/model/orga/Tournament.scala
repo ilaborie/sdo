@@ -22,6 +22,8 @@ sealed trait Tournament {
 
   def maybyComite: Option[Comite]
 
+  def info: Option[Info] = None
+
   def getPoint(position: TournamentResult): Int
 
   def getPointAsString(position: TournamentResult): String = {
@@ -308,7 +310,7 @@ case class CoupeComite(date: LocalDate, location: Location, override val file: S
 /**
  * Open Club
  */
-case class OpenClub(date: LocalDate, location: Location, override val file: String) extends BaseTournament(file) with ComiteTournament {
+case class OpenClub(date: LocalDate, location: Location, override val file: String, override val info: Option[Info] = None) extends BaseTournament(file) with ComiteTournament {
   override def toString = Messages("rank.comite.open.title", club.name)
 
   val place = Some(location)

@@ -8,6 +8,8 @@
         </h1>
         @tournament.place.map(tags.location(_))
 
+        @tournament.info.map(tags.info(_))
+
         <em>
             Si le tournoi n'a pas encore eu lieu => Formulaire d'inscription<br>
             Sinon tableau des résultats

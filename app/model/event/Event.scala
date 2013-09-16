@@ -51,6 +51,7 @@ object Event {
 
   val orderByStartDate: Ordering[Event] = Ordering.by[Event, LocalDate](_.from)
 
+  /** All Events */
   lazy val events: Seq[Event] = {
     val season = Season.currentSeason
     // ligues
@@ -75,6 +76,12 @@ object Event {
     ligueEvents ++ comiteEvents ++ teamEvents ++ DataEvent.readEvents(season)
   }.sorted(orderByStartDate)
 
+  /**
+   * Team event
+   * @param ligue ligue
+   * @param day day
+   * @return Event
+   */
   def apply(ligue: Ligue, day: TeamChampionshipDay): Event = {
     val name = Messages("team.championship.day", day.day)
     val url = s"/sdo/ligues/${ligue.shortName}#team"
@@ -97,17 +104,28 @@ $foot
     Event(name, TeamEvent, day.from, day.to, url = Some(url), info = Some(info))
   }
 
-
+  /**
+   * Ligue Event
+   * @param ligue ligue
+   * @param tournament tournament
+   * @return Event
+   */
   def apply(ligue: Ligue, tournament: LigueTournament): Event = {
     val name = tournament.toString
     val url = s"/sdo/ligues/${ligue.shortName}#tour/${tournament.shortName}"
     Event(name, LigueEvent, tournament.date, tournament.date, url = Some(url), location = tournament.place)
   }
 
+  /**
+   * Comite Event
+   * @param comite comite
+   * @param tournament tournament
+   * @return event
+   */
   def apply(comite: Comite, tournament: ComiteTournament): Event = {
     val name = tournament.toString
     val url = s"/sdo/ligues/${comite.ligue.shortName}/comites/${comite.shortName}#tour/${tournament.shortName}"
 
-    Event(name, ComiteEvent, tournament.date, tournament.date, url = Some(url), location = tournament.place)
+    Event(name, ComiteEvent, tournament.date, tournament.date, url = Some(url), location = tournament.place, info = tournament.info)
   }
 }
