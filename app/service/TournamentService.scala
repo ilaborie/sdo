@@ -38,11 +38,11 @@ import scala.concurrent.{Await, Future}
 import org.joda.time.DateTime
 
 /**
- * Store User into a MongoDB instance
+ * Store Registered player into a MongoDB instance
  */
-class UserService(application: Application) extends UserServicePlugin(application) {
+class TournamentService(application: Application) extends UserServicePlugin(application) {
 
-  private val logger = Logger("UserService")
+  private val logger = Logger("TournamentService")
 
   lazy val connection = {
     val driver = new MongoDriver

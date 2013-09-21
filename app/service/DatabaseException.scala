@@ -19,14 +19,8 @@
 // IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-package model
+package service
 
-import org.joda.time.LocalDate
-
-package object orga {
-  type Info = String
-  type LicenseNumber = String
-
-
-  implicit def dateTimeOrdering: Ordering[LocalDate] = Ordering.fromLessThan(_ isBefore _)
-}
+/**
+ */
+case class DatabaseException(message: String) extends RuntimeException(message)
