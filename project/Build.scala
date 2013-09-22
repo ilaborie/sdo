@@ -34,11 +34,14 @@ object ApplicationBuild extends Build {
   val pdf = "pdf" % "pdf_2.10" % "0.5"
 
   val appDependencies = Seq(
-    jdbc, // FIXME remove ?
+    jdbc,
+    cache,
     secureSocial,
     reactiveMongo,
     pdf
   )
+
+  val dependencyOverrides = Set("org.scala-stm" % "scala-stm" % "2.10.0")
 
   // Only compile main.less
   def customLessEntryPoints(base: File): PathFinder = (base / "app" / "assets" / "style" / "main.less") +++
