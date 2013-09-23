@@ -60,13 +60,21 @@ object Tournament {
   val orderByDate: Ordering[Tournament] = Ordering.by[Tournament, LocalDate](_.date)
 }
 
+/**
+ * Base tournament
+ * @param file the result file
+ */
 sealed abstract class BaseTournament(val file: String) extends Tournament {
+  def isSimple: Boolean
+
   private lazy val data = TournamentResultData.readBaseTournamentResult(file)
 
   lazy val mens: Option[TournamentResults[Player]] = data._1
   lazy val ladies: Option[TournamentResults[Player]] = data._2
   lazy val youth: Option[TournamentResults[Player]] = data._3
   lazy val pairs: Option[TournamentResults[Pair]] = data._4
+
+  lazy val isPlayed = mens.isDefined || ladies.isDefined || youth.isDefined || pairs.isDefined
 
   lazy val getPairs: Seq[Pair] = pairs match {
     case None => Nil
@@ -89,6 +97,8 @@ sealed trait LigueTournament extends Tournament {
 case class OpenLigue(date: LocalDate, location: Location, override val file: String) extends BaseTournament(file) with LigueTournament {
 
   override def toString = Messages("rank.ligue.open.title", ligue.name)
+
+  override val isSimple = true
 
   val place = Some(location)
 
@@ -113,6 +123,8 @@ case class OpenLigue(date: LocalDate, location: Location, override val file: Str
 case class CoupeLigue(date: LocalDate, location: Location, override val file: String) extends BaseTournament(file) with LigueTournament {
 
   override def toString = Messages("rank.ligue.coupe.title", ligue.name)
+
+  override val isSimple = false
 
   val place = Some(location)
 
@@ -139,6 +151,8 @@ case class CoupeLigue(date: LocalDate, location: Location, override val file: St
 case class MasterLigue(date: LocalDate, location: Location, override val file: String) extends BaseTournament(file) with LigueTournament {
 
   override def toString = Messages("rank.ligue.master.title")
+
+  override val isSimple = false
 
   val place = Some(location)
 
@@ -295,7 +309,7 @@ object NationalTournament {
 /**
  * Comite Tournament
  */
-sealed trait ComiteTournament extends Tournament {
+sealed trait ComiteTournament extends BaseTournament {
   def shortName: String
 
   def comite: Comite
@@ -312,6 +326,8 @@ case class CoupeComite(date: LocalDate, location: Location, override val file: S
 
   val shortName = "CC"
   val place = Some(location)
+
+  val isSimple = false
 
   lazy val comite: Comite = Ligue.comites.find(_.coupe == this).get
 
@@ -333,6 +349,8 @@ case class CoupeComite(date: LocalDate, location: Location, override val file: S
  */
 case class OpenClub(date: LocalDate, location: Location, override val file: String, override val info: Option[Info] = None) extends BaseTournament(file) with ComiteTournament {
   override def toString = Messages("rank.comite.open.title", club.name)
+
+  val isSimple = true
 
   val place = Some(location)
   val shortName = s"OC-${DateTimeFormat.forPattern("yyyyMMdd").print(date)}"

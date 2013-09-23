@@ -91,7 +91,9 @@ rank.point=Pts.
 rank.point.title=Points
 rank.name=Nom
 rank.club=Club
+rank.group=Poule {0}
 rank.download.pdf=Classement PDF
+rank.no.results=Pas de résultats
 
 # Tournament
 rank.comite.ranking= Classement {0} - {1}
