@@ -57,6 +57,9 @@ object Global extends GlobalSettings {
           logger.info(s"TeamChampionship: $champ")
       }
       logger.info("[Done]")
+      val sdo = Ligue.ligues(0)
+      logger.info(s"[${sdo.shortName}}] ${sdo.clubs}")
+      logger.info(s"[${sdo.shortName}}] ${sdo.teams}")
     }
 
     // Info for authentication

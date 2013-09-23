@@ -81,13 +81,14 @@ case class Ligue(name: String,
     } yield club
   }
 
-  lazy val teams = {
+  lazy val allTeams = {
     for {
       club <- clubs
       team <- club.teams
-      if !team.omit
     } yield team
   }
+
+  lazy val teams = allTeams.filter(!_.omit)
 
   lazy val players = {
     for {
@@ -129,13 +130,14 @@ object Ligue {
     } yield club
   }
 
-  lazy val teams = {
+  lazy val allTeams = {
     for {
       ligue <- ligues
       team <- ligue.teams
-      if !team.omit
     } yield team
   }
+
+  lazy val teams = allTeams.filter(!_.omit)
 
   lazy val players = {
     for {
@@ -168,13 +170,13 @@ case class Comite(name: String,
 
   def findTournamentByShortName(sname: String): Option[ComiteTournament] = tournaments.find(_.shortName == sname)
 
-  lazy val teams = {
+  lazy val allTeams = {
     for {
       club <- clubs
       team <- club.teams
-      if !team.omit
     } yield team
   }
+  lazy val teams = allTeams.filter(!_.omit)
 
   lazy val players = {
     for {
@@ -254,9 +256,9 @@ case class Team(name: String, shortName: String, capitainName: String, players: 
 
   lazy val capitain: LicensedPlayer = club.players.find(_.name == capitainName).get
 
-  lazy val ligue: Ligue = Ligue.ligues.find(_.teams.contains(this)).get
+  lazy val ligue: Ligue = Ligue.ligues.find(_.allTeams.contains(this)).get
 
-  lazy val comite: Comite = ligue.comites.find(_.teams.contains(this)).get
+  lazy val comite: Comite = ligue.comites.find(_.allTeams.contains(this)).get
 
   lazy val club: Club = comite.clubs.find(_.teams.contains(this)).get
 
