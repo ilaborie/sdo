@@ -53,8 +53,7 @@ object Orga extends Controller with SecureSocial {
     val sdo = Ligue.findByShortName("SDO").get
     val mpy = Ligue.comites.find(_.shortName=="MPY").get
     val teg = Ligue.comites.find(_.shortName=="TEG").get
-    val aqu = Ligue.comites.find(_.shortName=="AQU").get
-    Ok(views.html.ligues(sdo, mpy, teg, aqu, events))
+    Ok(views.html.ligues(sdo, mpy, teg, events))
   }
 
   /**
