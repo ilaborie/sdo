@@ -86,7 +86,7 @@ sealed trait LigueTournament extends Tournament {
 /**
  * Open Ligue
  */
-case class OpenLigue(date: LocalDate, location: Location, override val file: String) extends BaseTournament(file) with LigueTournament {
+case class OpenLigue(date: LocalDate, location: Location, override val file: String, override val info:Option[Info]=None) extends BaseTournament(file) with LigueTournament {
 
   override def toString = Messages("rank.ligue.open.title", ligue.name)
 
