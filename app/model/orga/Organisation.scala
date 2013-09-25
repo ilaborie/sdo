@@ -92,7 +92,7 @@ case class Ligue(name: String,
 
   lazy val players = {
     for {
-      team <- teams
+      team <- allTeams
       player <- team.players
     } yield player
   }
@@ -180,7 +180,7 @@ case class Comite(name: String,
 
   lazy val players = {
     for {
-      team <- teams
+      team <- allTeams
       player <- team.players
     } yield player
   }

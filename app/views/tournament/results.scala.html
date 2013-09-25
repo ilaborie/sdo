@@ -1,0 +1,83 @@
+@(tournament: model.orga.Tournament, result: model.orga.TournamentResults[model.orga.Player])
+
+@import model.orga._
+
+@row(pos: Int, player: Player, tourRes: TournamentResult) = {
+    <tr>
+        <th><span class="badge">@pos</span></th>
+        <td>@player</td>
+        <td>@player.clubAsString</td>
+        <td>@tournament.getPoint(tourRes)</td>
+    </tr>
+}
+
+<table class="table table-bordered table-condensed table-striped tournamentResult">
+    <thead>
+        <tr>
+            <th></th>
+            <th>@Messages("rank.name")</th>
+            <th>@Messages("rank.club")</th>
+            <th>@tags.abbr("rank.point")</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if(result.winner.isDefined) {
+            <tr>
+                <th><i class="glyphicons cup"></i></th>
+                <td>@result.winner.get</td>
+                <td>@result.winner.get.clubAsString</td>
+                <td>@tournament.getPoint(Winner)</td>
+            </tr>
+        }
+        @if(result.runnerUp.isDefined) {
+            <tr>
+                <th><span class="badge">2</span></th>
+                <td>@result.runnerUp.get</td>
+                <td>@result.runnerUp.get.clubAsString</td>
+                <td>@tournament.getPoint(RunnerUp)</td>
+            </tr>
+        }
+        @for(player <- result.semiFinal) {
+            @row(3, player, SemiFinal)
+        }
+        @for(player <- result.quarterFinal) {
+            @row(5, player, QuarterFinal)
+        }
+        @for(player <- result.eighthFinal) {
+            @row(9, player, EighthFinal)
+        }
+        @for(player <- result.sixteenthFinal) {
+            @row(17, player, SixteenthFinal)
+        }
+        @for(player <- result.thirtySecondFinal) {
+            @row(33, player, ThirtySecondFinal)
+        }
+    </tbody>
+</table>
+
+@if(result.groups.isDefined) {
+    <ul class="inline group">
+    @for((group, index) <-result.groups.get.zipWithIndex) {
+        <li>
+<table class="table table-bordered table-condensed table-striped group">
+    <thead>
+        <tr>
+            <th colspan="3">@Messages("rank.group",{('A'+index).toChar})</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for((player, pos)<-group.zipWithIndex) {
+        <tr>
+            <th>@{1+pos}</th>
+            <td>@player</td>
+            <td>@tournament.getPoint(result.getResult(player).get)</td>
+        </tr>
+        }
+    </tbody>
+</table>
+        </li>
+    }
+    </ul>
+}
+
+

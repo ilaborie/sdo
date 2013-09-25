@@ -110,25 +110,36 @@ object Data {
       YamlParser.toOption(open.toMap, "info") match {
         case Some(in) => YamlParser.readInfo(s"s$season/$in")
         case None => None
-      }
-    )
+      })
 
     val coupeMap = info("coupe").asInstanceOf[JavaMap[String, Any]]
     val coupe = CoupeLigue(
       YamlParser.readDate(coupeMap.get("date").asInstanceOf[String]),
       YamlParser.readLocation(coupeMap.toMap).get,
-      s"s$season/$ligue/championship/CL.yml")
+      s"s$season/$ligue/championship/CL.yml",
+      YamlParser.toOption(coupeMap.toMap, "info") match {
+        case Some(in) => YamlParser.readInfo(s"s$season/$in")
+        case None => None
+      })
 
     val masterMap = info("master").asInstanceOf[JavaMap[String, Any]]
     val master = MasterLigue(
       YamlParser.readDate(masterMap.get("date").asInstanceOf[String]),
       YamlParser.readLocation(masterMap.toMap).get,
-      s"s$season/$ligue/championship/ML.yml")
+      s"s$season/$ligue/championship/ML.yml",
+      YamlParser.toOption(masterMap.toMap, "info") match {
+        case Some(in) => YamlParser.readInfo(s"s$season/$in")
+        case None => None
+      })
 
     val teamMaster = info("team-master").asInstanceOf[JavaMap[String, Any]]
     val masterTeam = MasterLigueTeam(
       YamlParser.readDate(teamMaster.get("date").asInstanceOf[String]),
-      YamlParser.readLocation(teamMaster.toMap).get)
+      YamlParser.readLocation(teamMaster.toMap).get,
+      YamlParser.toOption(teamMaster.toMap, "info") match {
+        case Some(in) => YamlParser.readInfo(s"s$season/$in")
+        case None => None
+      })
 
     val teamCoupe = {
       if (!info.contains("team-coupe")) None
@@ -136,7 +147,11 @@ object Data {
         val coupeTeam = info("team-coupe").asInstanceOf[JavaMap[String, Any]]
         Some(CoupeLigueTeam(
           YamlParser.readDate(coupeTeam.get("date").asInstanceOf[String]),
-          YamlParser.readLocation(coupeTeam.toMap).get))
+          YamlParser.readLocation(coupeTeam.toMap).get,
+          YamlParser.toOption(coupeTeam.toMap, "info") match {
+            case Some(in) => YamlParser.readInfo(s"s$season/$in")
+            case None => None
+          }))
       }
     }
     // National Tournament
@@ -213,10 +228,14 @@ object Data {
    * @param file file
    * @return OpenClub
    */
-  private def createCoupeComite(data: JavaMap[String, Any], file: String): CoupeComite = {
+  private def createCoupeComite(season: Season, data: JavaMap[String, Any], file: String): CoupeComite = {
     val date = YamlParser.readDate(data.get("date").asInstanceOf[String])
     val location = YamlParser.readLocation(data.asInstanceOf[JavaMap[String, String]].toMap).get
-    CoupeComite(date, location, file)
+    val info = YamlParser.toOption(data.toMap, "info") match {
+      case Some(in) => YamlParser.readInfo(s"s$season/$in")
+      case None => None
+    }
+    CoupeComite(date, location, file, info)
   }
 
   /**
@@ -238,7 +257,7 @@ object Data {
     val clubs = for (club <- clubList) yield readClub(season, ligue, comite, club)
     val coupeMap = info("coupe").asInstanceOf[JavaMap[String, Any]]
 
-    val coupe = createCoupeComite(coupeMap, s"s$season/$ligue/championship/CC-$shortName.yml")
+    val coupe = createCoupeComite(season, coupeMap, s"s$season/$ligue/championship/CC-$shortName.yml")
     val information = YamlParser.readInfo(s"s$season/$ligue/$comite/info.html")
 
     Comite(name, shortName, clubs, coupe, information)

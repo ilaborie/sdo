@@ -41,6 +41,8 @@ sealed trait Player extends Participant {
   def lady: Boolean
 
   lazy val men: Boolean = !lady
+
+
 }
 
 /**
