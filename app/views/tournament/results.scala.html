@@ -11,7 +11,7 @@
     </tr>
 }
 
-<table class="table table-bordered table-condensed table-striped table-hover tournamentResult">
+<table class="table table-bordered table-condensed table-striped tournamentResult">
     <thead>
         <tr>
             <th></th>
@@ -59,7 +59,7 @@
     <ul class="inline group">
     @for((group, index) <-result.groups.get.zipWithIndex) {
         <li>
-<table class="table table-bordered table-condensed table-striped table-hover group">
+<table class="table table-bordered table-condensed table-striped group">
     <thead>
         <tr>
             <th colspan="3">@Messages("rank.group",{('A'+index).toChar})</th>
