@@ -94,7 +94,7 @@ sealed trait LigueTournament extends Tournament {
 /**
  * Open Ligue
  */
-case class OpenLigue(date: LocalDate, location: Location, override val file: String) extends BaseTournament(file) with LigueTournament {
+case class OpenLigue(date: LocalDate, location: Location, override val file: String, override val info: Option[Info] = None) extends BaseTournament(file) with LigueTournament {
 
   override def toString = Messages("rank.ligue.open.title", ligue.name)
 
@@ -120,7 +120,7 @@ case class OpenLigue(date: LocalDate, location: Location, override val file: Str
 /**
  * Coupe Ligue
  */
-case class CoupeLigue(date: LocalDate, location: Location, override val file: String) extends BaseTournament(file) with LigueTournament {
+case class CoupeLigue(date: LocalDate, location: Location, override val file: String, override val info: Option[Info] = None) extends BaseTournament(file) with LigueTournament {
 
   override def toString = Messages("rank.ligue.coupe.title", ligue.name)
 
@@ -148,7 +148,7 @@ case class CoupeLigue(date: LocalDate, location: Location, override val file: St
 /**
  * Master Ligue
  */
-case class MasterLigue(date: LocalDate, location: Location, override val file: String) extends BaseTournament(file) with LigueTournament {
+case class MasterLigue(date: LocalDate, location: Location, override val file: String, override val info: Option[Info] = None) extends BaseTournament(file) with LigueTournament {
 
   override def toString = Messages("rank.ligue.master.title")
 
@@ -174,7 +174,7 @@ case class MasterLigue(date: LocalDate, location: Location, override val file: S
 /**
  * Master Ligue Team
  */
-case class MasterLigueTeam(date: LocalDate, location: Location) extends LigueTournament {
+case class MasterLigueTeam(date: LocalDate, location: Location, override val info: Option[Info] = None) extends LigueTournament {
   override val isTeam: Boolean = true
   val shortName = "MastTeam"
   lazy val ligue = Ligue.ligues.find(_.masterTeam == this).get
@@ -190,7 +190,7 @@ case class MasterLigueTeam(date: LocalDate, location: Location) extends LigueTou
 /**
  * Coupe Ligue Team
  */
-case class CoupeLigueTeam(date: LocalDate, location: Location) extends LigueTournament {
+case class CoupeLigueTeam(date: LocalDate, location: Location, override val info: Option[Info] = None) extends LigueTournament {
   override val isTeam: Boolean = true
   val shortName = "CLTeam"
   lazy val ligue = Ligue.ligues.find(_.coupeTeam == Some(this)).get
@@ -321,7 +321,7 @@ sealed trait ComiteTournament extends BaseTournament {
 /**
  * Coupe Comite
  */
-case class CoupeComite(date: LocalDate, location: Location, override val file: String) extends BaseTournament(file) with ComiteTournament {
+case class CoupeComite(date: LocalDate, location: Location, override val file: String, override val info: Option[Info] = None) extends BaseTournament(file) with ComiteTournament {
   override def toString = Messages("rank.comite.coupe.title", comite.name)
 
   val shortName = "CC"
