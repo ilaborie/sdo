@@ -67,7 +67,7 @@ object SeasonSingleRanking {
     SeasonSingleRanking(season, MensLicensied(ligue), ligue.players.toList, tournaments)
   }
 
-  def apply(season: Season, comite: Comite): SeasonSingleRanking = {
+  def apply(season: Season, comite: BaseComite): SeasonSingleRanking = {
     val tournaments = for {
       c <- comite.ligue.comites
       tournament <- c.tournaments
@@ -100,7 +100,7 @@ object SeasonLadiesRanking {
     SeasonLadiesRanking(season, LadiesLicensied(ligue), ligue.players.toList, tournaments)
   }
 
-  def apply(season: Season, comite: Comite): SeasonLadiesRanking = {
+  def apply(season: Season, comite: BaseComite): SeasonLadiesRanking = {
     val tournaments = for {
       c <- comite.ligue.comites
       tournament <- c.tournaments
@@ -133,7 +133,7 @@ object SeasonYouthRanking {
     SeasonYouthRanking(season, YouthLicensied(ligue), ligue.players.toList, tournaments)
   }
 
-  def apply(season: Season, comite: Comite): SeasonYouthRanking = {
+  def apply(season: Season, comite: BaseComite): SeasonYouthRanking = {
     val tournaments = for {
       c <- comite.ligue.comites
       tournament <- c.tournaments
@@ -174,7 +174,7 @@ object SeasonPairsRanking {
     SeasonPairsRanking(season, PairsLicensied(ligue), pairs, tournaments)
   }
 
-  def apply(season: Season, comite: Comite): SeasonPairsRanking = {
+  def apply(season: Season, comite: BaseComite): SeasonPairsRanking = {
     val tournaments = for {
       c <- comite.ligue.comites
       tournament <- c.tournaments
@@ -196,7 +196,7 @@ object SeasonPairsRanking {
  */
 case class ParticipantRank(participant: Participant, results: Map[Tournament, TournamentResult]) {
 
-  lazy val points: Int = {
+  lazy val points = {
     for ((tournament, result) <- results) yield tournament.getPoint(result)
   }.sum
 

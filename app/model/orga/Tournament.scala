@@ -45,7 +45,7 @@ sealed trait Tournament {
 
   def info: Option[Info] = None
 
-  def getPoint(position: TournamentResult): Int
+  def getPoint(position: TournamentResult): Float
 
   def getPointAsString(position: TournamentResult): String = {
     val point = getPoint(position)
@@ -106,7 +106,7 @@ case class OpenLigue(date: LocalDate, location: Location, override val file: Str
 
   val shortName = s"OL-${DateTimeFormat.forPattern("yyyyMMdd").print(date)}"
 
-  def getPoint(position: TournamentResult): Int = position match {
+  def getPoint(position: TournamentResult) = position match {
     case Winner => 16
     case RunnerUp => 11
     case SemiFinal => 7
@@ -132,7 +132,7 @@ case class CoupeLigue(date: LocalDate, location: Location, override val file: St
 
   lazy val ligue = Ligue.ligues.find(_.coupe == this).get
 
-  def getPoint(position: TournamentResult): Int = position match {
+  def getPoint(position: TournamentResult) = position match {
     case Winner => 22
     case RunnerUp => 16
     case SemiFinal => 11
@@ -160,7 +160,7 @@ case class MasterLigue(date: LocalDate, location: Location, override val file: S
 
   lazy val ligue = Ligue.ligues.find(_.master == this).get
 
-  def getPoint(position: TournamentResult): Int = position match {
+  def getPoint(position: TournamentResult) = position match {
     case Winner => 29
     case RunnerUp => 22
     case SemiFinal => 16
@@ -182,7 +182,7 @@ case class MasterLigueTeam(date: LocalDate, location: Location, override val inf
 
   override def toString = Messages("rank.ligue.master.team.title")
 
-  def getPoint(position: TournamentResult): Int = 0
+  def getPoint(position: TournamentResult) = 0
 
   lazy val getPairs: Seq[Pair] = Nil // FIXME Implements
 }
@@ -198,7 +198,7 @@ case class CoupeLigueTeam(date: LocalDate, location: Location, override val info
 
   override def toString = Messages("rank.ligue.coupe.team.title")
 
-  def getPoint(position: TournamentResult): Int = 0
+  def getPoint(position: TournamentResult) = 0
 
   lazy val getPairs: Seq[Pair] = Nil // FIXME Implements
 }
@@ -218,7 +218,7 @@ case class ComiteRank(date: LocalDate) extends LigueTournament {
 
   override val isEvent: Boolean = false
 
-  def getPoint(position: TournamentResult): Int = position match {
+  def getPoint(position: TournamentResult) = position match {
     case RoundRobin(pos) => pos match {
       case 1 => 22
       case 2 => 18
@@ -294,7 +294,7 @@ case class NationalTournament(shortName: String,
 
   override val isEvent: Boolean = false
 
-  def getPoint(position: TournamentResult): Int = position match {
+  def getPoint(position: TournamentResult) = position match {
     case WinningMatch(win) => 1 + win
     case _ => 0
   }
@@ -329,9 +329,9 @@ case class CoupeComite(date: LocalDate, location: Location, override val file: S
 
   val isSimple = false
 
-  lazy val comite: Comite = Ligue.comites.find(_.coupe == this).get
+  lazy val comite: BaseComite = Ligue.comites.find(_.coupe == this).get
 
-  def getPoint(position: TournamentResult): Int = position match {
+  def getPoint(position: TournamentResult) = position match {
     case Winner => 29
     case RunnerUp => 22
     case SemiFinal => 16
@@ -358,7 +358,7 @@ case class OpenClub(date: LocalDate, location: Location, override val file: Stri
   lazy val club: Club = Ligue.clubs.find(_.opens.contains(this)).get
   lazy val comite = club.comite
 
-  def getPoint(position: TournamentResult): Int = position match {
+  def getPoint(position: TournamentResult) = position match {
     case Winner => 22
     case RunnerUp => 16
     case SemiFinal => 11
@@ -369,7 +369,21 @@ case class OpenClub(date: LocalDate, location: Location, override val file: Stri
     case RoundRobin(pos) => if (pos == 3) 2 else 1
     case _ => 0
   }
+}
 
+case class ExternalOpensClub(shortName: String, external: OpenClub) extends BaseTournament(external.file) with ComiteTournament {
+  def isSimple = false
+
+  def date = external.date
+
+  val place = external.place
+
+  def getPoint(position: TournamentResult) = {
+    val point = external.getPoint(position).floatValue
+    point / 2f
+  }
+
+  def comite: Comite = ??? // ExternalComite !
 }
 
 

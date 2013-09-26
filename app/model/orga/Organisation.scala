@@ -49,7 +49,7 @@ sealed trait PlayerContainer {
  */
 case class Ligue(name: String,
                  shortName: String,
-                 comites: Seq[Comite],
+                 comites: Seq[BaseComite],
                  opens: Seq[OpenLigue],
                  coupe: CoupeLigue,
                  master: MasterLigue,
@@ -149,6 +149,14 @@ object Ligue {
   def findByShortName(sname: String): Option[Ligue] = ligues.find(_.shortName == sname)
 }
 
+trait Comite {
+  def name: String
+
+  def shortName: String
+}
+
+case class ExternalComite(name: String, shortName: String) extends Comite
+
 /**
  * Comite
  * @param name name
@@ -157,11 +165,11 @@ object Ligue {
  * @param coupe coupe
  * @param info information
  */
-case class Comite(name: String,
-                  shortName: String,
-                  clubs: Seq[Club],
-                  coupe: CoupeComite,
-                  info: Option[Info]) extends PlayerContainer{
+case class BaseComite(name: String,
+                      shortName: String,
+                      clubs: Seq[Club],
+                      coupe: CoupeComite,
+                      info: Option[Info]) extends PlayerContainer with Comite {
   lazy val fullName = s"[$shortName] $name"
 
   override def toString = fullName
@@ -217,7 +225,7 @@ case class Club(name: String,
                 location: Location,
                 opens: Seq[OpenClub],
                 teams: Seq[Team],
-                info: Option[Info]) extends PlayerContainer{
+                info: Option[Info]) extends PlayerContainer {
   lazy val fullName = s"[$shortName] $name"
 
   override def toString = fullName
@@ -235,7 +243,7 @@ case class Club(name: String,
     Ligue.ligues.find(_.clubs.contains(this)).get
   }
 
-  def comite: Comite = Cache.getOrElse[Comite](s"club.$shortName.comite") {
+  def comite: BaseComite = Cache.getOrElse[BaseComite](s"club.$shortName.comite") {
     ligue.comites.find(_.clubs.contains(this)).get
   }
 
@@ -258,7 +266,7 @@ case class Team(name: String, shortName: String, capitainName: String, players: 
 
   lazy val ligue: Ligue = Ligue.ligues.find(_.allTeams.contains(this)).get
 
-  lazy val comite: Comite = ligue.comites.find(_.allTeams.contains(this)).get
+  lazy val comite: BaseComite = ligue.comites.find(_.allTeams.contains(this)).get
 
   lazy val club: Club = comite.clubs.find(_.teams.contains(this)).get
 
