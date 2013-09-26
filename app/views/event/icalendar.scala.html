@@ -8,7 +8,7 @@ X-WR-TIMEZONE:Europe/Paris
 X-WR-CALDESC:
 @for(event <- events) {BEGIN:VEVENT
 DTSTART;VALUE=DATE:@org.joda.time.format.DateTimeFormat.forPattern("yyyyMMdd").print(event.from)
-DTEND;VALUE=DATE:@org.joda.time.format.DateTimeFormat.forPattern("yyyyMMdd").print(event.to)
+DTEND;VALUE=DATE:@org.joda.time.format.DateTimeFormat.forPattern("yyyyMMdd").print(event.to.plusDays(1))
 SUMMARY:@event.name
 CATEGORIES:@Messages(s"event.type.${event.eventType.style}") @if(event.location.isDefined) {
 LOCATION:@event.location.get}
