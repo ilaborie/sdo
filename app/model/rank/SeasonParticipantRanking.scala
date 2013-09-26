@@ -30,7 +30,7 @@ import model.orga._
  */
 sealed abstract class SeasonParticipantRanking(season: Season, ranks: Seq[ParticipantRank]) {
 
-  def tournaments: List[Tournament]
+  def tournaments: Seq[Tournament]
 
   lazy val ordered = ranks.sortBy(sorter)
 
@@ -48,13 +48,13 @@ sealed abstract class SeasonParticipantRanking(season: Season, ranks: Seq[Partic
  * @param season season
  * @param ranks ranks
  */
-case class SeasonSingleRanking(season: Season, tournaments: List[Tournament], ranks: Seq[ParticipantRank])
+case class SeasonSingleRanking(season: Season, tournaments: Seq[Tournament], ranks: Seq[ParticipantRank])
   extends SeasonParticipantRanking(season, ranks) {
 }
 
 object SeasonSingleRanking {
 
-  def apply(season: Season, rankType: RankingType, players: List[Player], tournaments: List[Tournament]): SeasonSingleRanking = {
+  def apply(season: Season, rankType: RankingType, players: Seq[Player], tournaments: Seq[Tournament]): SeasonSingleRanking = {
     val ranks = for {
       player <- players
       if rankType.canParticipate(player)
@@ -68,7 +68,10 @@ object SeasonSingleRanking {
   }
 
   def apply(season: Season, comite: Comite): SeasonSingleRanking = {
-    val tournaments = comite.tournaments
+    val tournaments = for {
+      c <- comite.ligue.comites
+      tournament <- c.tournaments
+    } yield tournament
     val players = comite.players ++ Ligue.nlPlayers
     SeasonSingleRanking(season, Single(comite), players.toList, tournaments)
   }
@@ -79,11 +82,12 @@ object SeasonSingleRanking {
  * @param season season
  * @param ranks ranks
  */
-case class SeasonLadiesRanking(season: Season, tournaments: List[Tournament], ranks: Seq[ParticipantRank])
+case class SeasonLadiesRanking(season: Season, tournaments: Seq[Tournament], ranks: Seq[ParticipantRank])
   extends SeasonParticipantRanking(season, ranks)
+
 object SeasonLadiesRanking {
 
-  def apply(season: Season, rankType: RankingType, players: List[Player], tournaments: List[Tournament]): SeasonLadiesRanking = {
+  def apply(season: Season, rankType: RankingType, players: Seq[Player], tournaments: Seq[Tournament]): SeasonLadiesRanking = {
     val ranks = for {
       player <- players
       if rankType.canParticipate(player)
@@ -97,7 +101,10 @@ object SeasonLadiesRanking {
   }
 
   def apply(season: Season, comite: Comite): SeasonLadiesRanking = {
-    val tournaments = comite.tournaments
+    val tournaments = for {
+      c <- comite.ligue.comites
+      tournament <- c.tournaments
+    } yield tournament
     val players = comite.players ++ Ligue.nlPlayers
     SeasonLadiesRanking(season, Ladies(comite), players.toList, tournaments)
   }
@@ -108,12 +115,12 @@ object SeasonLadiesRanking {
  * @param season season
  * @param ranks ranks
  */
-case class SeasonYouthRanking(season: Season, tournaments: List[Tournament], ranks: Seq[ParticipantRank])
+case class SeasonYouthRanking(season: Season, tournaments: Seq[Tournament], ranks: Seq[ParticipantRank])
   extends SeasonParticipantRanking(season, ranks)
 
 object SeasonYouthRanking {
 
-  def apply(season: Season, rankType: RankingType, players: List[Player], tournaments: List[Tournament]): SeasonYouthRanking = {
+  def apply(season: Season, rankType: RankingType, players: Seq[Player], tournaments: Seq[Tournament]): SeasonYouthRanking = {
     val ranks = for {
       player <- players
       if rankType.canParticipate(player)
@@ -127,7 +134,10 @@ object SeasonYouthRanking {
   }
 
   def apply(season: Season, comite: Comite): SeasonYouthRanking = {
-    val tournaments = comite.tournaments
+    val tournaments = for {
+      c <- comite.ligue.comites
+      tournament <- c.tournaments
+    } yield tournament
     val players = comite.players ++ Ligue.nlPlayers
     SeasonYouthRanking(season, Youth(comite), players.toList, tournaments)
   }
@@ -138,13 +148,13 @@ object SeasonYouthRanking {
  * @param season season
  * @param ranks ranks
  */
-case class SeasonPairsRanking(season: Season, tournaments: List[Tournament], ranks: Seq[ParticipantRank])
+case class SeasonPairsRanking(season: Season, tournaments: Seq[Tournament], ranks: Seq[ParticipantRank])
   extends SeasonParticipantRanking(season, ranks) {
 }
 
 object SeasonPairsRanking {
 
-  def apply(season: Season, rankType: RankingType, pairs: List[Pair], tournaments: List[Tournament]): SeasonPairsRanking = {
+  def apply(season: Season, rankType: RankingType, pairs: Seq[Pair], tournaments: Seq[Tournament]): SeasonPairsRanking = {
     val ranks = for {
       pair <- pairs
       if rankType.canParticipate(pair)
@@ -165,7 +175,10 @@ object SeasonPairsRanking {
   }
 
   def apply(season: Season, comite: Comite): SeasonPairsRanking = {
-    val tournaments = comite.tournaments
+    val tournaments = for {
+      c <- comite.ligue.comites
+      tournament <- c.tournaments
+    } yield tournament
     val pairs = {
       for {
         tour <- tournaments
