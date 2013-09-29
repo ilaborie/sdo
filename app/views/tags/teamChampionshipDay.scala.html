@@ -1,6 +1,7 @@
 @(caption: String, day: model.team.TeamChampionshipDay, now: org.joda.time.LocalDate = org.joda.time.LocalDate.now)
-    @import model.orga.Team
-    @import model.team.MatchDetail
+@import model.orga.Team
+@import model.team.MatchDetail
+@import play.api.Play.current
 
 @teamClass(t: Team, d: MatchDetail) = {
     @if(d.winner.isDefined) {
@@ -19,7 +20,7 @@
                 case None => {
                     <tr>
                         <td>
-                            @if(day.canBeingPlay(now)) {
+                            @if(day.canBeingPlay(now) || play.Play.isDev) {
                             <div class="btn-group">
                                 <a target="_blank" href="@routes.Detail.team(day.ligue.shortName, day.day, m.team1.shortName, m.team2.shortName)" class="btn btn-primary">
                                     <i class="glyphicons white play"></i>
