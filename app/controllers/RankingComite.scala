@@ -57,7 +57,7 @@ object RankingComite extends Controller with SecureSocial {
    * @param comiteShortName comite
    * @return single ranking
    */
-  def comiteSingle(ligueShortName: String, comiteShortName: String) = SecuredAction {
+  def comiteSingle(ligueShortName: String, comiteShortName: String) = SecuredAction(ajaxCall = true) {
     implicit request =>
       ComiteAction(ligueShortName, comiteShortName) {
         comite => Ok(views.html.comite.single(comite, ComiteRanking.single(comite), User(request.user)))
@@ -88,7 +88,7 @@ object RankingComite extends Controller with SecureSocial {
    * @param comiteShortName comite
    * @return ladies ranking
    */
-  def comiteLadies(ligueShortName: String, comiteShortName: String) = SecuredAction {
+  def comiteLadies(ligueShortName: String, comiteShortName: String) = SecuredAction(ajaxCall = true) {
     implicit request =>
       ComiteAction(ligueShortName, comiteShortName) {
         comite => Ok(views.html.comite.ladies(comite, ComiteRanking.ladies(comite), User(request.user)))
@@ -119,7 +119,7 @@ object RankingComite extends Controller with SecureSocial {
    * @param comiteShortName comite
    * @return youth ranking
    */
-  def comiteYouth(ligueShortName: String, comiteShortName: String) = SecuredAction {
+  def comiteYouth(ligueShortName: String, comiteShortName: String) = SecuredAction(ajaxCall = true) {
     implicit request =>
       ComiteAction(ligueShortName, comiteShortName) {
         comite => Ok(views.html.comite.youth(comite, ComiteRanking.youth(comite), User(request.user)))
@@ -150,7 +150,7 @@ object RankingComite extends Controller with SecureSocial {
    * @param comiteShortName comite
    * @return doublette ranking
    */
-  def comitePairs(ligueShortName: String, comiteShortName: String) = SecuredAction {
+  def comitePairs(ligueShortName: String, comiteShortName: String) = SecuredAction(ajaxCall = true) {
     implicit request =>
       ComiteAction(ligueShortName, comiteShortName) {
         comite => Ok(views.html.comite.pairs(comite, ComiteRanking.pairs(comite), User(request.user)))
@@ -180,7 +180,7 @@ object RankingComite extends Controller with SecureSocial {
    * @param comiteShortName comite
    * @return team ranking
    */
-  def comiteTeam(ligueShortName: String, comiteShortName: String) = SecuredAction {
+  def comiteTeam(ligueShortName: String, comiteShortName: String) = SecuredAction(ajaxCall = true) {
     implicit request =>
       ComiteAction(ligueShortName, comiteShortName) {
         comite => Ok(views.html.comite.team(comite, ComiteRanking.team(comite), User(request.user)))

@@ -55,7 +55,7 @@ object RankingLigue extends Controller with SecureSocial {
    * @param ligueShortName ligue
    * @return single ranking
    */
-  def ligueSingle(ligueShortName: String) = SecuredAction {
+  def ligueSingle(ligueShortName: String) = SecuredAction(ajaxCall = true) {
     implicit request =>
       LigueAction(ligueShortName) {
         ligue => Ok(views.html.ligue.single(ligue, LigueRanking.single(ligue), User(request.user)))
@@ -84,7 +84,7 @@ object RankingLigue extends Controller with SecureSocial {
    * @param ligueShortName ligue
    * @return ladies ranking
    */
-  def ligueLadies(ligueShortName: String) = SecuredAction {
+  def ligueLadies(ligueShortName: String) = SecuredAction(ajaxCall = true) {
     implicit request =>
       LigueAction(ligueShortName) {
         ligue => Ok(views.html.ligue.ladies(ligue, LigueRanking.ladies(ligue), User(request.user)))
@@ -113,7 +113,7 @@ object RankingLigue extends Controller with SecureSocial {
    * @param ligueShortName ligue
    * @return youth ranking
    */
-  def ligueYouth(ligueShortName: String) = SecuredAction {
+  def ligueYouth(ligueShortName: String) = SecuredAction(ajaxCall = true) {
     implicit request =>
       LigueAction(ligueShortName) {
         ligue => Ok(views.html.ligue.youth(ligue, LigueRanking.youth(ligue), User(request.user)))
@@ -142,7 +142,7 @@ object RankingLigue extends Controller with SecureSocial {
    * @param ligueShortName ligue
    * @return pairs ranking
    */
-  def liguePairs(ligueShortName: String) = SecuredAction {
+  def liguePairs(ligueShortName: String) = SecuredAction(ajaxCall = true) {
     implicit request =>
       LigueAction(ligueShortName) {
         ligue => Ok(views.html.ligue.pairs(ligue, LigueRanking.pairs(ligue), User(request.user)))

@@ -56,7 +56,7 @@ object RankingInterComite extends Controller with SecureSocial {
    * @param ligueShortName ligue
    * @return single ranking
    */
-  def interComiteSingle(ligueShortName: String) = SecuredAction {
+  def interComiteSingle(ligueShortName: String) = SecuredAction(ajaxCall = true) {
     implicit request =>
       LigueAction(ligueShortName) {
         ligue => Ok(views.html.interComite.single(ligue, InterComiteRanking.single(ligue), User(request.user)))
@@ -84,7 +84,7 @@ object RankingInterComite extends Controller with SecureSocial {
    * @param ligueShortName ligue
    * @return ladies ranking
    */
-  def interComiteLadies(ligueShortName: String) = SecuredAction {
+  def interComiteLadies(ligueShortName: String) = SecuredAction(ajaxCall = true) {
     implicit request =>
       LigueAction(ligueShortName) {
         ligue => Ok(views.html.interComite.ladies(ligue, InterComiteRanking.ladies(ligue), User(request.user)))
@@ -112,7 +112,7 @@ object RankingInterComite extends Controller with SecureSocial {
    * @param ligueShortName ligue
    * @return youth ranking
    */
-  def interComiteYouth(ligueShortName: String) = SecuredAction {
+  def interComiteYouth(ligueShortName: String) = SecuredAction(ajaxCall = true) {
     implicit request =>
       LigueAction(ligueShortName) {
         ligue => Ok(views.html.interComite.youth(ligue, InterComiteRanking.youth(ligue), User(request.user)))
@@ -140,7 +140,7 @@ object RankingInterComite extends Controller with SecureSocial {
    * @param ligueShortName ligue
    * @return pairs ranking
    */
-  def interComitePairs(ligueShortName: String) = SecuredAction {
+  def interComitePairs(ligueShortName: String) = SecuredAction(ajaxCall = true) {
     implicit request =>
       LigueAction(ligueShortName) {
         ligue => Ok(views.html.interComite.pairs(ligue, InterComiteRanking.pairs(ligue), User(request.user)))
@@ -168,7 +168,7 @@ object RankingInterComite extends Controller with SecureSocial {
    * @param ligueShortName ligue
    * @return team ranking
    */
-  def interComiteTeam(ligueShortName: String) = SecuredAction {
+  def interComiteTeam(ligueShortName: String) = SecuredAction(ajaxCall = true) {
     implicit request =>
       LigueAction(ligueShortName) {
         ligue => Ok(views.html.interComite.team(ligue, InterComiteRanking.team(ligue), User(request.user)))

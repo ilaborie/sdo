@@ -73,7 +73,7 @@ object Orga extends Controller with SecureSocial {
    * @param shortName the ligue short name
    * @return the ligue page
    */
-  def ligueBody(shortName: String) = SecuredAction {
+  def ligueBody(shortName: String) = SecuredAction(ajaxCall = true) {
     implicit request =>
       LigueAction(shortName) {
         ligue => Ok(views.html.ligue.body(ligue, User(request.user)))
@@ -86,7 +86,7 @@ object Orga extends Controller with SecureSocial {
    * @param tournamentShortName tournament
    * @return the tournament page
    */
-  def ligueTournament(ligueShortName: String, tournamentShortName: String) = SecuredAction {
+  def ligueTournament(ligueShortName: String, tournamentShortName: String) = SecuredAction(ajaxCall = true) {
     implicit request =>
       LigueAction(ligueShortName) {
         ligue => ligue.findTournamentByShortName(tournamentShortName) match {
@@ -109,7 +109,7 @@ object Orga extends Controller with SecureSocial {
       }.result
   }
 
-  def comiteBody(ligueShortName: String, comiteShortName: String) = SecuredAction {
+  def comiteBody(ligueShortName: String, comiteShortName: String) = SecuredAction(ajaxCall = true) {
     implicit request =>
       ComiteAction(ligueShortName, comiteShortName) {
         comite => Ok(views.html.comite.body(comite, User(request.user)))
@@ -122,7 +122,7 @@ object Orga extends Controller with SecureSocial {
    * @param tournamentShortName tournament
    * @return the tournament page
    */
-  def comiteTournament(ligueShortName: String, comiteShortName: String, tournamentShortName: String) = SecuredAction {
+  def comiteTournament(ligueShortName: String, comiteShortName: String, tournamentShortName: String) = SecuredAction(ajaxCall = true) {
     implicit request =>
       ComiteAction(ligueShortName, comiteShortName) {
         comite => comite.findTournamentByShortName(tournamentShortName) match {
@@ -139,7 +139,7 @@ object Orga extends Controller with SecureSocial {
    * @param clubShortName club short name
    * @return the club page
    */
-  def club(ligueShortName: String, comiteShortName: String, clubShortName: String) = SecuredAction {
+  def club(ligueShortName: String, comiteShortName: String, clubShortName: String) = SecuredAction(ajaxCall = true) {
     implicit request =>
       ComiteAction(ligueShortName, comiteShortName) {
         val user = request.user

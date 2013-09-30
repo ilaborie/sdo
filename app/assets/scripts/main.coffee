@@ -18,3 +18,7 @@ $ ->
     $("#username").val "ilaborie@gmail.com"
     $("#password").val "plop"
     $("form").submit
+
+  # AJAX Error => reload
+  $(document).ajaxError (event, jqxhr, settings, exception) ->
+    window.location.reload()
