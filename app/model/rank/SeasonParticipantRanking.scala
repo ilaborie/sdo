@@ -163,6 +163,7 @@ object SeasonPairsRanking {
   }
 
   def apply(season: Season, ligue: Ligue): SeasonPairsRanking = {
+    println(s"Tournaments: ${ligue.tournaments}")
     val tournaments = ligue.tournaments.filter(!_.isTeam)
     val pairs = {
       for {
@@ -185,6 +186,7 @@ object SeasonPairsRanking {
         pair <- tour.getPairs
       } yield pair
     }.toSet.toList
+    println(s"pairs: $pairs")
     SeasonPairsRanking(season, Pairs(comite), pairs, tournaments)
   }
 }

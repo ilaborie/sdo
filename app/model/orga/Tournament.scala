@@ -241,7 +241,20 @@ case class ComiteRank(date: LocalDate) extends LigueTournament {
     case _ => 0
   }
 
-  lazy val getPairs: Seq[Pair] = Nil // FIXME Implements
+  lazy val getPairs: Seq[Pair] = {
+    val results: Seq[TournamentResults[Pair]] = for {
+      comite <- ligue.comites
+      tournaments <- comite.tournaments
+      result <- tournaments.pairs
+    } yield result
+
+    val pairs: Seq[Pair] = for {
+      res <- results
+      participant <- res.allParticipants
+    } yield participant
+
+    pairs.toSet.toSeq
+  }
 }
 
 /**

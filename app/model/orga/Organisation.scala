@@ -170,6 +170,16 @@ case class Comite(name: String,
 
   def findTournamentByShortName(sname: String): Option[ComiteTournament] = tournaments.find(_.shortName == sname)
 
+  override def isMember(participant: Participant): Boolean = participant match {
+    case p: Player => players.contains(p)
+    case Pair(p1, p2) => {
+      (p1.isInstanceOf[NotLicensedPlayer] || players.contains(p1)) &&
+        (p2.isInstanceOf[NotLicensedPlayer] || players.contains(p2))
+    }
+    case TeamPair(p1, p2) => players.contains(p1) && players.contains(p2)
+    case _ => false
+  }
+
   lazy val allTeams = {
     for {
       club <- clubs
