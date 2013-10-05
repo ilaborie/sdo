@@ -337,7 +337,7 @@ object Data {
    * @return player
    */
   def createLicensedPlayer(data: Map[String, Any]): LicensedPlayer = {
-    val license = data.getOrElse("license", "license ###").asInstanceOf[String]
+    val license = data.getOrElse("license", "license ###").toString
     val firstName = data.getOrElse("firstname", "???").asInstanceOf[String]
     val lastName = data.getOrElse("lastname", "???").asInstanceOf[String]
     val surname: Option[String] = {
