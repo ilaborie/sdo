@@ -91,7 +91,6 @@ object User {
         }
     }
   }
-
 }
 
 case class Guest(id: Identity) extends User

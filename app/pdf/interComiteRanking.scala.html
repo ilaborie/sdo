@@ -3,7 +3,7 @@
 
 @defining(Messages("rank.interComite.ranking", season)) { title =>
     @layout.pdf(Some(title), landscape = false) {
-        @rankingPdf(InterComiteRanking.single(ligue), Messages("rank.single.interComite.caption", ligue.name, season), (i: Int) => false)
+        @rankingPdf(InterComiteRanking.mens(ligue), Messages("rank.single.interComite.caption", ligue.name, season), (i: Int) => false)
         <br/>
         @rankingPdf(InterComiteRanking.ladies(ligue), Messages("rank.feminine.interComite.caption", ligue.name, season), (i: Int) => false)
         <br/>

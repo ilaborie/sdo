@@ -56,7 +56,7 @@ object RankingInterComite extends Controller with LigueController {
    */
   def interComiteSingle(ligueShortName: String) = SecuredLigueAction(ligueShortName, ajaxCall = true) {
     (ligue, user) =>
-      Ok(views.html.interComite.single(ligue, InterComiteRanking.single(ligue), User(user)))
+      Ok(views.html.interComite.single(ligue, InterComiteRanking.mens(ligue), User(user)))
   }
 
   /**
@@ -67,7 +67,7 @@ object RankingInterComite extends Controller with LigueController {
   def interComiteSinglePDF(ligueShortName: String) = SecuredLigueAsyncAction(ligueShortName) {
     (ligue, user) =>
       PDF.ok(pdf.html.rankingTable.render(
-        InterComiteRanking.single(ligue),
+        InterComiteRanking.mens(ligue),
         Messages("rank.single.interComite.caption", Season.currentSeason),
         qualify))
   }

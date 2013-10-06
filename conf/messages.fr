@@ -207,6 +207,21 @@ team.detail.title.pdf=Fédération française de darts, championnat par équipe
 # Club
 club.oneteam=Équipe
 
+# User
+menu.user.profile=Profile
+menu.user.license=License
+menu.user.ligue=Ligue
+menu.user.intercomite=Inter-Comité
+menu.user.comite=Comité
+menu.user.club=Club
+menu.user.firstname=Prénom
+menu.user.lastname=Nom
+menu.user.commonname=Nom commun
+menu.user.surname=Surnom
+menu.user.emails=Emails
+menu.user.notification=Notifications
+
+
 # Secure Social
 # ~~~~~~~~~~~~~
 

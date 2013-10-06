@@ -135,7 +135,7 @@ object InterComiteRanking {
     } yield tournament
   }.toList
 
-  def single(ligue: Ligue) =
+  def mens(ligue: Ligue) =
     SeasonSingleRanking(season, MensLicensied(ligue), ligue.players.toList, getInterComiteTournaments(ligue))
 
   def ladies(ligue: Ligue) =
@@ -171,7 +171,7 @@ object LigueRanking {
 
   def qualifyForMasterPairs(position: Int) = position <= 2
 
-  def single(ligue: Ligue) = SeasonSingleRanking(season, ligue)
+  def mens(ligue: Ligue) = SeasonSingleRanking(season, ligue)
 
   def ladies(ligue: Ligue) = SeasonLadiesRanking(season, ligue)
 

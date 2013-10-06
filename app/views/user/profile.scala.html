@@ -1,0 +1,101 @@
+@(user: model.user.LocalUser, season: model.orga.Season)
+@import model.rank._
+
+@layout.main(user.player.toString, user = Some(user)) {
+    @defining(user.player) { player =>
+        <div class="container profile">
+            <form action="#">
+                <div class="well well-small">
+                    <fieldset>
+                        <legend>@player</legend>
+                        <img class="avatar" src="@user.id.avatarUrl" alt="@user.id.fullName"/>
+                        <fieldset>
+                            <div class="input-prepend">
+                                <span class="add-on">@Messages("menu.user.license")</span>
+                                <span class="input-small uneditable-input" >@player.licenseNumber</span>
+                            </div>
+                            <br/>
+                            <div class="input-prepend">
+                                <span class="add-on">@Messages("menu.user.ligue")</span>
+                                <span class="input-normal uneditable-input" >@player.ligue.name</span>
+                            </div>
+                            <br/>
+                            <div class="input-prepend">
+                                <span class="add-on">@Messages("menu.user.comite")</span>
+                                <span class="input-normal uneditable-input" >@player.comite.name</span>
+                            </div>
+                            <br/>
+                            <div class="input-prepend">
+                                <span class="add-on">@Messages("menu.user.club")</span>
+                                <span class="input-large uneditable-input" >@player.club.name</span>
+                            </div>
+                            <br/>
+                            <div class="input-prepend">
+                                <span class="add-on">@Messages("menu.user.emails") </i></span>
+                                <span class="input-large uneditable-input" >@player.emails.map(_.email).mkString(", ")</span>
+                            </div>
+                        </fieldset>
+                    </fieldset>
+                    <fieldset>
+                        <legend>@Messages("menu.rank")</legend>
+                        @if(player.lady) {
+                            @Messages("rank.feminine.ligue.caption", player.ligue.name):
+                            @LigueRanking.ladies(player.ligue).getPosition(player)
+                        } else {
+                            @Messages("rank.single.ligue.caption", player.ligue.name):
+                            @LigueRanking.mens(player.ligue).getPosition(player)
+                        }
+                        <br/>
+
+                        @if(player.youth) {
+                            @Messages("rank.junior.comite.caption.ligue.caption", player.ligue.name):
+                            @LigueRanking.youth(player.ligue).getPosition(player)
+                            <br/>
+                        }
+
+                        @Messages("rank.double.comite.caption.ligue.caption", player.ligue.name):
+                        @LigueRanking.pairs(player.ligue).getPosition(player)
+
+                        <h2>@Messages("rank.interComite.ranking", season)</h2>
+                        Classement équipe
+
+                        @if(player.lady) {
+                            Classement féminie
+                        } else {
+                            Classement masculin
+                        }
+
+                        @if(player.youth) {
+                            Classement junior
+                        }
+
+                        Classement Double
+                        <h2>@Messages("menu.user.comite")</h2>
+                        Classement Simple
+                        @if(player.lady) {
+                            Classement féminie
+                        }
+
+                        @if(player.youth) {
+                            Classement junior
+                        }
+
+                        Classement Double
+                    </fieldset>
+                    <fieldset>
+                        <legend>@Messages("menu.user.notification")</legend>
+                        <label class="checkbox">
+                            <input type="checkbox"> Send email 3 week before chamionship Day
+                        </label>
+                        <label class="checkbox">
+                            <input type="checkbox"> Send email 1 week before Local tournament
+                        </label>
+                        <label class="checkbox">
+                            <input type="checkbox"> Send email 1 month before National tournament
+                        </label>
+                    </fieldset>
+                </div>
+            </form>
+        </div>
+    }
+}

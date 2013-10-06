@@ -41,6 +41,12 @@ sealed abstract class SeasonParticipantRanking(season: Season, ranks: Seq[Partic
   def getPosition(rank: ParticipantRank): Int = {
     cache.getOrElseUpdate(rank, 1 + ranks.count(_.betterThan(rank)))
   }
+
+  def getPosition(participant: Participant): String = ranks.find(_.participant == participant) match {
+    case Some(rank) => getPosition(rank).toString
+    case None => "_"
+  }
+
 }
 
 /**

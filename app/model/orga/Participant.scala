@@ -78,13 +78,16 @@ sealed trait TeamParticipant extends Participant {
 /**
  * Licensed player
  * @param licenseNumber license
- * @param name name
+ * @param firstName first name
+ * @param lastName last name
  * @param surname surname
  * @param youth youth
  * @param lady ladies
  */
 case class LicensedPlayer(licenseNumber: LicenseNumber,
-                          name: String,
+                          firstName: String,
+                          lastName: String,
+                          commonName: Option[String] = None,
                           surname: Option[String] = None,
                           youth: Boolean = false,
                           lady: Boolean = false,
@@ -93,8 +96,8 @@ case class LicensedPlayer(licenseNumber: LicenseNumber,
                           facebook: Option[String] = None,
                           google: Option[String] = None) extends TeamParticipant with Player {
 
-
-  override val toString = name
+  val name = s"$lastName $firstName"
+  override val toString = s"$lastName ${commonName.getOrElse(firstName)}"
 
   lazy val ligue: Ligue = Ligue.ligues.find(_.players.contains(this)).get
 

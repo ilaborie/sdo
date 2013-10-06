@@ -53,7 +53,7 @@ object RankingLigue extends Controller with LigueController {
    */
   def ligueSingle(ligueShortName: String) = SecuredLigueAction(ligueShortName, ajaxCall = true) {
     (ligue, user) =>
-      Ok(views.html.ligue.single(ligue, LigueRanking.single(ligue), User(user)))
+      Ok(views.html.ligue.single(ligue, LigueRanking.mens(ligue), User(user)))
   }
 
   /**
@@ -64,12 +64,11 @@ object RankingLigue extends Controller with LigueController {
   def ligueSinglePDF(ligueShortName: String) = LigueAsyncAction(ligueShortName) {
     ligue =>
       PDF.ok(pdf.html.rankingTable.render(
-        LigueRanking.single(ligue),
+        LigueRanking.mens(ligue),
         Messages("rank.single.ligue.caption", ligue.name, Season.currentSeason),
         LigueRanking.qualifyForMasterSingle
       ))
   }
-
 
   /**
    * Ligue Feminine

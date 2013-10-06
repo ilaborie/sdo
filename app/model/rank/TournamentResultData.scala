@@ -95,10 +95,10 @@ object TournamentResultData {
   private def createComiteRankResult(rankType: RankingType, player: Participant, ic: ComiteRank): Option[TournamentResult] = {
     val ligue = ic.ligue
     rankType match {
-      case _: Single => createRankResult(InterComiteRanking.single(ligue), player.asInstanceOf[LicensedPlayer])
-      case _: SingleLicensied => createRankResult(InterComiteRanking.single(ligue), player.asInstanceOf[LicensedPlayer])
-      case _: Mens => createRankResult(InterComiteRanking.single(ligue), player.asInstanceOf[LicensedPlayer])
-      case _: MensLicensied => createRankResult(InterComiteRanking.single(ligue), player.asInstanceOf[LicensedPlayer])
+      case _: Single => createRankResult(InterComiteRanking.mens(ligue), player.asInstanceOf[LicensedPlayer])
+      case _: SingleLicensied => createRankResult(InterComiteRanking.mens(ligue), player.asInstanceOf[LicensedPlayer])
+      case _: Mens => createRankResult(InterComiteRanking.mens(ligue), player.asInstanceOf[LicensedPlayer])
+      case _: MensLicensied => createRankResult(InterComiteRanking.mens(ligue), player.asInstanceOf[LicensedPlayer])
       case _: Ladies => createRankResult(InterComiteRanking.ladies(ligue), player.asInstanceOf[LicensedPlayer])
       case _: LadiesLicensied => createRankResult(InterComiteRanking.ladies(ligue), player.asInstanceOf[LicensedPlayer])
       case _: Youth => createRankResult(InterComiteRanking.youth(ligue), player.asInstanceOf[LicensedPlayer])
