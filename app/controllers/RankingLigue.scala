@@ -24,7 +24,6 @@ package controllers
 import play.api.mvc._
 import play.api.i18n.Messages
 
-import securesocial.core._
 
 import util.pdf.PDF
 
@@ -36,18 +35,15 @@ import model.user.User
 /**
  * Classements pages
  */
-object RankingLigue extends Controller with SecureSocial {
+object RankingLigue extends Controller with LigueController {
 
   /**
    * Ligue   PDF
    * @param ligueShortName ligue
    * @return single ranking
    */
-  def liguePDF(ligueShortName: String) = Action {
-    implicit request =>
-      LigueAction(ligueShortName) {
-        ligue => PDF.ok(pdf.html.ligueRanking.render(Season.currentSeason, ligue)).getWrappedResult
-      }.result
+  def liguePDF(ligueShortName: String) = LigueAsyncAction(ligueShortName) {
+    ligue => PDF.ok(pdf.html.ligueRanking.render(Season.currentSeason, ligue))
   }
 
   /**
@@ -55,11 +51,9 @@ object RankingLigue extends Controller with SecureSocial {
    * @param ligueShortName ligue
    * @return single ranking
    */
-  def ligueSingle(ligueShortName: String) = SecuredAction(ajaxCall = true) {
-    implicit request =>
-      LigueAction(ligueShortName) {
-        ligue => Ok(views.html.ligue.single(ligue, LigueRanking.single(ligue), User(request.user)))
-      }.result
+  def ligueSingle(ligueShortName: String) = SecuredLigueAction(ligueShortName, ajaxCall = true) {
+    (ligue, user) =>
+      Ok(views.html.ligue.single(ligue, LigueRanking.single(ligue), User(user)))
   }
 
   /**
@@ -67,28 +61,24 @@ object RankingLigue extends Controller with SecureSocial {
    * @param ligueShortName ligue
    * @return single ranking
    */
-  def ligueSinglePDF(ligueShortName: String) = SecuredAction {
-    implicit request =>
-      LigueAction(ligueShortName) {
-        ligue =>
-          PDF.ok(pdf.html.rankingTable.render(
-            LigueRanking.single(ligue),
-            Messages("rank.single.ligue.caption", ligue.name, Season.currentSeason),
-            LigueRanking.qualifyForMasterSingle
-          )).getWrappedResult
-      }.result
+  def ligueSinglePDF(ligueShortName: String) = LigueAsyncAction(ligueShortName) {
+    ligue =>
+      PDF.ok(pdf.html.rankingTable.render(
+        LigueRanking.single(ligue),
+        Messages("rank.single.ligue.caption", ligue.name, Season.currentSeason),
+        LigueRanking.qualifyForMasterSingle
+      ))
   }
+
 
   /**
    * Ligue Feminine
    * @param ligueShortName ligue
    * @return ladies ranking
    */
-  def ligueLadies(ligueShortName: String) = SecuredAction(ajaxCall = true) {
-    implicit request =>
-      LigueAction(ligueShortName) {
-        ligue => Ok(views.html.ligue.ladies(ligue, LigueRanking.ladies(ligue), User(request.user)))
-      }.result
+  def ligueLadies(ligueShortName: String) = SecuredLigueAction(ligueShortName, ajaxCall = true) {
+    (ligue, user) =>
+      Ok(views.html.ligue.ladies(ligue, LigueRanking.ladies(ligue), User(user)))
   }
 
   /**
@@ -96,16 +86,13 @@ object RankingLigue extends Controller with SecureSocial {
    * @param ligueShortName ligue
    * @return ladies ranking
    */
-  def ligueLadiesPDF(ligueShortName: String) = SecuredAction {
-    implicit request =>
-      LigueAction(ligueShortName) {
-        ligue =>
-          PDF.ok(pdf.html.rankingTable.render(
-            LigueRanking.ladies(ligue),
-            Messages("rank.feminine.ligue.caption", ligue.name, Season.currentSeason),
-            LigueRanking.qualifyForMasterLadies
-          )).getWrappedResult
-      }.result
+  def ligueLadiesPDF(ligueShortName: String) = SecuredLigueAsyncAction(ligueShortName) {
+    (ligue, user) =>
+      PDF.ok(pdf.html.rankingTable.render(
+        LigueRanking.ladies(ligue),
+        Messages("rank.feminine.ligue.caption", ligue.name, Season.currentSeason),
+        LigueRanking.qualifyForMasterLadies
+      ))
   }
 
   /**
@@ -113,11 +100,9 @@ object RankingLigue extends Controller with SecureSocial {
    * @param ligueShortName ligue
    * @return youth ranking
    */
-  def ligueYouth(ligueShortName: String) = SecuredAction(ajaxCall = true) {
-    implicit request =>
-      LigueAction(ligueShortName) {
-        ligue => Ok(views.html.ligue.youth(ligue, LigueRanking.youth(ligue), User(request.user)))
-      }.result
+  def ligueYouth(ligueShortName: String) = SecuredLigueAction(ligueShortName, ajaxCall = true) {
+    (ligue, user) =>
+      Ok(views.html.ligue.youth(ligue, LigueRanking.youth(ligue), User(user)))
   }
 
   /**
@@ -125,16 +110,13 @@ object RankingLigue extends Controller with SecureSocial {
    * @param ligueShortName ligue
    * @return youth ranking
    */
-  def ligueYouthPDF(ligueShortName: String) = SecuredAction {
-    implicit request =>
-      LigueAction(ligueShortName) {
-        ligue =>
-          PDF.ok(pdf.html.rankingTable.render(
-            LigueRanking.youth(ligue),
-            Messages("rank.junior.ligue.caption", ligue.name, Season.currentSeason),
-            LigueRanking.qualifyForMasterYouth
-          )).getWrappedResult
-      }.result
+  def ligueYouthPDF(ligueShortName: String) = SecuredLigueAsyncAction(ligueShortName) {
+    (ligue, user) =>
+      PDF.ok(pdf.html.rankingTable.render(
+        LigueRanking.youth(ligue),
+        Messages("rank.junior.ligue.caption", ligue.name, Season.currentSeason),
+        LigueRanking.qualifyForMasterYouth
+      ))
   }
 
   /**
@@ -142,11 +124,9 @@ object RankingLigue extends Controller with SecureSocial {
    * @param ligueShortName ligue
    * @return pairs ranking
    */
-  def liguePairs(ligueShortName: String) = SecuredAction(ajaxCall = true) {
-    implicit request =>
-      LigueAction(ligueShortName) {
-        ligue => Ok(views.html.ligue.pairs(ligue, LigueRanking.pairs(ligue), User(request.user)))
-      }.result
+  def liguePairs(ligueShortName: String) = SecuredLigueAction(ligueShortName, ajaxCall = true) {
+    (ligue, user) =>
+      Ok(views.html.ligue.pairs(ligue, LigueRanking.pairs(ligue), User(user)))
   }
 
   /**
@@ -154,16 +134,13 @@ object RankingLigue extends Controller with SecureSocial {
    * @param ligueShortName ligue
    * @return pairs ranking
    */
-  def liguePairsPDF(ligueShortName: String) = SecuredAction {
-    implicit request =>
-      LigueAction(ligueShortName) {
-        ligue =>
-          PDF.ok(pdf.html.rankingTable.render(
-            LigueRanking.pairs(ligue),
-            Messages("rank.double.ligue.caption", ligue.name, Season.currentSeason),
-            LigueRanking.qualifyForMasterPairs
-          )).getWrappedResult
-      }.result
+  def liguePairsPDF(ligueShortName: String) = SecuredLigueAsyncAction(ligueShortName) {
+    (ligue, user) =>
+      PDF.ok(pdf.html.rankingTable.render(
+        LigueRanking.pairs(ligue),
+        Messages("rank.double.ligue.caption", ligue.name, Season.currentSeason),
+        LigueRanking.qualifyForMasterPairs
+      ))
   }
 
 }

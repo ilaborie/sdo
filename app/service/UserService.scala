@@ -24,7 +24,7 @@ package service
 
 import play.api.{Logger, Application}
 import securesocial.core._
-import securesocial.core.IdentityId
+import securesocial.core.UserIdFromProvider
 import securesocial.core.providers.Token
 
 import reactivemongo.api._
@@ -64,7 +64,7 @@ class UserService(application: Application) extends UserServicePlugin(applicatio
     val userId = document.getAs[String]("userId").get
     val providerId = document.getAs[String]("providerId").get
 
-    val id: IdentityId = IdentityId(userId, providerId)
+    val id = UserIdFromProvider(userId, providerId)
     val firstName: String = document.getAs[String]("firstName").get
     val lastName: String = document.getAs[String]("lastName").get
     val email: Option[String] = document.getAs[String]("email")
@@ -105,14 +105,14 @@ class UserService(application: Application) extends UserServicePlugin(applicatio
       passwordInfo = passwordInfo)
   }
 
-  def find(id: IdentityId): Option[Identity] = {
+  def find(id: UserIdFromProvider): Option[Identity] = {
     logger.trace(s"find($id)")
     val query = BSONDocument(
-      "userId" -> id.userId,
+      "userId" -> id.authId,
       "providerId" -> id.providerId
     )
     val result = users.find(query).one
-    val res = Await.result(result, 1 seconds)
+    val res = Await.result(result, 1.seconds)
     res map toIdentity
   }
 
@@ -124,18 +124,18 @@ class UserService(application: Application) extends UserServicePlugin(applicatio
     )
     val result = users.find(query).one
 
-    val res = Await.result(result, 1 seconds)
+    val res = Await.result(result, 1.seconds)
     res map toIdentity
   }
 
-  def createId(id: IdentityId) = s"${id.userId}|${id.providerId}"
+  def createId(id: UserIdFromProvider) = s"${id.authId}|${id.providerId}"
 
   def save(user: Identity): Identity = {
     logger.trace(s"save($user)")
     val doc = BSONDocument(
-      "_id" -> createId(user.identityId),
-      "userId" -> user.identityId.userId,
-      "providerId" -> user.identityId.providerId,
+      "_id" -> createId(user.userIdFromProvider),
+      "userId" -> user.userIdFromProvider.authId,
+      "providerId" -> user.userIdFromProvider.providerId,
       "method" -> user.authMethod.method,
       "avatarUrl" -> user.avatarUrl,
       "email" -> user.email,
@@ -184,6 +184,7 @@ class UserService(application: Application) extends UserServicePlugin(applicatio
       "isSignUp" -> token.isSignUp
     )
     tokens.save(doc)
+    ()
   }
 
   def findToken(token: String): Option[Token] = {
@@ -192,18 +193,20 @@ class UserService(application: Application) extends UserServicePlugin(applicatio
     val query = BSONDocument("uuid" -> token)
     val result: Future[Option[BSONDocument]] = tokens.find(query).one[BSONDocument]
 
-    val res = Await.result(result, 1 seconds)
+    val res = Await.result(result, 1.seconds)
     res map toToken
   }
 
-  def deleteToken(uuid: String) {
+  def deleteToken(uuid: String) = {
     logger.trace(s"deleteToken($uuid)")
     tokens remove BSONDocument("uuid" -> uuid)
+    ()
   }
 
   def deleteTokens() {
     logger.trace(s"deleteTokens()")
     tokens remove BSONDocument()
+    ()
   }
 
   def deleteExpiredTokens() {
@@ -214,6 +217,7 @@ class UserService(application: Application) extends UserServicePlugin(applicatio
         BSONDocument("$gt" -> expirationTime)
     )
     tokens remove query
+    ()
   }
 }
 

@@ -29,7 +29,7 @@ import play.api.{Application, Logger}
  * A sample event listener
  */
 class AuthEventListener(app: Application) extends EventListener {
-  override def id: String = "AuthEventListener"
+  override def ssId: String = "AuthEventListener"
 
   private val logger = Logger("Authentication")
 

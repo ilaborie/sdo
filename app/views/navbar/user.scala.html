@@ -15,28 +15,28 @@
             case LocalUser(id, player) => {
                 <li>
                     @if(player.lady) {
-                    <a tabindex="-1" href="@routes.Orga.comite(player.ligue.shortName, player.comite.shortName)#women">
+                    <a tabindex="-1" href="@routes.OrgaComite.comite(player.ligue.shortName, player.comite.shortName)#women">
                     @Messages("menu.rank.indiv")
                     </a>
                     } else {
                         @if(player.youth) {
-                    <a tabindex="-1" href="@routes.Orga.comite(player.ligue.shortName, player.comite.shortName)#junior">
+                    <a tabindex="-1" href="@routes.OrgaComite.comite(player.ligue.shortName, player.comite.shortName)#junior">
                     @Messages("menu.rank.indiv")
                     </a>
                         } else {
-                    <a tabindex="-1" href="@routes.Orga.comite(player.ligue.shortName, player.comite.shortName)#single">
+                    <a tabindex="-1" href="@routes.OrgaComite.comite(player.ligue.shortName, player.comite.shortName)#single">
                     @Messages("menu.rank.indiv")
                     </a>
                         }
                     }
                 </li>
                 <li>
-                    <a tabindex="-1" href="@routes.Orga.comite(player.ligue.shortName, player.comite.shortName)#pair">
+                    <a tabindex="-1" href="@routes.OrgaComite.comite(player.ligue.shortName, player.comite.shortName)#pair">
                     @Messages("menu.rank.double")
                     </a>
                 </li>
                 <li>
-                    <a tabindex="-1" href="@routes.Orga.ligue(player.ligue.shortName)#team">
+                    <a tabindex="-1" href="@routes.OrgaLigue.ligue(player.ligue.shortName)#team">
                     @Messages("menu.rank.team")
                     </a>
                 </li>

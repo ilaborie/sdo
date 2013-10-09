@@ -41,7 +41,7 @@
             <div class="row-fluid">
                 <div class="span6">
                     <div class="homelink">
-                        <a href="@routes.Orga.ligue(sdo.shortName)">
+                        <a href="@routes.OrgaLigue.ligue(sdo.shortName)">
                             <div class="row-fluid">
                                 <div class="span2"><img src="@routes.Assets.at(s"images/${sdo.shortName}.png")" alt="@sdo.shortName"></div>
                                 <div class="span10">@sdo.name</div>
@@ -63,7 +63,7 @@
             <div class="row-fluid">
                 <div class="span6">
                     <div class="homelink">
-                        <a href="@routes.Orga.comite(sdo.shortName, mpy.shortName)">
+                        <a href="@routes.OrgaComite.comite(sdo.shortName, mpy.shortName)">
                             <div class="row-fluid">
                                 <div class="span2"><img src="@routes.Assets.at(s"images/${mpy.shortName}.png")" alt="@mpy.shortName"></div>
                                 <div class="span10">@mpy.name</div>
@@ -85,7 +85,7 @@
             <div class="row-fluid">
                 <div class="span6">
                     <div class="homelink">
-                        <a href="@routes.Orga.comite(sdo.shortName, teg.shortName)">
+                        <a href="@routes.OrgaComite.comite(sdo.shortName, teg.shortName)">
                             <div class="row-fluid">
                                 <div class="span2"><img src="@routes.Assets.at(s"images/${teg.shortName}.png")" alt="@teg.shortName"></div>
                                 <div class="span10">@teg.name</div>

@@ -58,7 +58,7 @@
                 <ul class="dropdown-menu">
                 @for(comite <- ligue.comites) {
                     <li>
-                        <a href="@routes.Orga.comite(ligue.shortName, comite.shortName)">@comite.name</a>
+                        <a href="@routes.OrgaComite.comite(ligue.shortName, comite.shortName)">@comite.name</a>
                     </li>
                 }
                 </ul>
@@ -118,7 +118,7 @@
                     <li class="nav-header">@Messages("menu.comite")</li>
                     @for(comite <- ligue.comites) {
                         <li>
-                            <a href="@routes.Orga.comite(ligue.shortName, comite.shortName)">@comite.name</a>
+                            <a href="@routes.OrgaComite.comite(ligue.shortName, comite.shortName)">@comite.name</a>
                         </li>
                     }
                     <li class="nav-header">@Messages("menu.tournaments")</li>

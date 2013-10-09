@@ -47,7 +47,7 @@ object Application extends Controller with SecureSocial {
   // An Authorization implementation that only authorizes uses that logged inputFieldConstructor using twitter
   case class WithProvider(provider: String) extends Authorization {
     def isAuthorized(user: Identity) = {
-      user.identityId.providerId == provider
+      user.userIdFromProvider.providerId == provider
     }
   }
 

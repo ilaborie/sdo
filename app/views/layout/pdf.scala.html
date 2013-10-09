@@ -6,16 +6,16 @@
     <head>
         <title>@title</title>
         @if(landscape) {
-            <link rel="stylesheet" href="@routes.Assets.at("style/pdf-landscape.css")">
+            <link rel="stylesheet" href="@routes.Assets.at("style/main-pdf-landscape.css")">
         } else {
-            <link rel="stylesheet" href="@routes.Assets.at("style/pdf-letter.css")">
+            <link rel="stylesheet" href="@routes.Assets.at("style/main-pdf-letter.css")">
         }
     </head>
     <body>
         @if(title.isDefined) {
         <div style="-fs-page-sequence: start; page-break-before: auto">
             <div style="position: running(current);">
-                <div id="page-header">
+                <div class="page-header">
                     <span class="align-left">@title.get</span>
                     @if(showDate) {
                     <span class="align-right">@tags.date()</span>
@@ -24,7 +24,7 @@
                 </div>
             </div>
             <div style="position: running(footer);">
-                <div id="page-footer" class="small">
+                <div class="page-footer" class="small">
                     <!--
                     <div class="line">&#160;</div>
                     <span class="align-right">@tags.date()</span>

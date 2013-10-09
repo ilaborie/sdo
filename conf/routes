@@ -21,8 +21,8 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 # Home page
-GET         /                                                     controllers.Orga.index
-GET         /ligues                                               controllers.Orga.ligues
+GET         /                                                     controllers.OrgaLigue.index
+GET         /ligues                                               controllers.OrgaLigue.ligues
 
 # Contact
 GET         /contacts                                             controllers.Contact.contact
@@ -34,11 +34,11 @@ GET         /events/calendar                                      controllers.Ev
 GET         /events/sdo.ics                                       controllers.Event.icalendar
 
 # Ligue, Comite, Club
-GET         /ligues/:ligue                                        controllers.Orga.ligue(ligue)
-GET         /ligues/:ligue/body                                   controllers.Orga.ligueBody(ligue)
-GET         /ligues/:ligue/comites/:comite                        controllers.Orga.comite(ligue,comite )
-GET         /ligues/:ligue/comites/:comite/body                   controllers.Orga.comiteBody(ligue,comite )
-GET         /ligues/:ligue/comites/:comite/clubs/:club            controllers.Orga.club(ligue, comite, club)
+GET         /ligues/:ligue                                        controllers.OrgaLigue.ligue(ligue)
+GET         /ligues/:ligue/body                                   controllers.OrgaLigue.ligueBody(ligue)
+GET         /ligues/:ligue/comites/:comite                        controllers.OrgaComite.comite(ligue,comite )
+GET         /ligues/:ligue/comites/:comite/body                   controllers.OrgaComite.comiteBody(ligue,comite )
+GET         /ligues/:ligue/comites/:comite/clubs/:club            controllers.OrgaComite.club(ligue, comite, club)
 
 # Ligue Rank
 GET         /ligues/:ligue/ranking.pdf                            controllers.RankingLigue.liguePDF(ligue)
@@ -78,8 +78,8 @@ GET         /ligues/:ligue/comites/:comite/team                   controllers.Ra
 GET         /ligues/:ligue/comites/:comite/team.pdf               controllers.RankingComite.comiteTeamPDF(ligue, comite)
 
 # Tournament
-GET         /ligues/:ligue/tour/:tour                             controllers.Orga.ligueTournament(ligue, tour)
-GET         /ligues/:ligue/comites/:comite/tour/:tour             controllers.Orga.comiteTournament(ligue, comite, tour)
+GET         /ligues/:ligue/tour/:tour                             controllers.OrgaLigue.ligueTournament(ligue, tour)
+GET         /ligues/:ligue/comites/:comite/tour/:tour             controllers.OrgaComite.comiteTournament(ligue, comite, tour)
 
 # Team Championship
 GET         /ligues/:ligue/team/day/:day/:team1/:team2            controllers.Detail.team(ligue,day:Int,team1,team2)

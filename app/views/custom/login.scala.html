@@ -1,4 +1,5 @@
 @(loginForm: Form[(String, String)], errorMsg: Option[String] = None)(implicit request: RequestHeader)
+@import securesocial.core.AuthenticationMethod
 
 @import securesocial.core.Registry
 @import securesocial.core.providers.utils.RoutesHelper
@@ -19,9 +20,9 @@
                     <form>
                         <fieldset>
                             <legend>@Messages("securesocial.login.instructions")</legend>
-                            @for(provider <- Registry.providers.all().values.filter(_.id != UsernamePassword)) {
-                                <a class="auth" href="@provider.authenticationUrl">
-                                    <img src="@RoutesHelper.at(s"images/${provider.id}.png")"/>
+                            @for(provider <- Registry.providers.all().values.filter(_.authMethod != AuthenticationMethod.UserPassword)) {
+                                <a class="auth" href="@provider.authenticationUrl" title="@provider">
+                                    <img src="@RoutesHelper.at(s"images/${provider.ssId}.png")"/>
                                 </a>
                             }
                         </fieldset>

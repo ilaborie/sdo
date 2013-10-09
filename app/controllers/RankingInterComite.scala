@@ -23,7 +23,6 @@ package controllers
 
 import play.api.mvc._
 
-import securesocial.core._
 
 import util.pdf.PDF
 
@@ -36,19 +35,18 @@ import play.api.i18n.Messages
 /**
  * Classements pages
  */
-object RankingInterComite extends Controller with SecureSocial {
+object RankingInterComite extends Controller with LigueController {
 
+  def qualify = (i: Int) => false
 
   /**
    * Inter comite PDF
    * @param ligueShortName ligue
    * @return single ranking
    */
-  def interComitePDF(ligueShortName: String) = Action {
-    implicit request =>
-      LigueAction(ligueShortName) {
-        ligue => PDF.ok(pdf.html.interComiteRanking.render(Season.currentSeason, ligue)).getWrappedResult
-      }.result
+  def interComitePDF(ligueShortName: String) = LigueAsyncAction(ligueShortName) {
+    ligue =>
+      PDF.ok(pdf.html.interComiteRanking.render(Season.currentSeason, ligue))
   }
 
   /**
@@ -56,11 +54,9 @@ object RankingInterComite extends Controller with SecureSocial {
    * @param ligueShortName ligue
    * @return single ranking
    */
-  def interComiteSingle(ligueShortName: String) = SecuredAction(ajaxCall = true) {
-    implicit request =>
-      LigueAction(ligueShortName) {
-        ligue => Ok(views.html.interComite.single(ligue, InterComiteRanking.single(ligue), User(request.user)))
-      }.result
+  def interComiteSingle(ligueShortName: String) = SecuredLigueAction(ligueShortName, ajaxCall = true) {
+    (ligue, user) =>
+      Ok(views.html.interComite.single(ligue, InterComiteRanking.single(ligue), User(user)))
   }
 
   /**
@@ -68,15 +64,12 @@ object RankingInterComite extends Controller with SecureSocial {
    * @param ligueShortName ligue
    * @return single ranking
    */
-  def interComiteSinglePDF(ligueShortName: String) = SecuredAction {
-    implicit request =>
-      LigueAction(ligueShortName) {
-        ligue =>
-          PDF.ok(pdf.html.rankingTable.render(
-            InterComiteRanking.single(ligue),
-            Messages("rank.single.interComite.caption", Season.currentSeason),
-            (i: Int) => false)).getWrappedResult
-      }.result
+  def interComiteSinglePDF(ligueShortName: String) = SecuredLigueAsyncAction(ligueShortName) {
+    (ligue, user) =>
+      PDF.ok(pdf.html.rankingTable.render(
+        InterComiteRanking.single(ligue),
+        Messages("rank.single.interComite.caption", Season.currentSeason),
+        qualify))
   }
 
   /**
@@ -84,11 +77,9 @@ object RankingInterComite extends Controller with SecureSocial {
    * @param ligueShortName ligue
    * @return ladies ranking
    */
-  def interComiteLadies(ligueShortName: String) = SecuredAction(ajaxCall = true) {
-    implicit request =>
-      LigueAction(ligueShortName) {
-        ligue => Ok(views.html.interComite.ladies(ligue, InterComiteRanking.ladies(ligue), User(request.user)))
-      }.result
+  def interComiteLadies(ligueShortName: String) = SecuredLigueAction(ligueShortName, ajaxCall = true) {
+    (ligue, user) =>
+      Ok(views.html.interComite.ladies(ligue, InterComiteRanking.ladies(ligue), User(user)))
   }
 
   /**
@@ -96,15 +87,12 @@ object RankingInterComite extends Controller with SecureSocial {
    * @param ligueShortName ligue
    * @return ladies ranking
    */
-  def interComiteLadiesPDF(ligueShortName: String) = SecuredAction {
-    implicit request =>
-      LigueAction(ligueShortName) {
-        ligue =>
-          PDF.ok(pdf.html.rankingTable.render(
-            InterComiteRanking.ladies(ligue),
-            Messages("rank.feminine.interComite.caption", Season.currentSeason),
-            (i: Int) => false)).getWrappedResult
-      }.result
+  def interComiteLadiesPDF(ligueShortName: String) = SecuredLigueAsyncAction(ligueShortName) {
+    (ligue, user) =>
+      PDF.ok(pdf.html.rankingTable.render(
+        InterComiteRanking.ladies(ligue),
+        Messages("rank.feminine.interComite.caption", Season.currentSeason),
+        qualify))
   }
 
   /**
@@ -112,11 +100,9 @@ object RankingInterComite extends Controller with SecureSocial {
    * @param ligueShortName ligue
    * @return youth ranking
    */
-  def interComiteYouth(ligueShortName: String) = SecuredAction(ajaxCall = true) {
-    implicit request =>
-      LigueAction(ligueShortName) {
-        ligue => Ok(views.html.interComite.youth(ligue, InterComiteRanking.youth(ligue), User(request.user)))
-      }.result
+  def interComiteYouth(ligueShortName: String) = SecuredLigueAction(ligueShortName, ajaxCall = true) {
+    (ligue, user) =>
+      Ok(views.html.interComite.youth(ligue, InterComiteRanking.youth(ligue), User(user)))
   }
 
   /**
@@ -124,15 +110,12 @@ object RankingInterComite extends Controller with SecureSocial {
    * @param ligueShortName ligue
    * @return youth ranking
    */
-  def interComiteYouthPDF(ligueShortName: String) = SecuredAction {
-    implicit request =>
-      LigueAction(ligueShortName) {
-        ligue =>
-          PDF.ok(pdf.html.rankingTable.render(
-            InterComiteRanking.youth(ligue),
-            Messages("rank.junior.interComite.caption", Season.currentSeason),
-            (i: Int) => false)).getWrappedResult
-      }.result
+  def interComiteYouthPDF(ligueShortName: String) = SecuredLigueAsyncAction(ligueShortName) {
+    (ligue, user) =>
+      PDF.ok(pdf.html.rankingTable.render(
+        InterComiteRanking.youth(ligue),
+        Messages("rank.junior.interComite.caption", Season.currentSeason),
+        qualify))
   }
 
   /**
@@ -140,11 +123,9 @@ object RankingInterComite extends Controller with SecureSocial {
    * @param ligueShortName ligue
    * @return pairs ranking
    */
-  def interComitePairs(ligueShortName: String) = SecuredAction(ajaxCall = true) {
-    implicit request =>
-      LigueAction(ligueShortName) {
-        ligue => Ok(views.html.interComite.pairs(ligue, InterComiteRanking.pairs(ligue), User(request.user)))
-      }.result
+  def interComitePairs(ligueShortName: String) = SecuredLigueAction(ligueShortName, ajaxCall = true) {
+    (ligue, user) =>
+      Ok(views.html.interComite.pairs(ligue, InterComiteRanking.pairs(ligue), User(user)))
   }
 
   /**
@@ -152,15 +133,12 @@ object RankingInterComite extends Controller with SecureSocial {
    * @param ligueShortName ligue
    * @return pairs ranking
    */
-  def interComitePairsPDF(ligueShortName: String) = SecuredAction {
-    implicit request =>
-      LigueAction(ligueShortName) {
-        ligue =>
-          PDF.ok(pdf.html.rankingTable.render(
-            InterComiteRanking.pairs(ligue),
-            Messages("rank.double.interComite.caption", Season.currentSeason),
-            (i: Int) => false)).getWrappedResult
-      }.result
+  def interComitePairsPDF(ligueShortName: String) = SecuredLigueAsyncAction(ligueShortName) {
+    (ligue, user) =>
+      PDF.ok(pdf.html.rankingTable.render(
+        InterComiteRanking.pairs(ligue),
+        Messages("rank.double.interComite.caption", Season.currentSeason),
+        qualify))
   }
 
   /**
@@ -168,11 +146,9 @@ object RankingInterComite extends Controller with SecureSocial {
    * @param ligueShortName ligue
    * @return team ranking
    */
-  def interComiteTeam(ligueShortName: String) = SecuredAction(ajaxCall = true) {
-    implicit request =>
-      LigueAction(ligueShortName) {
-        ligue => Ok(views.html.interComite.team(ligue, InterComiteRanking.team(ligue), User(request.user)))
-      }.result
+  def interComiteTeam(ligueShortName: String) = SecuredLigueAction(ligueShortName, ajaxCall = true) {
+    (ligue, user) =>
+      Ok(views.html.interComite.team(ligue, InterComiteRanking.team(ligue), User(user)))
   }
 
   /**
@@ -180,12 +156,9 @@ object RankingInterComite extends Controller with SecureSocial {
    * @param ligueShortName ligue
    * @return PDF
    */
-  def interComiteTeamPDF(ligueShortName: String) = Action {
-    implicit request =>
-      LigueAction(ligueShortName) {
-        ligue =>
-          PDF.ok(pdf.html.interComiteTeamRanking.render(ligue, InterComiteRanking.team(ligue))).getWrappedResult
-      }.result
+  def interComiteTeamPDF(ligueShortName: String) = LigueAsyncAction(ligueShortName) {
+    ligue =>
+      PDF.ok(pdf.html.interComiteTeamRanking.render(ligue, InterComiteRanking.team(ligue)))
   }
 
 }

@@ -26,6 +26,7 @@ import play.api.templates.Html
 import play.libs.Akka
 import play.api.{Logger, Play}
 import Play.current
+import akka.actor.Cancellable
 
 /**
  * Mailer
@@ -34,7 +35,7 @@ object Mailer {
   val logger = Logger("Mailer")
   val fromAddress = current.configuration.getString("smtp.from").get
 
-  def sendEmail(subject: String, recipient: String, body: Html) {
+  def sendEmail(subject: String, recipient: String, body: Html): Cancellable = {
     import com.typesafe.plugin._
     import scala.concurrent.duration._
     import play.api.libs.concurrent.Execution.Implicits._
@@ -44,11 +45,11 @@ object Mailer {
       Logger.debug("Mail = [%s]".format(body))
     }
 
-    Akka.system.scheduler.scheduleOnce(1 seconds) {
+    Akka.system.scheduler.scheduleOnce(1.seconds) {
       val mail = use[MailerPlugin].email
       mail.setSubject(subject)
-      mail.setRecipient(recipient)
-      mail.setFrom(fromAddress)
+      mail.addRecipient(recipient)
+      mail.addFrom(fromAddress)
       // the mailer plugin handles null / empty string gracefully
       mail.send("", body.body)
     }

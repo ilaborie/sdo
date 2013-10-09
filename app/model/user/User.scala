@@ -28,6 +28,8 @@ import securesocial.core._
 
 import model.orga._
 import util._
+import akka.actor.Cancellable
+import play.api.mvc.AnyContent
 
 /**
  * A user
@@ -43,8 +45,8 @@ object User {
    * @param id identity
    * @return user
    */
-  def apply(id: Identity): User = Cache.getOrElse[User](id.identityId.userId + "|" + id.identityId.providerId) {
-    val userId: String = id.identityId.userId
+  def apply(id: Identity): User = Cache.getOrElse[User](id.userIdFromProvider.authId + "|" + id.userIdFromProvider.providerId) {
+    val userId: String = id.userIdFromProvider.authId
     val user = id.authMethod.method match {
       case "twitter" => findUserBy(id) {
         player => player.twitter == Some(userId)
@@ -66,7 +68,9 @@ object User {
     user
   }
 
-  private def sendMailForGuest(id: Identity) {
+  def apply(request: SecuredRequest[AnyContent]): User = apply(request.user)
+
+  private def sendMailForGuest(id: Identity): Cancellable = {
     val body = emails.html.newUser(id)
     Mailer.sendEmail("[SDO] newUser", "ilaborie@gmail.com", body)
   }

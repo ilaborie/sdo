@@ -71,6 +71,7 @@ object Global extends GlobalSettings {
     if (app.mode == Mode.Dev) {
       registerUser("Igor", "Laborie", "ilaborie@gmail.com")
     }
+    ()
   }
 
   /**
@@ -94,7 +95,7 @@ object Global extends GlobalSettings {
   }
 
   private def registerUser(firstName: String, lastName: String, email: String): Identity = {
-    val identityId = IdentityId(email, "userpass")
+    val identityId = UserIdFromProvider(email, "userpass")
     UserService.find(identityId) match {
       case Some(u) => u
       case None =>
