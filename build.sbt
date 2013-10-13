@@ -51,7 +51,8 @@ libraryDependencies ++= Seq(
     "com.typesafe.play"       %% "anorm"                       % "2.2.0" exclude("org.scala-stm", "scala-stm_2.10.0") exclude("play", "*"),
     "com.typesafe.play"       %% "play-jdbc"                   % "2.2.0" exclude("org.scala-stm", "scala-stm_2.10.0") exclude("play", "*"),
     "com.typesafe.play"       %% "play-json"                   % "2.2.0" exclude("org.scala-stm", "scala-stm_2.10.0") exclude("play", "*"),
-    "com.micronautics"        % "securesocial"                % "2.2.0" exclude("org.scala-stm", "scala-stm_2.10.0") exclude("play", "*") withSources,
+    //"com.micronautics"        % "securesocial"                % "2.2.0" exclude("org.scala-stm", "scala-stm_2.10.0") exclude("play", "*") withSources,
+    "org.ilaborie"        % "securesocial"                % "2.2.0" exclude("org.scala-stm", "scala-stm_2.10.0") exclude("play", "*") withSources,
     "com.github.kevinsawicki" % "timeago" % "1.0.1" withSources,
     "org.scala-tools.time" % "time_2.9.1" % "0.5",
     "commons-io" % "commons-io" % "1.3.2" withSources,
@@ -70,7 +71,7 @@ libraryDependencies ++= Seq(
     "pdf-scala" % "pdf-scala_2.10" % "0.6" exclude("org.scala-stm", "scala-stm_2.10.0") exclude("play", "*")
 )
 
-organization := "ilaborie.org"
+organization := "org.ilaborie"
 
 // resolvers += Resolver.url("Violas Play Modules", url("http://www.joergviola.de/releases/"))(Resolver.ivyStylePatterns)
 resolvers ++= Seq(
