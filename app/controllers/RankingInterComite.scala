@@ -37,8 +37,6 @@ import play.api.i18n.Messages
  */
 object RankingInterComite extends Controller with LigueController {
 
-  def qualify = (i: Int) => false
-
   /**
    * Inter comite PDF
    * @param ligueShortName ligue
@@ -68,8 +66,7 @@ object RankingInterComite extends Controller with LigueController {
     (ligue, user) =>
       PDF.ok(pdf.html.rankingTable.render(
         InterComiteRanking.mens(ligue),
-        Messages("rank.single.interComite.caption", Season.currentSeason),
-        qualify))
+        Messages("rank.single.interComite.caption", Season.currentSeason)))
   }
 
   /**
@@ -91,8 +88,7 @@ object RankingInterComite extends Controller with LigueController {
     (ligue, user) =>
       PDF.ok(pdf.html.rankingTable.render(
         InterComiteRanking.ladies(ligue),
-        Messages("rank.feminine.interComite.caption", Season.currentSeason),
-        qualify))
+        Messages("rank.feminine.interComite.caption", Season.currentSeason)))
   }
 
   /**
@@ -114,8 +110,7 @@ object RankingInterComite extends Controller with LigueController {
     (ligue, user) =>
       PDF.ok(pdf.html.rankingTable.render(
         InterComiteRanking.youth(ligue),
-        Messages("rank.junior.interComite.caption", Season.currentSeason),
-        qualify))
+        Messages("rank.junior.interComite.caption", Season.currentSeason)))
   }
 
   /**
@@ -137,8 +132,7 @@ object RankingInterComite extends Controller with LigueController {
     (ligue, user) =>
       PDF.ok(pdf.html.rankingTable.render(
         InterComiteRanking.pairs(ligue),
-        Messages("rank.double.interComite.caption", Season.currentSeason),
-        qualify))
+        Messages("rank.double.interComite.caption", Season.currentSeason)))
   }
 
   /**

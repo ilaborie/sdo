@@ -1,5 +1,4 @@
-@(ranking: model.rank.SeasonParticipantRanking, caption: String, href:String, qualify: Int => Boolean)
-
+@(ranking: model.rank.SeasonParticipantRanking, caption: String, href: String)
 @import model.orga._
 
 <table class="table table-striped table-bordered rank">
@@ -33,7 +32,7 @@
                     case nt: NationalTournament => {
                         @Messages(s"rank.ligue.national.${nt.shortName.toLowerCase}")
                     }
-                    case cc:CoupeComite => {
+                    case cc: CoupeComite => {
                         <abbr title="@Messages("rank.comite.coupe.title", tournament.maybyComite.get.name)">
                         @Messages("rank.comite.coupe")
                         </abbr>
@@ -55,7 +54,7 @@
         <tr class="@if(index % 2 == 0) {odd} else {even}">
             <td>
             @defining(ranking.getPosition(rank)) { pos =>
-                @if(qualify(pos)) {
+                @if(ranking.qualified(pos)) {
                     <span class="badge badge-info">@pos</span>
                 } else {
                     <span class="badge">@pos</span>

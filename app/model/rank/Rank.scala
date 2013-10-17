@@ -103,22 +103,13 @@ object ComiteRanking {
 
   val season = Season.currentSeason
 
-  def qualifyForMasterSingle(position: Int) = position <= 6
+  def single(comite: Comite) = SeasonSingleRanking(season, comite, (pos: Int) => pos < 7)
 
-  def qualifyForMasterLadies(position: Int) = position <= 3
+  def ladies(comite: Comite) = SeasonLadiesRanking(season, comite, (pos: Int) => pos < 4)
 
-  def qualifyForMasterYouth(position: Int) = position <= 3
+  def youth(comite: Comite) = SeasonYouthRanking(season, comite, (pos: Int) => pos < 4)
 
-  def qualifyForMasterPairs(position: Int) = position <= 3
-
-
-  def single(comite: Comite) = SeasonSingleRanking(season, comite)
-
-  def ladies(comite: Comite) = SeasonLadiesRanking(season, comite)
-
-  def youth(comite: Comite) = SeasonYouthRanking(season, comite)
-
-  def pairs(comite: Comite) = SeasonPairsRanking(season, comite)
+  def pairs(comite: Comite) = SeasonPairsRanking(season, comite, (pos: Int) => pos < 4)
 
   def team(comite: Comite) = SeasonTeamRanking(season, comite)
 
@@ -136,13 +127,13 @@ object InterComiteRanking {
   }.toList
 
   def mens(ligue: Ligue) =
-    SeasonSingleRanking(season, MensLicensied(ligue), ligue.players.toList, getInterComiteTournaments(ligue))
+    SeasonSingleRanking(season, MensLicensied(ligue), ligue.players.toList, getInterComiteTournaments(ligue), _ => false)
 
   def ladies(ligue: Ligue) =
-    SeasonLadiesRanking(season, LadiesLicensied(ligue), ligue.players.toList, getInterComiteTournaments(ligue))
+    SeasonLadiesRanking(season, LadiesLicensied(ligue), ligue.players.toList, getInterComiteTournaments(ligue), _ => false)
 
   def youth(ligue: Ligue) =
-    SeasonYouthRanking(season, YouthLicensied(ligue), ligue.players.toList, getInterComiteTournaments(ligue))
+    SeasonYouthRanking(season, YouthLicensied(ligue), ligue.players.toList, getInterComiteTournaments(ligue), _ => false)
 
   def pairs(ligue: Ligue) = {
     val tournaments = getInterComiteTournaments(ligue)
@@ -152,7 +143,7 @@ object InterComiteRanking {
         pair <- tour.getPairs
       } yield pair
     }.toSet.toList
-    SeasonPairsRanking(season, PairsLicensied(ligue), pairs, tournaments)
+    SeasonPairsRanking(season, PairsLicensied(ligue), pairs, tournaments, _ => false)
   }
 
   def team(ligue: Ligue) = SeasonTeamRanking(season, ligue)
@@ -163,21 +154,13 @@ object LigueRanking {
 
   val season = Season.currentSeason
 
-  def qualifyForMasterSingle(position: Int) = position <= 4
+  def mens(ligue: Ligue) = SeasonSingleRanking(season, ligue, (pos: Int) => pos < 5)
 
-  def qualifyForMasterLadies(position: Int) = position <= 2
+  def ladies(ligue: Ligue) = SeasonLadiesRanking(season, ligue, (pos: Int) => pos < 3)
 
-  def qualifyForMasterYouth(position: Int) = position <= 2
+  def youth(ligue: Ligue) = SeasonYouthRanking(season, ligue, (pos: Int) => pos < 3)
 
-  def qualifyForMasterPairs(position: Int) = position <= 2
-
-  def mens(ligue: Ligue) = SeasonSingleRanking(season, ligue)
-
-  def ladies(ligue: Ligue) = SeasonLadiesRanking(season, ligue)
-
-  def youth(ligue: Ligue) = SeasonYouthRanking(season, ligue)
-
-  def pairs(ligue: Ligue) = SeasonPairsRanking(season, ligue)
+  def pairs(ligue: Ligue) = SeasonPairsRanking(season, ligue, (pos: Int) => pos < 3)
 
 }
 

@@ -30,6 +30,8 @@ sealed abstract class Participant {
   def clubAsString: String
 
   def name: String
+
+  def contains(other: Player) = this == other
 }
 
 /**
@@ -124,6 +126,14 @@ case class TeamPair(player1: LicensedPlayer, player2: LicensedPlayer) extends Te
   require(player1 != player2, "Two different player")
   require(player1.club == player2.club, "Same club")
 
+  override def contains(player: Player): Boolean = (player1 == player) || (player2 == player)
+
+  def other(player: Player): Player = {
+    require(contains(player))
+    if (player1 == player) player2 else player1
+  }
+
+
   val name = s"${player1.name} / ${player2.name}"
   override val toString = name
   val club = player1.club
@@ -142,6 +152,13 @@ case class Pair(player1: Player, player2: Player) extends Participant {
   val name = s"${player1.name} / ${player2.name}"
 
   override val toString = name
+
+  override def contains(player: Player): Boolean = (player1 == player) || (player2 == player)
+
+  def other(player: Player): Player = {
+    require(contains(player))
+    if (player1 == player) player2 else player1
+  }
 
   def clubAsString: String = {
     val club1 = player1.clubAsString

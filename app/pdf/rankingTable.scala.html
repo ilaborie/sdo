@@ -1,6 +1,6 @@
-@(ranking: model.rank.SeasonParticipantRanking, caption: String, qualify: Int => Boolean)
+@(ranking: model.rank.SeasonParticipantRanking, caption: String)
 
 @layout.pdf(Some(caption), landscape = false) {
-    @rankingPdf(ranking, caption, qualify)
+    @rankingPdf(ranking, caption)
 }
 

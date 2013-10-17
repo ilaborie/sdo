@@ -32,7 +32,7 @@ menu.comite.short=Com.
 # Comite
 menu.rank=Classements
 menu.rank.short=Class.
-menu.intercomite=Classements Inter-comités
+menu.intercomite=Inter-comités
 menu.intercomite.short=InterCom.
 menu.rank.team=Équipes
 menu.rank.indiv=Individuel

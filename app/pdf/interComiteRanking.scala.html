@@ -3,12 +3,12 @@
 
 @defining(Messages("rank.interComite.ranking", season)) { title =>
     @layout.pdf(Some(title), landscape = false) {
-        @rankingPdf(InterComiteRanking.mens(ligue), Messages("rank.single.interComite.caption", ligue.name, season), (i: Int) => false)
+        @rankingPdf(InterComiteRanking.mens(ligue), Messages("rank.single.interComite.caption", ligue.name, season))
         <br/>
-        @rankingPdf(InterComiteRanking.ladies(ligue), Messages("rank.feminine.interComite.caption", ligue.name, season), (i: Int) => false)
+        @rankingPdf(InterComiteRanking.ladies(ligue), Messages("rank.feminine.interComite.caption", ligue.name, season))
         <br/>
-        @rankingPdf(InterComiteRanking.youth(ligue), Messages("rank.junior.interComite.caption", ligue.name, season), (i: Int) => false)
+        @rankingPdf(InterComiteRanking.youth(ligue), Messages("rank.junior.interComite.caption", ligue.name, season))
         <br/>
-        @rankingPdf(InterComiteRanking.pairs(ligue), Messages("rank.double.interComite.caption", ligue.name, season), (i: Int) => false)
+        @rankingPdf(InterComiteRanking.pairs(ligue), Messages("rank.double.interComite.caption", ligue.name, season))
     }
 }

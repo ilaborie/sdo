@@ -69,9 +69,7 @@ object RankingComite extends Controller with ComiteController {
     (comite, user) =>
       PDF.ok(pdf.html.rankingTable.render(
         ComiteRanking.single(comite),
-        Messages("rank.single.comite.caption", comite.name, Season.currentSeason),
-        ComiteRanking.qualifyForMasterSingle
-      ))
+        Messages("rank.single.comite.caption", comite.name, Season.currentSeason)))
   }
 
   /**
@@ -95,9 +93,7 @@ object RankingComite extends Controller with ComiteController {
     (comite, user) =>
       PDF.ok(pdf.html.rankingTable.render(
         ComiteRanking.ladies(comite),
-        Messages("rank.feminine.comite.caption", comite.name, Season.currentSeason),
-        ComiteRanking.qualifyForMasterLadies
-      ))
+        Messages("rank.feminine.comite.caption", comite.name, Season.currentSeason)))
   }
 
   /**
@@ -121,9 +117,7 @@ object RankingComite extends Controller with ComiteController {
     (comite, user) =>
       PDF.ok(pdf.html.rankingTable.render(
         ComiteRanking.youth(comite),
-        Messages("rank.youth.comite.caption", comite.name, Season.currentSeason),
-        ComiteRanking.qualifyForMasterYouth
-      ))
+        Messages("rank.youth.comite.caption", comite.name, Season.currentSeason)))
   }
 
   /**
@@ -147,9 +141,7 @@ object RankingComite extends Controller with ComiteController {
     (comite, user) =>
       PDF.ok(pdf.html.rankingTable.render(
         ComiteRanking.pairs(comite),
-        Messages("rank.double.comite.caption", comite.name, Season.currentSeason),
-        ComiteRanking.qualifyForMasterPairs
-      ))
+        Messages("rank.double.comite.caption", comite.name, Season.currentSeason)))
   }
 
   /**
