@@ -99,7 +99,7 @@ case class LicensedPlayer(licenseNumber: LicenseNumber,
                           google: Option[String] = None) extends TeamParticipant with Player {
 
   val name = s"$lastName $firstName"
-  override val toString = s"$lastName ${commonName.getOrElse(firstName)}"
+  override val toString = name
 
   lazy val ligue: Ligue = Ligue.ligues.find(_.players.contains(this)).get
 
