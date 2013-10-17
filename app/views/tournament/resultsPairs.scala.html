@@ -1,9 +1,9 @@
-@(tournament: model.orga.Tournament, result: model.orga.TournamentResults[model.orga.Pair])
+@(tournament: model.orga.Tournament, result: model.orga.TournamentResults[model.orga.Pair], user: model.user.User)
 
 @import model.orga._
 
 @row(pos: Int, player: Pair, tourRes: TournamentResult) = {
-    <tr>
+    <tr class="@if(user.currentPlayer.isDefined && player.contains(user.currentPlayer.get)){current}">
         <th><span class="badge">@pos</span></th>
         <td>@player</td>
         <td>@player.clubAsString</td>
@@ -22,7 +22,7 @@
     </thead>
     <tbody>
         @if(result.winner.isDefined) {
-            <tr>
+            <tr class="@if(user.currentPlayer.isDefined && result.winner.get.contains(user.currentPlayer.get)){current}">
                 <th><i class="glyphicons cup"></i></th>
                 <td>@result.winner.get</td>
                 <td>@result.winner.get.clubAsString</td>
@@ -30,7 +30,7 @@
             </tr>
         }
         @if(result.runnerUp.isDefined) {
-            <tr>
+            <tr class="@if(user.currentPlayer.isDefined && result.runnerUp.get.contains(user.currentPlayer.get)){current}">
                 <th><span class="badge">2</span></th>
                 <td>@result.runnerUp.get</td>
                 <td>@result.runnerUp.get.clubAsString</td>
@@ -67,7 +67,7 @@
     </thead>
     <tbody>
         @for((player, pos)<-group.zipWithIndex) {
-        <tr>
+        <tr class="@if(user.currentPlayer.isDefined && player.contains(user.currentPlayer.get)){current}">
             <th>@{1+pos}</th>
             <td>@player</td>
             <td>@tournament.getPoint(result.getResult(player).get)</td>

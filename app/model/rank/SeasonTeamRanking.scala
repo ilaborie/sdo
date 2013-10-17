@@ -90,6 +90,8 @@ case class TeamRank(team: Team, win: Int, loose: Int, draw: Int, fail: Int = 0, 
 
   def betterThan(other: TeamRank): Boolean = (this.points > other.points) || (
     (this.points == other.points) && (this.diff > other.diff))
+
+  def isCurrent(oPlayer: Option[Player]): Boolean = oPlayer.isDefined && team.contains(oPlayer.get)
 }
 
 object TeamRank {

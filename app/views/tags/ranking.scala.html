@@ -1,4 +1,4 @@
-@(ranking: model.rank.SeasonParticipantRanking, caption: String, href: String)
+@(ranking: model.rank.SeasonParticipantRanking, caption: String, href: String, player:Option[model.orga.Player])
 @import model.orga._
 
 <table class="table table-striped table-bordered rank">
@@ -51,7 +51,7 @@
     </thead>
     <tbody>
     @for((rank, index) <- ranking.ordered.zipWithIndex) {
-        <tr class="@if(index % 2 == 0) {odd} else {even}">
+        <tr class="@if(index % 2 == 0) {odd} else {even} @if(rank.isCurrent(player)){current}">
             <td>
             @defining(ranking.getPosition(rank)) { pos =>
                 @if(ranking.qualified(pos)) {

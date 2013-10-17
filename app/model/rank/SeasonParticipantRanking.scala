@@ -47,7 +47,7 @@ sealed abstract class SeasonParticipantRanking(season: Season, ranks: Seq[Partic
 
   def getPositionAsString(participant: Participant): String = {
     val positions = getPositions(participant)
-     positions match {
+    positions match {
       case Nil => "_"
       case _ => positions.mkString(", ")
     }
@@ -168,7 +168,7 @@ case class SeasonPairsRanking(season: Season, tournaments: Seq[Tournament], rank
   override def getPositions(participant: Participant): Seq[Int] =
     ranks.filter(_.participant.asInstanceOf[Pair].contains(participant.asInstanceOf[Player])).map(getPosition)
 
-  def getPairPositions(participant: Participant): Seq[(String,Int)] = {
+  def getPairPositions(participant: Participant): Seq[(String, Int)] = {
     val player = participant.asInstanceOf[Player]
     for {
       rank <- ranks
@@ -228,6 +228,8 @@ object SeasonPairsRanking {
  * @param results results
  */
 case class ParticipantRank(participant: Participant, results: Map[Tournament, TournamentResult]) {
+
+  def isCurrent(oPlayer: Option[Player]): Boolean = oPlayer.isDefined && participant.contains(oPlayer.get)
 
   lazy val points: Int = {
     for ((tournament, result) <- results) yield tournament.getPoint(result)

@@ -161,7 +161,7 @@ case class Comite(name: String,
                   shortName: String,
                   clubs: Seq[Club],
                   coupe: CoupeComite,
-                  info: Option[Info]) extends PlayerContainer{
+                  info: Option[Info]) extends PlayerContainer {
   lazy val fullName = s"[$shortName] $name"
 
   override def toString = fullName
@@ -227,7 +227,7 @@ case class Club(name: String,
                 location: Location,
                 opens: Seq[OpenClub],
                 teams: Seq[Team],
-                info: Option[Info]) extends PlayerContainer{
+                info: Option[Info]) extends PlayerContainer {
   lazy val fullName = s"[$shortName] $name"
 
   override def toString = fullName
@@ -271,5 +271,7 @@ case class Team(name: String, shortName: String, capitainName: String, players: 
   lazy val comite: Comite = ligue.comites.find(_.allTeams.contains(this)).get
 
   lazy val club: Club = comite.clubs.find(_.teams.contains(this)).get
+
+  def contains(player: Player): Boolean = players.contains(player)
 
 }

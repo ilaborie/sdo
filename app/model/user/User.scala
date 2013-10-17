@@ -36,6 +36,8 @@ import play.api.mvc.AnyContent
  */
 sealed abstract class User {
   def id: Identity
+
+  def currentPlayer:Option[Player] = None
 }
 
 object User {
@@ -95,4 +97,6 @@ object User {
 
 case class Guest(id: Identity) extends User
 
-case class LocalUser(id: Identity, player: LicensedPlayer) extends User
+case class LocalUser(id: Identity, player: LicensedPlayer) extends User {
+  override val currentPlayer = Some(player)
+}

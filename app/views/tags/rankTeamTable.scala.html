@@ -1,4 +1,4 @@
-@(caption: String, ranking: model.rank.SeasonTeamRanking, path:String)
+@(caption: String, ranking: model.rank.SeasonTeamRanking, path:String, player:Option[model.orga.Player])
 @import model.orga.Team
 @import model.team.MatchDetail
 
@@ -27,7 +27,7 @@
     </thead>
     <tbody>
     @for(teamRank <- ranking.ordered) {
-        <tr>
+        <tr class="@if(teamRank.isCurrent(player)){current}"">
             <td><span class="badge badge-info">@ranking.getPosition(teamRank)</span></td>
             <td>@teamRank.team.name</td>
             <td>@teamRank.points</td>

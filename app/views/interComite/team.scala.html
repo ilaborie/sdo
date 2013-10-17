@@ -18,7 +18,9 @@
 </ul>
 
 <hr>
-@tags.rankTeamTable(Messages("rank.team.interComite.caption", ranking.champ.season), ranking, "./"+ ligue.shortName)
+@tags.rankTeamTable(Messages("rank.team.interComite.caption", ranking.champ.season),
+    ranking, "./"+ ligue.shortName,
+    user.currentPlayer)
 <hr>
 @for(day <- ranking.champ.days) {
     @tags.teamChampionshipDay(Messages("championship.day.caption", day.day, ranking.champ.season), day)
