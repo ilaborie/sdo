@@ -1,7 +1,5 @@
 @(ligue: model.orga.Ligue, ranking: model.rank.SeasonLadiesRanking, user: model.user.User)
-@import model.rank._
 
 @tags.ranking(ranking,
-    Messages("rank.feminine.ligue.caption", ligue.name,ranking.season),
-    s"./${ligue.shortName}/ladies.pdf",
-    LigueRanking.qualifyForMasterLadies)
+    Messages("rank.feminine.ligue.caption", ligue.name, ranking.season),
+    s"./${ligue.shortName}/ladies.pdf")

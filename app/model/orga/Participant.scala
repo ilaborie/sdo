@@ -30,6 +30,8 @@ sealed abstract class Participant {
   def clubAsString: String
 
   def name: String
+
+  def contains(other: Player) = this == other
 }
 
 /**
@@ -78,13 +80,16 @@ sealed trait TeamParticipant extends Participant {
 /**
  * Licensed player
  * @param licenseNumber license
- * @param name name
+ * @param firstName first name
+ * @param lastName last name
  * @param surname surname
  * @param youth youth
  * @param lady ladies
  */
 case class LicensedPlayer(licenseNumber: LicenseNumber,
-                          name: String,
+                          firstName: String,
+                          lastName: String,
+                          commonName: Option[String] = None,
                           surname: Option[String] = None,
                           youth: Boolean = false,
                           lady: Boolean = false,
@@ -93,8 +98,8 @@ case class LicensedPlayer(licenseNumber: LicenseNumber,
                           facebook: Option[String] = None,
                           google: Option[String] = None) extends TeamParticipant with Player {
 
-
-  override val toString = name
+  val name = s"$lastName $firstName"
+  override val toString = s"$lastName ${commonName.getOrElse(firstName)}"
 
   lazy val ligue: Ligue = Ligue.ligues.find(_.players.contains(this)).get
 
@@ -121,6 +126,14 @@ case class TeamPair(player1: LicensedPlayer, player2: LicensedPlayer) extends Te
   require(player1 != player2, "Two different player")
   require(player1.club == player2.club, "Same club")
 
+  override def contains(player: Player): Boolean = (player1 == player) || (player2 == player)
+
+  def other(player: Player): Player = {
+    require(contains(player))
+    if (player1 == player) player2 else player1
+  }
+
+
   val name = s"${player1.name} / ${player2.name}"
   override val toString = name
   val club = player1.club
@@ -139,6 +152,13 @@ case class Pair(player1: Player, player2: Player) extends Participant {
   val name = s"${player1.name} / ${player2.name}"
 
   override val toString = name
+
+  override def contains(player: Player): Boolean = (player1 == player) || (player2 == player)
+
+  def other(player: Player): Player = {
+    require(contains(player))
+    if (player1 == player) player2 else player1
+  }
 
   def clubAsString: String = {
     val club1 = player1.clubAsString

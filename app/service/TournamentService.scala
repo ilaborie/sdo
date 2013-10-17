@@ -48,8 +48,7 @@ class TournamentService(application: Application) {
       case None => throw new DatabaseException("No 'mongodb.db' found into configuration")
     }
   }
-  lazy val tokens: BSONCollection = connection("tokens")
-  lazy val users: BSONCollection = connection("users")
+  lazy val registration: BSONCollection = connection("registration")
 
 }
 

@@ -1,0 +1,139 @@
+@(user: model.user.LocalUser, season: model.orga.Season)
+@import model.rank._
+@import model.orga._
+
+@displayRank(ranking: SeasonParticipantRanking, player: LicensedPlayer) = {
+    @defining(ranking.getPositions(player)) { positions =>
+        @if(positions.isEmpty) {
+            -
+        } else {
+            @for(p <- positions) {
+                @if(ranking.qualified(p)) {
+                    <span class="badge badge-info">@p</span>
+                } else {
+                    <span class="badge">@p</span>
+                }
+            }
+        }
+    }
+}
+@displayDoubleRank(ranking: SeasonPairsRanking, player: LicensedPlayer) = {
+    @defining(ranking.getPositions(player)) { positions =>
+        @if(positions.isEmpty) {
+            -
+        } else {
+            @for((pair,pos) <- ranking.getPairPositions(player)) {
+                @if(ranking.qualified(pos)) {
+                    <span class="badge badge-info">@pos @pair</span>
+                } else {
+                    <span class="badge">@pos  @pair</span>
+                }
+            }
+        }
+    }
+}
+
+@displayTeamRank(ranking: SeasonTeamRanking, player: LicensedPlayer) = {
+    @ranking.getPosition(player.team) match {
+        case Some(p) => {<span class="badge">@p</span>}
+        case None => { - }
+    }
+}
+
+@layout.main(user.player.toString, user = Some(user)) {
+    @defining(user.player) { player =>
+        <div class="container profile">
+            <form action="#">
+                <div class="well well-small">
+                    <fieldset>
+                        <legend>@player</legend>
+                        <img class="avatar" src="@user.id.avatarUrl" alt="@user.id.fullName"/>
+                        <fieldset>
+                            <div class="input-prepend">
+                                <span class="add-on">@Messages("menu.user.license")</span>
+                                <span class="input-small uneditable-input" >@player.licenseNumber</span>
+                            </div>
+                            <br/>
+                            <div class="input-prepend">
+                                <span class="add-on">@Messages("menu.user.ligue")</span>
+                                <span class="input-normal uneditable-input" >@player.ligue.name</span>
+                            </div>
+                            <br/>
+                            <div class="input-prepend">
+                                <span class="add-on">@Messages("menu.user.comite")</span>
+                                <span class="input-normal uneditable-input" >@player.comite.name</span>
+                            </div>
+                            <br/>
+                            <div class="input-prepend">
+                                <span class="add-on">@Messages("menu.user.club")</span>
+                                <span class="input-large uneditable-input" >@player.club.name</span>
+                            </div>
+                            <br/>
+                            <div class="input-prepend">
+                                <span class="add-on">@Messages("menu.user.emails") </i></span>
+                                <span class="input-large uneditable-input" >@player.emails.map(_.email).mkString(", ")</span>
+                            </div>
+                        </fieldset>
+                    </fieldset>
+                    <fieldset>
+                        <legend>@Messages("menu.rank")</legend>
+
+                        <h3>@Messages("menu.user.ligue", player.ligue.name, season)</h3>
+                        @if(player.lady) {
+                            @Messages("menu.rank.women"):
+                            @displayRank(LigueRanking.ladies(player.ligue), player)
+                        } else {
+                            @Messages("menu.rank.men"):
+                            @displayRank(LigueRanking.mens(player.ligue), player)
+                        }
+                        <br/>
+                        @if(player.youth) {
+                            @Messages("menu.rank.junior"):
+                            @displayRank(LigueRanking.youth(player.ligue), player)
+                            <br/>
+                        }
+                        @Messages("menu.rank.double"):
+                        @displayDoubleRank(LigueRanking.pairs(player.ligue), player)
+
+                        <h3>@Messages("menu.intercomite", season)</h3>
+                        @Messages("menu.rank.team"):
+                        @displayTeamRank(InterComiteRanking.team(player.ligue), player)
+                        <br/>
+                        @if(player.lady) {
+                            @Messages("menu.rank.women"):
+                            @displayRank(InterComiteRanking.ladies(player.ligue), player)
+                        } else {
+                            @Messages("menu.rank.men"):
+                            @displayRank(InterComiteRanking.mens(player.ligue), player)
+                        }
+                        <br/>
+                        @if(player.youth) {
+                            @Messages("menu.rank.junior"):
+                            @displayRank(InterComiteRanking.youth(player.ligue), player)
+                            <br/>
+                        }
+                        @Messages("menu.rank.double"):
+                        @displayDoubleRank(InterComiteRanking.pairs(player.ligue), player)
+
+                        <h3>@Messages("menu.comite", season)</h3>
+                        @Messages("menu.rank.simple"):
+                        @displayRank(ComiteRanking.single(player.comite), player)
+                        @if(player.lady) {
+                            <br/>
+                            @Messages("menu.rank.women"):
+                            @displayRank(ComiteRanking.ladies(player.comite), player)
+                        }
+                        <br/>
+                        @if(player.youth) {
+                            @Messages("menu.rank.junior"):
+                            @displayRank(ComiteRanking.youth(player.comite), player)
+                            <br/>
+                        }
+                        @Messages("menu.rank.double"):
+                        @displayDoubleRank(ComiteRanking.pairs(player.comite), player)
+                    </fieldset>
+                </div>
+            </form>
+        </div>
+    }
+}

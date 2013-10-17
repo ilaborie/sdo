@@ -340,11 +340,9 @@ object Data {
     val license = data.getOrElse("license", "license ###").toString
     val firstName = data.getOrElse("firstname", "???").asInstanceOf[String]
     val lastName = data.getOrElse("lastname", "???").asInstanceOf[String]
-    val surname: Option[String] = {
-      if (data.contains("surename")) YamlParser.toOption(data, "surename")
-      else if (data.contains("commonname")) YamlParser.toOption(data, "commonname")
-      else None
-    }
+    val commonName = YamlParser.toOption(data, "commonname")
+    val surname = YamlParser.toOption(data, "surename")
+
     val isFeminine = data.contains("feminine")
     val isJunior = data.contains("junior")
 
@@ -353,7 +351,7 @@ object Data {
     val facebook: Option[String] = YamlParser.toOption(data, "facebook")
     val google: Option[String] = YamlParser.toOption(data, "google")
 
-    LicensedPlayer(license, s"$lastName $firstName", surname, lady = isFeminine, youth = isJunior,
+    LicensedPlayer(license, firstName, lastName, commonName, surname, lady = isFeminine, youth = isJunior,
       emails = emails, twitter = twitter, facebook = facebook, google = google)
   }
 
@@ -362,7 +360,7 @@ object Data {
    * @param data data
    * @return email
    */
-  private def readEmails(data: Map[String, Any]): Set[EMail] = data.get("emails") match {
+  private def readEmails(data: Map[String, Any]): Set[EMail] = data.get("email") match {
     case None => Set()
     case Some(x) =>
       var result = for (email <- x.asInstanceOf[String].split(",")) yield EMail(email.trim)

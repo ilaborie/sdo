@@ -53,7 +53,7 @@ object RankingLigue extends Controller with LigueController {
    */
   def ligueSingle(ligueShortName: String) = SecuredLigueAction(ligueShortName, ajaxCall = true) {
     (ligue, user) =>
-      Ok(views.html.ligue.single(ligue, LigueRanking.single(ligue), User(user)))
+      Ok(views.html.ligue.single(ligue, LigueRanking.mens(ligue), User(user)))
   }
 
   /**
@@ -64,12 +64,9 @@ object RankingLigue extends Controller with LigueController {
   def ligueSinglePDF(ligueShortName: String) = LigueAsyncAction(ligueShortName) {
     ligue =>
       PDF.ok(pdf.html.rankingTable.render(
-        LigueRanking.single(ligue),
-        Messages("rank.single.ligue.caption", ligue.name, Season.currentSeason),
-        LigueRanking.qualifyForMasterSingle
-      ))
+        LigueRanking.mens(ligue),
+        Messages("rank.single.ligue.caption", ligue.name, Season.currentSeason)))
   }
-
 
   /**
    * Ligue Feminine
@@ -90,9 +87,7 @@ object RankingLigue extends Controller with LigueController {
     (ligue, user) =>
       PDF.ok(pdf.html.rankingTable.render(
         LigueRanking.ladies(ligue),
-        Messages("rank.feminine.ligue.caption", ligue.name, Season.currentSeason),
-        LigueRanking.qualifyForMasterLadies
-      ))
+        Messages("rank.feminine.ligue.caption", ligue.name, Season.currentSeason)))
   }
 
   /**
@@ -114,9 +109,7 @@ object RankingLigue extends Controller with LigueController {
     (ligue, user) =>
       PDF.ok(pdf.html.rankingTable.render(
         LigueRanking.youth(ligue),
-        Messages("rank.junior.ligue.caption", ligue.name, Season.currentSeason),
-        LigueRanking.qualifyForMasterYouth
-      ))
+        Messages("rank.junior.ligue.caption", ligue.name, Season.currentSeason)))
   }
 
   /**
@@ -138,9 +131,7 @@ object RankingLigue extends Controller with LigueController {
     (ligue, user) =>
       PDF.ok(pdf.html.rankingTable.render(
         LigueRanking.pairs(ligue),
-        Messages("rank.double.ligue.caption", ligue.name, Season.currentSeason),
-        LigueRanking.qualifyForMasterPairs
-      ))
+        Messages("rank.double.ligue.caption", ligue.name, Season.currentSeason)))
   }
 
 }

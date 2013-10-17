@@ -25,7 +25,7 @@ package util
  * EMail
  * @param email the email
  */
-case class EMail(email:String) {
+case class EMail(email: String) {
   require(email.contains('@'))
 
   val name = email.split('@')(0)

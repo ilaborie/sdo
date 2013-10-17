@@ -52,7 +52,7 @@ case class TeamMatchDetail(team: Team,
     val replace = substitute.get.replace.get
     val replaceBy = substitute.get.player
     participant match {
-      case LicensedPlayer(_, _, _, _, _, _, _, _, _) =>
+      case lp:LicensedPlayer=>
         if (participant == replace) replaceBy else participant
       case TeamPair(p1, p2) =>
         if (p1 == replace) TeamPair(replaceBy, p2)

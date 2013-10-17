@@ -1,4 +1,4 @@
-@(ranking: model.rank.SeasonParticipantRanking, caption: String, qualify: Int => Boolean)
+@(ranking: model.rank.SeasonParticipantRanking, caption: String)
 
 @import model.orga._
 
@@ -51,7 +51,7 @@
         <tr class="@if(index % 2 == 0) {odd} else {even}">
             <td>
             @defining(ranking.getPosition(rank)) { pos =>
-                @if(qualify(pos)) {
+                @if(ranking.qualified(pos)) {
                     <strong>@pos</strong>
                 } else {
                     @pos

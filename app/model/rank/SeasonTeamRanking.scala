@@ -40,6 +40,7 @@ case class SeasonTeamRanking(champ: TeamChampionship, teamRanks: Seq[TeamRank]) 
   def getPosition(rank: TeamRank): Int = {
     cache.getOrElseUpdate(rank, 1 + teamRanks.count(_.betterThan(rank)))
   }
+  def getPosition(team: Team): Option[Int] = teamRanks.find(_.team==team).map(getPosition)
 }
 
 object SeasonTeamRanking {

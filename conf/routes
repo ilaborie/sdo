@@ -86,6 +86,9 @@ GET         /ligues/:ligue/team/day/:day/:team1/:team2            controllers.De
 GET         /ligues/:ligue/team/day/:day/:team1/:team2/pdf        controllers.Detail.teamPDF(ligue,day:Int,team1,team2)
 POST        /ligues/:ligue/team/result                            controllers.Detail.result(ligue)
 
+# User
+GET         /user/profile                                         controllers.Users.profile
+
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file                                         controllers.Assets.at(path="/public", file)
 
