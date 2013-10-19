@@ -30,13 +30,16 @@ object Users extends Controller with SecureSocial {
       val identity = request.user
       val user = User(identity)
       if (user.isAdmin) {
-        val players: Seq[Player] = Ligue.players ++ Ligue.nlPlayers
-        val pairs: Seq[Pair] = for {
+        val players = Ligue.players ++ Ligue.nlPlayers
+        val pairs = for {
           ligue <- Ligue.ligues
           tour <- ligue.tournaments
           pair <- tour.getPairs
         } yield pair
-        Ok(views.html.user.admin(players, pairs))
+
+        val allPairs: List[Pair] = pairs.toSet.toList
+
+        Ok(views.html.user.admin(players, allPairs.sortBy(_.name)))
       }
       else Forbidden("Only Administrator Granted !")
   }
