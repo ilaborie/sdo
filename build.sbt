@@ -92,7 +92,7 @@ resolvers ++= Seq(
     )
 
 scalacOptions ++= Seq("-deprecation", "-encoding", "UTF-8", "-feature", "-target:jvm-1.6", "-unchecked",
-    "-Ywarn-adapted-args", "-Ywarn-value-discard", "-Xlint")
+    "-Ywarn-adapted-args", "-Ywarn-value-discard", "-Xlint", "-language:reflectiveCalls")
 
 // Custom Less entry points
 lessEntryPoints <<= baseDirectory(_ / "app" / "assets" / "style" ** "main*.less")
