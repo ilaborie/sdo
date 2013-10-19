@@ -38,6 +38,8 @@ sealed abstract class User {
   def id: Identity
 
   def currentPlayer:Option[Player] = None
+
+  val isAdmin = false
 }
 
 object User {
@@ -99,4 +101,5 @@ case class Guest(id: Identity) extends User
 
 case class LocalUser(id: Identity, player: LicensedPlayer) extends User {
   override val currentPlayer = Some(player)
+  override val isAdmin = player.emails.contains(EMail("ilaborie@gmail.com"))
 }

@@ -1,0 +1,55 @@
+@(players: Seq[model.orga.Player], pairs: Seq[model.orga.Pair])
+
+@import model.orga._
+
+@layout.main("Admin") {
+    <div class="container well well-small">
+        <table class="table table-condensed table-striped table-hover table-bordered">
+            <caption>Joueurs SDO</caption>
+            <thead>
+                <tr>
+                    <th class="left">Nom Complet</th>
+                    <th class="left">Nom</th>
+                    <th class="left">Prénom</th>
+                    <th>License</th>
+                    <th>Catégorie</th>
+                    <th>Club</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for(player <- players) {
+                <tr>
+                    <td class="left">@player.toString</td>
+                    <td class="left">@player.lastName</td>
+                    <td class="left">@player.firstName</td>
+                    <td>@player.licenseNumber</td>
+                    <td>@player.category</td>
+                    <td>@player.clubAsString</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+        <hr>
+        <table class="table table-condensed table-striped table-hover table-bordered">
+            <caption>Doublettes SDO</caption>
+            <thead>
+                <tr>
+                    <th class="left">Joueur 1</th>
+                    <th class="left">Joueur 2</th>
+                    <th class="left">Doublette</th>
+                    <th">Club(s)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for(pair <- pairs) {
+                <tr>
+                    <td class="left">@pair.player1</td>
+                    <td class="left">@pair.player2</td>
+                    <td class="left">@pair</td>
+                    <td>@pair.clubAsString</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

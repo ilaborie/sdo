@@ -13,6 +13,11 @@
     <ul class="dropdown-menu">
         @user match {
             case LocalUser(id, player) => {
+                @if(user.isAdmin) {
+                    <li>
+                        <a tabindex="-1" href="@routes.Users.admin()">Admin</a>
+                    </li>
+                }
                 <li>
                     <a tabindex="-1" href="@routes.Users.profile()">
                     @Messages("menu.user.profile")

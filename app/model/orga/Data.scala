@@ -47,7 +47,8 @@ object Data {
     val nlList = YamlParser.parseFile(nlFile).asInstanceOf[JavaList[JavaMap[String, String]]]
     logger.trace(s"Read $nlList")
 
-    for (nl <- nlList.toList) yield readNotLicensiedPlayer(nl.toMap)
+    val list = for (nl <- nlList.toList) yield readNotLicensiedPlayer(nl.toMap)
+    list.sortBy(_.name)
   }
 
   /**
@@ -66,7 +67,7 @@ object Data {
     val facebook: Option[String] = data.get("facebook")
     val google: Option[String] = data.get("google")
 
-    NotLicensedPlayer(s"$lastName $firstName", lady = isFeminine, youth = isJunior,
+    NotLicensedPlayer(firstName, lastName, lady = isFeminine, youth = isJunior,
       emails = emails, twitter = twitter, facebook = facebook, google = google)
   }
 
@@ -325,10 +326,10 @@ object Data {
     val shortname = info("shortname").asInstanceOf[String]
     val capitain = info("capitain").asInstanceOf[String]
     val playerList = info("players").asInstanceOf[JavaList[JavaMap[String, String]]].toList
-    val players = for (player <- playerList) yield createLicensedPlayer(player.toMap)
+    val players: List[LicensedPlayer] = for (player <- playerList) yield createLicensedPlayer(player.toMap)
     val omit = info.contains("omit")
 
-    Team(name, shortname, capitain, players, omit)
+    Team(name, shortname, capitain, players.sortBy(_.name), omit)
   }
 
   /**

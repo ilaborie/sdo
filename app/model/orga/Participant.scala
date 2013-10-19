@@ -44,25 +44,32 @@ sealed trait Player extends Participant {
 
   lazy val men: Boolean = !lady
 
+  def clubAsString:String
 
+  def licenseNumber: String
+  def firstName: String
+  def lastName: String
+  def category: String = if (lady) "F" else "M"
 }
 
 /**
  * Not Licensed player
- * @param name name
  * @param youth is youth
  * @param lady is ladies
  */
-case class NotLicensedPlayer(name: String,
+case class NotLicensedPlayer(override val firstName: String,
+                             override val lastName: String,
                              youth: Boolean = false,
                              lady: Boolean = false,
                              emails: Set[EMail] = Set(),
                              twitter: Option[String] = None,
                              facebook: Option[String] = None,
                              google: Option[String] = None) extends Player {
+  val name = s"$lastName $firstName"
   override def toString = name
 
   def clubAsString = "NL"
+  def licenseNumber = ""
 }
 
 object NotLicensedPlayer {
@@ -86,9 +93,9 @@ sealed trait TeamParticipant extends Participant {
  * @param youth youth
  * @param lady ladies
  */
-case class LicensedPlayer(licenseNumber: LicenseNumber,
-                          firstName: String,
-                          lastName: String,
+case class LicensedPlayer(override val licenseNumber: LicenseNumber,
+                          override val firstName: String,
+                          override val lastName: String,
                           commonName: Option[String] = None,
                           surname: Option[String] = None,
                           youth: Boolean = false,

@@ -88,6 +88,7 @@ POST        /ligues/:ligue/team/result                            controllers.De
 
 # User
 GET         /user/profile                                         controllers.Users.profile
+GET         /user/admin                                           controllers.Users.admin
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file                                         controllers.Assets.at(path="/public", file)
