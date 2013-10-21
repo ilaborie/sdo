@@ -115,7 +115,7 @@ object Global extends GlobalSettings {
   }
 
   override def onStop(app: Application) = {
-    // FIXME maybe Close Mongo Connection
+    // TODO maybe Close Mongo Connection
   }
 
 }

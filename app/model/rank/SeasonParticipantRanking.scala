@@ -231,18 +231,33 @@ case class ParticipantRank(participant: Participant, results: Map[Tournament, To
 
   def isCurrent(oPlayer: Option[Player]): Boolean = oPlayer.isDefined && participant.contains(oPlayer.get)
 
-  lazy val points: Int = {
-    for ((tournament, result) <- results) yield tournament.getPoint(result)
-  }.sum
+  lazy val tournamentResults: List[(Int, Int)] = for ((tournament, result) <- results.toList if result != NoParticipation) yield (tournament.getPriority, - tournament.getPoint(result))
+  lazy val points: Int = {for ((tournament, result) <- results) yield tournament.getPoint(result)}.sum
 
   def betterSubLevel(rank: ParticipantRank): Boolean = {
-    // iterate throw Tournaments sorted by TournamentRank
-    // : Map[TournamentRank, List[TournamentResult]]
-    // getPositions List
-    // Compare List
-
-    // FIXME implements
-    false
+    def compareList(me: List[(Int, Int)], other: List[(Int, Int)]): Boolean = {
+      if (me.isEmpty && other.isEmpty) true
+      else if (me.isEmpty && !other.isEmpty) false
+      else if (!me.isEmpty && other.isEmpty) true
+      else {
+        val myHead = me.head
+        val otherHead = other.head
+        if (myHead._1 < otherHead._1) true
+        else if (myHead._1 > otherHead._1) false
+        else if (myHead._2 < otherHead._2) true
+        else if (myHead._2 > otherHead._2) false
+        else compareList(me.tail, other.tail)
+      }
+    }
+    val res = compareList(tournamentResults.sorted, rank.tournamentResults.sorted)
+    if (participant.name.contains("Sandrini") || rank.participant.name.contains("Sandrini")) {
+      println( s"""|
+    |Check SubLevel:
+    |  $participant: ${tournamentResults.sorted}
+    |  ${rank.participant}: ${rank.tournamentResults.sorted}
+    |  => $res""".stripMargin)
+    }
+    res
   }
 
   def betterThan(other: ParticipantRank): Boolean = (this.points > other.points) || (

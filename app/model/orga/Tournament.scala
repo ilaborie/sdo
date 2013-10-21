@@ -53,6 +53,9 @@ sealed trait Tournament {
   }
 
   def getPairs: Seq[Pair]
+
+  // higher is better
+  def getPriority: Int
 }
 
 object Tournament {
@@ -92,32 +95,6 @@ sealed trait LigueTournament extends Tournament {
 }
 
 /**
- * Open Ligue
- */
-case class OpenLigue(date: LocalDate, location: Location, override val file: String, override val info: Option[Info] = None) extends BaseTournament(file) with LigueTournament {
-
-  override def toString = Messages("rank.ligue.open.title", ligue.name)
-
-  override val isSimple = true
-
-  val place = Some(location)
-
-  lazy val ligue = Ligue.ligues.find(_.opens.contains(this)).get
-
-  val shortName = s"OL-${DateTimeFormat.forPattern("yyyyMMdd").print(date)}"
-
-  def getPoint(position: TournamentResult): Int = position match {
-    case Winner => 16
-    case RunnerUp => 11
-    case SemiFinal => 7
-    case QuarterFinal => 4
-    case EighthFinal => 2
-    case NoParticipation => 0
-    case _ => 1
-  }
-}
-
-/**
  * Coupe Ligue
  */
 case class CoupeLigue(date: LocalDate, location: Location, override val file: String, override val info: Option[Info] = None) extends BaseTournament(file) with LigueTournament {
@@ -143,6 +120,35 @@ case class CoupeLigue(date: LocalDate, location: Location, override val file: St
     case _ => 0
   }
 
+  val getPriority = 0
+
+}
+
+/**
+ * Open Ligue
+ */
+case class OpenLigue(date: LocalDate, location: Location, override val file: String, override val info: Option[Info] = None) extends BaseTournament(file) with LigueTournament {
+
+  override def toString = Messages("rank.ligue.open.title", ligue.name)
+
+  override val isSimple = true
+
+  val place = Some(location)
+
+  lazy val ligue = Ligue.ligues.find(_.opens.contains(this)).get
+
+  val shortName = s"OL-${DateTimeFormat.forPattern("yyyyMMdd").print(date)}"
+
+  def getPoint(position: TournamentResult): Int = position match {
+    case Winner => 16
+    case RunnerUp => 11
+    case SemiFinal => 7
+    case QuarterFinal => 4
+    case EighthFinal => 2
+    case NoParticipation => 0
+    case _ => 1
+  }
+  val getPriority = 2
 }
 
 /**
@@ -169,6 +175,8 @@ case class MasterLigue(date: LocalDate, location: Location, override val file: S
     case RoundRobin(pos) => if (pos == 3) 4 else if (pos == 4) 2 else 0
     case _ => 0
   }
+
+  val getPriority = 1
 }
 
 /**
@@ -184,7 +192,8 @@ case class MasterLigueTeam(date: LocalDate, location: Location, override val inf
 
   def getPoint(position: TournamentResult): Int = 0
 
-  lazy val getPairs: Seq[Pair] = Nil // FIXME Implements
+  lazy val getPairs: Seq[Pair] = Nil
+  val getPriority = 0
 }
 
 /**
@@ -200,7 +209,8 @@ case class CoupeLigueTeam(date: LocalDate, location: Location, override val info
 
   def getPoint(position: TournamentResult): Int = 0
 
-  lazy val getPairs: Seq[Pair] = Nil // FIXME Implements
+  lazy val getPairs: Seq[Pair] = Nil
+  val getPriority = 0
 }
 
 /**
@@ -255,6 +265,8 @@ case class ComiteRank(date: LocalDate) extends LigueTournament {
 
     pairs.toSet.toSeq
   }
+
+  val getPriority = 3
 }
 
 /**
@@ -313,6 +325,8 @@ case class NationalTournament(shortName: String,
   }
 
   lazy val getPairs: Seq[Pair] = pairs.keySet.map(_.asInstanceOf[Pair]).toSeq
+
+  val getPriority = 4
 }
 
 object NationalTournament {
@@ -355,6 +369,8 @@ case class CoupeComite(date: LocalDate, location: Location, override val file: S
     case RoundRobin(pos) => if (pos == 3) 4 else if (pos == 4) 2 else 1
     case _ => 0
   }
+
+  val getPriority = 0
 }
 
 /**
@@ -383,6 +399,7 @@ case class OpenClub(date: LocalDate, location: Location, override val file: Stri
     case _ => 0
   }
 
+  val getPriority = 1
 }
 
 

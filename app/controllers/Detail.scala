@@ -124,7 +124,7 @@ object Detail extends Controller with LigueController {
 
           val body = emails.html.teamResult(json, result, team1, t1, team2, t2)
           Mailer.sendEmail("[SDO] New Result", "ilaborie@gmail.com", body)
-          // FIXME return a PDF...
+          // TODO maybe return a PDF...
           Ok( """{ok:true}""")
       }.getOrElse {
         BadRequest("Expecting Json data")
