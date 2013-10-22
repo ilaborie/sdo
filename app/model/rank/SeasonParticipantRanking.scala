@@ -249,15 +249,7 @@ case class ParticipantRank(participant: Participant, results: Map[Tournament, To
         else compareList(me.tail, other.tail)
       }
     }
-    val res = compareList(tournamentResults.sorted, rank.tournamentResults.sorted)
-    if (participant.name.contains("Sandrini") || rank.participant.name.contains("Sandrini")) {
-      println( s"""|
-    |Check SubLevel:
-    |  $participant: ${tournamentResults.sorted}
-    |  ${rank.participant}: ${rank.tournamentResults.sorted}
-    |  => $res""".stripMargin)
-    }
-    res
+    compareList(tournamentResults.sorted, rank.tournamentResults.sorted)
   }
 
   def betterThan(other: ParticipantRank): Boolean = (this.points > other.points) || (
