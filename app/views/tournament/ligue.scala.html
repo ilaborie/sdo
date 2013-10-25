@@ -1,4 +1,4 @@
-@(tournament: model.orga.LigueTournament, user: model.user.User)
+@(tournament: model.orga.LigueTournament with model.orga.BaseTournament, user: model.user.User)
 
 <div class="well well-small">
     <div class="page-header">
@@ -6,13 +6,56 @@
             @tournament
             <small>@tags.date(tournament.date)</small>
         </h1>
-        @tournament.place.map(tags.location(_))
+        @if(tournament.isPlayed) {
+            <ul class="nav nav-tabs">
+                @if(tournament.isSimple) {
+                    <li class="active"><a href="#simple" data-toggle="tab">@Messages("menu.rank.simple")</a></li>
+                } else {
+                    <li class="active"><a href="#simple" data-toggle="tab">@Messages("menu.rank.men")</a></li>
+                }
+                <li><a href="#ladies" data-toggle="tab">@Messages("menu.rank.women")</a></li>
+                <li><a href="#youth" data-toggle="tab">@Messages("menu.rank.junior")</a></li>
+                <li><a href="#pairs" data-toggle="tab">@Messages("menu.rank.double")</a></li>
+            </ul>
 
-        @tournament.info.map(tags.info(_))
-
-        <em>
-            Si le tournoi n'a pas encore eu lieu => Formulaire d'inscription<br>
-            Sinon tableau des résultats
-        </em>
+            <div class="tab-content">
+                <div class="tab-pane active" id="simple">
+                @tournament.mens match {
+                    case None => {@Messages("rank.no.results")}
+                    case Some(result) => {
+                        @results(tournament,result,user)
+                    }
+                }
+                </div>
+                <div class="tab-pane" id="ladies">
+                @tournament.ladies match {
+                    case None => {@Messages("rank.no.results")}
+                    case Some(result) => {
+                        @results(tournament,result,user)
+                    }
+                }
+                </div>
+                <div class="tab-pane" id="youth">
+                @tournament.youth match {
+                    case None => {@Messages("rank.no.results")}
+                    case Some(result) => {
+                        @results(tournament,result,user)
+                    }
+                }
+                </div>
+                <div class="tab-pane" id="pairs">
+                @tournament.pairs match {
+                    case None => {@Messages("rank.no.results")}
+                    case Some(result) => {
+                        @resultsPairs(tournament,result,user)
+                    }
+                }
+                </div>
+            </div>
+        } else {
+            @tournament.place.map(tags.location(_))
+            @tournament.info.map(tags.info(_))
+            <em>Ici, il y aura peut être un formulaire d'inscription</em>
+        }
     </div>
 </div>

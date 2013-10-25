@@ -83,7 +83,12 @@ object OrgaLigue extends Controller with LigueController {
   def ligueTournament(ligueShortName: String, tournamentShortName: String) = SecuredLigueAction(ligueShortName, ajaxCall = true) {
     (ligue, user) =>
       ligue.findTournamentByShortName(tournamentShortName) match {
-        case Some(t) => Ok(views.html.tournament.ligue(t, User(user)))
+        case Some(t) => {
+          t match {
+            case bt:BaseTournament => Ok(views.html.tournament.ligue(bt, User(user)))
+            case _ => BadRequest(s"Tournoi de ligue non supporté: $tournamentShortName")
+          }
+        }
         case None => BadRequest(s"Tournoi non connu: $tournamentShortName dans la $ligue")
       }
   }
