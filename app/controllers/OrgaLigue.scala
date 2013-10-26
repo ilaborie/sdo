@@ -47,12 +47,13 @@ object OrgaLigue extends Controller with LigueController {
    * @return ligues page
    */
   def ligues = Action {
-    val today = LocalDate.now
-    val events = model.event.Event.events.filter(_.to.isAfter(today)).take(3)
-    val sdo = Ligue.findByShortName("SDO").get
-    val mpy = Ligue.comites.find(_.shortName == "MPY").get
-    val teg = Ligue.comites.find(_.shortName == "TEG").get
-    Ok(views.html.ligues(sdo, mpy, teg, events))
+    implicit request =>
+      val today = LocalDate.now
+      val events = model.event.Event.events.filter(_.to.isAfter(today)).take(3)
+      val sdo = Ligue.findByShortName("SDO").get
+      val mpy = Ligue.comites.find(_.shortName == "MPY").get
+      val teg = Ligue.comites.find(_.shortName == "TEG").get
+      Ok(views.html.ligues(sdo, mpy, teg, events))
   }
 
   /**
@@ -71,7 +72,8 @@ object OrgaLigue extends Controller with LigueController {
    * @return the ligue page
    */
   def ligueBody(shortName: String) = SecuredLigueAction(shortName, ajaxCall = true) {
-    (ligue, user) => Ok(views.html.ligue.body(ligue, User(user)))
+    (ligue, request) =>
+      Ok(views.html.ligue.body(ligue, User(request))(request))
   }
 
   /**
@@ -85,7 +87,7 @@ object OrgaLigue extends Controller with LigueController {
       ligue.findTournamentByShortName(tournamentShortName) match {
         case Some(t) => {
           t match {
-            case bt:BaseTournament => Ok(views.html.tournament.ligue(bt, User(user)))
+            case bt: BaseTournament => Ok(views.html.tournament.ligue(bt, User(user)))
             case _ => BadRequest(s"Tournoi de ligue non supporté: $tournamentShortName")
           }
         }

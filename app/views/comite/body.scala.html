@@ -1,4 +1,4 @@
-@(comite: model.orga.Comite, user: model.user.User)
+@(comite: model.orga.Comite, user: model.user.User)(implicit request: RequestHeader)
 
 <div class="well well-small">
     <div class="page-header">
@@ -8,7 +8,7 @@
     @comite.info.map(tags.info(_))
     </div>
 
-    <a class="btn btn-primary pull-right" target="_blank" href="@routes.RankingComite.comitePDF(comite.ligue.shortName,comite.shortName).toString.replaceFirst("https://","http://")">
+    <a class="btn btn-primary pull-right" target="_blank" href="@routes.RankingComite.comitePDF(comite.ligue.shortName,comite.shortName).absoluteURL(secure = false)">
         <i class="glyphicons download_alt"></i>
         @Messages("rank.download.pdf")
     </a>

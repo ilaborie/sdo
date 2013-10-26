@@ -1,4 +1,4 @@
-@(ligue: model.orga.Ligue, ranking: model.rank.SeasonLadiesRanking, user: model.user.User)
+@(ligue: model.orga.Ligue, ranking: model.rank.SeasonLadiesRanking, user: model.user.User)(implicit request: RequestHeader)
 
 @tags.ranking(ranking,
     Messages("rank.feminine.ligue.caption", ligue.name, ranking.season),

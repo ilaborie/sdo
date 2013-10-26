@@ -55,8 +55,8 @@ object RankingComite extends Controller with ComiteController {
    * @return single ranking
    */
   def comiteSingle(ligueShortName: String, comiteShortName: String) = SecuredComiteAction(ligueShortName, comiteShortName, ajaxCall = true) {
-    (comite, user) =>
-      Ok(views.html.comite.single(comite, ComiteRanking.single(comite), User(user)))
+    (comite, request) =>
+      Ok(views.html.comite.single(comite, ComiteRanking.single(comite), User(request))(request))
   }
 
   /**
@@ -79,8 +79,8 @@ object RankingComite extends Controller with ComiteController {
    * @return ladies ranking
    */
   def comiteLadies(ligueShortName: String, comiteShortName: String) = SecuredComiteAction(ligueShortName, comiteShortName, ajaxCall = true) {
-    (comite, user) =>
-      Ok(views.html.comite.ladies(comite, ComiteRanking.ladies(comite), User(user)))
+    (comite, request) =>
+      Ok(views.html.comite.ladies(comite, ComiteRanking.ladies(comite), User(request))(request))
   }
 
   /**
@@ -103,8 +103,8 @@ object RankingComite extends Controller with ComiteController {
    * @return youth ranking
    */
   def comiteYouth(ligueShortName: String, comiteShortName: String) = SecuredComiteAction(ligueShortName, comiteShortName, ajaxCall = true) {
-    (comite, user) =>
-      Ok(views.html.comite.youth(comite, ComiteRanking.youth(comite), User(user)))
+    (comite, request) =>
+      Ok(views.html.comite.youth(comite, ComiteRanking.youth(comite), User(request))(request))
   }
 
   /**
@@ -127,8 +127,8 @@ object RankingComite extends Controller with ComiteController {
    * @return doublette ranking
    */
   def comitePairs(ligueShortName: String, comiteShortName: String) = SecuredComiteAction(ligueShortName, comiteShortName, ajaxCall = true) {
-    (comite, user) =>
-      Ok(views.html.comite.pairs(comite, ComiteRanking.pairs(comite), User(user)))
+    (comite, request) =>
+      Ok(views.html.comite.pairs(comite, ComiteRanking.pairs(comite), User(request))(request))
   }
 
   /**
@@ -151,8 +151,8 @@ object RankingComite extends Controller with ComiteController {
    * @return team ranking
    */
   def comiteTeam(ligueShortName: String, comiteShortName: String) = SecuredComiteAction(ligueShortName, comiteShortName, ajaxCall = true) {
-    (comite, user) =>
-      Ok(views.html.comite.team(comite, ComiteRanking.team(comite), User(user)))
+    (comite, request) =>
+      Ok(views.html.comite.team(comite, ComiteRanking.team(comite), User(request))(request))
   }
 
   /**

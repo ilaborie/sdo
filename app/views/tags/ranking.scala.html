@@ -1,10 +1,10 @@
-@(ranking: model.rank.SeasonParticipantRanking, caption: String, href: Call, player:Option[model.orga.Player])
+@(ranking: model.rank.SeasonParticipantRanking, caption: String, href: Call, player:Option[model.orga.Player])(implicit request: RequestHeader)
 @import model.orga._
 
 <table class="table table-striped table-bordered rank">
     <caption>
         @caption
-        <a class="btn btn-primary pull-right" target="_blank" href="@href.toString.replaceFirst("https://","http://")">
+        <a class="btn btn-primary pull-right" target="_blank" href="@href.absoluteURL(secure = false)">
             <i class="glyphicons download_alt"></i!>
             @Messages("rank.download.pdf")
         </a>

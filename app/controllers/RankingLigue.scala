@@ -52,8 +52,8 @@ object RankingLigue extends Controller with LigueController {
    * @return single ranking
    */
   def ligueMens(ligueShortName: String) = SecuredLigueAction(ligueShortName, ajaxCall = true) {
-    (ligue, user) =>
-      Ok(views.html.ligue.mens(ligue, LigueRanking.mens(ligue), User(user)))
+    (ligue, request) =>
+      Ok(views.html.ligue.mens(ligue, LigueRanking.mens(ligue), User(request))(request))
   }
 
   /**
@@ -74,8 +74,8 @@ object RankingLigue extends Controller with LigueController {
    * @return ladies ranking
    */
   def ligueLadies(ligueShortName: String) = SecuredLigueAction(ligueShortName, ajaxCall = true) {
-    (ligue, user) =>
-      Ok(views.html.ligue.ladies(ligue, LigueRanking.ladies(ligue), User(user)))
+    (ligue, request) =>
+      Ok(views.html.ligue.ladies(ligue, LigueRanking.ladies(ligue), User(request))(request))
   }
 
   /**
@@ -96,8 +96,8 @@ object RankingLigue extends Controller with LigueController {
    * @return youth ranking
    */
   def ligueYouth(ligueShortName: String) = SecuredLigueAction(ligueShortName, ajaxCall = true) {
-    (ligue, user) =>
-      Ok(views.html.ligue.youth(ligue, LigueRanking.youth(ligue), User(user)))
+    (ligue, request) =>
+      Ok(views.html.ligue.youth(ligue, LigueRanking.youth(ligue), User(request))(request))
   }
 
   /**
@@ -118,8 +118,8 @@ object RankingLigue extends Controller with LigueController {
    * @return pairs ranking
    */
   def liguePairs(ligueShortName: String) = SecuredLigueAction(ligueShortName, ajaxCall = true) {
-    (ligue, user) =>
-      Ok(views.html.ligue.pairs(ligue, LigueRanking.pairs(ligue), User(user)))
+    (ligue, request) =>
+      Ok(views.html.ligue.pairs(ligue, LigueRanking.pairs(ligue), User(request))(request))
   }
 
   /**

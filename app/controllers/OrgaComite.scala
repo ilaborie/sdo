@@ -43,8 +43,8 @@ object OrgaComite extends Controller with ComiteController {
   }
 
   def comiteBody(ligueShortName: String, comiteShortName: String) = SecuredComiteAction(ligueShortName, comiteShortName, ajaxCall = true) {
-    (comite, user) =>
-      Ok(views.html.comite.body(comite, User(user)))
+    (comite, request) =>
+      Ok(views.html.comite.body(comite, User(request))(request))
   }
 
   /**
