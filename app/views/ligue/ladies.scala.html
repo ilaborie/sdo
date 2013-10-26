@@ -2,5 +2,5 @@
 
 @tags.ranking(ranking,
     Messages("rank.feminine.ligue.caption", ligue.name, ranking.season),
-    s"./${ligue.shortName}/ladies.pdf",
+    routes.RankingLigue.ligueLadiesPDF(ligue.shortName),
     user.currentPlayer)

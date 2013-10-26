@@ -1,7 +1,6 @@
 @(comite: model.orga.Comite, ranking: model.rank.SeasonLadiesRanking, user: model.user.User)
-@import model.rank._
 
 @tags.ranking(ranking,
     Messages("rank.feminine.comite.caption", comite.name,ranking.season),
-    s"./${comite.shortName}/ladies.pdf",
+    routes.RankingComite.comiteLadiesPDF(comite.ligue.shortName, comite.shortName),
     user.currentPlayer)

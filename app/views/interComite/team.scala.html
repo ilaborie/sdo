@@ -19,7 +19,8 @@
 
 <hr>
 @tags.rankTeamTable(Messages("rank.team.interComite.caption", ranking.champ.season),
-    ranking, "./"+ ligue.shortName,
+    ranking,
+    routes.RankingInterComite.interComiteTeamPDF(ligue.shortName),
     user.currentPlayer)
 <hr>
 @for(day <- ranking.champ.days) {

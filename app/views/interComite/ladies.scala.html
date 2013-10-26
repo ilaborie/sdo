@@ -3,5 +3,5 @@
 
 @tags.ranking(ranking,
     Messages("rank.feminine.interComite.caption", ligue.name,ranking.season),
-    s"./${ligue.shortName}/ic-ladies.pdf",
+    routes.RankingInterComite.interComiteLadiesPDF(ligue.shortName),
     user.currentPlayer)

@@ -3,5 +3,5 @@
 
 @tags.ranking(ranking,
     Messages("rank.junior.ligue.caption", ligue.name,ranking.season),
-    s"./${ligue.shortName}/youth.pdf",
+    routes.RankingLigue.ligueYouthPDF(ligue.shortName),
     user.currentPlayer)

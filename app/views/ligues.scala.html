@@ -51,7 +51,7 @@
                 </div>
                 <div class="span6">
                     <div class="homelink">
-                        <a href="@routes.RankingLigue.liguePDF(sdo.shortName)" target="_blank">
+                        <a href="@routes.RankingLigue.liguePDF(sdo.shortName).toString.replaceFirst("https://","http://")" target="_blank">
                             <div class="row-fluid">
                                 <div class="span2"><i class="glyphicons podium"></i> </div>
                                 <div class="span10">@Messages("rank.ligue.ranking", sdo.name, Season.currentSeason)</div>
@@ -73,7 +73,7 @@
                 </div>
                 <div class="span6">
                     <div class="homelink">
-                        <a href="@routes.RankingComite.comitePDF(sdo.shortName,mpy.shortName)" target="_blank">
+                        <a href="@routes.RankingComite.comitePDF(sdo.shortName,mpy.shortName).toString.replaceFirst("https://","http://")" target="_blank">
                             <div class="row-fluid">
                                 <div class="span2"><i class="glyphicons podium"></i> </div>
                                 <div class="span10">@Messages("rank.comite.ranking", mpy.name, Season.currentSeason)</div>
@@ -95,7 +95,7 @@
                 </div>
                 <div class="span6">
                     <div class="homelink">
-                        <a href="@routes.RankingComite.comitePDF(sdo.shortName,teg.shortName)" target="_blank">
+                        <a href="@routes.RankingComite.comitePDF(sdo.shortName,teg.shortName).toString.replaceFirst("https://","http://")" target="_blank">
                             <div class="row-fluid">
                                 <div class="span2"><i class="glyphicons podium"></i> </div>
                                 <div class="span10">@Messages("rank.comite.ranking", teg.name, Season.currentSeason)</div>

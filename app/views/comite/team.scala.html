@@ -19,7 +19,8 @@
 
 <hr>
 @tags.rankTeamTable(Messages("rank.team.comite.caption", ranking.champ.season, comite.name),
-    ranking, "./" + comite.shortName,
+    ranking,
+    routes.RankingComite.comiteTeamPDF(comite.ligue.shortName,comite.shortName),
     user.currentPlayer)
 
 <hr>

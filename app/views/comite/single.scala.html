@@ -3,5 +3,5 @@
 
 @tags.ranking(ranking,
     Messages("rank.single.comite.caption", comite.name,ranking.season),
-    s"./${comite.shortName}/single.pdf",
+    routes.RankingComite.comiteSinglePDF(comite.ligue.shortName, comite.shortName),
     user.currentPlayer)

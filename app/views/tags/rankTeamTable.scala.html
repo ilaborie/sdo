@@ -1,11 +1,11 @@
-@(caption: String, ranking: model.rank.SeasonTeamRanking, path:String, player:Option[model.orga.Player])
+@(caption: String, ranking: model.rank.SeasonTeamRanking, path: Call, player:Option[model.orga.Player])
 @import model.orga.Team
 @import model.team.MatchDetail
 
 <table class="table table-striped table-bordered rank team">
     <caption>
         @caption
-        <a class="btn btn-primary pull-right" target="_blank" href="@path/team.pdf">
+        <a class="btn btn-primary pull-right" target="_blank" href="@path.toString.replaceFirst("https://","http://")">
             <i class="glyphicons download_alt"></i>
             @Messages("rank.download.pdf")
         </a>

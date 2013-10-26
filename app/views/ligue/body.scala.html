@@ -8,7 +8,7 @@
         @ligue.info.map(tags.info(_))
     </div>
 
-    <a class="btn btn-primary pull-right" target="_blank" href="./@ligue.shortName/ranking.pdf">
+    <a class="btn btn-primary pull-right" target="_blank" href="@routes.RankingLigue.liguePDF(ligue.shortName).toString.replaceFirst("https://","http://")">
         <i class="glyphicons download_alt"></i>
         @Messages("rank.download.pdf")
     </a>

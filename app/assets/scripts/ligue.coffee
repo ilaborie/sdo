@@ -22,7 +22,7 @@ $ ->
       url = ligue.path + "/body"
       ligue.loadBody url, "#ligue"
     @get "#single", () ->
-      url = ligue.path + "/single"
+      url = ligue.path + "/mens"
       ligue.loadBody url, "#single"
     @get "#ladies", () ->
       url = ligue.path + "/ladies"
@@ -37,7 +37,7 @@ $ ->
       url = ligue.path + "/team"
       ligue.loadBody url, "#team"
     @get "#ic-single", () ->
-      url = ligue.path + "/ic-single"
+      url = ligue.path + "/ic-mens"
       ligue.loadBody url, "#ic-single"
     @get "#ic-ladies", () ->
       url = ligue.path + "/ic-ladies"

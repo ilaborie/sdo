@@ -51,9 +51,9 @@ object RankingLigue extends Controller with LigueController {
    * @param ligueShortName ligue
    * @return single ranking
    */
-  def ligueSingle(ligueShortName: String) = SecuredLigueAction(ligueShortName, ajaxCall = true) {
+  def ligueMens(ligueShortName: String) = SecuredLigueAction(ligueShortName, ajaxCall = true) {
     (ligue, user) =>
-      Ok(views.html.ligue.single(ligue, LigueRanking.mens(ligue), User(user)))
+      Ok(views.html.ligue.mens(ligue, LigueRanking.mens(ligue), User(user)))
   }
 
   /**
@@ -61,7 +61,7 @@ object RankingLigue extends Controller with LigueController {
    * @param ligueShortName ligue
    * @return single ranking
    */
-  def ligueSinglePDF(ligueShortName: String) = LigueAsyncAction(ligueShortName) {
+  def ligueMensPDF(ligueShortName: String) = LigueAsyncAction(ligueShortName) {
     ligue =>
       PDF.ok(pdf.html.rankingTable.render(
         LigueRanking.mens(ligue),

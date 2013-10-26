@@ -52,9 +52,9 @@ object RankingInterComite extends Controller with LigueController {
    * @param ligueShortName ligue
    * @return single ranking
    */
-  def interComiteSingle(ligueShortName: String) = SecuredLigueAction(ligueShortName, ajaxCall = true) {
+  def interComiteMens(ligueShortName: String) = SecuredLigueAction(ligueShortName, ajaxCall = true) {
     (ligue, user) =>
-      Ok(views.html.interComite.single(ligue, InterComiteRanking.mens(ligue), User(user)))
+      Ok(views.html.interComite.mens(ligue, InterComiteRanking.mens(ligue), User(user)))
   }
 
   /**
@@ -62,7 +62,7 @@ object RankingInterComite extends Controller with LigueController {
    * @param ligueShortName ligue
    * @return single ranking
    */
-  def interComiteSinglePDF(ligueShortName: String) = SecuredLigueAsyncAction(ligueShortName) {
+  def interComiteMensPDF(ligueShortName: String) = SecuredLigueAsyncAction(ligueShortName) {
     (ligue, user) =>
       PDF.ok(pdf.html.rankingTable.render(
         InterComiteRanking.mens(ligue),

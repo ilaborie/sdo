@@ -22,7 +22,7 @@ $ ->
       url = comite.path + "/body"
       comite.loadBody url, "#comite"
     @get "#single", () ->
-      url = comite.path + "/single"
+      url = comite.path + "/mens"
       comite.loadBody url, "#single"
     @get "#ladies", () ->
       url = comite.path + "/ladies"
