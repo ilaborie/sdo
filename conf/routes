@@ -42,8 +42,8 @@ GET         /ligues/:ligue/comites/:comite/clubs/:club            controllers.Or
 
 # Ligue Rank
 GET         /ligues/:ligue/ranking.pdf                            controllers.RankingLigue.liguePDF(ligue)
-GET         /ligues/:ligue/single                                 controllers.RankingLigue.ligueMens(ligue)
-GET         /ligues/:ligue/single.pdf                             controllers.RankingLigue.ligueMensPDF(ligue)
+GET         /ligues/:ligue/mens                                   controllers.RankingLigue.ligueMens(ligue)
+GET         /ligues/:ligue/mens.pdf                               controllers.RankingLigue.ligueMensPDF(ligue)
 GET         /ligues/:ligue/ladies                                 controllers.RankingLigue.ligueLadies(ligue)
 GET         /ligues/:ligue/ladies.pdf                             controllers.RankingLigue.ligueLadiesPDF(ligue)
 GET         /ligues/:ligue/youth                                  controllers.RankingLigue.ligueYouth(ligue)
@@ -53,8 +53,8 @@ GET         /ligues/:ligue/pairs.pdf                              controllers.Ra
 
 # Inter-Comite Rank
 GET         /ligues/:ligue/ic-ranking.pdf                         controllers.RankingInterComite.interComitePDF(ligue)
-GET         /ligues/:ligue/ic-single                              controllers.RankingInterComite.interComiteMens(ligue)
-GET         /ligues/:ligue/ic-single.pdf                          controllers.RankingInterComite.interComiteMensPDF(ligue)
+GET         /ligues/:ligue/ic-mens                                controllers.RankingInterComite.interComiteMens(ligue)
+GET         /ligues/:ligue/ic-mens.pdf                            controllers.RankingInterComite.interComiteMensPDF(ligue)
 GET         /ligues/:ligue/ic-ladies                              controllers.RankingInterComite.interComiteLadies(ligue)
 GET         /ligues/:ligue/ic-ladies.pdf                          controllers.RankingInterComite.interComiteLadiesPDF(ligue)
 GET         /ligues/:ligue/ic-youth                               controllers.RankingInterComite.interComiteYouth(ligue)
