@@ -39,7 +39,7 @@ sealed abstract class SeasonParticipantRanking(season: Season, ranks: Seq[Partic
   private val cache = collection.mutable.Map[ParticipantRank, Int]()
 
   def getPosition(rank: ParticipantRank): Int = {
-    cache.getOrElseUpdate(rank, 1 + ranks.count(_.betterThan(rank)))
+    cache.getOrElseUpdate(rank, ranks.count(_.betterThan(rank)))
   }
 
   def getPositions(participant: Participant): Seq[Int] =
@@ -231,8 +231,15 @@ case class ParticipantRank(participant: Participant, results: Map[Tournament, To
 
   def isCurrent(oPlayer: Option[Player]): Boolean = oPlayer.isDefined && participant.contains(oPlayer.get)
 
-  lazy val tournamentResults: List[(Int, Int)] = for ((tournament, result) <- results.toList if result != NoParticipation) yield (tournament.getPriority, - tournament.getPoint(result))
-  lazy val points: Int = {for ((tournament, result) <- results) yield tournament.getPoint(result)}.sum
+  private lazy val tournamentResults: List[(Int, Int)] = {
+    for {
+      (tournament, result) <- results.toList if result != NoParticipation
+    } yield (tournament.getPriority, -tournament.getPoint(result))
+  }.sorted
+
+  lazy val points: Int = {
+    for ((tournament, result) <- results) yield tournament.getPoint(result)
+  }.sum
 
   def betterSubLevel(rank: ParticipantRank): Boolean = {
     def compareList(me: List[(Int, Int)], other: List[(Int, Int)]): Boolean = {
@@ -249,10 +256,11 @@ case class ParticipantRank(participant: Participant, results: Map[Tournament, To
         else compareList(me.tail, other.tail)
       }
     }
-    compareList(tournamentResults.sorted, rank.tournamentResults.sorted)
+    compareList(tournamentResults, rank.tournamentResults)
   }
 
-  def betterThan(other: ParticipantRank): Boolean = (this.points > other.points) || (
-    (this.points == other.points) && betterSubLevel(other))
+  def betterThan(other: ParticipantRank): Boolean =
+    (this.points > other.points) ||
+      ((this.points == other.points) && betterSubLevel(other))
 }
 
