@@ -18,19 +18,19 @@
                 <th class="hidden-phone">
                 @tournament match {
                     case cl: CoupeLigue => {
-                        @Messages("rank.ligue.coupe")
+                        @tags.abbr("rank.ligue.coupe")
                     }
                     case ol: OpenLigue => {
-                        @Messages("rank.ligue.open")
+                        @tags.abbr("rank.ligue.open")
                     }
                     case ml: MasterLigue => {
-                        @Messages("rank.ligue.master")
+                        @tags.abbr("rank.ligue.master")
                     }
                     case cr: ComiteRank => {
-                        @Messages("rank.ligue.comite.rank")
+                        @tags.abbr("rank.ligue.comite.rank")
                     }
                     case nt: NationalTournament => {
-                        @Messages(s"rank.ligue.national.${nt.shortName.toLowerCase}")
+                        @tags.abbr(s"rank.ligue.national.${nt.shortName.toLowerCase}")
                     }
                     case cc: CoupeComite => {
                         <abbr title="@Messages("rank.comite.coupe.title", tournament.maybyComite.get.name)">
