@@ -4,4 +4,5 @@
 @tags.ranking(ranking,
     Messages("rank.junior.comite.caption", comite.name,ranking.season),
     routes.RankingComite.comiteYouthPDF(comite.ligue.shortName, comite.shortName),
-    user.currentPlayer)
+    user.currentPlayer,
+    Youth(comite))

@@ -1,4 +1,4 @@
-@(ranking: model.rank.SeasonParticipantRanking, caption: String)
+@(ranking: model.rank.SeasonParticipantRanking, caption: String, rankType: model.rank.RankingType)
 
 @import model.orga._
 
@@ -63,7 +63,7 @@
             @for(tournament <- ranking.tournaments) {
                 <td>
                 @if(rank.results.contains(tournament)) {
-                    @tournament.getPointAsString(rank.results(tournament))
+                    @tournament.getPointAsString(rank.results(tournament),rankType)
                 }
                 </td>
             }

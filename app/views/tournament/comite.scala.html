@@ -23,7 +23,7 @@
                     @tournament.mens match {
                         case None => {@Messages("rank.no.results")}
                         case Some(result) => {
-                            @results(tournament,result,user)
+                            @results(tournament,result,user, model.rank.Single(tournament.comite))
                         }
                     }
                 </div>
@@ -31,7 +31,7 @@
                     @tournament.ladies match {
                         case None => {@Messages("rank.no.results")}
                         case Some(result) => {
-                            @results(tournament,result,user)
+                            @results(tournament,result,user, model.rank.Ladies(tournament.comite))
                         }
                     }
                 </div>
@@ -39,7 +39,7 @@
                     @tournament.youth match {
                         case None => {@Messages("rank.no.results")}
                         case Some(result) => {
-                            @results(tournament,result,user)
+                            @results(tournament,result,user, model.rank.Youth(tournament.comite))
                         }
                     }
                 </div>
@@ -47,7 +47,7 @@
                     @tournament.pairs match {
                         case None => {@Messages("rank.no.results")}
                         case Some(result) => {
-                            @resultsPairs(tournament,result,user)
+                            @resultsPairs(tournament,result,user, model.rank.Pairs(tournament.comite))
                         }
                     }
                 </div>

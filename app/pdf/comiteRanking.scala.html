@@ -3,12 +3,12 @@
 
 @defining(Messages("rank.comite.ranking", comite.name, season)) { title =>
     @layout.pdf(Some(title), landscape = false) {
-        @rankingPdf(ComiteRanking.single(comite), Messages("rank.single.comite.caption", comite.name, season))
+        @rankingPdf(ComiteRanking.single(comite), Messages("rank.single.comite.caption", comite.name, season), Single(comite))
         <br/>
-        @rankingPdf(ComiteRanking.ladies(comite), Messages("rank.feminine.comite.caption", comite.name, season))
+        @rankingPdf(ComiteRanking.ladies(comite), Messages("rank.feminine.comite.caption", comite.name, season), Ladies(comite))
         <br/>
-        @rankingPdf(ComiteRanking.youth(comite), Messages("rank.junior.comite.caption", comite.name, season))
+        @rankingPdf(ComiteRanking.youth(comite), Messages("rank.junior.comite.caption", comite.name, season), Youth(comite))
         <br/>
-        @rankingPdf(ComiteRanking.pairs(comite), Messages("rank.double.comite.caption", comite.name, season))
+        @rankingPdf(ComiteRanking.pairs(comite), Messages("rank.double.comite.caption", comite.name, season), Pairs(comite))
     }
 }

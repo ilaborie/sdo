@@ -66,7 +66,8 @@ object RankingInterComite extends Controller with LigueController {
     (ligue, user) =>
       PDF.ok(pdf.html.rankingTable.render(
         InterComiteRanking.mens(ligue),
-        Messages("rank.single.interComite.caption", Season.currentSeason)))
+        Messages("rank.single.interComite.caption", Season.currentSeason),
+        MensLicensied(ligue)))
   }
 
   /**
@@ -88,7 +89,8 @@ object RankingInterComite extends Controller with LigueController {
     (ligue, user) =>
       PDF.ok(pdf.html.rankingTable.render(
         InterComiteRanking.ladies(ligue),
-        Messages("rank.feminine.interComite.caption", Season.currentSeason)))
+        Messages("rank.feminine.interComite.caption", Season.currentSeason),
+        LadiesLicensied(ligue)))
   }
 
   /**
@@ -110,7 +112,8 @@ object RankingInterComite extends Controller with LigueController {
     (ligue, user) =>
       PDF.ok(pdf.html.rankingTable.render(
         InterComiteRanking.youth(ligue),
-        Messages("rank.junior.interComite.caption", Season.currentSeason)))
+        Messages("rank.junior.interComite.caption", Season.currentSeason),
+        YouthLicensied(ligue)))
   }
 
   /**
@@ -132,7 +135,8 @@ object RankingInterComite extends Controller with LigueController {
     (ligue, user) =>
       PDF.ok(pdf.html.rankingTable.render(
         InterComiteRanking.pairs(ligue),
-        Messages("rank.double.interComite.caption", Season.currentSeason)))
+        Messages("rank.double.interComite.caption", Season.currentSeason),
+        PairsLicensied(ligue)))
   }
 
   /**

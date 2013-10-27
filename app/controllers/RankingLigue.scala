@@ -65,7 +65,8 @@ object RankingLigue extends Controller with LigueController {
     ligue =>
       PDF.ok(pdf.html.rankingTable.render(
         LigueRanking.mens(ligue),
-        Messages("rank.single.ligue.caption", ligue.name, Season.currentSeason)))
+        Messages("rank.single.ligue.caption", ligue.name, Season.currentSeason),
+        Mens(ligue)))
   }
 
   /**
@@ -87,7 +88,8 @@ object RankingLigue extends Controller with LigueController {
     (ligue, user) =>
       PDF.ok(pdf.html.rankingTable.render(
         LigueRanking.ladies(ligue),
-        Messages("rank.feminine.ligue.caption", ligue.name, Season.currentSeason)))
+        Messages("rank.feminine.ligue.caption", ligue.name, Season.currentSeason),
+        Ladies(ligue)))
   }
 
   /**
@@ -109,7 +111,8 @@ object RankingLigue extends Controller with LigueController {
     (ligue, user) =>
       PDF.ok(pdf.html.rankingTable.render(
         LigueRanking.youth(ligue),
-        Messages("rank.junior.ligue.caption", ligue.name, Season.currentSeason)))
+        Messages("rank.junior.ligue.caption", ligue.name, Season.currentSeason),
+        Youth(ligue)))
   }
 
   /**
@@ -131,7 +134,8 @@ object RankingLigue extends Controller with LigueController {
     (ligue, user) =>
       PDF.ok(pdf.html.rankingTable.render(
         LigueRanking.pairs(ligue),
-        Messages("rank.double.ligue.caption", ligue.name, Season.currentSeason)))
+        Messages("rank.double.ligue.caption", ligue.name, Season.currentSeason),
+        Pairs(ligue)))
   }
 
 }

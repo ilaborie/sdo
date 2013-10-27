@@ -52,7 +52,7 @@ contacts.url=Site
 contacts.email=EMail
 
 # Events
-title.events=Événements
+title.events=Calendrier
 event.mention=Si vous souhaitez corriger ou ajouter un événement sur cette page, veuillez me <a class="mailto" href="#" data-name="ilaborie" data-server="gmail.com"><i class="glyphicons envelope"></i> contacter</a>.
 event.url=Site
 event.email=EMail

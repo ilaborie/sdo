@@ -27,7 +27,7 @@ import org.joda.time.LocalDate
 import org.joda.time.format.DateTimeFormat
 
 import util.Location
-import model.rank.TournamentResultData
+import model.rank._
 
 /**
  * Tournament
@@ -45,10 +45,12 @@ sealed trait Tournament {
 
   def info: Option[Info] = None
 
-  def getPoint(position: TournamentResult): Int
+  def getPoint(position: TournamentResult, rankingType: RankingType): Int
 
-  def getPointAsString(position: TournamentResult): String = {
-    val point = getPoint(position)
+  def getMappingRoundRobin(rankingType: RankingType): List[TournamentResult]
+
+  def getPointAsString(position: TournamentResult, rankingType: RankingType): String = {
+    val point = getPoint(position, rankingType)
     if (point == 0) "-" else point.toString
   }
 
@@ -83,6 +85,34 @@ sealed abstract class BaseTournament(val file: String) extends Tournament {
     case None => Nil
     case Some(res) => res.allParticipants
   }
+
+  private def mappingRoundRobin[T <: Participant](oResult: Option[TournamentResults[T]]): List[TournamentResult] = oResult match {
+    case Some(res) => {
+      val list = List(Winner, RunnerUp, SemiFinal, QuarterFinal, EighthFinal, SixteenthFinal, ThirtySecondFinal, SixtyForthFinal)
+      if (res.winner.isEmpty) Nil
+      else if (res.runnerUp.isEmpty) list.drop(1)
+      else if (res.semiFinal.isEmpty) list.drop(2)
+      else if (res.quarterFinal.isEmpty) list.drop(3)
+      else if (res.eighthFinal.isEmpty) list.drop(4)
+      else if (res.sixteenthFinal.isEmpty) list.drop(5)
+      else if (res.thirtySecondFinal.isEmpty) list.drop(6)
+      else Nil
+    }
+    case None => Nil
+  }
+
+  def getMappingRoundRobin(rankingType: RankingType) = rankingType match {
+    case _: Single => mappingRoundRobin(mens)
+    case _: SingleLicensied => mappingRoundRobin(mens)
+    case _: Mens => mappingRoundRobin(mens)
+    case _: MensLicensied => mappingRoundRobin(mens)
+    case _: Ladies => mappingRoundRobin(ladies)
+    case _: LadiesLicensied => mappingRoundRobin(ladies)
+    case _: Youth => mappingRoundRobin(youth)
+    case _: YouthLicensied => mappingRoundRobin(youth)
+    case _: Pairs => mappingRoundRobin(pairs)
+    case _: PairsLicensied => mappingRoundRobin(pairs)
+  }
 }
 
 /**
@@ -109,15 +139,17 @@ case class CoupeLigue(date: LocalDate, location: Location, override val file: St
 
   lazy val ligue = Ligue.ligues.find(_.coupe == this).get
 
-  def getPoint(position: TournamentResult): Int = position match {
+  def getPoint(position: TournamentResult, rankingType: RankingType): Int = position match {
     case Winner => 22
     case RunnerUp => 16
     case SemiFinal => 11
     case QuarterFinal => 7
     case EighthFinal => 4
     case SixteenthFinal => 2
-    case RoundRobin(pos) => if (pos == 3) 2 else 1
-    case _ => 0
+    case ThirtySecondFinal => 1
+    case RoundRobin(pos) => if (pos > 2) getPoint(getMappingRoundRobin(rankingType)(pos - 3), rankingType) else 1
+    case NoParticipation => 0
+    case _ => 1
   }
 
   val getPriority = 0
@@ -139,15 +171,18 @@ case class OpenLigue(date: LocalDate, location: Location, override val file: Str
 
   val shortName = s"OL-${DateTimeFormat.forPattern("yyyyMMdd").print(date)}"
 
-  def getPoint(position: TournamentResult): Int = position match {
+  def getPoint(position: TournamentResult, rankingType: RankingType): Int = position match {
     case Winner => 16
     case RunnerUp => 11
     case SemiFinal => 7
     case QuarterFinal => 4
     case EighthFinal => 2
+    case SixteenthFinal => 1
+    case RoundRobin(pos) => if (pos > 2) getPoint(getMappingRoundRobin(rankingType)(pos - 3), rankingType) else 1
     case NoParticipation => 0
-    case _ => 1
+    case _ => 1 // Participation
   }
+
   val getPriority = 2
 }
 
@@ -166,13 +201,17 @@ case class MasterLigue(date: LocalDate, location: Location, override val file: S
 
   lazy val ligue = Ligue.ligues.find(_.master == this).get
 
-  def getPoint(position: TournamentResult): Int = position match {
+  def getPoint(position: TournamentResult, rankingType: RankingType): Int = position match {
     case Winner => 29
     case RunnerUp => 22
     case SemiFinal => 16
     case QuarterFinal => 11
     case EighthFinal => 7
-    case RoundRobin(pos) => if (pos == 3) 4 else if (pos == 4) 2 else 0
+    case RoundRobin(pos) => pos match {
+      case 3 => 4
+      case 4 => 2
+      case _ => 0
+    }
     case _ => 0
   }
 
@@ -190,10 +229,12 @@ case class MasterLigueTeam(date: LocalDate, location: Location, override val inf
 
   override def toString = Messages("rank.ligue.master.team.title")
 
-  def getPoint(position: TournamentResult): Int = 0
+  def getPoint(position: TournamentResult, rankingType: RankingType): Int = 0
 
   lazy val getPairs: Seq[Pair] = Nil
   val getPriority = 0
+
+  def getMappingRoundRobin(rankingType: RankingType): List[TournamentResult] = Nil
 }
 
 /**
@@ -207,7 +248,8 @@ case class CoupeLigueTeam(date: LocalDate, location: Location, override val info
 
   override def toString = Messages("rank.ligue.coupe.team.title")
 
-  def getPoint(position: TournamentResult): Int = 0
+  def getPoint(position: TournamentResult, rankingType: RankingType): Int = 0
+  def getMappingRoundRobin(rankingType: RankingType): List[TournamentResult] = Nil
 
   lazy val getPairs: Seq[Pair] = Nil
   val getPriority = 0
@@ -228,7 +270,7 @@ case class ComiteRank(date: LocalDate) extends LigueTournament {
 
   override val isEvent: Boolean = false
 
-  def getPoint(position: TournamentResult): Int = position match {
+  def getPoint(position: TournamentResult, rankingType: RankingType): Int = position match {
     case RoundRobin(pos) => pos match {
       case 1 => 22
       case 2 => 18
@@ -250,6 +292,7 @@ case class ComiteRank(date: LocalDate) extends LigueTournament {
     }
     case _ => 0
   }
+  def getMappingRoundRobin(rankingType: RankingType): List[TournamentResult] = Nil
 
   lazy val getPairs: Seq[Pair] = {
     val results: Seq[TournamentResults[Pair]] = for {
@@ -319,10 +362,11 @@ case class NationalTournament(shortName: String,
 
   override val isEvent: Boolean = false
 
-  def getPoint(position: TournamentResult): Int = position match {
+  def getPoint(position: TournamentResult, rankingType: RankingType): Int = position match {
     case WinningMatch(win) => 1 + win
     case _ => 0
   }
+  def getMappingRoundRobin(rankingType: RankingType): List[TournamentResult] = Nil
 
   lazy val getPairs: Seq[Pair] = pairs.keySet.map(_.asInstanceOf[Pair]).toSeq
 
@@ -358,7 +402,7 @@ case class CoupeComite(date: LocalDate, location: Location, override val file: S
 
   lazy val comite: Comite = Ligue.comites.find(_.coupe == this).get
 
-  def getPoint(position: TournamentResult): Int = position match {
+  def getPoint(position: TournamentResult, rankingType: RankingType): Int = position match {
     case Winner => 29
     case RunnerUp => 22
     case SemiFinal => 16
@@ -366,8 +410,10 @@ case class CoupeComite(date: LocalDate, location: Location, override val file: S
     case EighthFinal => 7
     case SixteenthFinal => 4
     case ThirtySecondFinal => 2
-    case RoundRobin(pos) => if (pos == 3) 4 else if (pos == 4) 2 else 1
-    case _ => 0
+    case SixtyForthFinal => 1
+    case RoundRobin(pos) => if (pos > 2) getPoint(getMappingRoundRobin(rankingType)(pos - 3), rankingType) else 1
+    case NoParticipation => 0
+    case _ => 1 // Participation
   }
 
   val getPriority = 0
@@ -387,7 +433,7 @@ case class OpenClub(date: LocalDate, location: Location, override val file: Stri
   lazy val club: Club = Ligue.clubs.find(_.opens.contains(this)).get
   lazy val comite = club.comite
 
-  def getPoint(position: TournamentResult): Int = position match {
+  def getPoint(position: TournamentResult, rankingType: RankingType): Int = position match {
     case Winner => 22
     case RunnerUp => 16
     case SemiFinal => 11
@@ -395,8 +441,9 @@ case class OpenClub(date: LocalDate, location: Location, override val file: Stri
     case EighthFinal => 4
     case SixteenthFinal => 2
     case ThirtySecondFinal => 1
-    case RoundRobin(pos) => if (pos == 3) 2 else 1
-    case _ => 0
+    case RoundRobin(pos) => if (pos > 2) getPoint(getMappingRoundRobin(rankingType)(pos - 3), rankingType) else 1
+    case NoParticipation => 0
+    case _ => 1 // Participation
   }
 
   val getPriority = 1

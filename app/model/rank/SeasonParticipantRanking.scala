@@ -72,7 +72,7 @@ object SeasonSingleRanking {
     val ranks = for {
       player <- players
       if rankType.canParticipate(player)
-    } yield ParticipantRank(player, TournamentResultData.createResult(rankType, player, tournaments))
+    } yield ParticipantRank(player, TournamentResultData.createResult(rankType, player, tournaments), rankType)
     SeasonSingleRanking(season, tournaments, ranks.filter(_.points > 0), qualifier)
   }
 
@@ -105,7 +105,7 @@ object SeasonLadiesRanking {
     val ranks = for {
       player <- players
       if rankType.canParticipate(player)
-    } yield ParticipantRank(player, TournamentResultData.createResult(rankType, player, tournaments))
+    } yield ParticipantRank(player, TournamentResultData.createResult(rankType, player, tournaments), rankType)
     SeasonLadiesRanking(season, tournaments, ranks.filter(_.points > 0), qualifier)
   }
 
@@ -138,7 +138,7 @@ object SeasonYouthRanking {
     val ranks = for {
       player <- players
       if rankType.canParticipate(player)
-    } yield ParticipantRank(player, TournamentResultData.createResult(rankType, player, tournaments))
+    } yield ParticipantRank(player, TournamentResultData.createResult(rankType, player, tournaments), rankType)
     SeasonYouthRanking(season, tournaments, ranks.filter(_.points > 0), qualifier)
   }
 
@@ -191,7 +191,7 @@ object SeasonPairsRanking {
     val ranks = for {
       pair <- pairs
       if rankType.canParticipate(pair)
-    } yield ParticipantRank(pair, TournamentResultData.createResult(rankType, pair, tournaments))
+    } yield ParticipantRank(pair, TournamentResultData.createResult(rankType, pair, tournaments), rankType)
     SeasonPairsRanking(season, tournaments, ranks.filter(_.points > 0), qualifier)
   }
 
@@ -227,18 +227,18 @@ object SeasonPairsRanking {
  * @param participant participant
  * @param results results
  */
-case class ParticipantRank(participant: Participant, results: Map[Tournament, TournamentResult]) {
+case class ParticipantRank(participant: Participant, results: Map[Tournament, TournamentResult], rankingType: RankingType) {
 
   def isCurrent(oPlayer: Option[Player]): Boolean = oPlayer.isDefined && participant.contains(oPlayer.get)
 
   private lazy val tournamentResults: List[(Int, Int)] = {
     for {
       (tournament, result) <- results.toList if result != NoParticipation
-    } yield (tournament.getPriority, -tournament.getPoint(result))
+    } yield (tournament.getPriority, -tournament.getPoint(result, rankingType))
   }.sorted
 
   lazy val points: Int = {
-    for ((tournament, result) <- results) yield tournament.getPoint(result)
+    for ((tournament, result) <- results) yield tournament.getPoint(result, rankingType)
   }.sum
 
   def betterSubLevel(rank: ParticipantRank): Boolean = {

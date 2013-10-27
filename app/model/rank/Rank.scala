@@ -27,7 +27,7 @@ sealed abstract class RankingType {
   def canParticipate(player: Participant): Boolean
 }
 
-case class Single(comite: Comite) extends RankingType {
+case class Single(comite: PlayerContainer) extends RankingType {
   def canParticipate(player: Participant): Boolean = player match {
     case _: NotLicensedPlayer => true
     case lp: LicensedPlayer => comite.players.contains(lp)
@@ -39,7 +39,7 @@ case class SingleLicensied(orga: PlayerContainer) extends RankingType {
   def canParticipate(player: Participant): Boolean = orga.isMember(player)
 }
 
-case class Mens(comite: Comite) extends RankingType {
+case class Mens(comite: PlayerContainer) extends RankingType {
   def canParticipate(player: Participant): Boolean = player match {
     case p: NotLicensedPlayer => !p.lady
     case p: LicensedPlayer => !p.lady && comite.players.contains(p)
@@ -54,7 +54,7 @@ case class MensLicensied(orga: PlayerContainer) extends RankingType {
   }
 }
 
-case class Ladies(comite: Comite) extends RankingType {
+case class Ladies(comite: PlayerContainer) extends RankingType {
   def canParticipate(player: Participant): Boolean = player match {
     case p: NotLicensedPlayer => p.lady
     case p: LicensedPlayer => p.lady && comite.players.contains(p)
@@ -69,7 +69,7 @@ case class LadiesLicensied(orga: PlayerContainer) extends RankingType {
   }
 }
 
-case class Youth(comite: Comite) extends RankingType {
+case class Youth(comite: PlayerContainer) extends RankingType {
   def canParticipate(player: Participant): Boolean = player match {
     case p: NotLicensedPlayer => p.youth
     case p: LicensedPlayer => p.youth && comite.players.contains(p)
@@ -84,7 +84,7 @@ case class YouthLicensied(orga: PlayerContainer) extends RankingType {
   }
 }
 
-case class Pairs(comite: Comite) extends RankingType {
+case class Pairs(comite: PlayerContainer) extends RankingType {
   def canParticipate(player: Participant): Boolean = player match {
     case p: Pair => comite.isMember(p)
     case _ => false

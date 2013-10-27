@@ -42,6 +42,8 @@ object SixteenthFinal extends TournamentResult
 
 object ThirtySecondFinal extends TournamentResult
 
+object SixtyForthFinal extends TournamentResult
+
 case class RoundRobin(position: Int) extends TournamentResult
 
 case class WinningMatch(winning: Int) extends TournamentResult
