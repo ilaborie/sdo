@@ -271,25 +271,7 @@ case class ComiteRank(date: LocalDate) extends LigueTournament {
   override val isEvent: Boolean = false
 
   def getPoint(position: TournamentResult, rankingType: RankingType): Int = position match {
-    case RoundRobin(pos) => pos match {
-      case 1 => 22
-      case 2 => 18
-      case 3 => 15
-      case 4 => 13
-      case 5 => 12
-      case 6 => 11
-      case 7 => 10
-      case 8 => 9
-      case 9 => 8
-      case 10 => 7
-      case 11 => 6
-      case 12 => 5
-      case 13 => 4
-      case 14 => 3
-      case 15 => 2
-      case 16 => 1
-      case _ => 0
-    }
+    case RoundRobin(pos) => InterComiteRanking.getPoints(pos)
     case _ => 0
   }
   def getMappingRoundRobin(rankingType: RankingType): List[TournamentResult] = Nil
