@@ -38,9 +38,9 @@ sealed abstract class SeasonParticipantRanking(season: Season, ranks: Seq[Partic
 
   private val cache = collection.mutable.Map[ParticipantRank, Int]()
 
-  def getPosition(rank: ParticipantRank): Int = {
-    cache.getOrElseUpdate(rank, ranks.count(_.betterThan(rank)))
-  }
+  def getPosition(rank: ParticipantRank): Int = cache.getOrElseUpdate(rank, {
+    1 + ranks.count(_.betterThan(rank))
+  })
 
   def getPositions(participant: Participant): Seq[Int] =
     ranks.filter(_.participant == participant).map(getPosition)
@@ -243,7 +243,7 @@ case class ParticipantRank(participant: Participant, results: Map[Tournament, To
 
   def betterSubLevel(rank: ParticipantRank): Boolean = {
     def compareList(me: List[(Int, Int)], other: List[(Int, Int)]): Boolean = {
-      if (me.isEmpty && other.isEmpty) true
+      if (me.isEmpty && other.isEmpty) false
       else if (me.isEmpty && !other.isEmpty) false
       else if (!me.isEmpty && other.isEmpty) true
       else {
