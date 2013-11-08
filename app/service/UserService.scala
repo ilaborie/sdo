@@ -24,7 +24,6 @@ package service
 
 import play.api.{Logger, Application}
 import securesocial.core._
-import securesocial.core.UserIdFromProvider
 import securesocial.core.providers.Token
 
 import reactivemongo.api._
@@ -64,7 +63,7 @@ class UserService(application: Application) extends UserServicePlugin(applicatio
     val userId = document.getAs[String]("userId").get
     val providerId = document.getAs[String]("providerId").get
 
-    val id = UserIdFromProvider(userId, providerId)
+    val id = IdentityId(userId, providerId)
     val firstName: String = document.getAs[String]("firstName").get
     val lastName: String = document.getAs[String]("lastName").get
     val email: Option[String] = document.getAs[String]("email")
@@ -105,10 +104,10 @@ class UserService(application: Application) extends UserServicePlugin(applicatio
       passwordInfo = passwordInfo)
   }
 
-  def find(id: UserIdFromProvider): Option[Identity] = {
+  def find(id: IdentityId): Option[Identity] = {
     logger.trace(s"find($id)")
     val query = BSONDocument(
-      "userId" -> id.authId,
+      "userId" -> id.userId,
       "providerId" -> id.providerId
     )
     val result = users.find(query).one
@@ -128,14 +127,14 @@ class UserService(application: Application) extends UserServicePlugin(applicatio
     res map toIdentity
   }
 
-  def createId(id: UserIdFromProvider) = s"${id.authId}|${id.providerId}"
+  def createId(id: IdentityId) = s"${id.userId}|${id.userId}"
 
   def save(user: Identity): Identity = {
     logger.trace(s"save($user)")
     val doc = BSONDocument(
-      "_id" -> createId(user.userIdFromProvider),
-      "userId" -> user.userIdFromProvider.authId,
-      "providerId" -> user.userIdFromProvider.providerId,
+      "_id" -> createId(user.identityId),
+      "userId" -> user.identityId.userId,
+      "providerId" -> user.identityId.userId,
       "method" -> user.authMethod.method,
       "avatarUrl" -> user.avatarUrl,
       "email" -> user.email,

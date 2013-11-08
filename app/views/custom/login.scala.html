@@ -22,7 +22,7 @@
                             <legend>@Messages("securesocial.login.instructions")</legend>
                             @for(provider <- Registry.providers.all().values.filter(_.authMethod != AuthenticationMethod.UserPassword)) {
                                 <a class="auth" href="@provider.authenticationUrl" title="@provider">
-                                    <img src="@RoutesHelper.at(s"images/${provider.ssId}.png")"/>
+                                    <img src="@RoutesHelper.at(s"images/${provider.id}.png")"/>
                                 </a>
                             }
                         </fieldset>
