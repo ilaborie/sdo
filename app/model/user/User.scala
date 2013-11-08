@@ -49,8 +49,8 @@ object User {
    * @param id identity
    * @return user
    */
-  def apply(id: Identity): User = Cache.getOrElse[User](id.userIdFromProvider.authId + "|" + id.userIdFromProvider.providerId) {
-    val userId: String = id.userIdFromProvider.authId
+  def apply(id: Identity): User = Cache.getOrElse[User](id.identityId.userId + "|" + id.identityId.providerId) {
+    val userId: String = id.identityId.userId
     val user = id.authMethod.method match {
       case "twitter" => findUserBy(id) {
         player => player.twitter == Some(userId)

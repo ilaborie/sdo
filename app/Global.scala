@@ -95,7 +95,7 @@ object Global extends GlobalSettings {
   }
 
   private def registerUser(firstName: String, lastName: String, email: String): Identity = {
-    val identityId = UserIdFromProvider(email, "userpass")
+    val identityId = IdentityId(email, "userpass")
     UserService.find(identityId) match {
       case Some(u) => u
       case None =>
