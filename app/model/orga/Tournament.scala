@@ -152,7 +152,7 @@ case class CoupeLigue(date: LocalDate, location: Location, override val file: St
     case _ => 1
   }
 
-  val getPriority = 0
+  val getPriority = 1
 
 }
 
@@ -215,7 +215,7 @@ case class MasterLigue(date: LocalDate, location: Location, override val file: S
     case _ => 0
   }
 
-  val getPriority = 1
+  val getPriority = 0
 }
 
 /**

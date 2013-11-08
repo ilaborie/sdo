@@ -234,7 +234,9 @@ case class ParticipantRank(participant: Participant, results: Map[Tournament, To
   private lazy val tournamentResults: List[(Int, Int)] = {
     for {
       (tournament, result) <- results.toList if result != NoParticipation
-    } yield (tournament.getPriority, -tournament.getPoint(result, rankingType))
+      point = tournament.getPoint(result, rankingType)
+      if point > 0
+    } yield (tournament.getPriority, - point)
   }.sorted
 
   lazy val points: Int = {
