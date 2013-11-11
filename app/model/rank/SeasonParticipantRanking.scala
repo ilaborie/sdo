@@ -78,7 +78,7 @@ object SeasonSingleRanking {
 
   def apply(season: Season, ligue: Ligue, qualifier: Int => Boolean): SeasonSingleRanking = {
     val tournaments = ligue.tournaments.filter(!_.isTeam)
-    SeasonSingleRanking(season, MensLicensied(ligue), ligue.players.toList, tournaments, qualifier: Int => Boolean)
+    SeasonSingleRanking(season, MensLicensied(ligue), ligue.players.toList, tournaments.toList.sortBy(_.date), qualifier: Int => Boolean)
   }
 
   def apply(season: Season, comite: Comite, qualifier: Int => Boolean): SeasonSingleRanking = {
@@ -87,7 +87,7 @@ object SeasonSingleRanking {
       tournament <- c.tournaments
     } yield tournament
     val players = comite.players ++ Ligue.nlPlayers
-    SeasonSingleRanking(season, Single(comite), players.toList, tournaments, qualifier)
+    SeasonSingleRanking(season, Single(comite), players.toList, tournaments.toList.sortBy(_.date), qualifier)
   }
 }
 
@@ -106,12 +106,12 @@ object SeasonLadiesRanking {
       player <- players
       if rankType.canParticipate(player)
     } yield ParticipantRank(player, TournamentResultData.createResult(rankType, player, tournaments), rankType)
-    SeasonLadiesRanking(season, tournaments, ranks.filter(_.points > 0), qualifier)
+    SeasonLadiesRanking(season, tournaments.toList.sortBy(_.date), ranks.filter(_.points > 0), qualifier)
   }
 
   def apply(season: Season, ligue: Ligue, qualifier: Int => Boolean): SeasonLadiesRanking = {
     val tournaments = ligue.tournaments.filter(!_.isTeam)
-    SeasonLadiesRanking(season, LadiesLicensied(ligue), ligue.players.toList, tournaments, qualifier)
+    SeasonLadiesRanking(season, LadiesLicensied(ligue), ligue.players.toList, tournaments.toList.sortBy(_.date), qualifier)
   }
 
   def apply(season: Season, comite: Comite, qualifier: Int => Boolean): SeasonLadiesRanking = {
@@ -120,7 +120,7 @@ object SeasonLadiesRanking {
       tournament <- c.tournaments
     } yield tournament
     val players = comite.players ++ Ligue.nlPlayers
-    SeasonLadiesRanking(season, Ladies(comite), players.toList, tournaments, qualifier)
+    SeasonLadiesRanking(season, Ladies(comite), players.toList, tournaments.toList.sortBy(_.date), qualifier)
   }
 }
 
@@ -139,12 +139,12 @@ object SeasonYouthRanking {
       player <- players
       if rankType.canParticipate(player)
     } yield ParticipantRank(player, TournamentResultData.createResult(rankType, player, tournaments), rankType)
-    SeasonYouthRanking(season, tournaments, ranks.filter(_.points > 0), qualifier)
+    SeasonYouthRanking(season, tournaments.toList.sortBy(_.date), ranks.filter(_.points > 0), qualifier)
   }
 
   def apply(season: Season, ligue: Ligue, qualifier: Int => Boolean): SeasonYouthRanking = {
     val tournaments = ligue.tournaments.filter(!_.isTeam)
-    SeasonYouthRanking(season, YouthLicensied(ligue), ligue.players.toList, tournaments, qualifier)
+    SeasonYouthRanking(season, YouthLicensied(ligue), ligue.players.toList, tournaments.toList.sortBy(_.date), qualifier)
   }
 
   def apply(season: Season, comite: Comite, qualifier: Int => Boolean): SeasonYouthRanking = {
@@ -153,7 +153,7 @@ object SeasonYouthRanking {
       tournament <- c.tournaments
     } yield tournament
     val players = comite.players ++ Ligue.nlPlayers
-    SeasonYouthRanking(season, Youth(comite), players.toList, tournaments, qualifier)
+    SeasonYouthRanking(season, Youth(comite), players.toList, tournaments.toList.sortBy(_.date), qualifier)
   }
 }
 
@@ -192,7 +192,7 @@ object SeasonPairsRanking {
       pair <- pairs
       if rankType.canParticipate(pair)
     } yield ParticipantRank(pair, TournamentResultData.createResult(rankType, pair, tournaments), rankType)
-    SeasonPairsRanking(season, tournaments, ranks.filter(_.points > 0), qualifier)
+    SeasonPairsRanking(season, tournaments.toList.sortBy(_.date), ranks.filter(_.points > 0), qualifier)
   }
 
   def apply(season: Season, ligue: Ligue, qualifier: Int => Boolean): SeasonPairsRanking = {
@@ -204,7 +204,7 @@ object SeasonPairsRanking {
       } yield pair
     }.toSet.toList
 
-    SeasonPairsRanking(season, PairsLicensied(ligue), pairs, tournaments, qualifier)
+    SeasonPairsRanking(season, PairsLicensied(ligue), pairs, tournaments.toList.sortBy(_.date), qualifier)
   }
 
   def apply(season: Season, comite: Comite, qualifier: Int => Boolean): SeasonPairsRanking = {
@@ -218,7 +218,7 @@ object SeasonPairsRanking {
         pair <- tour.getPairs
       } yield pair
     }.toSet.toList
-    SeasonPairsRanking(season, Pairs(comite), pairs, tournaments, qualifier)
+    SeasonPairsRanking(season, Pairs(comite), pairs, tournaments.toList.sortBy(_.date), qualifier)
   }
 }
 
