@@ -1,9 +1,9 @@
-@(title: String = "", user: Option[model.user.User] = None, submenu:Html = Html(""))(content: Html)
+@(user: Option[model.user.User] = None, submenu:Html = Html(""))(content: Html)
 @import model.orga._
 @import model.user._
 @import securesocial.core.providers.utils.RoutesHelper
 
-<div class="navbar navbar-fixed-top">
+<div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container">
             <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -11,10 +11,9 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </a>
-            <a class="brand" href="@routes.OrgaLigue.index()"><i class="glyphicons home"></i></a>
-            <a class="brand" href="#">@title</a>
             <div class="nav-collapse collapse">
                 <ul class="nav">
+                    <li><a href="@routes.OrgaLigue.index()"><i class="glyphicons home"></i> @Messages("title.ligues")</a></li>
                 @for(ligue <- Ligue.ligues) {
                     <li><a href="@routes.OrgaLigue.ligue(ligue.shortName)"> @ligue.shortName</a></li>
                     @for(comite <- ligue.comites) {

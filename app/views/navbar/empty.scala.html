@@ -1,4 +1,4 @@
-@(title: String = "", user: Option[model.user.User]=None, submenu:Html = Html(""))
+@(user: Option[model.user.User]=None, submenu:Html = Html(""))
 
-@navbar.default(title, user=user, submenu=submenu) {
+@navbar.default(user=user, submenu=submenu) {
 }
