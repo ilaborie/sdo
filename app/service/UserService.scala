@@ -22,18 +22,21 @@
 
 package service
 
+
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration._
+import scala.concurrent.{Await, Future}
+import scala.util.{Success, Failure}
+
 import play.api.{Logger, Application}
+
 import securesocial.core._
 import securesocial.core.providers.Token
 
 import reactivemongo.api._
-
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.duration._
-
 import reactivemongo.api.collections.default.BSONCollection
 import reactivemongo.bson.BSONDocument
-import scala.concurrent.{Await, Future}
+
 import org.joda.time.DateTime
 
 /**
@@ -43,7 +46,7 @@ class UserService(application: Application) extends UserServicePlugin(applicatio
 
   private val logger = Logger("UserService")
 
-  lazy val connection = {
+  lazy val connection: DefaultDB = {
     val driver = new MongoDriver
     val host = application.configuration.getString("mongodb.servers").getOrElse("localhost")
     val connect = driver.connection(List(host))
@@ -106,13 +109,14 @@ class UserService(application: Application) extends UserServicePlugin(applicatio
 
   def find(id: IdentityId): Option[Identity] = {
     logger.trace(s"find($id)")
-    val query = BSONDocument(
-      "userId" -> id.userId,
-      "providerId" -> id.providerId
-    )
+    val query = BSONDocument( "_id" -> createId(id))
+
     val result = users.find(query).one
-    val res = Await.result(result, 1.seconds)
-    res map toIdentity
+    result.onComplete {
+      case Success(user) => logger.debug(s"try find $id => ${result.value}")
+      case Failure(t) => logger.error(s"Cannot find $id, Error:${t.getMessage}", t)
+    }
+    Await.result(result, 2.seconds) map toIdentity
   }
 
   def findByEmailAndProvider(email: String, providerId: String): Option[Identity] = {
@@ -127,14 +131,14 @@ class UserService(application: Application) extends UserServicePlugin(applicatio
     res map toIdentity
   }
 
-  def createId(id: IdentityId) = s"${id.userId}|${id.userId}"
+  def createId(id: IdentityId) = s"${id.userId}|${id.providerId}"
 
   def save(user: Identity): Identity = {
     logger.trace(s"save($user)")
     val doc = BSONDocument(
       "_id" -> createId(user.identityId),
       "userId" -> user.identityId.userId,
-      "providerId" -> user.identityId.userId,
+      "providerId" -> user.identityId.providerId,
       "method" -> user.authMethod.method,
       "avatarUrl" -> user.avatarUrl,
       "email" -> user.email,
@@ -158,10 +162,13 @@ class UserService(application: Application) extends UserServicePlugin(applicatio
           "tokenType" -> info.tokenType
         ))
     )
-    users.save(doc)
+    // Save to MongoDB
+    users.save(doc).onComplete {
+      case Success(lastError) => logger.info(s"New user: $user, lastError:$lastError")
+      case Failure(t) => logger.error(s"Cannot save user: $user, Error:${t.getMessage}", t)
+    }
     user
   }
-
 
   // Tokens
   private def toToken(document: BSONDocument): Token = {
