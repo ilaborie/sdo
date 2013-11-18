@@ -25,7 +25,7 @@
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%date - [%coloredLevel] - from %logger in %thread %n%message%n%xException%n</pattern>
+            <pattern>%coloredLevel - %date - from [%logger] in [%thread]: %message %xException%n</pattern>
         </encoder>
     </appender>
 
@@ -34,17 +34,16 @@
 
     <logger name="loading" level="TRACE"/>
     <logger name="YAML" level="INFO"/>
-    <logger name="data" level="DEBUG"/>
+    <logger name="data" level="INFO"/>
 
     <logger name="UserService" level="DEBUG"/>
     <logger name="user" level="DEBUG"/>
-    <logger name="AuthEventListener" level="TRACE"/>
+    <logger name="AuthEventListener" level="INFO"/>
     <logger name="Mailer" level="TRACE"/>
     <logger name="pdf" level="INFO"/>
 
     <root level="ERROR">
         <appender-ref ref="STDOUT"/>
-        <appender-ref ref="FILE"/>
     </root>
 
 </configuration>
