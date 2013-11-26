@@ -52,7 +52,7 @@ case class TeamMatchDetail(team: Team,
     val replace = substitute.get.replace.get
     val replaceBy = substitute.get.player
     participant match {
-      case lp:LicensedPlayer=>
+      case lp: LicensedPlayer =>
         if (participant == replace) replaceBy else participant
       case TeamPair(p1, p2) =>
         if (p1 == replace) TeamPair(replaceBy, p2)
@@ -258,8 +258,8 @@ sealed abstract class MatchDetail {
 }
 
 case class MatchDetailFail(day: Int, team1: Team, team2: Team, fails: Seq[Team]) extends MatchDetail {
-  require(!fails.isEmpty)
-  require(fails.filter(t => t == team1 || t == team2).isEmpty)
+  require(!fails.isEmpty, "Need at least one team ")
+  require((fails contains team1) || (fails contains team2))
 
   def win(team: Team): Boolean = {
     require(team1 == team || team2 == team)

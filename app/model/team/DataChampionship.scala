@@ -128,20 +128,32 @@ object DataChampionship {
       detailM => {
         val detail: JavaMap[String, Any] = detailM.asInstanceOf[JavaMap[String, Any]]
         logger.trace(s"Read $detail")
+        if (detail.containsKey("fail")) {
+          // Wo
+          val wo = detail.get("fail").asInstanceOf[JavaList[String]]
+          println(s"wo: $wo, teams: ${ligue.teams.map(_.shortName)}")
+          val fails = for {
+            shortName <- wo.toList
+            team <- ligue.findTeamByShortName(shortName)
+          } yield team
+          println(s"Teams: $fails")
+          MatchDetailFail(day, team1, team2, fails)
+        } else {
+          // Played Match
+          val date = YamlParser.readDate(detail.get("date").asInstanceOf[String])
+          val location = detail.get("location").asInstanceOf[String]
 
-        val date = YamlParser.readDate(detail.get("date").asInstanceOf[String])
-        val location = detail.get("location").asInstanceOf[String]
+          val t1: TeamMatchDetail = readTeamMatchDetail(team1, detail.get("team1")
+            .asInstanceOf[JavaMap[String, Any]].toMap)
+          val t2: TeamMatchDetail = readTeamMatchDetail(team2, detail.get("team2")
+            .asInstanceOf[JavaMap[String, Any]].toMap)
 
-        val t1: TeamMatchDetail = readTeamMatchDetail(team1, detail.get("team1")
-          .asInstanceOf[JavaMap[String, Any]].toMap)
-        val t2: TeamMatchDetail = readTeamMatchDetail(team2, detail.get("team2")
-          .asInstanceOf[JavaMap[String, Any]].toMap)
+          val matchesList = detail.get("matches")
+          logger.trace(s"Read matches: $matchesList")
+          val matches: List[Match] = readMatchs(t1, t2, matchesList.asInstanceOf[JavaMap[String, Any]].toMap)
 
-        val matchesList = detail.get("matches")
-        logger.trace(s"Read matches: $matchesList")
-        val matches: List[Match] = readMatchs(t1, t2, matchesList.asInstanceOf[JavaMap[String, Any]].toMap)
-
-        PlayedMatchDetail(day, date, location, t1, t2, matches)
+          PlayedMatchDetail(day, date, location, t1, t2, matches)
+        }
       })
   }
 
@@ -180,7 +192,7 @@ object DataChampionship {
       val out = m("out").asInstanceOf[String]
       val outPlayer = if (out != null) LicensedPlayer.findByName(out) else None
 
-      val after = if (m("match")!= null) m("match").toString else null
+      val after = if (m("match") != null) m("match").toString else null
       val afterMatch = if (after != null) Some(after.toInt) else None
 
       if (inPlayer.isDefined) Some(Substitute(inPlayer.get, outPlayer, afterMatch)) else None
