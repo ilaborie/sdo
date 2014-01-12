@@ -23,48 +23,47 @@
 import sbt._
 import sbt.Keys._
 import play.Project._
-import java.io.File
 
 play.Project.playScalaSettings
 
 org.scalastyle.sbt.ScalastylePlugin.Settings
 
-name         := "sdo"
+name := "sdo"
 
-version      := "1.0.0-SNAPSHOT"
+version := "1.0.0-SNAPSHOT"
 
 scalaVersion := "2.10.3"
 
 //offline := "true".equalsIgnoreCase(sys.props("sbt.offline"))
-offline      := "false".equalsIgnoreCase(sys.props("sbt.offline"))
+offline := "false".equalsIgnoreCase(sys.props("sbt.offline"))
 
 // "pdf" % "pdf_2.10" % "0.5"
 libraryDependencies ++= Seq(
-    "securesocial" %% "securesocial" % "2.1.2" withSources,
-    "org.yaml" % "snakeyaml" % "1.13" withSources,
-    "org.reactivemongo" %% "play2-reactivemongo" % "0.10.0-SNAPSHOT" withSources,
-    "pdf-scala" % "pdf-scala_2.10" % "0.6" exclude("org.scala-stm", "scala-stm_2.10.0") exclude("play", "*")
+  "securesocial" %% "securesocial" % "2.1.2" withSources,
+  "org.yaml" % "snakeyaml" % "1.13" withSources,
+  "org.reactivemongo" %% "play2-reactivemongo" % "0.10.2" withSources,
+  "pdf-scala" % "pdf-scala_2.10" % "0.6" exclude("org.scala-stm", "scala-stm_2.10.0") exclude("play", "*")
 )
 
 organization := "org.ilaborie"
 
 // resolvers += Resolver.url("Violas Play Modules", url("http://www.joergviola.de/releases/"))(Resolver.ivyStylePatterns)
 resolvers ++= Seq(
-    "webjars" at "http://webjars.github.com/m2",
-    Resolver.url("play-plugin-releases", new URL("http://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/"))(Resolver.ivyStylePatterns),
-    Resolver.url("play-plugin-snapshots", new URL("http://repo.scala-sbt.org/scalasbt/sbt-plugin-snapshots/"))(Resolver.ivyStylePatterns),
-    Resolver.url("sbt-plugin-snapshots", new URL("http://repo.scala-sbt.org/scalasbt/sbt-plugin-snapshots/"))(Resolver.ivyStylePatterns),
-    Resolver.url("Sonatype Snapshots",url("http://oss.sonatype.org/content/repositories/snapshots/"))(Resolver.ivyStylePatterns),
-    Resolver.url("Objectify Play Repository", url("http://schaloner.github.com/releases/"))(Resolver.ivyStylePatterns),
-    Resolver.url("Objectify Play Snapshot Repository", url("http://schaloner.github.com/snapshots/"))(Resolver.ivyStylePatterns),
-    "Mandubian repository snapshots" at "https://github.com/mandubian/mandubian-mvn/raw/master/snapshots/",
-    "Mandubian repository releases" at "https://github.com/mandubian/mandubian-mvn/raw/master/releases/",
-    "Sonatype Snapshots 2" at "http://oss.sonatype.org/content/repositories/snapshots/",
-    Resolver.url("Violas Play Modules", url("http://www.joergviola.de/releases/"))(Resolver.ivyStylePatterns)
-    )
+  "webjars" at "http://webjars.github.com/m2",
+  Resolver.url("play-plugin-releases", new URL("http://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/"))(Resolver.ivyStylePatterns),
+  Resolver.url("play-plugin-snapshots", new URL("http://repo.scala-sbt.org/scalasbt/sbt-plugin-snapshots/"))(Resolver.ivyStylePatterns),
+  Resolver.url("sbt-plugin-snapshots", new URL("http://repo.scala-sbt.org/scalasbt/sbt-plugin-snapshots/"))(Resolver.ivyStylePatterns),
+  Resolver.url("Sonatype Snapshots", url("http://oss.sonatype.org/content/repositories/snapshots/"))(Resolver.ivyStylePatterns),
+  Resolver.url("Objectify Play Repository", url("http://schaloner.github.com/releases/"))(Resolver.ivyStylePatterns),
+  Resolver.url("Objectify Play Snapshot Repository", url("http://schaloner.github.com/snapshots/"))(Resolver.ivyStylePatterns),
+  "Mandubian repository snapshots" at "https://github.com/mandubian/mandubian-mvn/raw/master/snapshots/",
+  "Mandubian repository releases" at "https://github.com/mandubian/mandubian-mvn/raw/master/releases/",
+  "Sonatype Snapshots 2" at "http://oss.sonatype.org/content/repositories/snapshots/",
+  Resolver.url("Violas Play Modules", url("http://www.joergviola.de/releases/"))(Resolver.ivyStylePatterns)
+)
 
 scalacOptions ++= Seq("-deprecation", "-encoding", "UTF-8", "-feature", "-target:jvm-1.6", "-unchecked",
-    "-Ywarn-adapted-args", "-Ywarn-value-discard", "-Xlint", "-language:reflectiveCalls")
+  "-Ywarn-adapted-args", "-Ywarn-value-discard", "-Xlint", "-language:reflectiveCalls")
 
 // Custom Less entry points
 lessEntryPoints <<= baseDirectory(_ / "app" / "assets" / "style" ** "main*.less")
