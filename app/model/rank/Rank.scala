@@ -144,7 +144,7 @@ object InterComiteRanking {
       comite <- ligue.comites
       tournament <- comite.tournaments
     } yield tournament
-  }.toList
+  }.toList.sortBy(_.date)
 
   def mens(ligue: Ligue) =
     SeasonSingleRanking(season, MensLicensied(ligue), ligue.players.toList, getInterComiteTournaments(ligue), _ => false)
