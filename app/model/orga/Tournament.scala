@@ -28,6 +28,7 @@ import org.joda.time.format.DateTimeFormat
 
 import util.Location
 import model.rank._
+import scala.Option
 
 /**
  * Tournament
@@ -86,10 +87,33 @@ sealed abstract class BaseTournament(val file: String) extends Tournament {
     case Some(res) => res.allParticipants
   }
 
+  private def countNbQualified[T <: Participant](oResult: Option[TournamentResults[T]]): Int = oResult match {
+    case Some(res) =>
+      val qualified: Set[T] = Set() ++ res.winner ++ res.runnerUp ++ res.semiFinal ++ res.quarterFinal ++ res.quarterFinal ++ res.eighthFinal ++ res.sixteenthFinal ++ res.thirtySecondFinal
+      res.groups match {
+        case Some(grps) => qualified.size / grps.size
+        case None => 0
+      }
+    case None => 0
+  }
+
+  def getNbQualified(rankingType: RankingType) = rankingType match {
+    case _: Single => countNbQualified(mens)
+    case _: SingleLicensied => countNbQualified(mens)
+    case _: Mens => countNbQualified(mens)
+    case _: MensLicensied => countNbQualified(mens)
+    case _: Ladies => countNbQualified(ladies)
+    case _: LadiesLicensied => countNbQualified(ladies)
+    case _: Youth => countNbQualified(youth)
+    case _: YouthLicensied => countNbQualified(youth)
+    case _: Pairs => countNbQualified(pairs)
+    case _: PairsLicensied => countNbQualified(pairs)
+  }
+
   private def mappingRoundRobin[T <: Participant](oResult: Option[TournamentResults[T]]): List[TournamentResult] = oResult match {
-    case Some(res) => {
+    case Some(res) =>
       val list = List(Winner, RunnerUp, SemiFinal, QuarterFinal, EighthFinal, SixteenthFinal, ThirtySecondFinal, SixtyForthFinal)
-      if (res.winner.isEmpty) Nil
+      if (res.winner.isEmpty) list
       else if (res.runnerUp.isEmpty) list.drop(1)
       else if (res.semiFinal.isEmpty) list.drop(2)
       else if (res.quarterFinal.isEmpty) list.drop(3)
@@ -97,7 +121,6 @@ sealed abstract class BaseTournament(val file: String) extends Tournament {
       else if (res.sixteenthFinal.isEmpty) list.drop(5)
       else if (res.thirtySecondFinal.isEmpty) list.drop(6)
       else Nil
-    }
     case None => Nil
   }
 
@@ -249,6 +272,7 @@ case class CoupeLigueTeam(date: LocalDate, location: Location, override val info
   override def toString = Messages("rank.ligue.coupe.team.title")
 
   def getPoint(position: TournamentResult, rankingType: RankingType): Int = 0
+
   def getMappingRoundRobin(rankingType: RankingType): List[TournamentResult] = Nil
 
   lazy val getPairs: Seq[Pair] = Nil
@@ -274,6 +298,7 @@ case class ComiteRank(date: LocalDate) extends LigueTournament {
     case RoundRobin(pos) => InterComiteRanking.getPoints(pos)
     case _ => 0
   }
+
   def getMappingRoundRobin(rankingType: RankingType): List[TournamentResult] = Nil
 
   lazy val getPairs: Seq[Pair] = {
@@ -348,6 +373,7 @@ case class NationalTournament(shortName: String,
     case WinningMatch(win) => 1 + win
     case _ => 0
   }
+
   def getMappingRoundRobin(rankingType: RankingType): List[TournamentResult] = Nil
 
   lazy val getPairs: Seq[Pair] = pairs.keySet.map(_.asInstanceOf[Pair]).toSeq
@@ -423,7 +449,13 @@ case class OpenClub(date: LocalDate, location: Location, override val file: Stri
     case EighthFinal => 4
     case SixteenthFinal => 2
     case ThirtySecondFinal => 1
-    case RoundRobin(pos) => if (pos > 2) getPoint(getMappingRoundRobin(rankingType)(pos - 3), rankingType) else 1
+    case RoundRobin(pos) =>
+      val nbQualified = getNbQualified(rankingType)
+      if (nbQualified > 1 && pos > nbQualified) {
+        val mapping: List[TournamentResult] = getMappingRoundRobin(rankingType)
+        getPoint(mapping(pos - nbQualified - 1), rankingType)
+      }
+      else 1
     case NoParticipation => 0
     case _ => 1 // Participation
   }

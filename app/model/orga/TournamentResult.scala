@@ -26,27 +26,49 @@ package model.orga
  */
 sealed abstract class TournamentResult
 
-object NoParticipation extends TournamentResult
+object NoParticipation extends TournamentResult {
+  override val toString = "ø"
+}
 
-object Winner extends TournamentResult
+object Winner extends TournamentResult {
+  override val toString = "1st"
+}
 
-object RunnerUp extends TournamentResult
+object RunnerUp extends TournamentResult {
+  override val toString = "2nd"
+}
 
-object SemiFinal extends TournamentResult
+object SemiFinal extends TournamentResult {
+  override val toString = "1/2"
+}
 
-object QuarterFinal extends TournamentResult
+object QuarterFinal extends TournamentResult {
+  override val toString = "1/4"
+}
 
-object EighthFinal extends TournamentResult
+object EighthFinal extends TournamentResult {
+  override val toString = "1/8"
+}
 
-object SixteenthFinal extends TournamentResult
+object SixteenthFinal extends TournamentResult {
+  override val toString = "1/16"
+}
 
-object ThirtySecondFinal extends TournamentResult
+object ThirtySecondFinal extends TournamentResult {
+  override val toString = "1/32"
+}
 
-object SixtyForthFinal extends TournamentResult
+object SixtyForthFinal extends TournamentResult {
+  override val toString = "1/64"
+}
 
-case class RoundRobin(position: Int) extends TournamentResult
+case class RoundRobin(position: Int) extends TournamentResult {
+  override val toString = s"RoundRobin: $position"
+}
 
-case class WinningMatch(winning: Int) extends TournamentResult
+case class WinningMatch(winning: Int) extends TournamentResult{
+  override val toString = s"WinningMatch: $winning"
+}
 
 
 case class TournamentResults[T <: Participant](winner: Option[T],
