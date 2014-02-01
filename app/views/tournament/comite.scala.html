@@ -5,6 +5,13 @@
         <h1>
             @tournament
             <small>@tags.date(tournament.date)</small>
+
+            @if(tournament.isPlayed) {
+                <a class="btn btn-primary pull-right" target="_blank" href="@routes.OrgaComite.comiteTournamentPDF(tournament.ligue.shortName, tournament.comite.shortName, tournament.shortName)">
+                    <i class="glyphicons download_alt"></i>
+                    @Messages("rank.download.pdf")
+                </a>
+            }
         </h1>
         @if(tournament.isPlayed) {
             <ul class="nav nav-tabs">

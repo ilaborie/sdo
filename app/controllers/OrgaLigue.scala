@@ -28,6 +28,7 @@ import model.orga._
 import model.user.User
 
 import org.joda.time.LocalDate
+import util.pdf.PDF
 
 /**
  * Mains pages
@@ -85,13 +86,29 @@ object OrgaLigue extends Controller with LigueController {
   def ligueTournament(ligueShortName: String, tournamentShortName: String) = SecuredLigueAction(ligueShortName, ajaxCall = true) {
     (ligue, user) =>
       ligue.findTournamentByShortName(tournamentShortName) match {
-        case Some(t) => {
+        case Some(t) =>
           t match {
             case bt: BaseTournament => Ok(views.html.tournament.ligue(bt, User(user)))
-            case _ => BadRequest(s"Tournoi de ligue non supporté: $tournamentShortName")
+            case mt:MasterLigueTeam => Ok(views.html.tournament.ligueTeam(mt, User(user)))
           }
-        }
         case None => BadRequest(s"Tournoi non connu: $tournamentShortName dans la $ligue")
+      }
+  }
+
+  /**
+   * Show Ligue tournament
+   * @param ligueShortName ligue
+   * @param tournamentShortName tournament
+   * @return the tournament page
+   */
+  //SecuredComiteAsyncAction
+  def ligueTournamentPDF(ligueShortName: String, tournamentShortName: String) = LigueAsyncAction(ligueShortName) {
+    ligue =>
+      ligue.findTournamentByShortName(tournamentShortName) match {
+        case Some(t) =>
+          t match {
+            case bt: BaseTournament => PDF.ok(pdf.html.ligueTournament(Season.currentSeason, bt))
+          }
       }
   }
 }

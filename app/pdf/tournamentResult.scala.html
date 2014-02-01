@@ -1,0 +1,61 @@
+@(tournament: model.orga.Tournament, result: model.orga.TournamentResults[model.orga.Player], rankType: model.rank.RankingType)
+
+@import model.orga._
+
+    @rows(pos: Int, players: Seq[Player], point:Int) = {
+    @if(!players.isEmpty) {
+        @if(players.size==1) {
+            @row(pos.toString, players.iterator.next(), point, last = true)
+        } else {
+            @row(pos.toString, players.iterator.next(), point)
+            @for(player <- players.take(players.length - 1).drop(1)) {
+                @row("\"", player, point)
+            }
+            @row("\"", players.last, point, last = true)
+        }
+    }
+    }
+    @row(pos: String, player: Player, point:Int, last: Boolean = false) = {
+        <tr @if(last) {class="border-bottom"}>
+        <th>@pos</th>
+        <td class="left">@player.fullName</td>
+        <td class="mono">@player.licenseNumber</td>
+        <td>@player.clubAsString</td>
+        <td>@player.comiteAsString</td>
+        <td class="border border-col" style="border-right : 2px solid black ;">@point</td>
+        <td style="border-left : none ; border-right : 1px solid black ; width : 2em ;">&nbsp;</td>
+        </tr>
+    }
+
+<table class="result break">
+    <thead>
+        <tr>
+            <td></td>
+            <th class="rankType">@rankType</th>
+            <td></td>
+            <td></td>
+            <td class="right">@Messages("tournament.inscrits")</td>
+            <th class="left"><span style="border : thin solid black ; padding :.25em ;">@result.allParticipants.size</span></th>
+            <td></td>
+        </tr>
+        <tr class="sep">
+            <td colspan="7">&nbsp;</td>
+        </tr>
+        <tr>
+            <th></th>
+            <th class="left border">@Messages("tournament.fullname")</th>
+            <th class="center border">@Messages("tournament.license")</th>
+            <th class="center border">@Messages("tournament.club")</th>
+            <th class="center border">@Messages("tournament.comite")</th>
+            <th class="center border border-col" style="border-right : 2px solid black ;">@Messages("tournament.points")</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @defining(tournament.getTable(result,rankType)) { table =>
+          @for(row <- table) {
+            @rows(row._1, row._2,row._3)
+          }
+        }
+    </tbody>
+</table>

@@ -36,11 +36,11 @@ menu.intercomite=Inter-comités
 menu.intercomite.short=InterCom.
 menu.rank.team=Équipes
 menu.rank.indiv=Individuel
-menu.rank.simple=Simple
-menu.rank.men=Masculins
-menu.rank.women=Féminines
-menu.rank.junior=Juniors
-menu.rank.double=Doubles
+menu.rank.simple=Simple mixte
+menu.rank.men=Masculin
+menu.rank.women=Féminin
+menu.rank.junior=Junior
+menu.rank.double=Double
 menu.club=Clubs
 menu.tournaments=Tournois
 menu.tournaments.short=Tour.
@@ -129,6 +129,17 @@ rank.ligue.national.ofe=OFe
 rank.ligue.national.ofe.title=Open Fédéral
 rank.ligue.national.on=ON
 rank.ligue.national.on.title=Open National
+
+# Tournament PDF
+tournament.cat.ligue=Régional
+tournament.cat.comite=Départemental
+tournament.resultat=Résultats
+tournament.inscrits=Inscrits  :
+tournament.fullname=NOM et Prénom
+tournament.license=License
+tournament.club=Club
+tournament.comite=Comité
+tournament.points=PTS
 
 # Single Rank
 rank.single.ligue.caption=Classement {0} - Masculins {1}

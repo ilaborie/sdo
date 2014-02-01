@@ -79,7 +79,9 @@ GET         /ligues/:ligue/comites/:comite/team.pdf               controllers.Ra
 
 # Tournament
 GET         /ligues/:ligue/tour/:tour                             controllers.OrgaLigue.ligueTournament(ligue, tour)
+GET         /ligues/:ligue/tour/pdf/:tour                         controllers.OrgaLigue.ligueTournamentPDF(ligue, tour)
 GET         /ligues/:ligue/comites/:comite/tour/:tour             controllers.OrgaComite.comiteTournament(ligue, comite, tour)
+GET         /ligues/:ligue/comites/:comite/tour/pdf/:tour         controllers.OrgaComite.comiteTournamentPDF(ligue, comite, tour)
 
 # Team Championship
 GET         /ligues/:ligue/team/day/:day/:team1/:team2            controllers.Detail.team(ligue,day:Int,team1,team2)

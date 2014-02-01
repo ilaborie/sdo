@@ -24,6 +24,8 @@ package controllers
 import play.mvc.Controller
 
 import model.user.User
+import model.orga.Season
+import util.pdf.PDF
 
 
 /**
@@ -58,6 +60,20 @@ object OrgaComite extends Controller with ComiteController {
       comite.findTournamentByShortName(tournamentShortName) match {
         case Some(t) => Ok(views.html.tournament.comite(t, User(user)))
         case None => BadRequest(s"Tournoi non connu: $tournamentShortName dans le $comite")
+      }
+  }
+
+  /**
+   * Show comite tournament
+   * @param ligueShortName ligue
+   * @param tournamentShortName tournament
+   * @return the tournament page
+   */
+  //SecuredComiteAsyncAction
+  def comiteTournamentPDF(ligueShortName: String, comiteShortName: String, tournamentShortName: String) = ComiteAsyncAction(ligueShortName, comiteShortName) {
+    comite =>
+      comite.findTournamentByShortName(tournamentShortName) match {
+        case Some(t) => PDF.ok(pdf.html.ligueTournament(Season.currentSeason, t))
       }
   }
 

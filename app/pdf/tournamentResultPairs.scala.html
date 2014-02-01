@@ -1,0 +1,76 @@
+@(tournament: model.orga.Tournament, result: model.orga.TournamentResults[model.orga.Pair], rankType: model.rank.RankingType)
+
+@import model.orga._
+
+    @rows(pos: Int, players: Seq[Pair], tourRes: TournamentResult) = {
+    @if(!players.isEmpty) {
+        @if(players.size==1) {
+            @row(pos.toString, players.iterator.next(), tourRes, last = true)
+        } else {
+            @row(pos.toString, players.iterator.next(), tourRes)
+            @for(player <- players.take(players.length - 1).drop(1)) {
+                @row("\"", player, tourRes)
+            }
+            @row("\"", players.last, tourRes, last = true)
+        }
+    }
+    }
+    @row(pos: String, player: Pair, tourRes: TournamentResult, last: Boolean = false) = {
+        <tr @if(last) {class="border-bottom"}>
+        <th>@pos</th>
+        <td class="left">@player.fullName</td>
+        <td class="mono"></td>
+        <td>@player.clubAsString</td>
+        <td>@player.comiteAsString</td>
+        <td class="border border-col" style="border-right : 2px solid black ;">@tournament.getPoint(tourRes, rankType)</td>
+        <td style="border-left : none ; border-right : 1px solid black ; width : 2em ;">&nbsp;</td>
+        </tr>
+    }
+
+<table class="result">
+    <thead>
+        <tr>
+            <td></td>
+            <th class="rankType">@rankType</th>
+            <td></td>
+            <td></td>
+            <td class="right">@Messages("tournament.inscrits")</td>
+            <th class="left"><span style="border : thin solid black ; padding :.25em ;">@result.allParticipants.size</span></th>
+            <td></td>
+        </tr>
+        <tr class="sep">
+            <td colspan="7">&nbsp;</td>
+        </tr>
+        <tr>
+            <th></th>
+            <th class="left border">@Messages("tournament.fullname")</th>
+            <th class="center border">@Messages("tournament.license")</th>
+            <th class="center border">@Messages("tournament.club")</th>
+            <th class="center border">@Messages("tournament.comite")</th>
+            <th class="center border border-col" style="border-right : 2px solid black ;">@Messages("tournament.points")</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @rows(1, result.winner.toSeq, Winner)
+        @rows(2, result.runnerUp.toSeq, RunnerUp)
+        @rows(3, result.semiFinal, SemiFinal)
+        @rows(5, result.quarterFinal, QuarterFinal)
+        @rows(9, result.eighthFinal, EighthFinal)
+        @rows(17, result.sixteenthFinal, SixteenthFinal)
+        @rows(33, result.thirtySecondFinal, ThirtySecondFinal)
+    </tbody>
+</table>
+
+<table class="footer">
+    <tr>
+        <td>
+            Je soussigné, certifie l'exactitude des résultats mentionnés ci-dessus. <br/><br/>
+            Nom:<span class="input-text">Igor Laborie</span><br/>
+            Fonction:<span class="input-text">Directeur Sportif régional</span>
+        </td>
+        <td class="bold center">
+            Epreuve officielle placée sous l'égide de la Fédération Française de Darts,
+        </td>
+    </tr>
+</table>

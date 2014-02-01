@@ -1,0 +1,12 @@
+@(tournament: model.orga.MasterLigueTeam, user: model.user.User)
+
+<div class="well well-small">
+    <div class="page-header">
+        <h1>
+            @tournament
+            <small>@tags.date(tournament.date)</small>
+
+        </h1>
+        @tournament.place.map(tags.location(_))
+        @tournament.info.map(tags.info(_))
+</div>

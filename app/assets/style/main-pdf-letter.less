@@ -18,12 +18,12 @@
 // COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 // IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
 @import "bootstrap/variables.less";
 
 .small {
   font-size: xx-small;
 }
+
 .big {
   font-size: larger;
 }
@@ -31,9 +31,11 @@
 .line {
   border-bottom: 1px solid black
 }
+
 .align-left {
   float: left;
 }
+
 .align-right {
   float: right;
 }
@@ -111,12 +113,15 @@ table.full {
 .win {
   color: @green;
 }
+
 .loose {
   color: @red;
 }
+
 .draw {
   color: @gray;
 }
+
 // Teams
 .bordered {
   border: 1px solid @tableBorder;
@@ -148,6 +153,7 @@ table.result, table.capitain {
   border-spacing: 0;
   border-collapse: collapse;
 }
+
 .grey {
   background-color: @grayLighter
 }
@@ -175,11 +181,45 @@ caption, .header {
     border: 1px solid @tableBorder;
   }
 
-  th.left, td.left {
-    text-align: left !important;
-  }
-
   tbody tr.even {
     background-color: @tableBackgroundAccent;
   }
+}
+
+// Tournament
+table.header {
+  .info-general {
+    text-transform: capitalize;
+  }
+  .info-tournament {
+  }
+}
+table.footer {
+
+  td {
+    width: 40%;
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+
+  input {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px dotted #666;
+    width: 100%;
+  }
+}
+
+.left, {
+  text-align: left !important;
+}
+.right, {
+  text-align: right !important;
+}
+.center, {
+  text-align: center !important;
+}
+.bold {
+  font-weight: bold !important;
 }

@@ -1,0 +1,36 @@
+@(season: model.orga.Season, tournament: model.orga.BaseTournament)
+
+@layout.tournamentPDF(season, tournament) {
+    @tournament.mens match {
+        case None => {
+            @Messages("rank.no.results")
+        }
+        case Some(result) => {
+            @tournamentResult(tournament, result, model.rank.Mens(tournament.ligue))
+        }
+    }
+    @tournament.ladies match {
+        case None => {
+            @Messages("rank.no.results")
+        }
+        case Some(result) => {
+            @tournamentResult(tournament, result, model.rank.Ladies(tournament.ligue))
+        }
+    }
+    @tournament.youth match {
+        case None => {
+            @Messages("rank.no.results")
+        }
+        case Some(result) => {
+            @tournamentResult(tournament, result, model.rank.Youth(tournament.ligue))
+        }
+    }
+    @tournament.pairs match {
+        case None => {
+            @Messages("rank.no.results")
+        }
+        case Some(result) => {
+            @tournamentResultPairs(tournament, result, model.rank.Pairs(tournament.ligue))
+        }
+    }
+}

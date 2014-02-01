@@ -1,0 +1,57 @@
+@(season: model.orga.Season, tournament: model.orga.BaseTournament)(content: Html)
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>@{tournament.toString}-@{season.toString}-@Messages("tournament.resultat")</title>
+        <link rel="stylesheet" href="@routes.Assets.at("style/main-pdf-tournament.css")">
+    </head>
+    <body>
+        <div style="-fs-page-sequence : start ; page-break-before : auto">
+             <div style="position: running(current);"> 
+                <table class="header">
+                    <tr>
+                        <td class="info-general">
+                            <table>
+                                <tr>
+                                    <td rowspan="2" style="vertical-align: top;"><img src="@routes.Assets.at("images/FFD.png")" alt="FFD"/></td>
+                                    <td class="header-title">
+                                        Tournoi officiel<br/>
+                                        <span class="type">@tournament.typeCategory</span>
+                                    </td>
+                                    <td rowspan="2" style="vertical-align: top;"><img src="@routes.Assets.at("images/SDO.png")" alt="FFD"/></td>
+                                </tr>
+                                <tr>
+                                    <td class="header-category">Catégorie @tournament.category</td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td class="info-tournament">
+                            <table >
+                                <tr class="title"><td colspan="2">@tournament</td></tr>
+                                <tr>
+                                    <td class="right">Comité:</td>
+                                    <td class="bold">@tournament.maybyComite.map(c => c.name).getOrElse("")</td>
+                                </tr>
+                                <tr>
+                                    <td class="right">Organisateur:</td>
+                                    <td class="bold">@tournament.organisator</td>
+                                </tr>
+                                <tr>
+                                    <td class="right">Lieu:</td>
+                                    <td class="bold">@tournament.place.getOrElse("")</td>
+                                </tr>
+                                <tr>
+                                    <td class="right">Date:</td>
+                                    <td class="bold">@tags.date(tournament.date)</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            @content
+        </div>
+    </body>
+</html>

@@ -123,3 +123,28 @@ span.pagecount:before {
   }
 }
 
+table.result {
+  border: 1px solid @tableBorder;
+  border-spacing: 0;
+  border-collapse: collapse;
+
+  th, td {
+    padding: 0.2em;
+    text-align: center;
+    border: 1px solid @tableBorder;
+  }
+
+  th, td {
+    text-align: center;
+  }
+  th.left, td.left {
+    text-align: left !important;
+  }
+  th.right, td.right{
+    text-align: right !important;
+  }
+
+  tbody tr.even {
+    background-color: @tableBackgroundAccent;
+  }
+}

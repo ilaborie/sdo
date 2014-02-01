@@ -22,6 +22,7 @@
 package model.rank
 
 import model.orga._
+import play.api.i18n.Messages
 
 sealed abstract class RankingType {
   def canParticipate(player: Participant): Boolean
@@ -33,10 +34,14 @@ case class Single(comite: PlayerContainer) extends RankingType {
     case lp: LicensedPlayer => comite.players.contains(lp)
     case _ => false
   }
+
+  override val toString = Messages("menu.rank.simple")
 }
 
 case class SingleLicensied(orga: PlayerContainer) extends RankingType {
   def canParticipate(player: Participant): Boolean = orga.isMember(player)
+
+  override val toString = Messages("menu.rank.simple")
 }
 
 case class Mens(comite: PlayerContainer) extends RankingType {
@@ -45,6 +50,7 @@ case class Mens(comite: PlayerContainer) extends RankingType {
     case p: LicensedPlayer => !p.lady && comite.players.contains(p)
     case _ => false
   }
+  override val toString = Messages("menu.rank.men")
 }
 
 case class MensLicensied(orga: PlayerContainer) extends RankingType {
@@ -52,6 +58,7 @@ case class MensLicensied(orga: PlayerContainer) extends RankingType {
     case p: Player => !p.lady && orga.isMember(player)
     case _ => false
   }
+  override val toString = Messages("menu.rank.men")
 }
 
 case class Ladies(comite: PlayerContainer) extends RankingType {
@@ -60,6 +67,7 @@ case class Ladies(comite: PlayerContainer) extends RankingType {
     case p: LicensedPlayer => p.lady && comite.players.contains(p)
     case _ => false
   }
+  override val toString = Messages("menu.rank.women")
 }
 
 case class LadiesLicensied(orga: PlayerContainer) extends RankingType {
@@ -67,6 +75,7 @@ case class LadiesLicensied(orga: PlayerContainer) extends RankingType {
     case p: Player => p.lady && orga.isMember(player)
     case _ => false
   }
+  override val toString = Messages("menu.rank.women")
 }
 
 case class Youth(comite: PlayerContainer) extends RankingType {
@@ -75,6 +84,7 @@ case class Youth(comite: PlayerContainer) extends RankingType {
     case p: LicensedPlayer => p.youth && comite.players.contains(p)
     case _ => false
   }
+  override val toString = Messages("menu.rank.junior")
 }
 
 case class YouthLicensied(orga: PlayerContainer) extends RankingType {
@@ -82,6 +92,7 @@ case class YouthLicensied(orga: PlayerContainer) extends RankingType {
     case p: Player => p.youth && orga.isMember(player)
     case _ => false
   }
+  override val toString = Messages("menu.rank.junior")
 }
 
 case class Pairs(comite: PlayerContainer) extends RankingType {
@@ -89,6 +100,7 @@ case class Pairs(comite: PlayerContainer) extends RankingType {
     case p: Pair => comite.isMember(p)
     case _ => false
   }
+  override val toString = Messages("menu.rank.double")
 }
 
 case class PairsLicensied(orga: PlayerContainer) extends RankingType {
@@ -96,6 +108,7 @@ case class PairsLicensied(orga: PlayerContainer) extends RankingType {
     case p: Pair => orga.isMember(player)
     case _ => false
   }
+  override val toString = Messages("menu.rank.double")
 }
 
 

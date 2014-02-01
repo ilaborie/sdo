@@ -28,6 +28,7 @@ import util.EMail
  */
 sealed abstract class Participant {
   def clubAsString: String
+  def comiteAsString: String
 
   def name: String
 
@@ -44,11 +45,16 @@ sealed trait Player extends Participant {
 
   lazy val men: Boolean = !lady
 
-  def clubAsString:String
+  def clubAsString: String
 
   def licenseNumber: String
+
   def firstName: String
+
   def lastName: String
+
+  def fullName = lastName.toUpperCase + " " + firstName
+
   def category: String = if (lady) "F" else "M"
 }
 
@@ -66,9 +72,12 @@ case class NotLicensedPlayer(override val firstName: String,
                              facebook: Option[String] = None,
                              google: Option[String] = None) extends Player {
   val name = s"$lastName $firstName"
+
   override def toString = name
 
   def clubAsString = "NL"
+  def comiteAsString = ""
+
   def licenseNumber = ""
 }
 
@@ -111,6 +120,7 @@ case class LicensedPlayer(override val licenseNumber: LicenseNumber,
   lazy val ligue: Ligue = Ligue.ligues.find(_.players.contains(this)).get
 
   lazy val comite: Comite = ligue.comites.find(_.players.contains(this)).get
+  lazy val comiteAsString = comite.shortName
 
   lazy val club: Club = comite.clubs.find(_.players.contains(this)).get
 
@@ -146,6 +156,7 @@ case class TeamPair(player1: LicensedPlayer, player2: LicensedPlayer) extends Te
   val club = player1.club
 
   val clubAsString = club.shortName
+  val comiteAsString = club.comite.shortName
 }
 
 /**
@@ -157,6 +168,7 @@ case class Pair(player1: Player, player2: Player) extends Participant {
   require(player1 != player2, "Two different player")
 
   val name = s"${player1.name} / ${player2.name}"
+  lazy val fullName = s"${player1.fullName} / ${player2.fullName}"
 
   override val toString = name
 
@@ -171,6 +183,12 @@ case class Pair(player1: Player, player2: Player) extends Participant {
     val club1 = player1.clubAsString
     val club2 = player2.clubAsString
     if (club1 == club2) club1 else s"$club1 / $club2"
+  }
+
+  def comiteAsString: String = {
+    val comite1 = player1.comiteAsString
+    val comite2 = player2.comiteAsString
+    if (comite1 == comite2) comite1 else s"$comite1 / $comite2"
   }
 }
 

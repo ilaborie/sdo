@@ -59,6 +59,33 @@ sealed trait Tournament {
 
   // higher is better
   def getPriority: Int
+
+  /**
+   * Getting table value
+   * @param results result
+   * @param rankingType ranking type
+   * @tparam T player type (Player or Pair)
+   * @return table values
+   */
+  def getTable[T <: Participant](results: TournamentResults[T], rankingType: RankingType): Seq[(Int, Seq[T], Int)] = {
+    // position, players, points
+    var tmp: Map[Int, Seq[T]] = {
+      for {
+        player <- results.allParticipants
+        res <- results.getResult(player)
+      } yield (player, getPoint(res, rankingType))
+    }.groupBy(_._2).map(e => (e._1, e._2.map(u => u._1)))
+
+    def getPosition(point: Int) = 1 + tmp.filter(_._1 > point).map(_._2.size).sum
+
+    tmp.map(e => {
+      var point = e._1
+      var players = e._2
+      (getPosition(point), players, point)
+    }).toList.sortBy(_._1)
+  }
+
+
 }
 
 object Tournament {
@@ -72,6 +99,12 @@ object Tournament {
  */
 sealed abstract class BaseTournament(val file: String) extends Tournament {
   def isSimple: Boolean
+
+  def organisator: String
+
+  def typeCategory: String
+
+  def category: String
 
   private lazy val data = TournamentResultData.readBaseTournamentResult(file)
 
@@ -144,7 +177,7 @@ sealed abstract class BaseTournament(val file: String) extends Tournament {
 sealed trait LigueTournament extends Tournament {
   val isEvent: Boolean = true
   val isTeam: Boolean = false
-  val maybyComite = None
+  val maybyComite: Option[Comite] = None
 }
 
 /**
@@ -161,6 +194,9 @@ case class CoupeLigue(date: LocalDate, location: Location, override val file: St
   val shortName = "CL"
 
   lazy val ligue = Ligue.ligues.find(_.coupe == this).get
+  lazy val organisator = ligue.name
+  lazy val typeCategory = Messages("tournament.cat.ligue")
+  val category = "C"
 
   def getPoint(position: TournamentResult, rankingType: RankingType): Int = position match {
     case Winner => 22
@@ -191,6 +227,9 @@ case class OpenLigue(date: LocalDate, location: Location, override val file: Str
   val place = Some(location)
 
   lazy val ligue = Ligue.ligues.find(_.opens.contains(this)).get
+  lazy val organisator = ligue.name
+  lazy val typeCategory = Messages("tournament.cat.ligue")
+  val category = "D"
 
   val shortName = s"OL-${DateTimeFormat.forPattern("yyyyMMdd").print(date)}"
 
@@ -223,6 +262,9 @@ case class MasterLigue(date: LocalDate, location: Location, override val file: S
   val shortName = "Mast"
 
   lazy val ligue = Ligue.ligues.find(_.master == this).get
+  lazy val organisator = ligue.name
+  lazy val typeCategory = Messages("tournament.cat.ligue")
+  val category = "B"
 
   def getPoint(position: TournamentResult, rankingType: RankingType): Int = position match {
     case Winner => 29
@@ -394,7 +436,7 @@ sealed trait ComiteTournament extends BaseTournament {
   def comite: Comite
 
   lazy val ligue = comite.ligue
-  lazy val maybyComite = Some(comite)
+  override lazy val maybyComite = Some(comite)
 }
 
 /**
@@ -409,6 +451,9 @@ case class CoupeComite(date: LocalDate, location: Location, override val file: S
   val isSimple = false
 
   lazy val comite: Comite = Ligue.comites.find(_.coupe == this).get
+  lazy val organisator = comite.name
+  lazy val typeCategory = Messages("tournament.cat.comite")
+  val category = "D"
 
   def getPoint(position: TournamentResult, rankingType: RankingType): Int = position match {
     case Winner => 29
@@ -440,6 +485,9 @@ case class OpenClub(date: LocalDate, location: Location, override val file: Stri
 
   lazy val club: Club = Ligue.clubs.find(_.opens.contains(this)).get
   lazy val comite = club.comite
+  lazy val organisator = club.name
+  lazy val typeCategory = Messages("tournament.cat.comite")
+  val category = "E"
 
   def getPoint(position: TournamentResult, rankingType: RankingType): Int = position match {
     case Winner => 22
